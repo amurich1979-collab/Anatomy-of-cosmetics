@@ -8,6 +8,9 @@
   --accent: #0e7c66;
   --accent-strong: #075846;
   --accent-soft: #dff1eb;
+  --coral: #e96f5b;
+  --coral-soft: #ffe2da;
+  --sky: #d9f2f2;
   --warning: #a9472d;
   --soft: #e8f4ef;
   --amber: #f3d58b;
@@ -26,8 +29,9 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    linear-gradient(135deg, rgba(14, 124, 102, 0.1), transparent 34%),
-    linear-gradient(225deg, rgba(243, 213, 139, 0.16), transparent 38%),
+    radial-gradient(circle at 12% 4%, rgba(233, 111, 91, 0.2), transparent 28%),
+    linear-gradient(135deg, rgba(14, 124, 102, 0.12), transparent 34%),
+    linear-gradient(225deg, rgba(243, 213, 139, 0.2), transparent 38%),
     var(--bg);
   color: var(--ink);
 }
@@ -61,6 +65,18 @@ select {
   position: sticky;
   top: 28px;
   padding: 10px 0;
+}
+
+.hero-visual {
+  width: min(100%, 520px);
+  aspect-ratio: 16 / 10;
+  margin-bottom: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.12)),
+    url("assets/cosmetology-hero.png") center / cover;
+  box-shadow: 0 24px 60px rgba(67, 56, 48, 0.16);
 }
 
 .eyebrow {
@@ -113,7 +129,8 @@ h3 {
 
 .trust-row span,
 .mode-pill,
-.sample-chip {
+.sample-chip,
+.concern-chip {
   border: 1px solid rgba(14, 124, 102, 0.22);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.72);
@@ -162,7 +179,7 @@ h3 {
 
 .mode-pill {
   padding: 7px 10px;
-  background: var(--accent-soft);
+  background: linear-gradient(135deg, var(--accent-soft), var(--coral-soft));
 }
 
 label {
@@ -226,14 +243,46 @@ select {
   gap: 8px;
 }
 
-.sample-chip {
+.sample-chip,
+.concern-chip {
   min-height: 34px;
   padding: 0 12px;
   cursor: pointer;
 }
 
-.sample-chip:hover {
+.sample-chip:hover,
+.concern-chip:hover {
   background: var(--accent-soft);
+}
+
+.concerns-field {
+  display: grid;
+  gap: 10px;
+}
+
+.field-label {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.concern-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.concern-chip {
+  min-height: 36px;
+  color: #40504b;
+  background: #fff;
+}
+
+.concern-chip[aria-pressed="true"] {
+  border-color: rgba(233, 111, 91, 0.48);
+  background: linear-gradient(135deg, var(--coral-soft), var(--sky));
+  color: #7f2d20;
+  box-shadow: 0 8px 18px rgba(233, 111, 91, 0.14);
 }
 
 .suggestions {
@@ -333,14 +382,14 @@ button {
   min-height: 48px;
   border: 0;
   border-radius: 8px;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), #2aa88e);
   color: #fff;
   cursor: pointer;
   font-weight: 800;
 }
 
 button:hover {
-  background: var(--accent-strong);
+  background: linear-gradient(135deg, var(--accent-strong), #0f7b66);
 }
 
 .primary-action {

@@ -4,7 +4,7 @@ import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { analyzeComposition } from "./analyzer.js";
-import { createReviewRequest, identifyProductFromText, listReviewRequests, searchProducts } from "./products.js";
+import { createReviewRequest, getProductDetails, identifyProductFromText, listReviewRequests, searchProducts } from "./products.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
@@ -21,13 +21,24 @@ app.use(express.static(publicDir));
 app.get("/api/products/search", async (req, res) => {
   const query = String(req.query.q || "").trim();
 
-  if (query.length < 2) {
+  if (query.length < 1) {
     res.json({ products: [] });
     return;
   }
 
   const products = await searchProducts(query);
   res.json({ products });
+});
+
+app.get("/api/products/:id", async (req, res) => {
+  const product = await getProductDetails(req.params.id);
+
+  if (!product) {
+    res.status(404).json({ error: "Средство не найдено или состав пока недоступен." });
+    return;
+  }
+
+  res.json({ product });
 });
 
 app.post("/api/products/identify", async (req, res) => {

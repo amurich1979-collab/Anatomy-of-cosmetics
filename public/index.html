@@ -10,6 +10,7 @@
     <main class="shell">
       <section class="workspace">
         <div class="intro">
+          <div class="hero-visual" aria-hidden="true"></div>
           <p class="eyebrow">Разбор профессионального ухода</p>
           <h1>Анатомия косметологии</h1>
           <p>
@@ -81,10 +82,25 @@
             </label>
           </div>
 
-          <label>
-            Что беспокоит
-            <input id="concerns" value="розацеа, пигментация, нарушенный барьер" />
-          </label>
+          <div class="concerns-field">
+            <span class="field-label">Что беспокоит</span>
+            <div class="concern-grid" aria-label="Что беспокоит при применении средства">
+              <button type="button" class="concern-chip" aria-pressed="true" data-value="розацеа">Розацеа</button>
+              <button type="button" class="concern-chip" aria-pressed="true" data-value="пигментация">Пигментация</button>
+              <button type="button" class="concern-chip" aria-pressed="true" data-value="нарушенный барьер">Нарушенный барьер</button>
+              <button type="button" class="concern-chip" aria-pressed="false" data-value="покраснение">Покраснение</button>
+              <button type="button" class="concern-chip" aria-pressed="false" data-value="жжение или пощипывание">Жжение</button>
+              <button type="button" class="concern-chip" aria-pressed="false" data-value="зуд">Зуд</button>
+              <button type="button" class="concern-chip" aria-pressed="false" data-value="сухость и шелушение">Сухость/шелушение</button>
+              <button type="button" class="concern-chip" aria-pressed="false" data-value="акне и комедоны">Акне/комедоны</button>
+              <button type="button" class="concern-chip" aria-pressed="false" data-value="отек или крапивница">Отек/крапивница</button>
+              <button type="button" class="concern-chip" aria-pressed="false" data-value="фоточувствительность">Чувствительность к солнцу</button>
+              <button type="button" class="concern-chip" aria-pressed="false" data-value="реакция на отдушки">Отдушки</button>
+              <button type="button" class="concern-chip" aria-pressed="false" data-value="беременность или лактация">Беременность/лактация</button>
+            </div>
+            <input id="concernsCustom" placeholder="Свое: например, дерматит, купероз, после пилинга..." />
+            <input id="concerns" type="hidden" value="розацеа, пигментация, нарушенный барьер" />
+          </div>
 
           <button class="primary-action" type="submit">Разобрать состав</button>
         </form>

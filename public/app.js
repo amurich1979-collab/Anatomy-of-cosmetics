@@ -5,6 +5,7 @@ const productSuggestions = document.querySelector("#productSuggestions");
 const productStatus = document.querySelector("#productStatus");
 const composition = document.querySelector("#composition");
 const sampleChips = document.querySelectorAll(".sample-chip");
+const concernChips = document.querySelectorAll(".concern-chip");
 const tg = window.Telegram?.WebApp;
 
 const STATIC_PRODUCTS = [
@@ -118,7 +119,7 @@ function cards(items, emptyText) {
   `;
 }
 
-function debounce(fn, delay = 350) {
+function debounce(fn, delay = 160) {
   let timer;
   return (...args) => {
     clearTimeout(timer);
@@ -153,7 +154,7 @@ function parseIngredients(text) {
 
 function localSearchProducts(query) {
   const normalizedQuery = normalizeProductText(query);
-  if (normalizedQuery.length < 2) return [];
+  if (normalizedQuery.length < 1) return [];
 
   return STATIC_PRODUCTS
     .map((product) => {
@@ -289,13 +290,35 @@ function hideSuggestions() {
   productSuggestions.innerHTML = "";
 }
 
-function applyProduct(product) {
+async function loadProductDetails(product) {
+  if (product.composition) return product;
+
+  try {
+    const response = await fetch(`/api/products/${encodeURIComponent(product.id)}`);
+    if (!response.ok) throw new Error("Product detail failed");
+    const data = await response.json();
+    return data.product || product;
+  } catch {
+    return product;
+  }
+}
+
+async function applyProduct(product) {
   productName.value = `${product.brand} ${product.name}`.trim();
-  composition.value = product.composition;
+  setProductStatus("Подтягиваю состав из базы...");
+  const detailedProduct = await loadProductDetails(product);
+
+  if (!detailedProduct.composition) {
+    hideSuggestions();
+    setProductStatus("Карточка найдена, но INCI пока не подтянулся. Можно вставить состав вручную.", "warn");
+    return;
+  }
+
+  composition.value = detailedProduct.composition;
   hideSuggestions();
 
-  const source = product.verified
-    ? product.source
+  const source = detailedProduct.verified
+    ? detailedProduct.source
     : `${product.source}, проверьте состав по этикетке`;
   const verifiedAt = product.verifiedAt ? ` Проверено: ${product.verifiedAt}.` : "";
   setProductStatus(`Состав подставлен: ${source}.${verifiedAt}`, product.verified ? "ok" : "warn");
@@ -371,8 +394,8 @@ function renderSuggestions(products) {
   productSuggestions.hidden = false;
 
   productSuggestions.querySelectorAll(".suggestion").forEach((button) => {
-    button.addEventListener("click", () => {
-      applyProduct(products[Number(button.dataset.index)]);
+    button.addEventListener("click", async () => {
+      await applyProduct(products[Number(button.dataset.index)]);
     });
   });
 
@@ -392,7 +415,7 @@ async function searchProductByName(query) {
 const searchProducts = debounce(async () => {
   const query = productName?.value.trim() || "";
 
-  if (query.length < 2) {
+  if (query.length < 1) {
     hideSuggestions();
     setProductStatus("");
     return;
@@ -418,6 +441,26 @@ const searchProducts = debounce(async () => {
 });
 
 productName?.addEventListener("input", searchProducts);
+
+function syncConcernInput() {
+  const selected = Array.from(concernChips)
+    .filter((chip) => chip.getAttribute("aria-pressed") === "true")
+    .map((chip) => chip.dataset.value || chip.textContent.trim())
+    .filter(Boolean);
+  const customValue = document.querySelector("#concernsCustom")?.value.trim();
+  const concerns = document.querySelector("#concerns");
+  if (concerns) concerns.value = (customValue ? [...selected, customValue] : selected).join(", ");
+}
+
+concernChips.forEach((chip) => {
+  chip.addEventListener("click", () => {
+    const nextValue = chip.getAttribute("aria-pressed") !== "true";
+    chip.setAttribute("aria-pressed", String(nextValue));
+    syncConcernInput();
+  });
+});
+
+document.querySelector("#concernsCustom")?.addEventListener("input", syncConcernInput);
 
 sampleChips.forEach((chip) => {
   chip.addEventListener("click", () => {
