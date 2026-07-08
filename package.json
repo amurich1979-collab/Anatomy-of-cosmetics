@@ -1,0 +1,21 @@
+{
+  "name": "anatomy-cosmetology",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MVP: web app, Telegram Mini App, and Telegram bot for cosmetology product ingredient analysis.",
+  "type": "module",
+  "scripts": {
+    "dev": "node src/server.js",
+    "bot": "node src/bot.js",
+    "start": "node src/server.js",
+    "start:prod": "NODE_ENV=production node src/server.js",
+    "check": "node --check src/server.js && node --check src/bot.js && node --check src/analyzer.js && node --check src/products.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "telegraf": "^4.16.3"
+  },
+  "devDependencies": {}
+}

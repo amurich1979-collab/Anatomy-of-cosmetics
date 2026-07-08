@@ -1,0 +1,135 @@
+# Анатомия косметологии
+
+MVP сервиса для клиенток, которые хотят понять состав косметологических и профессиональных уходовых средств.
+
+В проекте есть:
+
+- веб-приложение;
+- Telegram Mini App;
+- Telegram-бот;
+- общий backend-анализатор состава.
+
+## Запуск
+
+```bash
+npm install
+npm run dev
+```
+
+Открыть веб-приложение:
+
+```text
+http://localhost:3000
+```
+
+Открыть режим Telegram Mini App в браузере:
+
+```text
+http://localhost:3000/miniapp
+```
+
+## Доступ с телефона в локальной сети
+
+Сервер слушает `0.0.0.0`, поэтому его можно открыть с другого устройства в той же Wi-Fi сети:
+
+```text
+http://<IP-компьютера>:3000
+```
+
+На текущей машине IP можно узнать так:
+
+```powershell
+Get-NetIPAddress -AddressFamily IPv4
+```
+
+Для публичного Telegram Mini App нужен внешний `https://` URL. Если туннели вроде Cloudflare/ngrok/localtunnel недоступны из сети, используйте деплой на хостинг.
+
+## Деплой
+
+Проект подготовлен для нескольких вариантов:
+
+- `render.yaml` — Render.
+- `railway.json` — Railway.
+- `Dockerfile` — любой Docker-хостинг.
+- `Procfile` — Heroku-compatible платформы.
+
+### Render
+
+1. Загрузите проект в GitHub.
+2. В Render выберите `New Web Service`.
+3. Build command: `npm ci`.
+4. Start command: `node src/server.js`.
+5. Health check path: `/health`.
+6. Environment:
+
+```text
+HOST=0.0.0.0
+NODE_ENV=production
+```
+
+### Railway
+
+1. Загрузите проект в GitHub.
+2. Создайте Railway project from repo.
+3. Railway прочитает `railway.json`.
+4. При необходимости задайте:
+
+```text
+HOST=0.0.0.0
+NODE_ENV=production
+```
+
+### Docker
+
+```bash
+docker build -t anatomy-cosmetology .
+docker run --rm -p 3000:3000 anatomy-cosmetology
+```
+
+## Telegram-бот
+
+1. Создайте бота через BotFather.
+2. Скопируйте `.env.example` в `.env`.
+3. Заполните `TELEGRAM_BOT_TOKEN`.
+4. Запустите:
+
+```bash
+npm run bot
+```
+
+Для Mini App в BotFather нужно указать публичный URL приложения. Для локального теста используйте туннель, например ngrok/cloudflared, и пропишите `PUBLIC_BASE_URL`.
+
+## Важное ограничение
+
+Сервис не знает точные проценты ингредиентов по этикетке. Он оценивает вероятные концентрационные зоны по порядку INCI, типу ингредиентов и правилам маркировки.
+
+## База продуктов
+
+Проверенные продукты лежат в:
+
+```text
+data/products.json
+```
+
+У каждой карточки есть уровень доверия:
+
+- `A` — проверено по официальному источнику или внутренней базе.
+- `B` — подтверждено по фото этикетки.
+- `C` — совпало в нескольких внешних источниках.
+- `D` — внешний открытый источник, нужно сверить по упаковке.
+- `E` — черновик, не использовать как подтвержденный состав.
+
+Если пользователь ищет средство, которого нет в базе, он может отправить его на проверку. Очередь сохраняется в:
+
+```text
+data/review-queue.json
+```
+
+API очереди:
+
+```text
+GET /api/products/review-queue
+POST /api/products/review-request
+```
+
+Так база пополняется по спросу: часто запрашиваемые средства можно проверять в первую очередь.
