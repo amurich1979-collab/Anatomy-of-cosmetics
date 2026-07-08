@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: anatomy-cosmetology
+    env: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: node src/server.js
+    healthCheckPath: /health
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: NODE_ENV
+        value: production

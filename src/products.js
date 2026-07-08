@@ -96,6 +96,7 @@ function toSummary(product) {
     verified: trusted.verified,
     verifiedAt: trusted.verifiedAt,
     importedAt: trusted.importedAt,
+    compositionScope: trusted.compositionScope,
     hasComposition: Boolean(trusted.hasComposition ?? trusted.composition),
     detailMode: trusted.detailMode || (trusted.sourceType === "open_beauty_facts" ? "open_beauty_facts" : "local")
   };
@@ -128,10 +129,11 @@ function saveDetailsCache(cache) {
   writeJson(productDetailsCachePath, cache.slice(0, 5000));
 }
 
-export function buildProductIndex(products = loadProducts(), { persist = true } = {}) {
+export function buildProductIndex(products = loadProducts(), { persist = true, includeExisting = true } = {}) {
   const unique = new Map();
+  const sourceProducts = includeExisting ? [...readJson(productIndexPath, []), ...products] : products;
 
-  products.forEach((product) => {
+  sourceProducts.forEach((product) => {
     if (!product?.id || !product?.name) return;
     unique.set(product.id, toIndexRecord(product));
   });
@@ -175,7 +177,8 @@ function localScore(product, query) {
 
   if (product.verified) score += 12;
   if (product.hasComposition) score += 8;
-  if (product.sourceType === "open_beauty_facts") score -= 4;
+  if (product.sourceType === "official_brand_page") score += 260;
+  if (product.sourceType === "open_beauty_facts") score -= 30;
 
   return score;
 }

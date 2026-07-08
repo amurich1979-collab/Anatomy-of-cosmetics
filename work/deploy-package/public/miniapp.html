@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Анатомия косметологии</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="mini">
+    <main class="shell mini-shell">
+      <section class="workspace">
+        <div class="intro">
+          <p class="eyebrow">Telegram Mini App</p>
+          <h1>Анатомия косметологии</h1>
+          <p>Введите название средства или вставьте INCI, чтобы получить понятный разбор под профиль кожи.</p>
+        </div>
+
+        <form id="analysisForm" class="panel">
+          <div class="form-head">
+            <div>
+              <p class="eyebrow">Шаг 1</p>
+              <h2>Найдите средство</h2>
+            </div>
+            <span class="mode-pill">MVP</span>
+          </div>
+
+          <label class="product-search">
+            Название препарата или средства
+            <input id="productName" autocomplete="off" placeholder="Например: Glycolic Peel, Retinol, SPF..." />
+            <div id="productSuggestions" class="suggestions" hidden></div>
+            <span id="productStatus" class="field-note" hidden></span>
+          </label>
+
+          <label>
+            Состав INCI
+            <textarea id="composition" required spellcheck="false" placeholder="Aqua, Glycerin, Panthenol..."></textarea>
+          </label>
+
+          <div class="sample-row" aria-label="Примеры средств">
+            <button type="button" class="sample-chip" data-query="Retinol Barrier Night Concentrate">Retinol</button>
+            <button type="button" class="sample-chip" data-query="Glycolic Renewal Peel 20">Glycolic Peel</button>
+            <button type="button" class="sample-chip" data-query="Mineral Recovery SPF 50">SPF</button>
+          </div>
+
+          <div class="form-head compact">
+            <div>
+              <p class="eyebrow">Шаг 2</p>
+              <h2>Профиль кожи</h2>
+            </div>
+          </div>
+
+          <div class="grid">
+            <label>
+              Тип кожи
+              <select id="skinType">
+                <option>чувствительная</option>
+                <option>сухая</option>
+                <option>жирная</option>
+                <option>комбинированная</option>
+                <option>нормальная</option>
+              </select>
+            </label>
+
+            <label>
+              Контекст
+              <select id="context">
+                <option>назначил косметолог</option>
+                <option>после процедуры</option>
+                <option>домашний уход</option>
+                <option>перед покупкой</option>
+              </select>
+            </label>
+          </div>
+
+          <label>
+            Что беспокоит
+            <input id="concerns" placeholder="акне, розацеа, пигментация, беременность..." />
+          </label>
+
+          <button class="primary-action" type="submit">Разобрать</button>
+        </form>
+      </section>
+
+      <section id="result" class="result" aria-live="polite"></section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
