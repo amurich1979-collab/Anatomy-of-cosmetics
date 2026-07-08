@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Вход - Анатомия косметологии</title>
+    <script>
+      document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh";
+    </script>
+    <link rel="stylesheet" href="styles.css?v=20260709-1" />
+  </head>
+  <body>
+    <div class="ambient-layer" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <main class="shell page-shell">
+      <header class="topbar">
+        <a class="brand-link" href="/">Анатомия косметологии</a>
+        <nav class="topnav" aria-label="Навигация">
+          <a href="/settings">Настройки</a>
+          <a href="/login" aria-current="page">Войти</a>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">День</button>
+        </nav>
+      </header>
+
+      <section class="auth-layout">
+        <div class="auth-copy">
+          <p class="eyebrow">Аккаунт</p>
+          <h1>История разборов и препаратов</h1>
+          <p>Здесь будет вход в личный кабинет, где сохраняются поиски, выбранные средства и результаты анализа.</p>
+        </div>
+
+        <form class="panel auth-panel" id="loginForm">
+          <div class="form-head">
+            <div>
+              <p class="eyebrow">Вход</p>
+              <h2>Продолжить</h2>
+            </div>
+            <span class="mode-pill">готовится</span>
+          </div>
+
+          <label>
+            Почта
+            <input id="loginEmail" type="email" autocomplete="email" placeholder="name@example.com" />
+          </label>
+
+          <button class="primary-action" type="submit">Войти по почте</button>
+
+          <div class="auth-divider"><span>или</span></div>
+
+          <button class="secondary-action" type="button" data-provider="google">Google аккаунт</button>
+          <button class="secondary-action" type="button" data-provider="telegram">Telegram</button>
+
+          <p class="field-note" id="loginStatus">Пока это заготовка интерфейса. Реальное подключение потребует OAuth-настроек и базы пользователей.</p>
+        </form>
+      </section>
+    </main>
+
+    <script src="theme.js" type="module"></script>
+    <script src="login.js" type="module"></script>
+  </body>
+</html>

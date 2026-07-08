@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { analyzeComposition } from "./analyzer.js";
 import { createReviewRequest, getProductDetails, identifyProductFromText, listReviewRequests, searchProducts } from "./products.js";
+import { getUserSettings, updateUserSettings } from "./userSettings.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
@@ -71,6 +72,14 @@ app.get("/api/products/review-queue", (_req, res) => {
   res.json({ requests: listReviewRequests() });
 });
 
+app.get("/api/user/settings", (req, res) => {
+  res.json(getUserSettings(req.query.userId || req.headers["x-demo-user"]));
+});
+
+app.put("/api/user/settings", (req, res) => {
+  res.json(updateUserSettings(req.body?.userId || req.headers["x-demo-user"], req.body?.settings || {}));
+});
+
 app.post("/api/analyze", (req, res) => {
   const { text, profile } = req.body || {};
 
@@ -88,6 +97,14 @@ app.get("/miniapp", (_req, res) => {
 
 app.get("/review", (_req, res) => {
   res.sendFile(path.join(publicDir, "review.html"));
+});
+
+app.get("/login", (_req, res) => {
+  res.sendFile(path.join(publicDir, "login.html"));
+});
+
+app.get("/settings", (_req, res) => {
+  res.sendFile(path.join(publicDir, "settings.html"));
 });
 
 app.get("/health", (_req, res) => {

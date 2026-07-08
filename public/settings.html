@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Настройки - Анатомия косметологии</title>
+    <script>
+      document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh";
+    </script>
+    <link rel="stylesheet" href="styles.css?v=20260709-1" />
+  </head>
+  <body>
+    <div class="ambient-layer" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <main class="shell page-shell">
+      <header class="topbar">
+        <a class="brand-link" href="/">Анатомия косметологии</a>
+        <nav class="topnav" aria-label="Навигация">
+          <a href="/settings" aria-current="page">Настройки</a>
+          <a href="/login">Войти</a>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">День</button>
+        </nav>
+      </header>
+
+      <section class="settings-layout">
+        <div class="auth-copy">
+          <p class="eyebrow">Настройки</p>
+          <h1>Внешний вид</h1>
+          <p>Выберите тему интерфейса. Настройка сохраняется в браузере и будет применяться на всех страницах.</p>
+        </div>
+
+        <div class="settings-stack">
+          <section class="panel">
+            <div class="form-head">
+              <div>
+                <p class="eyebrow">Тема</p>
+                <h2>Цветовая схема</h2>
+              </div>
+            </div>
+            <div class="theme-grid">
+              <button class="theme-card theme-card-fresh" type="button" data-theme-choice="fresh" aria-pressed="false">
+                <strong>День</strong>
+                <span>свежая зелено-коралловая</span>
+              </button>
+              <button class="theme-card theme-card-rose" type="button" data-theme-choice="rose" aria-pressed="false">
+                <strong>Роза</strong>
+                <span>мягкая теплая палитра</span>
+              </button>
+              <button class="theme-card theme-card-clinic" type="button" data-theme-choice="clinic" aria-pressed="false">
+                <strong>Клиника</strong>
+                <span>спокойная рабочая</span>
+              </button>
+              <button class="theme-card theme-card-dark" type="button" data-theme-choice="dark" aria-pressed="false">
+                <strong>Ночь</strong>
+                <span>темная с мягким контрастом</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="form-head">
+              <div>
+                <p class="eyebrow">История</p>
+                <h2>Локальные записи</h2>
+              </div>
+            </div>
+            <div class="history-summary" id="historySummary"></div>
+            <button class="secondary-action" type="button" id="clearHistory">Очистить историю</button>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="theme.js" type="module"></script>
+    <script src="settings.js" type="module"></script>
+  </body>
+</html>

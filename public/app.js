@@ -290,6 +290,16 @@ function hideSuggestions() {
   productSuggestions.innerHTML = "";
 }
 
+function saveLocalHistory(key, entry, limit = 30) {
+  try {
+    const items = JSON.parse(localStorage.getItem(key) || "[]");
+    items.unshift({ ...entry, createdAt: new Date().toISOString() });
+    localStorage.setItem(key, JSON.stringify(items.slice(0, limit)));
+  } catch {
+    // Local history is optional; analysis must keep working if storage is blocked.
+  }
+}
+
 async function loadProductDetails(product) {
   if (product.composition) return product;
 
@@ -316,6 +326,12 @@ async function applyProduct(product) {
 
   composition.value = detailedProduct.composition;
   hideSuggestions();
+  saveLocalHistory("productSearchHistory", {
+    id: detailedProduct.id,
+    brand: detailedProduct.brand,
+    name: detailedProduct.name,
+    source: detailedProduct.source
+  });
 
   const source = detailedProduct.verified
     ? detailedProduct.source
@@ -618,8 +634,20 @@ form.addEventListener("submit", async (event) => {
     });
 
     if (!response.ok) throw new Error("Analyze failed");
-    render(await response.json());
+    const analysis = await response.json();
+    saveLocalHistory("analysisHistory", {
+      productName: productName?.value.trim() || "",
+      score: analysis.score?.score,
+      formulaType: analysis.formulaType
+    });
+    render(analysis);
   } catch {
-    render(localAnalyzeComposition(payload));
+    const analysis = localAnalyzeComposition(payload);
+    saveLocalHistory("analysisHistory", {
+      productName: productName?.value.trim() || "",
+      score: analysis.score?.score,
+      formulaType: analysis.formulaType
+    });
+    render(analysis);
   }
 });

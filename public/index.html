@@ -4,10 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Анатомия косметологии</title>
-    <link rel="stylesheet" href="styles.css?v=20260708-2" />
+    <script>
+      document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh";
+    </script>
+    <link rel="stylesheet" href="styles.css?v=20260709-1" />
   </head>
   <body>
+    <div class="ambient-layer" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
     <main class="shell">
+      <header class="topbar">
+        <a class="brand-link" href="/">Анатомия косметологии</a>
+        <nav class="topnav" aria-label="Навигация">
+          <a href="/settings">Настройки</a>
+          <a href="/login">Войти</a>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">День</button>
+        </nav>
+      </header>
       <section class="workspace">
         <div class="intro">
           <p class="eyebrow">Разбор профессионального ухода</p>
@@ -108,6 +124,7 @@
       <section id="result" class="result" aria-live="polite"></section>
     </main>
 
+    <script src="theme.js" type="module"></script>
     <script src="app.js" type="module"></script>
   </body>
 </html>
