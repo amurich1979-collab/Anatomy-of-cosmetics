@@ -175,8 +175,15 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
+  min-height: 54px;
   margin-bottom: 18px;
+  padding: 8px 10px 8px 16px;
+  border: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  box-shadow: 0 14px 34px rgba(35, 35, 32, 0.06);
+  backdrop-filter: blur(14px);
 }
 
 .brand-link,
@@ -188,29 +195,38 @@ select {
 
 .brand-link {
   color: var(--accent-strong);
+  white-space: nowrap;
 }
 
 .topnav {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  justify-content: flex-end;
+  gap: 4px;
 }
 
 .topnav a,
 .theme-toggle {
-  min-height: 36px;
-  padding: 0 12px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
   color: var(--accent-strong);
   font-size: 0.84rem;
+  box-shadow: none;
 }
 
 .topnav a[aria-current="page"] {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
   background: var(--accent-soft);
+}
+
+.theme-toggle {
+  margin-left: 4px;
+  border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+  background: color-mix(in srgb, var(--accent-soft) 72%, var(--surface));
 }
 
 .mini-shell {
@@ -1021,6 +1037,28 @@ dd {
   .shell {
     width: min(100% - 20px, 100%);
     padding-top: 18px;
+  }
+
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .topnav {
+    justify-content: stretch;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .topnav a,
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0;
+    padding: 0 8px;
   }
 
   .grid,
