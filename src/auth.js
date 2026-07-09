@@ -8,9 +8,10 @@ import {
 
 const COOKIE_NAME = "anatomy_session";
 const SESSION_DAYS = 30;
+const fallbackSessionSecret = crypto.randomBytes(32).toString("hex");
 
 function secret() {
-  return process.env.SESSION_SECRET || "dev-session-secret-change-before-production";
+  return process.env.SESSION_SECRET || fallbackSessionSecret;
 }
 
 function base64url(value) {
