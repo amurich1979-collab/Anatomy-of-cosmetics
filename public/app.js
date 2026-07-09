@@ -15,6 +15,11 @@ const catalogResults = document.querySelector("#catalogResults");
 const catalogOpen = document.querySelector("#catalogOpen");
 const photoInput = document.querySelector("#photoInput");
 const photoStatus = document.querySelector("#photoStatus");
+const photoReview = document.querySelector("#photoReview");
+const photoPreview = document.querySelector("#photoPreview");
+const photoText = document.querySelector("#photoText");
+const photoUseComposition = document.querySelector("#photoUseComposition");
+const photoAnalyze = document.querySelector("#photoAnalyze");
 const tg = window.Telegram?.WebApp;
 
 const STATIC_PRODUCTS = [
@@ -22,10 +27,10 @@ const STATIC_PRODUCTS = [
     id: "demo-aha-post-peel",
     name: "AHA Post-Peel Recovery Serum",
     brand: "Demo Professional",
-    category: "РџРѕСЃС‚РїРёР»РёРЅРіРѕРІР°СЏ СЃС‹РІРѕСЂРѕС‚РєР°",
+    category: "Постпилинговая сыворотка",
     composition: "Aqua, Glycerin, Panthenol, Niacinamide, Sodium Hyaluronate, Allantoin, Phenoxyethanol, Ethylhexylglycerin",
-    trustLabel: "РџСЂРѕРІРµСЂРµРЅРѕ",
-    source: "РЎС‚Р°С‚РёС‡РµСЃРєР°СЏ Р±Р°Р·Р° MVP",
+    trustLabel: "Проверено",
+    source: "Статическая база MVP",
     verified: true,
     verifiedAt: "2026-07-08"
   },
@@ -33,10 +38,10 @@ const STATIC_PRODUCTS = [
     id: "demo-glycolic-peel",
     name: "Glycolic Renewal Peel 20",
     brand: "Demo Clinic Lab",
-    category: "РљРёСЃР»РѕС‚РЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ",
+    category: "Кислотное средство",
     composition: "Aqua, Glycolic Acid, Lactic Acid, Glycerin, Panthenol, Phenoxyethanol, Sodium Hydroxide",
-    trustLabel: "РџСЂРѕРІРµСЂРµРЅРѕ",
-    source: "РЎС‚Р°С‚РёС‡РµСЃРєР°СЏ Р±Р°Р·Р° MVP",
+    trustLabel: "Проверено",
+    source: "Статическая база MVP",
     verified: true,
     verifiedAt: "2026-07-08"
   },
@@ -44,10 +49,10 @@ const STATIC_PRODUCTS = [
     id: "demo-retinol-night",
     name: "Retinol Barrier Night Concentrate",
     brand: "Demo Cosmeceuticals",
-    category: "Р РµС‚РёРЅРѕРёРґРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ",
+    category: "Ретиноидное средство",
     composition: "Aqua, Glycerin, Caprylic/Capric Triglyceride, Dimethicone, Niacinamide, Retinol, Panthenol, Phenoxyethanol, Ethylhexylglycerin",
-    trustLabel: "РџСЂРѕРІРµСЂРµРЅРѕ",
-    source: "РЎС‚Р°С‚РёС‡РµСЃРєР°СЏ Р±Р°Р·Р° MVP",
+    trustLabel: "Проверено",
+    source: "Статическая база MVP",
     verified: true,
     verifiedAt: "2026-07-08"
   },
@@ -55,10 +60,10 @@ const STATIC_PRODUCTS = [
     id: "demo-mineral-spf",
     name: "Mineral Recovery SPF 50",
     brand: "Demo Dermatology",
-    category: "SPF РїРѕСЃР»Рµ РїСЂРѕС†РµРґСѓСЂ",
+    category: "SPF после процедур",
     composition: "Aqua, Zinc Oxide, Titanium Dioxide, Caprylic/Capric Triglyceride, Dimethicone, Glycerin, Panthenol, Phenoxyethanol",
-    trustLabel: "РџСЂРѕРІРµСЂРµРЅРѕ",
-    source: "РЎС‚Р°С‚РёС‡РµСЃРєР°СЏ Р±Р°Р·Р° MVP",
+    trustLabel: "Проверено",
+    source: "Статическая база MVP",
     verified: true,
     verifiedAt: "2026-07-08"
   },
@@ -66,39 +71,39 @@ const STATIC_PRODUCTS = [
     id: "demo-salicylic-gel",
     name: "BHA Clarifying Gel",
     brand: "Demo Acne Care",
-    category: "РЎСЂРµРґСЃС‚РІРѕ РґР»СЏ РєРѕР¶Рё СЃ РєРѕРјРµРґРѕРЅР°РјРё",
+    category: "Средство для кожи с комедонами",
     composition: "Aqua, Glycerin, Salicylic Acid, Niacinamide, Panthenol, Polysorbate 20, Phenoxyethanol, Ethylhexylglycerin",
-    trustLabel: "РџСЂРѕРІРµСЂРµРЅРѕ",
-    source: "РЎС‚Р°С‚РёС‡РµСЃРєР°СЏ Р±Р°Р·Р° MVP",
+    trustLabel: "Проверено",
+    source: "Статическая база MVP",
     verified: true,
     verifiedAt: "2026-07-08"
   }
 ];
 
 const STATIC_INGREDIENTS = {
-  aqua: { name: "Aqua", ru: "РІРѕРґР°", roles: ["Р’РѕРґРЅР°СЏ С„Р°Р·Р°", "Р Р°СЃС‚РІРѕСЂРёС‚РµР»СЊ"], note: "РћР±С‹С‡РЅРѕ РѕСЃРЅРѕРІР° РІРѕРґРЅС‹С… С„РѕСЂРјСѓР».", skin: ["РџРѕРґС…РѕРґРёС‚ Р±РѕР»СЊС€РёРЅСЃС‚РІСѓ С‚РёРїРѕРІ РєРѕР¶Рё"] },
+  aqua: { name: "Aqua", ru: "вода", roles: ["Водная фаза", "Растворитель"], note: "Обычно основа водных формул.", skin: ["Подходит большинству типов кожи"] },
   water: { aliasOf: "aqua" },
-  glycerin: { name: "Glycerin", ru: "РіР»РёС†РµСЂРёРЅ", roles: ["РЈРІР»Р°Р¶РЅРёС‚РµР»СЊ"], note: "РЈРґРµСЂР¶РёРІР°РµС‚ РІРѕРґСѓ РІ СЂРѕРіРѕРІРѕРј СЃР»РѕРµ Рё СЃРЅРёР¶Р°РµС‚ РѕС‰СѓС‰РµРЅРёРµ СЃСѓС…РѕСЃС‚Рё.", skin: ["РЎСѓС…Р°СЏ РєРѕР¶Р°", "РћР±РµР·РІРѕР¶РµРЅРЅРѕСЃС‚СЊ", "РќР°СЂСѓС€РµРЅРЅС‹Р№ Р±Р°СЂСЊРµСЂ"] },
-  niacinamide: { name: "Niacinamide", ru: "РЅРёР°С†РёРЅР°РјРёРґ", roles: ["РђРєС‚РёРІ", "Р‘Р°СЂСЊРµСЂ", "РЎРµР±РѕСЂРµРіСѓР»СЏС†РёСЏ"], note: "РџРѕРґРґРµСЂР¶РёРІР°РµС‚ Р±Р°СЂСЊРµСЂ, РјРѕР¶РµС‚ РїРѕРјРѕРіР°С‚СЊ РїСЂРё Р¶РёСЂРЅРѕСЃС‚Рё, РїРѕСЃС‚Р°РєРЅРµ Рё РЅРµСЂРѕРІРЅРѕРј С‚РѕРЅРµ.", skin: ["Р–РёСЂРЅР°СЏ РєРѕР¶Р°", "РџРѕСЃС‚Р°РєРЅРµ", "РќР°СЂСѓС€РµРЅРЅС‹Р№ Р±Р°СЂСЊРµСЂ"] },
-  panthenol: { name: "Panthenol", ru: "РїР°РЅС‚РµРЅРѕР»", roles: ["РЈСЃРїРѕРєР°РёРІР°СЋС‰РёР№ РєРѕРјРїРѕРЅРµРЅС‚", "Р‘Р°СЂСЊРµСЂ"], note: "РљРѕРјРїРѕРЅРµРЅС‚ РґР»СЏ СЃРЅРёР¶РµРЅРёСЏ СЃСѓС…РѕСЃС‚Рё Рё РґРёСЃРєРѕРјС„РѕСЂС‚Р°, С‡Р°СЃС‚Рѕ СѓРјРµСЃС‚РµРЅ РїРѕСЃР»Рµ РїСЂРѕС†РµРґСѓСЂ.", skin: ["Р§СѓРІСЃС‚РІРёС‚РµР»СЊРЅР°СЏ РєРѕР¶Р°", "РџРѕСЃР»Рµ РїСЂРѕС†РµРґСѓСЂ", "РќР°СЂСѓС€РµРЅРЅС‹Р№ Р±Р°СЂСЊРµСЂ"] },
-  allantoin: { name: "Allantoin", ru: "Р°Р»Р»Р°РЅС‚РѕРёРЅ", roles: ["РЈСЃРїРѕРєР°РёРІР°СЋС‰РёР№ РєРѕРјРїРѕРЅРµРЅС‚"], note: "РњСЏРіРєРёР№ СѓСЃРїРѕРєР°РёРІР°СЋС‰РёР№ РєРѕРјРїРѕРЅРµРЅС‚.", skin: ["Р§СѓРІСЃС‚РІРёС‚РµР»СЊРЅР°СЏ РєРѕР¶Р°", "РџРѕСЃС‚РїСЂРѕС†РµРґСѓСЂРЅС‹Р№ СѓС…РѕРґ"] },
-  "sodium hyaluronate": { name: "Sodium Hyaluronate", ru: "РіРёР°Р»СѓСЂРѕРЅР°С‚ РЅР°С‚СЂРёСЏ", roles: ["РЈРІР»Р°Р¶РЅРёС‚РµР»СЊ"], note: "Р’Р»Р°РіРѕСѓРґРµСЂР¶РёРІР°СЋС‰РёР№ РєРѕРјРїРѕРЅРµРЅС‚.", skin: ["РћР±РµР·РІРѕР¶РµРЅРЅРѕСЃС‚СЊ", "Р§СѓРІСЃС‚РІРёС‚РµР»СЊРЅР°СЏ РєРѕР¶Р°"] },
-  "hyaluronic acid": { name: "Hyaluronic Acid", ru: "РіРёР°Р»СѓСЂРѕРЅРѕРІР°СЏ РєРёСЃР»РѕС‚Р°", roles: ["РЈРІР»Р°Р¶РЅРёС‚РµР»СЊ"], note: "Р’Р»Р°РіРѕСѓРґРµСЂР¶РёРІР°СЋС‰РёР№ РєРѕРјРїРѕРЅРµРЅС‚, СЌС„С„РµРєС‚ Р·Р°РІРёСЃРёС‚ РѕС‚ С„РѕСЂРјС‹ Рё РјРѕР»РµРєСѓР»СЏСЂРЅРѕР№ РјР°СЃСЃС‹.", skin: ["РћР±РµР·РІРѕР¶РµРЅРЅРѕСЃС‚СЊ", "РџРѕСЃС‚РїСЂРѕС†РµРґСѓСЂРЅС‹Р№ СѓС…РѕРґ"] },
-  "glycolic acid": { name: "Glycolic Acid", ru: "РіР»РёРєРѕР»РµРІР°СЏ РєРёСЃР»РѕС‚Р°", roles: ["AHA", "РљРµСЂР°С‚РѕР»РёС‚РёРє", "РџРёР»РёРЅРі-РєРѕРјРїРѕРЅРµРЅС‚"], note: "РђРєС‚РёРІРЅР°СЏ AHA-РєРёСЃР»РѕС‚Р°. Р’Р°Р¶РЅС‹ РїСЂРѕС†РµРЅС‚ Рё pH.", cautions: ["Р¤РѕС‚РѕС‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚СЊ", "Р РёСЃРє СЂР°Р·РґСЂР°Р¶РµРЅРёСЏ", "SPF РѕР±СЏР·Р°С‚РµР»РµРЅ"], skin: ["РўРµРєСЃС‚СѓСЂР° РєРѕР¶Рё", "РџРёРіРјРµРЅС‚Р°С†РёСЏ"] },
-  "lactic acid": { name: "Lactic Acid", ru: "РјРѕР»РѕС‡РЅР°СЏ РєРёСЃР»РѕС‚Р°", roles: ["AHA", "РљРµСЂР°С‚РѕР»РёС‚РёРє"], note: "AHA-РєРёСЃР»РѕС‚Р°, С‡Р°СЃС‚Рѕ РјСЏРіС‡Рµ РіР»РёРєРѕР»РµРІРѕР№, РЅРѕ pH Рё РїСЂРѕС†РµРЅС‚ РІСЃРµ СЂР°РІРЅРѕ РєСЂРёС‚РёС‡РЅС‹.", cautions: ["SPF РѕР±СЏР·Р°С‚РµР»РµРЅ РїСЂРё РєСѓСЂСЃРѕРІРѕРј РїСЂРёРјРµРЅРµРЅРёРё"], skin: ["РЎСѓС…Р°СЏ РєРѕР¶Р°", "РўСѓСЃРєР»С‹Р№ С‚РѕРЅ"] },
-  "salicylic acid": { name: "Salicylic Acid", ru: "СЃР°Р»РёС†РёР»РѕРІР°СЏ РєРёСЃР»РѕС‚Р°", roles: ["BHA", "РљРµСЂР°С‚РѕР»РёС‚РёРє"], note: "Р–РёСЂРѕСЂР°СЃС‚РІРѕСЂРёРјР°СЏ РєРёСЃР»РѕС‚Р°, РїРѕР»РµР·РЅР° РїСЂРё РєРѕРјРµРґРѕРЅР°С…, РЅРѕ РјРѕР¶РµС‚ СЃСѓС€РёС‚СЊ.", cautions: ["РћСЃС‚РѕСЂРѕР¶РЅРѕ РїСЂРё Р±РµСЂРµРјРµРЅРЅРѕСЃС‚Рё/Р»Р°РєС‚Р°С†РёРё", "РќРµ СЃРѕС‡РµС‚Р°С‚СЊ Р±РµР· СЃС…РµРјС‹ СЃ СЂРµС‚РёРЅРѕРёРґР°РјРё"], skin: ["Р–РёСЂРЅР°СЏ РєРѕР¶Р°", "РљРѕРјРµРґРѕРЅС‹"] },
-  retinol: { name: "Retinol", ru: "СЂРµС‚РёРЅРѕР»", roles: ["Р РµС‚РёРЅРѕРёРґ", "РђРєС‚РёРІ"], note: "РђРєС‚РёРІ РґР»СЏ С‚РµРєСЃС‚СѓСЂС‹, РїРѕСЃС‚Р°РєРЅРµ Рё С„РѕС‚РѕСЃС‚Р°СЂРµРЅРёСЏ. РўСЂРµР±СѓРµС‚ РїРѕСЃС‚РµРїРµРЅРЅРѕРіРѕ РІРІРµРґРµРЅРёСЏ.", cautions: ["Р‘РµСЂРµРјРµРЅРЅРѕСЃС‚СЊ/Р»Р°РєС‚Р°С†РёСЏ: СЃРѕРіР»Р°СЃРѕРІР°С‚СЊ СЃРѕ СЃРїРµС†РёР°Р»РёСЃС‚РѕРј", "SPF РѕР±СЏР·Р°С‚РµР»РµРЅ", "РќРµ СЃРѕС‡РµС‚Р°С‚СЊ РЅР° СЃС‚Р°СЂС‚Рµ СЃ РєРёСЃР»РѕС‚Р°РјРё"], skin: ["Р’РѕР·СЂР°СЃС‚РЅС‹Рµ РёР·РјРµРЅРµРЅРёСЏ", "РџРѕСЃС‚Р°РєРЅРµ"] },
-  retinal: { name: "Retinal", ru: "СЂРµС‚РёРЅР°Р»СЊ", roles: ["Р РµС‚РёРЅРѕРёРґ", "РђРєС‚РёРІ"], note: "РђРєС‚РёРІРЅР°СЏ С„РѕСЂРјР° СЂРµС‚РёРЅРѕРёРґР°, РјРѕР¶РµС‚ Р±С‹С‚СЊ СЂР°Р·РґСЂР°Р¶Р°СЋС‰РµР№.", cautions: ["Р‘РµСЂРµРјРµРЅРЅРѕСЃС‚СЊ/Р»Р°РєС‚Р°С†РёСЏ: СЃРѕРіР»Р°СЃРѕРІР°С‚СЊ СЃРѕ СЃРїРµС†РёР°Р»РёСЃС‚РѕРј", "SPF РѕР±СЏР·Р°С‚РµР»РµРЅ"], skin: ["Р’РѕР·СЂР°СЃС‚РЅС‹Рµ РёР·РјРµРЅРµРЅРёСЏ", "РђРєРЅРµ-СЃРєР»РѕРЅРЅРѕСЃС‚СЊ"] },
-  "caprylic/capric triglyceride": { name: "Caprylic/Capric Triglyceride", ru: "РєР°РїСЂРёР»РёРє/РєР°РїСЂРёРЅРѕРІС‹Р№ С‚СЂРёРіР»РёС†РµСЂРёРґ", roles: ["Р­РјРѕР»РµРЅС‚", "Р–РёСЂРѕРІР°СЏ С„Р°Р·Р°"], note: "Р›РµРіРєРёР№ СЌРјРѕР»РµРЅС‚, СѓР»СѓС‡С€Р°РµС‚ СЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ Рё СЃРјСЏРіС‡РµРЅРёРµ.", skin: ["РЎСѓС…Р°СЏ РєРѕР¶Р°", "РќРѕСЂРјР°Р»СЊРЅР°СЏ РєРѕР¶Р°"] },
-  dimethicone: { name: "Dimethicone", ru: "РґРёРјРµС‚РёРєРѕРЅ", roles: ["РЎРёР»РёРєРѕРЅРѕРІС‹Р№ СЌРјРѕР»РµРЅС‚", "Р—Р°С‰РёС‚РЅР°СЏ РїР»РµРЅРєР°"], note: "РЎРЅРёР¶Р°РµС‚ РїРѕС‚РµСЂСЋ РІР»Р°РіРё, СѓР»СѓС‡С€Р°РµС‚ СЃРєРѕР»СЊР¶РµРЅРёРµ, С‡Р°СЃС‚Рѕ РїРѕР»РµР·РµРЅ РїСЂРё РЅР°СЂСѓС€РµРЅРЅРѕРј Р±Р°СЂСЊРµСЂРµ.", skin: ["РќР°СЂСѓС€РµРЅРЅС‹Р№ Р±Р°СЂСЊРµСЂ", "Р§СѓРІСЃС‚РІРёС‚РµР»СЊРЅР°СЏ РєРѕР¶Р°"] },
-  "zinc oxide": { name: "Zinc Oxide", ru: "РѕРєСЃРёРґ С†РёРЅРєР°", roles: ["РњРёРЅРµСЂР°Р»СЊРЅС‹Р№ SPF-С„РёР»СЊС‚СЂ"], note: "РњРёРЅРµСЂР°Р»СЊРЅС‹Р№ UV-С„РёР»СЊС‚СЂ. Р РµР°Р»СЊРЅС‹Р№ SPF РїРѕРґС‚РІРµСЂР¶РґР°РµС‚СЃСЏ С‚РѕР»СЊРєРѕ С‚РµСЃС‚Р°РјРё РіРѕС‚РѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Р°.", skin: ["Р§СѓРІСЃС‚РІРёС‚РµР»СЊРЅР°СЏ РєРѕР¶Р°", "РџРѕСЃР»Рµ РїСЂРѕС†РµРґСѓСЂ"] },
-  "titanium dioxide": { name: "Titanium Dioxide", ru: "РґРёРѕРєСЃРёРґ С‚РёС‚Р°РЅР°", roles: ["РњРёРЅРµСЂР°Р»СЊРЅС‹Р№ SPF-С„РёР»СЊС‚СЂ"], note: "РњРёРЅРµСЂР°Р»СЊРЅС‹Р№ UV-С„РёР»СЊС‚СЂ. РС‚РѕРіРѕРІР°СЏ Р·Р°С‰РёС‚Р° Р·Р°РІРёСЃРёС‚ РѕС‚ РіРѕС‚РѕРІРѕР№ С„РѕСЂРјСѓР»С‹.", skin: ["Р§СѓРІСЃС‚РІРёС‚РµР»СЊРЅР°СЏ РєРѕР¶Р°", "РџРѕСЃР»Рµ РїСЂРѕС†РµРґСѓСЂ"] },
-  phenoxyethanol: { name: "Phenoxyethanol", ru: "С„РµРЅРѕРєСЃРёСЌС‚Р°РЅРѕР»", roles: ["РљРѕРЅСЃРµСЂРІР°РЅС‚"], note: "Р Р°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРЅС‹Р№ РєРѕРЅСЃРµСЂРІР°РЅС‚, РѕР±С‹С‡РЅРѕ РІ РЅРёР·РєРѕР№ РєРѕРЅС†РµРЅС‚СЂР°С†РёРё.", cautions: ["РЈ РѕС‡РµРЅСЊ С‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕР№ РєРѕР¶Рё РІРѕР·РјРѕР¶РЅР° РёРЅРґРёРІРёРґСѓР°Р»СЊРЅР°СЏ СЂРµР°РєС†РёСЏ"] },
-  ethylhexylglycerin: { name: "Ethylhexylglycerin", ru: "СЌС‚РёР»РіРµРєСЃРёР»РіР»РёС†РµСЂРёРЅ", roles: ["Р‘СѓСЃС‚РµСЂ РєРѕРЅСЃРµСЂРІР°С†РёРё"], note: "Р§Р°СЃС‚Рѕ СѓСЃРёР»РёРІР°РµС‚ РєРѕРЅСЃРµСЂРІРёСЂСѓСЋС‰СѓСЋ СЃРёСЃС‚РµРјСѓ." },
-  parfum: { name: "Parfum", ru: "РѕС‚РґСѓС€РєР°", roles: ["РћС‚РґСѓС€РєР°"], note: "РњРѕР¶РµС‚ РїРѕРІС‹С€Р°С‚СЊ СЂРёСЃРє СЂР°Р·РґСЂР°Р¶РµРЅРёСЏ Сѓ С‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕР№ РєРѕР¶Рё.", cautions: ["РћСЃС‚РѕСЂРѕР¶РЅРѕ РїСЂРё СЂРѕР·Р°С†РµР°, РґРµСЂРјР°С‚РёС‚Рµ, РїРѕСЃР»Рµ РїСЂРѕС†РµРґСѓСЂ"] },
+  glycerin: { name: "Glycerin", ru: "глицерин", roles: ["Увлажнитель"], note: "Удерживает воду в роговом слое и снижает ощущение сухости.", skin: ["Сухая кожа", "Обезвоженность", "Нарушенный барьер"] },
+  niacinamide: { name: "Niacinamide", ru: "ниацинамид", roles: ["Актив", "Барьер", "Себорегуляция"], note: "Поддерживает барьер, может помогать при жирности, постакне и неровном тоне.", skin: ["Жирная кожа", "Постакне", "Нарушенный барьер"] },
+  panthenol: { name: "Panthenol", ru: "пантенол", roles: ["Успокаивающий компонент", "Барьер"], note: "Компонент для снижения сухости и дискомфорта, часто уместен после процедур.", skin: ["Чувствительная кожа", "После процедур", "Нарушенный барьер"] },
+  allantoin: { name: "Allantoin", ru: "аллантоин", roles: ["Успокаивающий компонент"], note: "Мягкий успокаивающий компонент.", skin: ["Чувствительная кожа", "Постпроцедурный уход"] },
+  "sodium hyaluronate": { name: "Sodium Hyaluronate", ru: "гиалуронат натрия", roles: ["Увлажнитель"], note: "Влагоудерживающий компонент.", skin: ["Обезвоженность", "Чувствительная кожа"] },
+  "hyaluronic acid": { name: "Hyaluronic Acid", ru: "гиалуроновая кислота", roles: ["Увлажнитель"], note: "Влагоудерживающий компонент, эффект зависит от формы и молекулярной массы.", skin: ["Обезвоженность", "Постпроцедурный уход"] },
+  "glycolic acid": { name: "Glycolic Acid", ru: "гликолевая кислота", roles: ["AHA", "Кератолитик", "Пилинг-компонент"], note: "Активная AHA-кислота. Важны процент и pH.", cautions: ["Фоточувствительность", "Риск раздражения", "SPF обязателен"], skin: ["Текстура кожи", "Пигментация"] },
+  "lactic acid": { name: "Lactic Acid", ru: "молочная кислота", roles: ["AHA", "Кератолитик"], note: "AHA-кислота, часто мягче гликолевой, но pH и процент все равно критичны.", cautions: ["SPF обязателен при курсовом применении"], skin: ["Сухая кожа", "Тусклый тон"] },
+  "salicylic acid": { name: "Salicylic Acid", ru: "салициловая кислота", roles: ["BHA", "Кератолитик"], note: "Жирорастворимая кислота, полезна при комедонах, но может сушить.", cautions: ["Осторожно при беременности/лактации", "Не сочетать без схемы с ретиноидами"], skin: ["Жирная кожа", "Комедоны"] },
+  retinol: { name: "Retinol", ru: "ретинол", roles: ["Ретиноид", "Актив"], note: "Актив для текстуры, постакне и фотостарения. Требует постепенного введения.", cautions: ["Беременность/лактация: согласовать со специалистом", "SPF обязателен", "Не сочетать на старте с кислотами"], skin: ["Возрастные изменения", "Постакне"] },
+  retinal: { name: "Retinal", ru: "ретиналь", roles: ["Ретиноид", "Актив"], note: "Активная форма ретиноида, может быть раздражающей.", cautions: ["Беременность/лактация: согласовать со специалистом", "SPF обязателен"], skin: ["Возрастные изменения", "Акне-склонность"] },
+  "caprylic/capric triglyceride": { name: "Caprylic/Capric Triglyceride", ru: "каприлик/каприновый триглицерид", roles: ["Эмолент", "Жировая фаза"], note: "Легкий эмолент, улучшает распределение и смягчение.", skin: ["Сухая кожа", "Нормальная кожа"] },
+  dimethicone: { name: "Dimethicone", ru: "диметикон", roles: ["Силиконовый эмолент", "Защитная пленка"], note: "Снижает потерю влаги, улучшает скольжение, часто полезен при нарушенном барьере.", skin: ["Нарушенный барьер", "Чувствительная кожа"] },
+  "zinc oxide": { name: "Zinc Oxide", ru: "оксид цинка", roles: ["Минеральный SPF-фильтр"], note: "Минеральный UV-фильтр. Реальный SPF подтверждается только тестами готового продукта.", skin: ["Чувствительная кожа", "После процедур"] },
+  "titanium dioxide": { name: "Titanium Dioxide", ru: "диоксид титана", roles: ["Минеральный SPF-фильтр"], note: "Минеральный UV-фильтр. Итоговая защита зависит от готовой формулы.", skin: ["Чувствительная кожа", "После процедур"] },
+  phenoxyethanol: { name: "Phenoxyethanol", ru: "феноксиэтанол", roles: ["Консервант"], note: "Распространенный консервант, обычно в низкой концентрации.", cautions: ["У очень чувствительной кожи возможна индивидуальная реакция"] },
+  ethylhexylglycerin: { name: "Ethylhexylglycerin", ru: "этилгексилглицерин", roles: ["Бустер консервации"], note: "Часто усиливает консервирующую систему." },
+  parfum: { name: "Parfum", ru: "отдушка", roles: ["Отдушка"], note: "Может повышать риск раздражения у чувствительной кожи.", cautions: ["Осторожно при розацеа, дерматите, после процедур"] },
   fragrance: { aliasOf: "parfum" },
-  limonene: { name: "Limonene", ru: "Р»РёРјРѕРЅРµРЅ", roles: ["Р¤СЂР°РіСЂР°РЅСЃ-Р°Р»Р»РµСЂРіРµРЅ"], note: "РђСЂРѕРјР°С‚РёС‡РµСЃРєРёР№ Р°Р»Р»РµСЂРіРµРЅ.", cautions: ["РћСЃС‚РѕСЂРѕР¶РЅРѕ РїСЂРё СЃРєР»РѕРЅРЅРѕСЃС‚Рё Рє Р°Р»Р»РµСЂРіРёС‡РµСЃРєРёРј СЂРµР°РєС†РёСЏРј"] },
-  linalool: { name: "Linalool", ru: "Р»РёРЅР°Р»РѕРѕР»", roles: ["Р¤СЂР°РіСЂР°РЅСЃ-Р°Р»Р»РµСЂРіРµРЅ"], note: "РђСЂРѕРјР°С‚РёС‡РµСЃРєРёР№ Р°Р»Р»РµСЂРіРµРЅ.", cautions: ["РћСЃС‚РѕСЂРѕР¶РЅРѕ РїСЂРё С‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕР№ РєРѕР¶Рµ"] }
+  limonene: { name: "Limonene", ru: "лимонен", roles: ["Фрагранс-аллерген"], note: "Ароматический аллерген.", cautions: ["Осторожно при склонности к аллергическим реакциям"] },
+  linalool: { name: "Linalool", ru: "линалоол", roles: ["Фрагранс-аллерген"], note: "Ароматический аллерген.", cautions: ["Осторожно при чувствительной коже"] }
 };
 
 if (tg) {
@@ -152,17 +157,17 @@ function normalizeProductText(value) {
     .trim();
 }
 
-function concentrationZone(index, total) {
-  if (index === 0) return "РѕСЃРЅРѕРІР° С„РѕСЂРјСѓР»С‹";
-  if (index <= 4) return "РІРµСЂРѕСЏС‚РЅРѕ РІС‹СЃРѕРєР°СЏ РёР»Рё СЃСЂРµРґРЅСЏСЏ РєРѕРЅС†РµРЅС‚СЂР°С†РёРѕРЅРЅР°СЏ Р·РѕРЅР°";
-  if (index / Math.max(total, 1) < 0.45) return "РІРµСЂРѕСЏС‚РЅРѕ СЃСЂРµРґРЅСЏСЏ Р·РѕРЅР°";
-  return "РІРµСЂРѕСЏС‚РЅРѕ РЅРёР·РєР°СЏ Р·РѕРЅР° РёР»Рё Р±Р»РѕРє РґРѕ/РЅРёР¶Рµ 1%";
+﻿function concentrationZone(index, total) {
+  if (index === 0) return "основа формулы";
+  if (index <= 4) return "вероятно высокая или средняя концентрационная зона";
+  if (index / Math.max(total, 1) < 0.45) return "вероятно средняя зона";
+  return "вероятно низкая зона или блок до/ниже 1%";
 }
 
 function parseIngredients(text) {
   return String(text || "")
-    .replace(/ingredients?\s*[:пјљ]/gi, "")
-    .replace(/СЃРѕСЃС‚Р°РІ\s*[:пјљ]/gi, "")
+    .replace(/ingredients?\s*[:：]/gi, "")
+    .replace(/состав\s*[:：]/gi, "")
     .split(/[,;\n]+/)
     .map((item) => item.replace(/\(.+?\)/g, "").trim())
     .filter(Boolean)
@@ -221,59 +226,59 @@ function localAnalyzeComposition({ text, profile = {} }) {
     roleMap.get(role).push(item.name);
   }));
 
-  let formulaType = "СѓС…РѕРґРѕРІРѕРµ СЃСЂРµРґСЃС‚РІРѕ, С‚РёРї С‚СЂРµР±СѓРµС‚ СѓС‚РѕС‡РЅРµРЅРёСЏ";
-  if (hasRole("РњРёРЅРµСЂР°Р»СЊРЅС‹Р№ SPF-С„РёР»СЊС‚СЂ")) formulaType = "SPF/С„РѕС‚РѕР·Р°С‰РёС‚РЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ";
-  if (hasRole("AHA") || hasRole("BHA")) formulaType = "РєРёСЃР»РѕС‚РЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ РёР»Рё РїРёР»РёРЅРі-РїРѕРґРѕР±РЅР°СЏ С„РѕСЂРјСѓР»Р°";
-  if (hasRole("Р РµС‚РёРЅРѕРёРґ")) formulaType = "СЂРµС‚РёРЅРѕРёРґРЅРѕРµ Р°РєС‚РёРІРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ";
+  let formulaType = "уходовое средство, тип требует уточнения";
+  if (hasRole("Минеральный SPF-фильтр")) formulaType = "SPF/фотозащитное средство";
+  if (hasRole("AHA") || hasRole("BHA")) formulaType = "кислотное средство или пилинг-подобная формула";
+  if (hasRole("Ретиноид")) formulaType = "ретиноидное активное средство";
 
   const profileText = `${profile.skinType || ""} ${profile.concerns || ""} ${profile.context || ""}`.toLowerCase();
   const warnings = [...new Set(found.flatMap((item) => item.cautions))];
-  if (/С‡СѓРІСЃС‚РІ|СЂРѕР·Р°С†РµР°|РїРѕСЃР»Рµ|Р±Р°СЂСЊРµСЂ/.test(profileText) && (hasRole("AHA") || hasRole("BHA") || hasRole("Р РµС‚РёРЅРѕРёРґ") || hasRole("РћС‚РґСѓС€РєР°"))) {
-    warnings.push("Р”Р»СЏ С‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕР№ РєРѕР¶Рё, СЂРѕР·Р°С†РµР° РёР»Рё РїРѕСЃС‚РїСЂРѕС†РµРґСѓСЂРЅРѕРіРѕ РїРµСЂРёРѕРґР° С„РѕСЂРјСѓР»Р° С‚СЂРµР±СѓРµС‚ РѕСЃС‚РѕСЂРѕР¶РЅРѕРіРѕ РІРІРµРґРµРЅРёСЏ.");
+  if (/чувств|розацеа|после|барьер/.test(profileText) && (hasRole("AHA") || hasRole("BHA") || hasRole("Ретиноид") || hasRole("Отдушка"))) {
+    warnings.push("Для чувствительной кожи, розацеа или постпроцедурного периода формула требует осторожного введения.");
   }
-  if (hasRole("РњРёРЅРµСЂР°Р»СЊРЅС‹Р№ SPF-С„РёР»СЊС‚СЂ")) {
-    warnings.push("Р РµР°Р»СЊРЅС‹Р№ SPF/PPD РЅРµР»СЊР·СЏ РїРѕРґС‚РІРµСЂРґРёС‚СЊ РїРѕ РѕРґРЅРѕРјСѓ INCI: РЅСѓР¶РЅС‹ С‚РµСЃС‚С‹ РіРѕС‚РѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Р°.");
+  if (hasRole("Минеральный SPF-фильтр")) {
+    warnings.push("Реальный SPF/PPD нельзя подтвердить по одному INCI: нужны тесты готового продукта.");
   }
 
-  const risk = (hasRole("Р РµС‚РёРЅРѕРёРґ") ? 18 : 0) + (hasRole("AHA") ? 16 : 0) + (hasRole("BHA") ? 16 : 0) + (hasRole("РћС‚РґСѓС€РєР°") ? 8 : 0) + unknown.length * 2;
+  const risk = (hasRole("Ретиноид") ? 18 : 0) + (hasRole("AHA") ? 16 : 0) + (hasRole("BHA") ? 16 : 0) + (hasRole("Отдушка") ? 8 : 0) + unknown.length * 2;
   const scoreValue = Math.max(0, Math.min(100, 88 - risk));
   const score = {
     score: scoreValue,
-    label: scoreValue >= 75 ? "РЅРёР·РєР°СЏ РЅР°СЃС‚РѕСЂРѕР¶РµРЅРЅРѕСЃС‚СЊ" : scoreValue >= 55 ? "СѓРјРµСЂРµРЅРЅР°СЏ РЅР°СЃС‚РѕСЂРѕР¶РµРЅРЅРѕСЃС‚СЊ" : "РІС‹СЃРѕРєР°СЏ РЅР°СЃС‚РѕСЂРѕР¶РµРЅРЅРѕСЃС‚СЊ"
+    label: scoreValue >= 75 ? "низкая настороженность" : scoreValue >= 55 ? "умеренная настороженность" : "высокая настороженность"
   };
 
   const architecture = [
-    { title: "Р’РѕРґРЅР°СЏ Рё СѓРІР»Р°Р¶РЅСЏСЋС‰Р°СЏ С‡Р°СЃС‚СЊ", names: ["Aqua", "Glycerin", "Sodium Hyaluronate", "Hyaluronic Acid", "Panthenol", "Niacinamide", "Allantoin"] },
-    { title: "РЎРјСЏРіС‡Р°СЋС‰Р°СЏ/Р·Р°С‰РёС‚РЅР°СЏ С‡Р°СЃС‚СЊ", names: ["Caprylic/Capric Triglyceride", "Dimethicone"] },
-    { title: "РђРєС‚РёРІС‹", names: ["Niacinamide", "Retinol", "Retinal", "Glycolic Acid", "Lactic Acid", "Salicylic Acid"] },
-    { title: "РљРѕРЅСЃРµСЂРІР°С†РёСЏ", names: ["Phenoxyethanol", "Ethylhexylglycerin"] },
-    { title: "РћС‚РґСѓС€РєР° Рё Р°Р»Р»РµСЂРіРµРЅС‹", names: ["Parfum", "Limonene", "Linalool"] }
+    { title: "Водная и увлажняющая часть", names: ["Aqua", "Glycerin", "Sodium Hyaluronate", "Hyaluronic Acid", "Panthenol", "Niacinamide", "Allantoin"] },
+    { title: "Смягчающая/защитная часть", names: ["Caprylic/Capric Triglyceride", "Dimethicone"] },
+    { title: "Активы", names: ["Niacinamide", "Retinol", "Retinal", "Glycolic Acid", "Lactic Acid", "Salicylic Acid"] },
+    { title: "Консервация", names: ["Phenoxyethanol", "Ethylhexylglycerin"] },
+    { title: "Отдушка и аллергены", names: ["Parfum", "Limonene", "Linalool"] }
   ]
     .map((group) => ({ title: group.title, text: group.names.filter((name) => names.has(name)).join(", ") }))
     .filter((group) => group.text);
 
   const expertSummary = [];
-  if (hasRole("Р РµС‚РёРЅРѕРёРґ")) expertSummary.push("Р­С‚Рѕ Р°РєС‚РёРІРЅР°СЏ СЂРµС‚РёРЅРѕРёРґРЅР°СЏ С„РѕСЂРјСѓР»Р°: РїРѕР»РµР·РЅР° РґР»СЏ С‚РµРєСЃС‚СѓСЂС‹, РїРѕСЃС‚Р°РєРЅРµ Рё РїСЂРёР·РЅР°РєРѕРІ С„РѕС‚РѕСЃС‚Р°СЂРµРЅРёСЏ, РЅРѕ С‚СЂРµР±СѓРµС‚ РїРѕСЃС‚РµРїРµРЅРЅРѕРіРѕ РІРІРµРґРµРЅРёСЏ.");
-  if (hasRole("AHA") || hasRole("BHA")) expertSummary.push("Р’ СЃРѕСЃС‚Р°РІРµ РµСЃС‚СЊ РєРёСЃР»РѕС‚С‹: СЌС„С„РµРєС‚РёРІРЅРѕСЃС‚СЊ Рё СЂР°Р·РґСЂР°Р¶Р°СЋС‰РёР№ РїРѕС‚РµРЅС†РёР°Р» Р·Р°РІРёСЃСЏС‚ РѕС‚ РїСЂРѕС†РµРЅС‚Р° Рё pH, РєРѕС‚РѕСЂС‹С… РЅРµ РІРёРґРЅРѕ РїРѕ INCI.");
-  if (hasRole("РњРёРЅРµСЂР°Р»СЊРЅС‹Р№ SPF-С„РёР»СЊС‚СЂ")) expertSummary.push("Р­С‚Рѕ РїРѕС…РѕР¶Рµ РЅР° SPF-СЃСЂРµРґСЃС‚РІРѕ, РЅРѕ СЂРµР°Р»СЊРЅСѓСЋ Р·Р°С‰РёС‚Сѓ РїРѕРґС‚РІРµСЂР¶РґР°СЋС‚ С‚РѕР»СЊРєРѕ С‚РµСЃС‚С‹ РіРѕС‚РѕРІРѕР№ С„РѕСЂРјСѓР»С‹.");
-  if (names.has("Panthenol") || names.has("Allantoin") || names.has("Dimethicone")) expertSummary.push("Р•СЃС‚СЊ РєРѕРјРїРѕРЅРµРЅС‚С‹ РґР»СЏ РїРѕРґРґРµСЂР¶РєРё Р±Р°СЂСЊРµСЂР° Рё СЃРЅРёР¶РµРЅРёСЏ СЃСѓС…РѕСЃС‚Рё.");
-  if (!expertSummary.length) expertSummary.push("Р¤РѕСЂРјСѓР»Р° РІС‹РіР»СЏРґРёС‚ РєР°Рє Р±Р°Р·РѕРІРѕРµ СѓС…РѕРґРѕРІРѕРµ СЃСЂРµРґСЃС‚РІРѕ. Р“Р»Р°РІРЅР°СЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅРѕСЃС‚СЊ вЂ” РїСЂРѕС†РµРЅС‚С‹, pH Рё РёРЅРґРёРІРёРґСѓР°Р»СЊРЅР°СЏ РїРµСЂРµРЅРѕСЃРёРјРѕСЃС‚СЊ.");
+  if (hasRole("Ретиноид")) expertSummary.push("Это активная ретиноидная формула: полезна для текстуры, постакне и признаков фотостарения, но требует постепенного введения.");
+  if (hasRole("AHA") || hasRole("BHA")) expertSummary.push("В составе есть кислоты: эффективность и раздражающий потенциал зависят от процента и pH, которых не видно по INCI.");
+  if (hasRole("Минеральный SPF-фильтр")) expertSummary.push("Это похоже на SPF-средство, но реальную защиту подтверждают только тесты готовой формулы.");
+  if (names.has("Panthenol") || names.has("Allantoin") || names.has("Dimethicone")) expertSummary.push("Есть компоненты для поддержки барьера и снижения сухости.");
+  if (!expertSummary.length) expertSummary.push("Формула выглядит как базовое уходовое средство. Главная неопределенность - проценты, pH и индивидуальная переносимость.");
 
   const routineAdvice = [];
-  if (hasRole("Р РµС‚РёРЅРѕРёРґ")) routineAdvice.push("РќР°С‡РёРЅР°С‚СЊ 2-3 СЂР°Р·Р° РІ РЅРµРґРµР»СЋ РІРµС‡РµСЂРѕРј, РЅРµ СЃРѕС‡РµС‚Р°С‚СЊ РЅР° СЃС‚Р°СЂС‚Рµ СЃ РєРёСЃР»РѕС‚Р°РјРё.");
-  if (hasRole("AHA") || hasRole("BHA")) routineAdvice.push("РќРµ СЃРѕС‡РµС‚Р°С‚СЊ РІ РѕРґРёРЅ РґРµРЅСЊ СЃ РґСЂСѓРіРёРјРё СЃРёР»СЊРЅС‹РјРё РєРёСЃР»РѕС‚Р°РјРё/СЂРµС‚РёРЅРѕРёРґР°РјРё Р±РµР· СЃС…РµРјС‹. SPF РѕР±СЏР·Р°С‚РµР»РµРЅ.");
-  if (hasRole("РњРёРЅРµСЂР°Р»СЊРЅС‹Р№ SPF-С„РёР»СЊС‚СЂ")) routineAdvice.push("РќР°РЅРѕСЃРёС‚СЊ С‰РµРґСЂРѕ Рё РѕР±РЅРѕРІР»СЏС‚СЊ РїСЂРё РґР»РёС‚РµР»СЊРЅРѕРј РїСЂРµР±С‹РІР°РЅРёРё РЅР° СѓР»РёС†Рµ.");
-  if (!routineAdvice.length) routineAdvice.push("Р’РІРѕРґРёС‚СЊ РїРѕСЃС‚РµРїРµРЅРЅРѕ Рё РЅР°Р±Р»СЋРґР°С‚СЊ Р·Р° Р¶Р¶РµРЅРёРµРј, Р·СѓРґРѕРј, СЃСѓС…РѕСЃС‚СЊСЋ Рё РІС‹СЃС‹РїР°РЅРёСЏРјРё.");
+  if (hasRole("Ретиноид")) routineAdvice.push("Начинать 2-3 раза в неделю вечером, не сочетать на старте с кислотами.");
+  if (hasRole("AHA") || hasRole("BHA")) routineAdvice.push("Не сочетать в один день с другими сильными кислотами/ретиноидами без схемы. SPF обязателен.");
+  if (hasRole("Минеральный SPF-фильтр")) routineAdvice.push("Наносить щедро и обновлять при длительном пребывании на улице.");
+  if (!routineAdvice.length) routineAdvice.push("Вводить постепенно и наблюдать за жжением, зудом, сухостью и высыпаниями.");
 
-  const questions = ["РџРѕРґС…РѕРґРёС‚ Р»Рё СЌС‚Рѕ СЃСЂРµРґСЃС‚РІРѕ РјРѕРµРјСѓ С‚РµРєСѓС‰РµРјСѓ СЃРѕСЃС‚РѕСЏРЅРёСЋ РєРѕР¶Рё, Р° РЅРµ С‚РѕР»СЊРєРѕ С‚РёРїСѓ РєРѕР¶Рё?"];
-  if (hasRole("AHA") || hasRole("BHA")) questions.push("РљР°РєРѕР№ РїСЂРѕС†РµРЅС‚ РєРёСЃР»РѕС‚ Рё pH Сѓ СЃСЂРµРґСЃС‚РІР°?");
-  if (hasRole("Р РµС‚РёРЅРѕРёРґ")) questions.push("РљР°РєР°СЏ РєРѕРЅС†РµРЅС‚СЂР°С†РёСЏ СЂРµС‚РёРЅРѕРёРґР° Рё РєР°Рє РІС‹СЃС‚СЂРѕРёС‚СЊ СЃС…РµРјСѓ Р°РґР°РїС‚Р°С†РёРё?");
-  if (hasRole("РњРёРЅРµСЂР°Р»СЊРЅС‹Р№ SPF-С„РёР»СЊС‚СЂ")) questions.push("Р•СЃС‚СЊ Р»Рё РїРѕРґС‚РІРµСЂР¶РґРµРЅРЅС‹Рµ SPF/PPD/UVA-PF С‚РµСЃС‚С‹ РіРѕС‚РѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Р°?");
+  const questions = ["Подходит ли это средство моему текущему состоянию кожи, а не только типу кожи?"];
+  if (hasRole("AHA") || hasRole("BHA")) questions.push("Какой процент кислот и pH у средства?");
+  if (hasRole("Ретиноид")) questions.push("Какая концентрация ретиноида и как выстроить схему адаптации?");
+  if (hasRole("Минеральный SPF-фильтр")) questions.push("Есть ли подтвержденные SPF/PPD/UVA-PF тесты готового продукта?");
 
   const confidenceRatio = ingredients.length ? found.length / ingredients.length : 0;
 
   return {
-    summary: `РџРѕС…РѕР¶Рµ РЅР°: ${formulaType}. Р Р°СЃРїРѕР·РЅР°РЅРѕ РёРЅРіСЂРµРґРёРµРЅС‚РѕРІ: ${found.length} РёР· ${ingredients.length}.`,
+    summary: `Похоже на: ${formulaType}. Распознано ингредиентов: ${found.length} из ${ingredients.length}.`,
     formulaType,
     score,
     totalIngredients: ingredients.length,
@@ -287,10 +292,10 @@ function localAnalyzeComposition({ text, profile = {} }) {
     routineAdvice,
     questions,
     confidence: {
-      label: confidenceRatio >= 0.85 ? "С…РѕСЂРѕС€Р°СЏ" : confidenceRatio >= 0.55 ? "СЃСЂРµРґРЅСЏСЏ" : "РЅРёР·РєР°СЏ",
-      text: "РЎС‚Р°С‚РёС‡РµСЃРєР°СЏ РІРµСЂСЃРёСЏ: СЂР°Р±РѕС‚Р°РµС‚ Р±РµР· СЃРµСЂРІРµСЂР°, РЅРѕ Р±РµР· РІРЅРµС€РЅРµРіРѕ РїРѕРёСЃРєР° Open Beauty Facts Рё РѕС‡РµСЂРµРґРё РїСЂРѕРІРµСЂРєРё."
+      label: confidenceRatio >= 0.85 ? "хорошая" : confidenceRatio >= 0.55 ? "средняя" : "низкая",
+      text: "Статическая версия: работает без сервера, но без внешнего поиска Open Beauty Facts и очереди проверки."
     },
-    disclaimer: "Р­С‚Рѕ СЃРїСЂР°РІРѕС‡РЅС‹Р№ СЂР°Р·Р±РѕСЂ СЃРѕСЃС‚Р°РІР°, Р° РЅРµ РјРµРґРёС†РёРЅСЃРєРѕРµ РЅР°Р·РЅР°С‡РµРЅРёРµ. РўРѕС‡РЅС‹Рµ РїСЂРѕС†РµРЅС‚С‹, pH, SPF/PPD Рё РїРµСЂРµРЅРѕСЃРёРјРѕСЃС‚СЊ РЅРµР»СЊР·СЏ РЅР°РґРµР¶РЅРѕ РѕРїСЂРµРґРµР»РёС‚СЊ С‚РѕР»СЊРєРѕ РїРѕ INCI."
+    disclaimer: "Это справочный разбор состава, а не медицинское назначение. Точные проценты, pH, SPF/PPD и переносимость нельзя надежно определить только по INCI."
   };
 }
 
@@ -353,12 +358,12 @@ async function loadProductDetails(product) {
 
 async function applyProduct(product) {
   productName.value = `${product.brand} ${product.name}`.trim();
-  setProductStatus("РџРѕРґС‚СЏРіРёРІР°СЋ СЃРѕСЃС‚Р°РІ РёР· Р±Р°Р·С‹...");
+  setProductStatus("Подтягиваю состав из базы...");
   const detailedProduct = await loadProductDetails(product);
 
   if (!detailedProduct.composition) {
     hideSuggestions();
-    setProductStatus("РљР°СЂС‚РѕС‡РєР° РЅР°Р№РґРµРЅР°, РЅРѕ INCI РїРѕРєР° РЅРµ РїРѕРґС‚СЏРЅСѓР»СЃСЏ. РњРѕР¶РЅРѕ РІСЃС‚Р°РІРёС‚СЊ СЃРѕСЃС‚Р°РІ РІСЂСѓС‡РЅСѓСЋ.", "warn");
+    setProductStatus("Карточка найдена, но состав пока не подтянулся. Можно вставить состав вручную.", "warn");
     return;
   }
 
@@ -382,12 +387,12 @@ async function applyProduct(product) {
 
   const source = detailedProduct.verified
     ? detailedProduct.source
-    : `${detailedProduct.source}, РїСЂРѕРІРµСЂСЊС‚Рµ СЃРѕСЃС‚Р°РІ РїРѕ СЌС‚РёРєРµС‚РєРµ`;
-  const verifiedAt = detailedProduct.verifiedAt ? ` РџСЂРѕРІРµСЂРµРЅРѕ: ${detailedProduct.verifiedAt}.` : "";
+    : `${detailedProduct.source}, проверьте состав по этикетке`;
+  const verifiedAt = detailedProduct.verifiedAt ? ` Проверено: ${detailedProduct.verifiedAt}.` : "";
   const scopeNote = detailedProduct.compositionScope === "active_ingredients_only"
-    ? " Р­С‚Рѕ РЅРµ РїРѕР»РЅС‹Р№ INCI: РїРѕРґСЃС‚Р°РІР»РµРЅС‹ С‚РѕР»СЊРєРѕ Р°РєС‚РёРІРЅС‹Рµ РёРЅРіСЂРµРґРёРµРЅС‚С‹ СЃ РѕС„РёС†РёР°Р»СЊРЅРѕР№ РєР°СЂС‚РѕС‡РєРё."
+    ? " Это не полный INCI: подставлены только активные ингредиенты из официальной карточки."
     : "";
-  setProductStatus(`РЎРѕСЃС‚Р°РІ РїРѕРґСЃС‚Р°РІР»РµРЅ: ${source}.${verifiedAt}${scopeNote}`, detailedProduct.verified ? "ok" : "warn");
+  setProductStatus(`Состав подставлен: ${source}.${verifiedAt}${scopeNote}`, detailedProduct.verified ? "ok" : "warn");
   return detailedProduct;
 }
 
@@ -396,7 +401,7 @@ async function autofillCompositionFromName() {
   if (composition.value.trim()) return true;
   if (!query) return false;
 
-  setProductStatus("РС‰Сѓ СЃРѕСЃС‚Р°РІ РїРѕ РЅР°Р·РІР°РЅРёСЋ СЃСЂРµРґСЃС‚РІР°...");
+  setProductStatus("Ищу состав по названию средства...");
 
   try {
     const data = await searchProductByName(query);
@@ -404,14 +409,14 @@ async function autofillCompositionFromName() {
 
     if (!candidate) {
       hideSuggestions();
-      setProductStatus("РЎРѕСЃС‚Р°РІ РїРѕ РЅР°Р·РІР°РЅРёСЋ РїРѕРєР° РЅРµ РЅР°Р№РґРµРЅ. РЈС‚РѕС‡РЅРёС‚Рµ Р±СЂРµРЅРґ/РЅР°Р·РІР°РЅРёРµ РёР»Рё РІСЃС‚Р°РІСЊС‚Рµ СЃРѕСЃС‚Р°РІ СЃ СѓРїР°РєРѕРІРєРё РІСЂСѓС‡РЅСѓСЋ.", "warn");
+      setProductStatus("Состав по названию пока не найден. Уточните бренд/название или вставьте состав с упаковки вручную.", "warn");
       return false;
     }
 
     const detailedProduct = await applyProduct(candidate);
     return Boolean(detailedProduct?.composition || composition.value.trim());
   } catch {
-    setProductStatus("РџРѕРёСЃРє РІСЂРµРјРµРЅРЅРѕ РЅРµРґРѕСЃС‚СѓРїРµРЅ. РњРѕР¶РЅРѕ РїРѕРїСЂРѕР±РѕРІР°С‚СЊ РїРѕР·Р¶Рµ РёР»Рё РІСЃС‚Р°РІРёС‚СЊ СЃРѕСЃС‚Р°РІ СЃ СѓРїР°РєРѕРІРєРё РІСЂСѓС‡РЅСѓСЋ.", "warn");
+    setProductStatus("Поиск временно недоступен. Можно попробовать позже или вставить состав с упаковки вручную.", "warn");
     return false;
   }
 }
@@ -437,8 +442,8 @@ async function requestProductReview(query) {
 function renderReviewRequest(query) {
   productSuggestions.innerHTML = `
     <div class="suggestion-empty">
-      <p>РџРѕРєР° РЅРµС‚ РїСЂРѕРІРµСЂРµРЅРЅРѕРіРѕ СЃРѕСЃС‚Р°РІР° РґР»СЏ СЌС‚РѕРіРѕ СЃСЂРµРґСЃС‚РІР°.</p>
-      <button class="review-request-button" type="button">РћС‚РїСЂР°РІРёС‚СЊ РЅР° РїСЂРѕРІРµСЂРєСѓ</button>
+      <p>Пока нет проверенного состава для этого средства.</p>
+      <button class="review-request-button" type="button">Отправить на проверку</button>
     </div>
   `;
   productSuggestions.hidden = false;
@@ -447,9 +452,9 @@ function renderReviewRequest(query) {
     try {
       await requestProductReview(query);
       hideSuggestions();
-      setProductStatus("Р—Р°РїСЂРѕСЃ РґРѕР±Р°РІР»РµРЅ РІ РѕС‡РµСЂРµРґСЊ РїСЂРѕРІРµСЂРєРё. Р§РµРј С‡Р°С‰Рµ СЃСЂРµРґСЃС‚РІРѕ РёС‰СѓС‚, С‚РµРј РІС‹С€Рµ РїСЂРёРѕСЂРёС‚РµС‚.", "ok");
+      setProductStatus("Запрос добавлен в очередь проверки. Чем чаще средство ищут, тем выше приоритет.", "ok");
     } catch {
-      setProductStatus("РќРµ СѓРґР°Р»РѕСЃСЊ РґРѕР±Р°РІРёС‚СЊ Р·Р°РїСЂРѕСЃ. РџРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕР·Р¶Рµ РёР»Рё РІСЃС‚Р°РІСЊС‚Рµ INCI РІСЂСѓС‡РЅСѓСЋ.", "warn");
+      setProductStatus("Не удалось добавить запрос. Попробуйте позже или вставьте INCI вручную.", "warn");
     }
   });
 }
@@ -464,14 +469,14 @@ function renderSuggestions(products) {
 
   productSuggestions.innerHTML = products
     .map((product, index) => {
-      const verifiedAt = product.verifiedAt ? ` В· ${escapeHtml(product.verifiedAt)}` : "";
-      const verificationNote = product.verified ? "" : " В· РїСЂРѕРІРµСЂСЊС‚Рµ РїРѕ СЌС‚РёРєРµС‚РєРµ";
+      const verifiedAt = product.verifiedAt ? ` · ${escapeHtml(product.verifiedAt)}` : "";
+      const verificationNote = product.verified ? "" : " · проверьте по этикетке";
       return `
         <button class="suggestion" type="button" data-index="${index}">
           ${productImage(product)}
           <span class="suggestion-body">
-            <strong>${escapeHtml(product.name)} <em>${escapeHtml(product.trustLabel || "РСЃС‚РѕС‡РЅРёРє")}</em></strong>
-            <span>${escapeHtml(product.brand)} В· ${escapeHtml(product.category || "РєР°С‚РµРіРѕСЂРёСЏ РЅРµ СѓРєР°Р·Р°РЅР°")}</span>
+            <strong>${escapeHtml(product.name)} <em>${escapeHtml(product.trustLabel || "Источник")}</em></strong>
+            <span>${escapeHtml(product.brand)} · ${escapeHtml(product.category || "категория не указана")}</span>
             <small>${escapeHtml(product.source)}${verifiedAt}${verificationNote}</small>
           </span>
         </button>
@@ -507,7 +512,7 @@ const searchProducts = debounce(async () => {
     return;
   }
 
-  setProductStatus("РС‰Сѓ СЃРѕСЃС‚Р°РІ РїРѕ РЅР°Р·РІР°РЅРёСЋ...");
+  setProductStatus("Ищу состав по названию...");
 
   try {
     const data = await searchProductByName(query);
@@ -516,13 +521,13 @@ const searchProducts = debounce(async () => {
 
     setProductStatus(
       data.products?.length
-        ? "Р’С‹Р±РµСЂРёС‚Рµ СЃСЂРµРґСЃС‚РІРѕ РёР· СЃРїРёСЃРєР°, С‡С‚РѕР±С‹ РїРѕРґСЃС‚Р°РІРёС‚СЊ INCI."
-        : "РќРµ РЅР°С€Р»Р° СЃРѕСЃС‚Р°РІ РїРѕ РЅР°Р·РІР°РЅРёСЋ. РЈС‚РѕС‡РЅРёС‚Рµ Р±СЂРµРЅРґ РёР»Рё РІСЃС‚Р°РІСЊС‚Рµ INCI РІСЂСѓС‡РЅСѓСЋ.",
+        ? "Выберите средство из списка, чтобы подставить INCI."
+        : "Не нашла состав по названию. Уточните бренд или вставьте INCI вручную.",
       data.products?.length ? "ok" : "warn"
     );
   } catch {
     hideSuggestions();
-    setProductStatus("РџРѕРёСЃРє РІСЂРµРјРµРЅРЅРѕ РЅРµРґРѕСЃС‚СѓРїРµРЅ. РЎРѕСЃС‚Р°РІ РјРѕР¶РЅРѕ РІСЃС‚Р°РІРёС‚СЊ РІСЂСѓС‡РЅСѓСЋ.", "warn");
+    setProductStatus("Поиск временно недоступен. Состав можно вставить вручную.", "warn");
   }
 });
 
@@ -580,6 +585,95 @@ function catalogText(product) {
   return normalizeProductText(`${product.brand} ${product.name} ${product.category} ${product.source || ""} ${product.composition || ""}`);
 }
 
+function cleanOcrText(text) {
+  return String(text || "")
+    .replace(/\u0000/g, " ")
+    .replace(/[|]/g, "I")
+    .replace(/[“”]/g, "\"")
+    .replace(/[‘’]/g, "'")
+    .replace(/\s+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function extractCompositionCandidate(text) {
+  const clean = cleanOcrText(text);
+  const marker = clean.match(/(?:состав|inci|ingredients?|ингредиенты)\s*[:：]?\s*([\s\S]{40,1600})/i);
+  const source = marker?.[1] || clean;
+  const beforeWarnings = source.split(/(?:меры предосторожности|способ применения|применение|изготовитель|производитель|warning|caution|directions|usage)/i)[0];
+  const lines = beforeWarnings
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const likelyIngredientLines = lines.filter((line) => {
+    const commaCount = (line.match(/,/g) || []).length;
+    return commaCount >= 1 || /\b(aqua|water|glycerin|acid|extract|oil|alcohol|glycol|parfum|phenoxyethanol|niacinamide|panthenol)\b/i.test(line);
+  });
+  const candidate = (likelyIngredientLines.length ? likelyIngredientLines : lines).join(" ");
+  return candidate
+    .replace(/\s*[,;]\s*/g, ", ")
+    .replace(/\s{2,}/g, " ")
+    .replace(/,\s*,/g, ",")
+    .trim();
+}
+
+function guessProductNameFromPhotoText(text) {
+  const lines = cleanOcrText(text)
+    .split(/\r?\n/)
+    .map((line) => line.replace(/[^A-Za-zА-Яа-яЁё0-9%+\- ]/g, " ").replace(/\s+/g, " ").trim())
+    .filter((line) => line.length >= 3 && line.length <= 70)
+    .filter((line) => !/состав|inci|ingredients|меры|примен|изготов|производ|гост|eac|barcode|регистрац/i.test(line));
+
+  return lines.slice(0, 4).join(" / ");
+}
+
+async function identifyProductFromPhotoText(text) {
+  try {
+    const response = await fetch("/api/products/identify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text })
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+    return data.product || null;
+  } catch {
+    return null;
+  }
+}
+
+async function analyzeCurrentComposition(sourceLabel = "") {
+  const text = composition.value.trim();
+  if (!text) {
+    result.innerHTML = `<div class="error">Сначала нужен состав: выберите средство, распознайте фото или вставьте список ингредиентов.</div>`;
+    return;
+  }
+
+  const payload = {
+    text,
+    productName: productName?.value.trim() || sourceLabel,
+    profile: {
+      skinType: document.querySelector("#skinType").value,
+      context: document.querySelector("#context").value,
+      concerns: document.querySelector("#concerns").value
+    }
+  };
+
+  result.innerHTML = `<div class="loading">Разбираю состав...</div>`;
+
+  try {
+    const response = await fetch("/api/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    if (!response.ok) throw new Error("Analyze failed");
+    render(await response.json());
+  } catch {
+    render(localAnalyzeComposition(payload));
+  }
+}
+
 function classifyCatalogProduct(product) {
   const text = catalogText(product);
   if (/hair|волос|scalp|шампун|бород|trixosil/.test(text)) return { category: "Волосы и кожа головы", subcategory: /shampoo|шампун/.test(text) ? "Шампуни и очищение" : "Рост и уход" };
@@ -610,15 +704,40 @@ function uniqueSorted(items) {
   return [...new Set(items.filter(Boolean))].sort((a, b) => a.localeCompare(b));
 }
 
+function normalizeBrandKey(value) {
+  return normalizeProductText(String(value || "").split(/[,;/|]+/)[0]);
+}
+
+function brandDisplayName(value) {
+  return String(value || "")
+    .split(/[,;/|]+/)[0]
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function uniqueBrands(products) {
+  const brands = new Map();
+  products.forEach((product) => {
+    const key = normalizeBrandKey(product.brand);
+    if (!key) return;
+    const label = brandDisplayName(product.brand);
+    const current = brands.get(key);
+    if (!current || (label.length < current.label.length && label.length > 1)) {
+      brands.set(key, { key, label });
+    }
+  });
+  return Array.from(brands.values()).sort((a, b) => a.label.localeCompare(b.label));
+}
+
 function renderCatalogFilters(products) {
   if (!catalogCategories) return;
-  const brands = uniqueSorted(products.map((product) => product.brand));
+  const brands = uniqueBrands(products);
   const categories = uniqueSorted(products.map((product) => product.category));
   catalogCategories.innerHTML = `
     <div class="catalog-filters">
       <label>Поиск<input id="catalogTextFilter" type="search" placeholder="Название, бренд, актив..." /></label>
       <label>Категория<select id="catalogCategoryFilter"><option value="">Все категории</option>${categories.map((item) => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("")}</select></label>
-      <label>Производитель<select id="catalogBrandFilter"><option value="">Все производители</option>${brands.map((item) => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("")}</select></label>
+      <label>Производитель<select id="catalogBrandFilter"><option value="">Все производители</option>${brands.map((item) => `<option value="${escapeHtml(item.key)}">${escapeHtml(item.label)}</option>`).join("")}</select></label>
       <label>Данные<select id="catalogSourceFilter"><option value="">Любые данные</option><option value="verified">Проверенные</option><option value="hasComposition">Есть состав</option><option value="hasImage">Есть фото</option><option value="open_beauty_facts">Open Beauty Facts</option></select></label>
     </div>
   `;
@@ -636,7 +755,7 @@ function applyCatalogFilters(products) {
   return products.filter((product) => {
     if (text && !catalogText(product).includes(text)) return false;
     if (category && product.category !== category) return false;
-    if (brand && product.brand !== brand) return false;
+    if (brand && normalizeBrandKey(product.brand) !== brand) return false;
     if (source === "verified" && !product.verified) return false;
     if (source === "hasComposition" && !product.hasComposition) return false;
     if (source === "hasImage" && !product.imageUrl) return false;
@@ -740,26 +859,110 @@ catalogDrawer?.addEventListener("click", (event) => {
   if (event.target === catalogDrawer) closeCatalog();
 });
 
-photoInput?.addEventListener("change", () => {
+async function recognizePhotoText(file) {
+  if (!window.Tesseract?.recognize) {
+    throw new Error("OCR-модуль не загрузился. Проверьте интернет-соединение и попробуйте еще раз.");
+  }
+
+  const result = await window.Tesseract.recognize(file, "eng+rus", {
+    logger: (event) => {
+      if (!photoStatus || event.status !== "recognizing text") return;
+      const progress = Math.round((event.progress || 0) * 100);
+      photoStatus.textContent = `Распознаю текст с фото: ${progress}%`;
+    }
+  });
+
+  return cleanOcrText(result?.data?.text || "");
+}
+
+async function applyPhotoText({ analyze = false } = {}) {
+  const rawText = photoText?.value.trim() || "";
+  if (!rawText) {
+    if (photoStatus) {
+      photoStatus.hidden = false;
+      photoStatus.textContent = "Сначала нужен распознанный текст. Если OCR ошибся, вставьте текст с упаковки вручную.";
+    }
+    return false;
+  }
+
+  const compositionCandidate = extractCompositionCandidate(rawText);
+  const ingredients = parseIngredients(compositionCandidate);
+  if (ingredients.length < 3) {
+    if (photoStatus) {
+      photoStatus.hidden = false;
+      photoStatus.textContent = "Не удалось уверенно выделить состав. Поправьте распознанный текст вручную или сфотографируйте ближе блок INCI/Ingredients.";
+    }
+    return false;
+  }
+
+  composition.value = ingredients.join(", ");
+  const guessedName = guessProductNameFromPhotoText(rawText);
+  if (guessedName && !productName.value.trim()) productName.value = guessedName;
+
+  const identified = await identifyProductFromPhotoText(rawText);
+  if (identified) {
+    productName.value = `${identified.brand} ${identified.name}`;
+    if (identified.composition) composition.value = identified.composition;
+    setProductStatus(`По фото есть возможное совпадение: ${identified.brand} ${identified.name}. Проверьте визуально и по составу.`, "warn");
+  } else {
+    setProductStatus("Средство по фото не найдено в базе, но состав выделен и готов к разбору.", "warn");
+  }
+
+  if (photoStatus) {
+    photoStatus.hidden = false;
+    photoStatus.textContent = `Из фото выделено ингредиентов: ${ingredients.length}. OCR может ошибаться, проверьте текст перед выводами.`;
+  }
+
+  if (analyze) await analyzeCurrentComposition("Фото состава");
+  return true;
+}
+
+photoInput?.addEventListener("change", async () => {
   const file = photoInput.files?.[0];
   if (!file || !photoStatus) return;
 
   photoStatus.hidden = false;
-  photoStatus.textContent = "Р¤РѕС‚Рѕ РїСЂРёРЅСЏС‚Рѕ. РЎРµР№С‡Р°СЃ РІРєР»СЋС‡РµРЅ Р±С‹СЃС‚СЂС‹Р№ РїСЂРѕС‚РѕС‚РёРї: СЃРµСЂРІРёСЃ РїСЂРѕР±СѓРµС‚ РёСЃРєР°С‚СЊ РїРѕ РёРјРµРЅРё С„Р°Р№Р»Р° Рё Р±Р°Р·Рµ. РџРѕР»РЅРѕС†РµРЅРЅРѕРµ OCR-СЂР°СЃРїРѕР·РЅР°РІР°РЅРёРµ СЃРѕСЃС‚Р°РІР° Р»СѓС‡С€Рµ РїРѕРґРєР»СЋС‡Р°С‚СЊ СЃРµСЂРІРµСЂРЅС‹Рј РјРѕРґСѓР»РµРј.";
+  photoStatus.textContent = "Фото принято. Распознаю текст с упаковки...";
 
-  const guessed = file.name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").trim();
-  if (guessed) {
-    productName.value = guessed;
-    productName.dispatchEvent(new Event("input", { bubbles: true }));
+  if (photoReview) photoReview.hidden = false;
+  if (photoPreview) {
+    photoPreview.src = URL.createObjectURL(file);
+    photoPreview.hidden = false;
   }
+
+  try {
+    const text = await recognizePhotoText(file);
+    if (photoText) photoText.value = text;
+
+    if (!text || text.length < 12) {
+      photoStatus.textContent = "Текст почти не распознан. Попробуйте фото ближе, ровнее, при хорошем свете, чтобы был виден блок INCI/Ingredients.";
+      return;
+    }
+
+    const compositionCandidate = extractCompositionCandidate(text);
+    const ingredients = parseIngredients(compositionCandidate);
+    photoStatus.textContent = ingredients.length >= 3
+      ? `Текст распознан. Предварительно найдено ингредиентов: ${ingredients.length}. Нажмите “Взять состав с фото” или “Разобрать состав с фото”.`
+      : "Текст распознан, но состав выделен неуверенно. Поправьте текст вручную или сфотографируйте ближе именно блок состава.";
+  } catch (error) {
+    photoStatus.textContent = error.message || "Не удалось распознать фото. Попробуйте другое фото или вставьте состав вручную.";
+  }
+});
+
+photoUseComposition?.addEventListener("click", () => {
+  applyPhotoText({ analyze: false });
+});
+
+photoAnalyze?.addEventListener("click", () => {
+  applyPhotoText({ analyze: true });
 });
 
 initCatalog();
 
 function render(data) {
-  const expertSummary = cards(data.expertSummary, "РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РґР°РЅРЅС‹С… РґР»СЏ СЌРєСЃРїРµСЂС‚РЅРѕР№ СЃРІРѕРґРєРё.");
-  const routineAdvice = list(data.routineAdvice, "РќРµС‚ СЃРїРµС†РёР°Р»СЊРЅС‹С… СЂРµРєРѕРјРµРЅРґР°С†РёР№ РїРѕ РІРІРµРґРµРЅРёСЋ.");
-  const questions = list(data.questions, "РЈС‚РѕС‡РЅСЏСЋС‰РёС… РІРѕРїСЂРѕСЃРѕРІ РЅРµ СЃС„РѕСЂРјРёСЂРѕРІР°РЅРѕ.");
+  const expertSummary = cards(data.expertSummary, "Недостаточно данных для экспертной сводки.");
+  const routineAdvice = list(data.routineAdvice, "Нет специальных рекомендаций по введению.");
+  const questions = list(data.questions, "Уточняющих вопросов не сформировано.");
   const architecture = data.architecture?.length
     ? `
       <div class="architecture-grid">
@@ -773,7 +976,7 @@ function render(data) {
           .join("")}
       </div>
     `
-    : `<p class="muted">РџРѕРєР° РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ СЂР°СЃРїРѕР·РЅР°РЅРЅС‹С… РєРѕРјРїРѕРЅРµРЅС‚РѕРІ, С‡С‚РѕР±С‹ РѕРїРёСЃР°С‚СЊ СЃС‚СЂСѓРєС‚СѓСЂСѓ С„РѕСЂРјСѓР»С‹.</p>`;
+    : `<p class="muted">Пока недостаточно распознанных компонентов, чтобы описать структуру формулы.</p>`;
 
   const groups = data.groups
     .map((group) => `
@@ -792,9 +995,9 @@ function render(data) {
           <p>${escapeHtml(item.note)}</p>
         </div>
         <dl>
-          <dt>РџРѕР·РёС†РёСЏ</dt>
+          <dt>Позиция</dt>
           <dd>${item.position}</dd>
-          <dt>Р—РѕРЅР°</dt>
+          <dt>Зона</dt>
           <dd>${escapeHtml(item.concentration)}</dd>
         </dl>
       </article>
@@ -807,15 +1010,15 @@ function render(data) {
   const unknownSection = unknown.length
     ? `
       <section class="section">
-        <h2>Р§С‚Рѕ С‚СЂРµР±СѓРµС‚ РїСЂРѕРІРµСЂРєРё</h2>
-        <p class="muted">Р­С‚Рё РїРѕР·РёС†РёРё РЅРµ РЅР°Р№РґРµРЅС‹ РІ С‚РµРєСѓС‰РµР№ Р±Р°Р·Рµ MVP. РС… СЃС‚РѕРёС‚ СЃРІРµСЂРёС‚СЊ РїРѕ СЌС‚РёРєРµС‚РєРµ РёР»Рё СЂР°СЃС€РёСЂРµРЅРЅРѕР№ Р±Р°Р·Рµ РёРЅРіСЂРµРґРёРµРЅС‚РѕРІ.</p>
-        ${list(unknown, "Р’СЃРµ РёРЅРіСЂРµРґРёРµРЅС‚С‹ РёР· СЃРѕСЃС‚Р°РІР° СЂР°СЃРїРѕР·РЅР°РЅС‹ Р±Р°Р·РѕР№ MVP.")}
+        <h2>Что требует проверки</h2>
+        <p class="muted">Эти позиции не найдены в текущей базе MVP. Их стоит сверить по этикетке или расширенной базе ингредиентов.</p>
+        ${list(unknown, "Все ингредиенты из состава распознаны базой MVP.")}
         <p class="disclaimer">${escapeHtml(data.disclaimer)}</p>
       </section>
     `
     : `
       <section class="section">
-        <h2>РћРіСЂР°РЅРёС‡РµРЅРёСЏ Р°РЅР°Р»РёР·Р°</h2>
+        <h2>Ограничения анализа</h2>
         <p class="disclaimer">${escapeHtml(data.disclaimer)}</p>
       </section>
     `;
@@ -823,57 +1026,57 @@ function render(data) {
   result.innerHTML = `
     <div class="score">
       <div class="score-number">
-        <p class="eyebrow">РС‚РѕРі</p>
+        <p class="eyebrow">Итог</p>
         <h2>${escapeHtml(data.score.score)}/100</h2>
         <p>${escapeHtml(data.score.label)}</p>
       </div>
       <div>
         <h2>${escapeHtml(data.formulaType)}</h2>
         <p>${escapeHtml(data.summary)}</p>
-        <p class="confidence">РЈРІРµСЂРµРЅРЅРѕСЃС‚СЊ: ${escapeHtml(data.confidence?.label || "РЅРµРёР·РІРµСЃС‚РЅРѕ")} В· ${escapeHtml(data.confidence?.text || "")}</p>
+        <p class="confidence">Уверенность: ${escapeHtml(data.confidence?.label || "неизвестно")} · ${escapeHtml(data.confidence?.text || "")}</p>
       </div>
     </div>
 
     <section class="section">
-      <h2>Р“Р»Р°РІРЅС‹Р№ РІС‹РІРѕРґ</h2>
+      <h2>Главный вывод</h2>
       ${expertSummary}
     </section>
 
     <section class="section">
-      <h2>РљР°Рє СѓСЃС‚СЂРѕРµРЅР° С„РѕСЂРјСѓР»Р°</h2>
+      <h2>Как устроена формула</h2>
       ${architecture}
     </section>
 
     <section class="section">
-      <h2>Р“СЂСѓРїРїС‹ РєРѕРјРїРѕРЅРµРЅС‚РѕРІ</h2>
-      <div class="tiles">${groups || '<p class="muted">РџРѕРєР° РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ СЂР°СЃРїРѕР·РЅР°РЅРЅС‹С… РєРѕРјРїРѕРЅРµРЅС‚РѕРІ.</p>'}</div>
+      <h2>Группы компонентов</h2>
+      <div class="tiles">${groups || '<p class="muted">Пока недостаточно распознанных компонентов.</p>'}</div>
     </section>
 
     <section class="section two">
       <div>
-        <h2>РњРѕР¶РµС‚ Р±С‹С‚СЊ РїРѕР»РµР·РЅРѕ РїСЂРё</h2>
-        ${list(data.positives, "РџРѕ С‚РµРєСѓС‰РµР№ Р±Р°Р·Рµ MVP РЅРµС‚ СѓРІРµСЂРµРЅРЅС‹С… РІС‹РІРѕРґРѕРІ.")}
+        <h2>Может быть полезно при</h2>
+        ${list(data.positives, "По текущей базе MVP нет уверенных выводов.")}
       </div>
       <div>
-        <h2>РќР° С‡С‚Рѕ РѕР±СЂР°С‚РёС‚СЊ РІРЅРёРјР°РЅРёРµ</h2>
-        ${list(data.warnings, "РЇРІРЅС‹С… РєСЂР°СЃРЅС‹С… С„Р»Р°РіРѕРІ РІ Р±Р°Р·Рµ MVP РЅРµ РЅР°Р№РґРµРЅРѕ.")}
+        <h2>На что обратить внимание</h2>
+        ${list(data.warnings, "Явных красных флагов в базе MVP не найдено.")}
       </div>
     </section>
 
     <section class="section two">
       <div>
-        <h2>РљР°Рє РІРІРѕРґРёС‚СЊ РІ СѓС…РѕРґ</h2>
+        <h2>Как вводить в уход</h2>
         ${routineAdvice}
       </div>
       <div>
-        <h2>Р§С‚Рѕ СЃРїСЂРѕСЃРёС‚СЊ Сѓ РєРѕСЃРјРµС‚РѕР»РѕРіР°</h2>
+        <h2>Что спросить у косметолога</h2>
         ${questions}
       </div>
     </section>
 
     <section class="section">
-      <h2>Р Р°СЃРїРѕР·РЅР°РЅРЅС‹Рµ РёРЅРіСЂРµРґРёРµРЅС‚С‹</h2>
-      <div class="ingredients">${found || '<p class="muted">РќРµС‚ СЃРѕРІРїР°РґРµРЅРёР№ РІ Р±Р°Р·Рµ MVP.</p>'}</div>
+      <h2>Распознанные ингредиенты</h2>
+      <div class="ingredients">${found || '<p class="muted">Нет совпадений в базе MVP.</p>'}</div>
     </section>
 
     ${unknownSection}
@@ -900,7 +1103,7 @@ form.addEventListener("submit", async (event) => {
     }
   };
 
-  result.innerHTML = `<div class="loading">Р Р°Р·Р±РёСЂР°СЋ СЃРѕСЃС‚Р°РІ...</div>`;
+  result.innerHTML = `<div class="loading">Разбираю состав...</div>`;
 
   try {
     const response = await fetch("/api/analyze", {

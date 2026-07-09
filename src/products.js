@@ -314,6 +314,75 @@ function toOpenBeautyFactsDetail(product) {
   });
 }
 
+async function fetchOpenBeautyFactsImage(query) {
+  const params = new URLSearchParams({
+    search_terms: query,
+    search_simple: "1",
+    action: "process",
+    json: "1",
+    page_size: "6",
+    fields: "code,product_name,brands,categories,url,image_url,image_front_url,selected_images"
+  });
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 3500);
+
+  try {
+    const response = await fetch(`https://world.openbeautyfacts.org/cgi/search.pl?${params}`, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "AnatomyCosmetologyMVP/0.1 (product image lookup)"
+      }
+    });
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    const queryTokens = tokens(query).filter((token) => token.length > 2);
+    const candidates = (data.products || [])
+      .map(toOpenBeautyFactsSummary)
+      .filter((product) => product?.imageUrl)
+      .map((product) => {
+        const text = normalize(`${product.brand} ${product.name}`);
+        const score = queryTokens.filter((token) => text.includes(token)).length;
+        return { product, score };
+      })
+      .filter((item) => item.score >= Math.min(2, queryTokens.length))
+      .sort((a, b) => b.score - a.score);
+
+    return candidates[0]?.product || null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function enrichProductImage(product, cache = loadDetailsCache()) {
+  if (!product || product.imageUrl || product.sourceType === "open_beauty_facts") return product;
+
+  const query = `${product.brand || ""} ${product.name || ""}`.trim();
+  if (query.length < 4) return product;
+
+  const imageSource = await fetchOpenBeautyFactsImage(query);
+  if (!imageSource?.imageUrl) return product;
+
+  const enriched = {
+    ...product,
+    imageUrl: imageSource.imageUrl,
+    imageSource: "Open Beauty Facts",
+    imageSourceUrl: imageSource.sourceUrl
+  };
+  const enrichedId = enriched.id || enriched.code;
+  const nextCache = [
+    enriched,
+    ...cache.filter((item) => item.id !== enrichedId && item.code !== enriched.code)
+  ];
+  saveDetailsCache(nextCache);
+  buildProductIndex([enriched], { persist: true, includeExisting: true });
+  return enriched;
+}
+
 async function fetchOpenBeautyFactsSearch(query, limit = 5) {
   const params = new URLSearchParams({
     search_terms: query,
@@ -501,8 +570,12 @@ export async function searchProducts(query, limit = 8) {
 }
 
 export function listCatalogProducts() {
+  const cacheById = new Map(loadDetailsCache().map((product) => [product.id || product.code, product]));
   return loadProductIndex()
-    .map((product) => toSummary(product))
+    .map((product) => {
+      const cached = cacheById.get(product.id || product.code);
+      return toSummary(cached?.imageUrl ? { ...product, imageUrl: cached.imageUrl } : product);
+    })
     .sort((a, b) => {
       return (
         a.brand.localeCompare(b.brand) ||
@@ -516,11 +589,11 @@ export async function getProductDetails(id) {
   if (!cleanId) return null;
 
   const local = loadProducts().find((product) => product.id === cleanId || product.code === cleanId);
-  if (local?.composition) return withTrust(local);
+  if (local?.composition) return withTrust(await enrichProductImage(local));
 
   const cache = loadDetailsCache();
   const cached = cache.find((product) => product.id === cleanId || product.code === cleanId);
-  if (cached?.composition) return withTrust(cached);
+  if (cached?.composition) return withTrust(await enrichProductImage(cached, cache));
 
   if (cleanId.startsWith("obf-") || /^\d{6,}$/.test(cleanId)) {
     const detail = await fetchOpenBeautyFactsDetail(cleanId);

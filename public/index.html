@@ -64,6 +64,17 @@
           </div>
 
           <div class="photo-status" id="photoStatus" hidden></div>
+          <div class="photo-review" id="photoReview" hidden>
+            <img id="photoPreview" alt="Фото упаковки" />
+            <label>
+              Распознанный текст с фото
+              <textarea id="photoText" spellcheck="false" placeholder="После загрузки фото здесь появится текст с упаковки. Его можно поправить вручную перед разбором."></textarea>
+            </label>
+            <div class="photo-actions">
+              <button class="secondary-action" type="button" id="photoUseComposition">Взять состав с фото</button>
+              <button class="primary-action" type="button" id="photoAnalyze">Разобрать состав с фото</button>
+            </div>
+          </div>
 
           <input class="catalog-state" id="catalogOpen" type="checkbox" hidden />
           <aside class="catalog-drawer" id="catalogDrawer" aria-hidden="true">
@@ -149,7 +160,8 @@
       <section id="result" class="result" aria-live="polite"></section>
     </main>
 
-    <script src="theme.js?v=20260709-16"></script>
-    <script src="app.js?v=20260709-16" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="theme.js?v=20260709-18"></script>
+    <script src="app.js?v=20260709-18" type="module"></script>
   </body>
 </html>
