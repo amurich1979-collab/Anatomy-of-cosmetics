@@ -1165,14 +1165,32 @@ dd {
   }
 
   .intro {
-    padding: 22px;
+    min-height: 0;
+    padding: 20px 20px 18px;
   }
 
   .intro::before {
     background:
-      linear-gradient(180deg, rgba(255, 250, 244, 0.92) 0%, rgba(255, 250, 244, 0.76) 46%, rgba(255, 250, 244, 0.16) 100%),
-      linear-gradient(0deg, rgba(7, 88, 70, 0.2), transparent 54%),
-      url("assets/cosmetology-hero.png") center bottom / cover;
+      linear-gradient(90deg, rgba(255, 250, 244, 0.94) 0%, rgba(255, 250, 244, 0.78) 58%, rgba(255, 250, 244, 0.2) 100%),
+      linear-gradient(0deg, rgba(7, 88, 70, 0.14), transparent 54%),
+      url("assets/cosmetology-hero.png") 62% center / cover;
+  }
+
+  .intro::after {
+    height: 28%;
+  }
+
+  .intro p:not(.eyebrow) {
+    font-size: 0.98rem;
+    line-height: 1.45;
+  }
+
+  .trust-row {
+    margin-top: 18px;
+  }
+
+  .panel {
+    padding: 16px;
   }
 
   textarea {
