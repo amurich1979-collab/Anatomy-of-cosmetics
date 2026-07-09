@@ -366,6 +366,32 @@ async function applyProduct(product) {
     ? " Это не полный INCI: подставлены только активные ингредиенты с официальной карточки."
     : "";
   setProductStatus(`Состав подставлен: ${source}.${verifiedAt}${scopeNote}`, detailedProduct.verified ? "ok" : "warn");
+  return detailedProduct;
+}
+
+async function autofillCompositionFromName() {
+  const query = productName?.value.trim() || "";
+  if (composition.value.trim()) return true;
+  if (!query) return false;
+
+  setProductStatus("Ищу состав по названию средства...");
+
+  try {
+    const data = await searchProductByName(query);
+    const candidate = (data.products || []).find((product) => product.hasComposition || product.composition);
+
+    if (!candidate) {
+      hideSuggestions();
+      setProductStatus("Состав по названию пока не найден. Уточните бренд/название или вставьте состав с упаковки вручную.", "warn");
+      return false;
+    }
+
+    const detailedProduct = await applyProduct(candidate);
+    return Boolean(detailedProduct?.composition || composition.value.trim());
+  } catch {
+    setProductStatus("Поиск временно недоступен. Можно попробовать позже или вставить состав с упаковки вручную.", "warn");
+    return false;
+  }
 }
 
 async function requestProductReview(query) {
@@ -639,6 +665,13 @@ function render(data) {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+
+  const hasComposition = await autofillCompositionFromName();
+
+  if (!hasComposition) {
+    result.innerHTML = `<div class="error">Не удалось автоматически подтянуть состав. Попробуйте выбрать средство из подсказок или уточнить название.</div>`;
+    return;
+  }
 
   const payload = {
     text: composition.value,

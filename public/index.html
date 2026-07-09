@@ -7,7 +7,7 @@
     <script>
       try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260709-7" />
+    <link rel="stylesheet" href="styles.css?v=20260709-8" />
   </head>
   <body>
     <div class="ambient-layer" aria-hidden="true">
@@ -30,7 +30,7 @@
           <p class="eyebrow">Разбор профессионального ухода</p>
           <h1>Анатомия косметологии</h1>
           <p>
-            Введите название средства или вставьте состав с упаковки. INCI — это международная номенклатура названий ингредиентов. Сервис покажет активы,
+            Введите название средства. Сервис сам найдет карточку, подтянет состав с упаковки и разберет ингредиенты. INCI — это международная номенклатура названий ингредиентов.
             кислоты, SPF-фильтры, консерванты, отдушки, вероятные концентрационные
             зоны и риски для вашего типа кожи.
           </p>
@@ -53,8 +53,8 @@
           </label>
 
           <label>
-            Состав INCI
-            <textarea id="composition" required spellcheck="false">Aqua, Glycerin, Niacinamide, Panthenol, Glycolic Acid, Sodium Hyaluronate, Phenoxyethanol, Ethylhexylglycerin, Parfum, Limonene</textarea>
+            Состав с упаковки, если нужен ручной ввод
+            <textarea id="composition" spellcheck="false" placeholder="Заполнится автоматически после выбора средства. Если сервис не нашел состав, сюда можно вставить список ингредиентов вручную."></textarea>
           </label>
 
           <div class="sample-row" aria-label="Примеры средств">
@@ -120,7 +120,7 @@
       <section id="result" class="result" aria-live="polite"></section>
     </main>
 
-    <script src="theme.js?v=20260709-7"></script>
-    <script src="app.js?v=20260709-7" type="module"></script>
+    <script src="theme.js?v=20260709-8"></script>
+    <script src="app.js?v=20260709-8" type="module"></script>
   </body>
 </html>
