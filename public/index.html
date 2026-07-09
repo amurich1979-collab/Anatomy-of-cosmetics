@@ -7,7 +7,7 @@
     <script>
       try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260709-15" />
+    <link rel="stylesheet" href="styles.css?v=20260709-16" />
   </head>
   <body>
     <div class="ambient-layer" aria-hidden="true">
@@ -56,7 +56,7 @@
           </label>
 
           <div class="search-tools">
-            <label class="secondary-action catalog-open" for="catalogOpen" id="catalogToggle">Каталог базы</label>
+            <label class="secondary-action catalog-open" for="catalogOpen" id="catalogToggle">Каталог</label>
             <label class="photo-upload" for="photoInput">
               Фото упаковки
               <input id="photoInput" type="file" accept="image/*" />
@@ -71,7 +71,7 @@
               <div class="form-head">
                 <div>
                   <p class="eyebrow">Каталог</p>
-                  <h2>Поиск по базе</h2>
+                  <h2>Дерево средств</h2>
                 </div>
                 <label class="icon-action" for="catalogOpen" id="catalogClose" aria-label="Закрыть каталог">×</label>
               </div>
@@ -148,7 +148,7 @@
       <section id="result" class="result" aria-live="polite"></section>
     </main>
 
-    <script src="theme.js?v=20260709-15"></script>
-    <script src="app.js?v=20260709-15" type="module"></script>
+    <script src="theme.js?v=20260709-16"></script>
+    <script src="app.js?v=20260709-16" type="module"></script>
   </body>
 </html>

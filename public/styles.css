@@ -761,6 +761,46 @@ select {
   gap: 8px;
 }
 
+.catalog-node {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 92%, var(--soft));
+  overflow: hidden;
+}
+
+.catalog-node summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 42px;
+  padding: 10px 12px;
+  color: var(--accent-strong);
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.catalog-node summary span {
+  min-width: 28px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  text-align: center;
+  font-size: 0.76rem;
+}
+
+.catalog-branch,
+.catalog-products {
+  display: grid;
+  gap: 8px;
+  padding: 8px;
+}
+
+.catalog-brand {
+  background: var(--surface);
+}
+
 .catalog-product {
   display: grid;
   grid-template-columns: 54px minmax(0, 1fr);
@@ -1297,10 +1337,15 @@ dd {
 :root[data-theme="dark"] .photo-upload,
 :root[data-theme="dark"] .photo-status,
 :root[data-theme="dark"] .catalog-category,
+:root[data-theme="dark"] .catalog-node,
 :root[data-theme="dark"] .icon-action {
   border-color: rgba(128, 228, 201, 0.24);
   background: rgba(14, 26, 23, 0.88);
   color: #9cf5dc;
+}
+
+:root[data-theme="dark"] .catalog-node summary {
+  color: #dffcf1;
 }
 
 :root[data-theme="dark"] .insight-card,
