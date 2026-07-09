@@ -173,6 +173,8 @@ select {
 
 .topbar {
   display: flex;
+  position: relative;
+  z-index: 20;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
@@ -195,7 +197,10 @@ select {
 
 .brand-link {
   color: var(--accent-strong);
+  max-width: 50%;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .topnav {
@@ -204,10 +209,15 @@ select {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 4px;
+  min-width: 0;
 }
 
 .topnav a,
 .theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
   min-height: 34px;
   padding: 0 10px;
   border: 1px solid transparent;
@@ -925,6 +935,31 @@ dd {
   background: var(--line);
 }
 
+.auth-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.auth-tab {
+  min-height: 40px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 88%, var(--accent-soft));
+  color: var(--accent-strong);
+}
+
+.auth-tab[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.compact-action {
+  width: fit-content;
+  min-height: 36px;
+  padding: 0 12px;
+}
+
 .settings-stack {
   display: grid;
   gap: 18px;
@@ -1001,6 +1036,25 @@ dd {
 
 .mini-stats span {
   color: var(--muted);
+}
+
+.history-list {
+  display: grid;
+  gap: 8px;
+}
+
+.history-item {
+  display: grid;
+  gap: 3px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 88%, var(--soft));
+}
+
+.history-item span {
+  color: var(--muted);
+  font-size: 0.86rem;
 }
 
 @media (max-width: 1080px) {
@@ -1080,12 +1134,7 @@ dd {
   }
 }
 
-@media (max-width: 560px) {
-  .shell {
-    width: min(100% - 20px, 100%);
-    padding-top: 18px;
-  }
-
+@media (max-width: 820px) {
   .topbar {
     align-items: stretch;
     flex-direction: column;
@@ -1093,19 +1142,38 @@ dd {
     padding: 12px;
   }
 
+  .brand-link {
+    max-width: 100%;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
   .topnav {
     justify-content: stretch;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
   }
 
   .topnav a,
   .theme-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    min-width: 0;
     margin-left: 0;
     padding: 0 8px;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .shell {
+    width: min(100% - 20px, 100%);
+    padding-top: 18px;
+  }
+
+  .topnav a,
+  .theme-toggle {
+    font-size: 0.78rem;
   }
 
   .grid,

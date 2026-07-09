@@ -7,7 +7,7 @@
     <script>
       try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260709-3" />
+    <link rel="stylesheet" href="styles.css?v=20260709-4" />
   </head>
   <body>
     <div class="ambient-layer" aria-hidden="true">
@@ -20,7 +20,7 @@
         <a class="brand-link" href="/">Анатомия косметологии</a>
         <nav class="topnav" aria-label="Навигация">
           <a href="/settings" aria-current="page">Настройки</a>
-          <a href="/login">Войти</a>
+          <a href="/login" id="loginLink">Войти</a>
           <button class="theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">День</button>
         </nav>
       </header>
@@ -28,11 +28,22 @@
       <section class="settings-layout">
         <div class="auth-copy">
           <p class="eyebrow">Настройки</p>
-          <h1>Внешний вид</h1>
-          <p>Выберите тему интерфейса. Настройка сохраняется в браузере и будет применяться на всех страницах.</p>
+          <h1>Профиль и внешний вид</h1>
+          <p>Тема, история поиска и результаты анализа сохраняются в аккаунте после входа. Без входа сервис продолжит работать, но история останется только в этом браузере.</p>
         </div>
 
         <div class="settings-stack">
+          <section class="panel">
+            <div class="form-head">
+              <div>
+                <p class="eyebrow">Аккаунт</p>
+                <h2 id="accountTitle">Гостевой режим</h2>
+              </div>
+              <button class="secondary-action compact-action" type="button" id="logoutButton" hidden>Выйти</button>
+            </div>
+            <p class="field-note" id="accountStatus">Проверяю статус входа...</p>
+          </section>
+
           <section class="panel">
             <div class="form-head">
               <div>
@@ -64,17 +75,18 @@
             <div class="form-head">
               <div>
                 <p class="eyebrow">История</p>
-                <h2>Локальные записи</h2>
+                <h2>Поиски и разборы</h2>
               </div>
             </div>
             <div class="history-summary" id="historySummary"></div>
+            <div class="history-list" id="historyList"></div>
             <button class="secondary-action" type="button" id="clearHistory">Очистить историю</button>
           </section>
         </div>
       </section>
     </main>
 
-    <script src="theme.js?v=20260709-3"></script>
-    <script src="settings.js?v=20260709-3"></script>
+    <script src="theme.js?v=20260709-4"></script>
+    <script src="settings.js?v=20260709-4"></script>
   </body>
 </html>

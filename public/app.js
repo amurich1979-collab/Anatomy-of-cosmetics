@@ -300,6 +300,22 @@ function saveLocalHistory(key, entry, limit = 30) {
   }
 }
 
+async function saveServerHistory(entry) {
+  try {
+    const response = await fetch("/api/auth/me");
+    const data = await response.json();
+    if (!data.user) return;
+
+    await fetch("/api/user/history", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(entry)
+    });
+  } catch {
+    // Server history is optional; local analysis should not be blocked by auth state.
+  }
+}
+
 async function loadProductDetails(product) {
   if (product.composition) return product;
 
@@ -331,6 +347,15 @@ async function applyProduct(product) {
     brand: detailedProduct.brand,
     name: detailedProduct.name,
     source: detailedProduct.source
+  });
+  saveServerHistory({
+    kind: "product",
+    title: `${detailedProduct.brand} ${detailedProduct.name}`.trim(),
+    payload: {
+      id: detailedProduct.id,
+      brand: detailedProduct.brand,
+      source: detailedProduct.source
+    }
   });
 
   const source = detailedProduct.verified
@@ -617,6 +642,7 @@ form.addEventListener("submit", async (event) => {
 
   const payload = {
     text: composition.value,
+    productName: productName?.value.trim() || "",
     profile: {
       skinType: document.querySelector("#skinType").value,
       context: document.querySelector("#context").value,

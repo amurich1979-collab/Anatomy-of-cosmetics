@@ -1,31 +1,107 @@
 const form = document.querySelector("#loginForm");
 const status = document.querySelector("#loginStatus");
+const title = document.querySelector("#authTitle");
+const submit = document.querySelector("#authSubmit");
+const tabs = document.querySelectorAll("[data-auth-mode]");
+const providerButtons = document.querySelectorAll("[data-provider]");
 
-function saveDemoUser(provider, email = "") {
-  const user = {
-    provider,
-    email,
-    name: email || provider,
-    signedInAt: new Date().toISOString()
-  };
-  localStorage.setItem("demoUser", JSON.stringify(user));
-  status.textContent = provider === "email"
-    ? "Демо-профиль сохранен локально. Реальная почтовая авторизация подключается на сервере."
-    : `${provider} выбран как будущий способ входа. Для реального входа нужны OAuth-настройки.`;
-  status.dataset.mode = "ok";
+let mode = "login";
+
+function setStatus(text, nextMode = "") {
+  if (!status) return;
+  status.textContent = text;
+  status.dataset.mode = nextMode;
 }
 
-form?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const email = document.querySelector("#loginEmail")?.value.trim();
-  if (!email) {
-    status.textContent = "Введите почту для демо-входа.";
-    status.dataset.mode = "warn";
-    return;
+function saveUser(user) {
+  localStorage.setItem("demoUser", JSON.stringify({
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    provider: user.provider,
+    signedInAt: new Date().toISOString()
+  }));
+}
+
+function setMode(nextMode) {
+  mode = nextMode;
+  tabs.forEach((tab) => tab.setAttribute("aria-pressed", String(tab.dataset.authMode === mode)));
+  title.textContent = mode === "register" ? "Создать аккаунт" : "Войти в аккаунт";
+  submit.textContent = mode === "register" ? "Зарегистрироваться" : "Войти по почте";
+  document.querySelector("#loginName").closest("label").hidden = mode !== "register";
+}
+
+async function requestAuth(endpoint, body) {
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || "Не удалось выполнить вход.");
+  return data;
+}
+
+async function loadCurrentUser() {
+  try {
+    const response = await fetch("/api/auth/me");
+    const data = await response.json();
+    if (data.user) {
+      saveUser(data.user);
+      setStatus(`Вы уже вошли: ${data.user.email}. Можно переходить к анализу или настройкам.`, "ok");
+    }
+  } catch {
+    // Login form remains available when the status check is unavailable.
   }
-  saveDemoUser("email", email);
+}
+
+tabs.forEach((tab) => {
+  tab.addEventListener("click", () => setMode(tab.dataset.authMode));
 });
 
-document.querySelectorAll("[data-provider]").forEach((button) => {
-  button.addEventListener("click", () => saveDemoUser(button.dataset.provider));
+providerButtons.forEach((button) => {
+  button.addEventListener("click", async () => {
+    const provider = button.dataset.provider;
+    try {
+      const response = await fetch(`/api/auth/oauth/${provider}`, { method: "POST" });
+      const data = await response.json();
+      setStatus(data.error || `${provider} будет подключен позже.`, "warn");
+    } catch {
+      setStatus(`${provider} вход требует настройки OAuth на сервере.`, "warn");
+    }
+  });
 });
+
+form?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const email = document.querySelector("#loginEmail")?.value.trim();
+  const password = document.querySelector("#loginPassword")?.value || "";
+  const name = document.querySelector("#loginName")?.value.trim() || "";
+
+  if (!email || !password) {
+    setStatus("Введите почту и пароль.", "warn");
+    return;
+  }
+
+  submit.disabled = true;
+  setStatus(mode === "register" ? "Создаю аккаунт..." : "Проверяю данные...");
+
+  try {
+    const data = await requestAuth(mode === "register" ? "/api/auth/register" : "/api/auth/login", {
+      email,
+      password,
+      name
+    });
+    saveUser(data.user);
+    setStatus(`Готово. Вы вошли как ${data.user.email}. История и настройки будут сохраняться в базе.`, "ok");
+    setTimeout(() => { window.location.href = "/settings"; }, 650);
+  } catch (error) {
+    setStatus(error.message, "warn");
+  } finally {
+    submit.disabled = false;
+  }
+});
+
+setMode("login");
+loadCurrentUser();

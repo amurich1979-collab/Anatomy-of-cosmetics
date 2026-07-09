@@ -9,13 +9,13 @@
     "bot": "node src/bot.js",
     "start": "node src/server.js",
     "start:prod": "NODE_ENV=production node src/server.js",
-    "check": "node --check src/server.js && node --check src/bot.js && node --check src/analyzer.js && node --check src/products.js"
+    "check": "node --check src/server.js && node --check src/bot.js && node --check src/analyzer.js && node --check src/products.js && node --check src/auth.js && node --check src/database.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "pg": "^8.22.0",
     "telegraf": "^4.16.3"
-  },
-  "devDependencies": {}
+  }
 }
