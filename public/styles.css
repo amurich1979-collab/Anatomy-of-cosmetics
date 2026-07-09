@@ -1089,10 +1089,38 @@ dd {
 :root[data-theme="dark"] .section,
 :root[data-theme="dark"] .suggestions,
 :root[data-theme="dark"] .suggestion,
+:root[data-theme="dark"] .insight-card,
 :root[data-theme="dark"] .architecture-card,
+:root[data-theme="dark"] .tile,
 :root[data-theme="dark"] .ingredient,
 :root[data-theme="dark"] .review-item {
   background: var(--surface);
+}
+
+:root[data-theme="dark"] .insight-card,
+:root[data-theme="dark"] .architecture-card,
+:root[data-theme="dark"] .tile,
+:root[data-theme="dark"] .history-item,
+:root[data-theme="dark"] .mini-stats article {
+  border-color: rgba(128, 228, 201, 0.18);
+  background:
+    linear-gradient(180deg, rgba(32, 61, 53, 0.78), rgba(18, 28, 25, 0.96)),
+    var(--surface);
+  box-shadow: none;
+}
+
+:root[data-theme="dark"] .architecture-card h3,
+:root[data-theme="dark"] .tile h3,
+:root[data-theme="dark"] .ingredient h3,
+:root[data-theme="dark"] .history-item strong {
+  color: #dffcf1;
+}
+
+:root[data-theme="dark"] .architecture-card p,
+:root[data-theme="dark"] .tile p,
+:root[data-theme="dark"] .ingredient p,
+:root[data-theme="dark"] .history-item span {
+  color: #b9c9c3;
 }
 
 @media (min-width: 1800px) {
