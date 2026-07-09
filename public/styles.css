@@ -448,6 +448,37 @@ select {
   padding: 0 12px;
 }
 
+.search-input-wrap {
+  display: grid;
+  position: relative;
+}
+
+.search-input-wrap input {
+  padding-right: 42px;
+}
+
+.search-clear {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  width: 30px;
+  min-height: 30px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 88%, var(--accent-soft));
+  color: var(--accent-strong);
+  font-size: 1.15rem;
+  line-height: 1;
+  box-shadow: none;
+  transform: translateY(-50%);
+}
+
+.search-clear:hover {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
 .password-field {
   display: grid;
   position: relative;
@@ -559,6 +590,9 @@ select {
 
 .suggestion {
   display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
   min-height: auto;
   padding: 10px 12px;
   border: 1px solid transparent;
@@ -566,6 +600,11 @@ select {
   color: var(--ink);
   text-align: left;
   font-weight: 700;
+}
+
+.suggestion-body {
+  display: grid;
+  gap: 3px;
 }
 
 .suggestion strong {
@@ -600,6 +639,153 @@ select {
 
 .suggestion small {
   font-size: 0.75rem;
+}
+
+.product-thumb {
+  width: 54px;
+  height: 54px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 82%, var(--accent-soft));
+  color: var(--accent-strong);
+  object-fit: cover;
+}
+
+.product-thumb-placeholder {
+  display: inline-grid;
+  place-items: center;
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.search-tools {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.photo-upload {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 36%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 86%, var(--accent-soft));
+  color: var(--accent-strong);
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.photo-upload input {
+  display: none;
+}
+
+.photo-status {
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 88%, var(--accent-soft));
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+.catalog-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  justify-items: end;
+  background: rgba(10, 16, 14, 0.34);
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 160ms ease;
+}
+
+.catalog-drawer[aria-hidden="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.catalog-state:checked + .catalog-drawer,
+.catalog-state:checked + .catalog-drawer[aria-hidden="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.catalog-panel {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  width: min(420px, calc(100vw - 28px));
+  height: 100%;
+  padding: 20px;
+  overflow: auto;
+  border-left: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: -24px 0 54px rgba(35, 35, 32, 0.16);
+}
+
+.icon-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  min-height: 34px;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 86%, var(--accent-soft));
+  color: var(--accent-strong);
+  font-size: 1.2rem;
+}
+
+.catalog-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.catalog-category {
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  background: color-mix(in srgb, var(--surface) 86%, var(--accent-soft));
+  color: var(--accent-strong);
+}
+
+.catalog-results {
+  display: grid;
+  gap: 8px;
+}
+
+.catalog-product {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 76px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  text-align: left;
+}
+
+.catalog-product span {
+  display: grid;
+  gap: 4px;
+}
+
+.catalog-product small {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.compact-loading {
+  padding: 12px;
 }
 
 .suggestion-empty {
@@ -657,6 +843,14 @@ button:hover {
   border: 1px solid var(--line);
   background: color-mix(in srgb, var(--surface) 86%, var(--accent-soft));
   color: var(--accent-strong);
+}
+
+.catalog-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 900;
 }
 
 .result {
@@ -1089,12 +1283,24 @@ dd {
 :root[data-theme="dark"] .section,
 :root[data-theme="dark"] .suggestions,
 :root[data-theme="dark"] .suggestion,
+:root[data-theme="dark"] .catalog-panel,
+:root[data-theme="dark"] .catalog-product,
 :root[data-theme="dark"] .insight-card,
 :root[data-theme="dark"] .architecture-card,
 :root[data-theme="dark"] .tile,
 :root[data-theme="dark"] .ingredient,
 :root[data-theme="dark"] .review-item {
   background: var(--surface);
+}
+
+:root[data-theme="dark"] .product-thumb,
+:root[data-theme="dark"] .photo-upload,
+:root[data-theme="dark"] .photo-status,
+:root[data-theme="dark"] .catalog-category,
+:root[data-theme="dark"] .icon-action {
+  border-color: rgba(128, 228, 201, 0.24);
+  background: rgba(14, 26, 23, 0.88);
+  color: #9cf5dc;
 }
 
 :root[data-theme="dark"] .insight-card,

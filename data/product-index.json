@@ -97,6 +97,7 @@
     "source": "Фото упаковки пользователя",
     "sourceUrl": "internal://user-label-photo-2026-07-09-trixosil",
     "sourceType": "label_photo",
+    "imageUrl": "/assets/products/trixosil-5-front.jpg",
     "trustLevel": "B",
     "trustLabel": "По упаковке",
     "trustNote": "INCI перенесен с фото упаковки пользователя. Желательно дополнительно сверить по официальной карточке производителя при появлении источника.",

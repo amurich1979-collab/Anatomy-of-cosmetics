@@ -95,6 +95,7 @@ function toSummary(product) {
     source: trusted.source || "Локальная база",
     sourceUrl: trusted.sourceUrl,
     sourceType: trusted.sourceType || "local",
+    imageUrl: trusted.imageUrl,
     trustLevel: trusted.trustLevel || "E",
     trustLabel: trusted.trustLabel,
     trustNote: trusted.trustNote,
@@ -288,6 +289,7 @@ function toOpenBeautyFactsSummary(product) {
     name,
     brand: product.brands?.trim() || "Бренд не указан",
     category: product.categories?.trim() || "Косметологическое средство",
+    imageUrl: product.image_url || product.image_front_url || product.selected_images?.front?.display?.ru || product.selected_images?.front?.display?.en,
     source: "Open Beauty Facts",
     sourceUrl: product.url || `https://world.openbeautyfacts.org/product/${code}`,
     sourceType: "open_beauty_facts",
@@ -319,7 +321,7 @@ async function fetchOpenBeautyFactsSearch(query, limit = 5) {
     action: "process",
     json: "1",
     page_size: String(limit),
-    fields: "code,product_name,brands,categories,ingredients_text,ingredients_text_en,ingredients_text_fr,ingredients_text_ru,ingredients_text_with_allergens,url"
+    fields: "code,product_name,brands,categories,ingredients_text,ingredients_text_en,ingredients_text_fr,ingredients_text_ru,ingredients_text_with_allergens,url,image_url,image_front_url,selected_images"
   });
 
   const controller = new AbortController();
@@ -353,7 +355,7 @@ async function fetchOpenBeautyFactsDetail(code) {
   if (!cleanCode) return null;
 
   const params = new URLSearchParams({
-    fields: "code,product_name,brands,categories,ingredients_text,ingredients_text_en,ingredients_text_fr,ingredients_text_ru,ingredients_text_with_allergens,url"
+    fields: "code,product_name,brands,categories,ingredients_text,ingredients_text_en,ingredients_text_fr,ingredients_text_ru,ingredients_text_with_allergens,url,image_url,image_front_url,selected_images"
   });
 
   const controller = new AbortController();

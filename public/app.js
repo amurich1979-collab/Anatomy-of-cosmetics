@@ -3,10 +3,28 @@ const result = document.querySelector("#result");
 const productName = document.querySelector("#productName");
 const productSuggestions = document.querySelector("#productSuggestions");
 const productStatus = document.querySelector("#productStatus");
+const productClear = document.querySelector("#productClear");
 const composition = document.querySelector("#composition");
 const sampleChips = document.querySelectorAll(".sample-chip");
 const concernChips = document.querySelectorAll(".concern-chip");
+const catalogToggle = document.querySelector("#catalogToggle");
+const catalogDrawer = document.querySelector("#catalogDrawer");
+const catalogClose = document.querySelector("#catalogClose");
+const catalogCategories = document.querySelector("#catalogCategories");
+const catalogResults = document.querySelector("#catalogResults");
+const catalogOpen = document.querySelector("#catalogOpen");
+const photoInput = document.querySelector("#photoInput");
+const photoStatus = document.querySelector("#photoStatus");
 const tg = window.Telegram?.WebApp;
+
+const CATALOG_CATEGORIES = [
+  { label: "Рост волос", query: "hair growth Trixosil" },
+  { label: "Кислоты", query: "glycolic lactic salicylic peel" },
+  { label: "SPF", query: "SPF zinc titanium sunscreen" },
+  { label: "Акне", query: "acne salicylic niacinamide" },
+  { label: "Барьер", query: "barrier panthenol ceramide" },
+  { label: "Ретиноиды", query: "retinol retinal" }
+];
 
 const STATIC_PRODUCTS = [
   {
@@ -103,6 +121,14 @@ function escapeHtml(value) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+function productImage(product) {
+  if (product.imageUrl) {
+    return `<img class="product-thumb" src="${escapeHtml(product.imageUrl)}" alt="${escapeHtml(`${product.brand} ${product.name}`)}" loading="lazy" />`;
+  }
+
+  return `<span class="product-thumb product-thumb-placeholder">${escapeHtml((product.brand || "?").slice(0, 1).toUpperCase())}</span>`;
 }
 
 function list(items, emptyText) {
@@ -290,6 +316,11 @@ function hideSuggestions() {
   productSuggestions.innerHTML = "";
 }
 
+function syncSearchClear() {
+  if (!productClear) return;
+  productClear.hidden = !(productName?.value.trim());
+}
+
 function saveLocalHistory(key, entry, limit = 30) {
   try {
     const items = JSON.parse(localStorage.getItem(key) || "[]");
@@ -435,31 +466,26 @@ function renderReviewRequest(query) {
 function renderSuggestions(products) {
   if (!productSuggestions) return false;
 
-  const query = normalizeProductText(productName.value);
-  const exactVerified = products.find((product) => {
-    const fullName = normalizeProductText(`${product.brand} ${product.name}`);
-    const nameOnly = normalizeProductText(product.name);
-    return product.verified && (query === fullName || query === nameOnly);
-  });
-
-  if (exactVerified || (products.length === 1 && products[0].verified)) {
-    applyProduct(exactVerified || products[0]);
-    return true;
-  }
-
   if (!products.length) {
     renderReviewRequest(productName.value.trim());
     return false;
   }
 
   productSuggestions.innerHTML = products
-    .map((product, index) => `
-      <button class="suggestion" type="button" data-index="${index}">
-        <strong>${escapeHtml(product.name)} <em>${escapeHtml(product.trustLabel || "Источник")}</em></strong>
-        <span>${escapeHtml(product.brand)} · ${escapeHtml(product.category || "категория не указана")}</span>
-        <small>${escapeHtml(product.source)}${product.verifiedAt ? ` · ${escapeHtml(product.verifiedAt)}` : ""}${product.verified ? "" : " · проверьте по этикетке"}</small>
-      </button>
-    `)
+    .map((product, index) => {
+      const verifiedAt = product.verifiedAt ? ` · ${escapeHtml(product.verifiedAt)}` : "";
+      const verificationNote = product.verified ? "" : " · проверьте по этикетке";
+      return `
+        <button class="suggestion" type="button" data-index="${index}">
+          ${productImage(product)}
+          <span class="suggestion-body">
+            <strong>${escapeHtml(product.name)} <em>${escapeHtml(product.trustLabel || "Источник")}</em></strong>
+            <span>${escapeHtml(product.brand)} · ${escapeHtml(product.category || "категория не указана")}</span>
+            <small>${escapeHtml(product.source)}${verifiedAt}${verificationNote}</small>
+          </span>
+        </button>
+      `;
+    })
     .join("");
   productSuggestions.hidden = false;
 
@@ -471,7 +497,6 @@ function renderSuggestions(products) {
 
   return false;
 }
-
 async function searchProductByName(query) {
   try {
     const response = await fetch(`/api/products/search?q=${encodeURIComponent(query)}`);
@@ -511,6 +536,16 @@ const searchProducts = debounce(async () => {
 });
 
 productName?.addEventListener("input", searchProducts);
+productName?.addEventListener("input", syncSearchClear);
+
+productClear?.addEventListener("click", () => {
+  productName.value = "";
+  composition.value = "";
+  hideSuggestions();
+  setProductStatus("");
+  syncSearchClear();
+  productName.focus();
+});
 
 function syncConcernInput() {
   const selected = Array.from(concernChips)
@@ -538,6 +573,100 @@ sampleChips.forEach((chip) => {
     productName.dispatchEvent(new Event("input", { bubbles: true }));
   });
 });
+
+function openCatalog() {
+  catalogDrawer?.setAttribute("aria-hidden", "false");
+}
+
+function closeCatalog() {
+  catalogDrawer?.setAttribute("aria-hidden", "true");
+}
+
+async function renderCatalog(query) {
+  if (!catalogResults) return;
+  catalogResults.innerHTML = `<div class="loading compact-loading">Ищу в базе...</div>`;
+  const data = await searchProductByName(query);
+  const products = data.products || [];
+
+  if (!products.length) {
+    catalogResults.innerHTML = `<p class="field-note">По этой категории пока нет карточек. База будет расширяться.</p>`;
+    return;
+  }
+
+  catalogResults.innerHTML = products.slice(0, 10).map((product, index) => `
+    <button class="catalog-product" type="button" data-index="${index}">
+      ${productImage(product)}
+      <span>
+        <strong>${escapeHtml(product.brand)} ${escapeHtml(product.name)}</strong>
+        <small>${escapeHtml(product.category || product.source || "")}</small>
+      </span>
+    </button>
+  `).join("");
+
+  catalogResults.querySelectorAll(".catalog-product").forEach((button) => {
+    button.addEventListener("click", async () => {
+      await applyProduct(products[Number(button.dataset.index)]);
+      closeCatalog();
+    });
+  });
+}
+
+function initCatalog() {
+  if (!catalogCategories) return;
+
+  catalogCategories.innerHTML = CATALOG_CATEGORIES.map((category, index) => `
+    <button class="catalog-category" type="button" data-index="${index}">${escapeHtml(category.label)}</button>
+  `).join("");
+
+  catalogCategories.querySelectorAll(".catalog-category").forEach((button) => {
+    button.addEventListener("click", () => renderCatalog(CATALOG_CATEGORIES[Number(button.dataset.index)].query));
+  });
+
+  renderCatalog(CATALOG_CATEGORIES[0].query);
+}
+
+catalogToggle?.addEventListener("click", () => {
+  openCatalog();
+  renderCatalog(CATALOG_CATEGORIES[0].query);
+});
+
+if (catalogToggle) {
+  catalogToggle.onclick = (event) => {
+    event.preventDefault();
+    if (catalogOpen) catalogOpen.checked = true;
+    openCatalog();
+    renderCatalog(CATALOG_CATEGORIES[0].query);
+  };
+}
+
+document.addEventListener("click", (event) => {
+  if (event.target.closest?.("#catalogToggle")) {
+    event.preventDefault();
+    openCatalog();
+    renderCatalog(CATALOG_CATEGORIES[0].query);
+  }
+});
+
+catalogClose?.addEventListener("click", closeCatalog);
+catalogDrawer?.addEventListener("click", (event) => {
+  if (event.target === catalogDrawer) closeCatalog();
+});
+
+photoInput?.addEventListener("change", () => {
+  const file = photoInput.files?.[0];
+  if (!file || !photoStatus) return;
+
+  photoStatus.hidden = false;
+  photoStatus.textContent = "Фото принято. Сейчас включен быстрый прототип: сервис пробует искать по имени файла и базе. Полноценное OCR-распознавание состава лучше подключать серверным модулем.";
+
+  const guessed = file.name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").trim();
+  if (guessed) {
+    productName.value = guessed;
+    productName.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+});
+
+initCatalog();
 
 function render(data) {
   const expertSummary = cards(data.expertSummary, "Недостаточно данных для экспертной сводки.");

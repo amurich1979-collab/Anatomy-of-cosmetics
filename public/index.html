@@ -7,7 +7,7 @@
     <script>
       try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260709-9" />
+    <link rel="stylesheet" href="styles.css?v=20260709-15" />
   </head>
   <body>
     <div class="ambient-layer" aria-hidden="true">
@@ -47,10 +47,38 @@
 
           <label class="product-search">
             Название препарата или средства
-            <input id="productName" autocomplete="off" placeholder="Например: Glycolic Peel, Retinol, SPF..." />
+            <span class="search-input-wrap">
+              <input id="productName" autocomplete="off" placeholder="Например: Glycolic Peel, Retinol, SPF..." />
+              <button class="search-clear" type="button" id="productClear" aria-label="Очистить поиск" hidden>×</button>
+            </span>
             <div id="productSuggestions" class="suggestions" hidden></div>
             <span id="productStatus" class="field-note" hidden></span>
           </label>
+
+          <div class="search-tools">
+            <label class="secondary-action catalog-open" for="catalogOpen" id="catalogToggle">Каталог базы</label>
+            <label class="photo-upload" for="photoInput">
+              Фото упаковки
+              <input id="photoInput" type="file" accept="image/*" />
+            </label>
+          </div>
+
+          <div class="photo-status" id="photoStatus" hidden></div>
+
+          <input class="catalog-state" id="catalogOpen" type="checkbox" hidden />
+          <aside class="catalog-drawer" id="catalogDrawer" aria-hidden="true">
+            <div class="catalog-panel">
+              <div class="form-head">
+                <div>
+                  <p class="eyebrow">Каталог</p>
+                  <h2>Поиск по базе</h2>
+                </div>
+                <label class="icon-action" for="catalogOpen" id="catalogClose" aria-label="Закрыть каталог">×</label>
+              </div>
+              <div class="catalog-categories" id="catalogCategories"></div>
+              <div class="catalog-results" id="catalogResults"></div>
+            </div>
+          </aside>
 
           <label>
             Состав с упаковки, если нужен ручной ввод
@@ -120,7 +148,7 @@
       <section id="result" class="result" aria-live="polite"></section>
     </main>
 
-    <script src="theme.js?v=20260709-9"></script>
-    <script src="app.js?v=20260709-9" type="module"></script>
+    <script src="theme.js?v=20260709-15"></script>
+    <script src="app.js?v=20260709-15" type="module"></script>
   </body>
 </html>
