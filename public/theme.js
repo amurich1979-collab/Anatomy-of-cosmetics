@@ -7,13 +7,30 @@ const THEMES = {
 
 const STORAGE_KEY = "theme";
 
+function readStoredTheme() {
+  try {
+    return localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredTheme(theme) {
+  try {
+    localStorage.setItem(STORAGE_KEY, theme);
+  } catch {
+    // Theme still works for the current page when storage is unavailable.
+  }
+}
+
 function setTheme(theme) {
   const nextTheme = THEMES[theme] ? theme : "fresh";
   document.documentElement.dataset.theme = nextTheme;
-  localStorage.setItem(STORAGE_KEY, nextTheme);
+  writeStoredTheme(nextTheme);
 
   document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
     button.textContent = nextTheme === "dark" ? "Ночь" : "День";
+    button.setAttribute("aria-pressed", String(nextTheme === "dark"));
   });
 
   document.querySelectorAll("[data-theme-choice]").forEach((button) => {
@@ -28,10 +45,11 @@ function cycleTheme() {
   setTheme(current === "dark" ? "fresh" : "dark");
 }
 
-setTheme(localStorage.getItem(STORAGE_KEY) || document.documentElement.dataset.theme || "fresh");
+setTheme(readStoredTheme() || document.documentElement.dataset.theme || "fresh");
 
-document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
-  button.addEventListener("click", cycleTheme);
+document.addEventListener("click", (event) => {
+  const button = event.target.closest?.("[data-theme-toggle]");
+  if (button) cycleTheme();
 });
 
 document.querySelectorAll("[data-theme-choice]").forEach((button) => {

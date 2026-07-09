@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Вход - Анатомия косметологии</title>
     <script>
-      document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh";
+      try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260709-1" />
+    <link rel="stylesheet" href="styles.css?v=20260709-3" />
   </head>
   <body>
     <div class="ambient-layer" aria-hidden="true">
@@ -58,7 +58,7 @@
       </section>
     </main>
 
-    <script src="theme.js" type="module"></script>
-    <script src="login.js" type="module"></script>
+    <script src="theme.js?v=20260709-3"></script>
+    <script src="login.js?v=20260709-3"></script>
   </body>
 </html>

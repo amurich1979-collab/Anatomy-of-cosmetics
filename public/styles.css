@@ -263,6 +263,19 @@ select {
     url("assets/cosmetology-hero.png") center / cover;
 }
 
+:root[data-theme="dark"] .intro {
+  border-color: rgba(128, 228, 201, 0.22);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+}
+
+:root[data-theme="dark"] .intro::before {
+  background:
+    linear-gradient(90deg, rgba(14, 20, 19, 0.92) 0%, rgba(14, 20, 19, 0.78) 48%, rgba(14, 20, 19, 0.42) 100%),
+    linear-gradient(180deg, rgba(7, 17, 16, 0.2), rgba(7, 17, 16, 0.68)),
+    url("assets/cosmetology-hero.png") center / cover;
+  filter: saturate(0.82) brightness(0.72);
+}
+
 .intro::after {
   content: "";
   position: absolute;
@@ -325,6 +338,19 @@ h3 {
   line-height: 1.55;
 }
 
+:root[data-theme="dark"] .intro h1 {
+  color: #f4fff9;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.34);
+}
+
+:root[data-theme="dark"] .intro .eyebrow {
+  color: #8ff1d4;
+}
+
+:root[data-theme="dark"] .intro p:not(.eyebrow) {
+  color: #d8e6df;
+}
+
 .trust-row {
   display: flex;
   flex-wrap: wrap;
@@ -347,6 +373,27 @@ h3 {
 
 .trust-row span {
   padding: 8px 11px;
+}
+
+:root[data-theme="dark"] .trust-row span,
+:root[data-theme="dark"] .sample-chip,
+:root[data-theme="dark"] .concern-chip {
+  border-color: rgba(128, 228, 201, 0.34);
+  background: rgba(14, 26, 23, 0.88);
+  color: #9cf5dc;
+}
+
+:root[data-theme="dark"] .sample-chip:hover,
+:root[data-theme="dark"] .concern-chip:hover {
+  background: rgba(32, 61, 53, 0.96);
+  color: #d9fff3;
+}
+
+:root[data-theme="dark"] .concern-chip[aria-pressed="true"] {
+  border-color: rgba(244, 255, 249, 0.58);
+  background: rgba(244, 255, 249, 0.1);
+  color: #f4fff9;
+  box-shadow: 0 0 0 1px rgba(128, 228, 201, 0.16), 0 8px 18px rgba(0, 0, 0, 0.22);
 }
 
 .panel,
