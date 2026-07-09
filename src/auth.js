@@ -1,8 +1,12 @@
 import crypto from "node:crypto";
 import {
+  createPasswordResetToken,
   createUser,
+  getValidPasswordResetToken,
   getUserByEmail,
   getUserById,
+  markPasswordResetTokenUsed,
+  updateUserPassword,
   publicUser
 } from "./database.js";
 
@@ -69,6 +73,27 @@ function validateEmail(email) {
 
 function validatePassword(password) {
   return String(password || "").length >= 8;
+}
+
+function hashResetToken(token) {
+  return crypto.createHash("sha256").update(String(token)).digest("hex");
+}
+
+function appBaseUrl(req) {
+  const configured = process.env.APP_URL || process.env.PUBLIC_URL;
+  if (configured) return configured.replace(/\/+$/, "");
+  const protocol = req.headers["x-forwarded-proto"] || req.protocol || "http";
+  const host = req.headers["x-forwarded-host"] || req.headers.host;
+  return `${protocol}://${host}`;
+}
+
+async function sendPasswordResetEmail({ email, resetLink }) {
+  if (process.env.SMTP_HOST) {
+    console.log(`[mail pending] Password reset email for ${email}: ${resetLink}`);
+    return;
+  }
+
+  console.log(`[dev password reset] ${email}: ${resetLink}`);
 }
 
 export function hashPassword(password) {
@@ -151,6 +176,68 @@ export function registerAuthRoutes(app) {
   app.post("/api/auth/logout", (_req, res) => {
     clearSessionCookie(res);
     res.json({ ok: true });
+  });
+
+  app.post("/api/auth/password-reset/request", async (req, res) => {
+    const email = String(req.body?.email || "").trim().toLowerCase();
+    const neutral = {
+      ok: true,
+      message: "Если такой email зарегистрирован, мы отправим ссылку для восстановления пароля."
+    };
+
+    if (!validateEmail(email)) {
+      res.json(neutral);
+      return;
+    }
+
+    const user = await getUserByEmail(email);
+    if (!user) {
+      res.json(neutral);
+      return;
+    }
+
+    const rawToken = crypto.randomBytes(32).toString("base64url");
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+    await createPasswordResetToken({
+      userId: user.id,
+      tokenHash: hashResetToken(rawToken),
+      expiresAt
+    });
+
+    const resetLink = `${appBaseUrl(req)}/reset-password?token=${encodeURIComponent(rawToken)}`;
+    await sendPasswordResetEmail({ email, resetLink });
+
+    res.json({
+      ...neutral,
+      devResetLink: process.env.NODE_ENV === "production" ? undefined : resetLink
+    });
+  });
+
+  app.post("/api/auth/password-reset/confirm", async (req, res) => {
+    const token = String(req.body?.token || "");
+    const password = String(req.body?.password || "");
+
+    if (!token || !validatePassword(password)) {
+      res.status(400).json({ error: "Ссылка недействительна или пароль короче 8 символов." });
+      return;
+    }
+
+    const record = await getValidPasswordResetToken(hashResetToken(token));
+    if (!record) {
+      res.status(400).json({ error: "Ссылка устарела или уже использована. Запросите восстановление еще раз." });
+      return;
+    }
+
+    const user = await updateUserPassword(record.userId, hashPassword(password));
+    await markPasswordResetTokenUsed(record.id);
+
+    if (!user) {
+      res.status(400).json({ error: "Не удалось обновить пароль. Запросите восстановление еще раз." });
+      return;
+    }
+
+    setSessionCookie(res, user.id);
+    res.json({ user: publicUser(user), message: "Пароль обновлен. Вы вошли в аккаунт." });
   });
 
   app.post("/api/auth/oauth/:provider", (req, res) => {

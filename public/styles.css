@@ -743,9 +743,18 @@ select {
 }
 
 .catalog-categories {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  gap: 10px;
+}
+
+.catalog-filters {
+  display: grid;
+  gap: 10px;
+}
+
+.catalog-filters label {
+  gap: 6px;
+  font-size: 0.8rem;
 }
 
 .catalog-category {
@@ -799,6 +808,10 @@ select {
 
 .catalog-brand {
   background: var(--surface);
+}
+
+.catalog-letter {
+  background: color-mix(in srgb, var(--surface) 88%, var(--accent-soft));
 }
 
 .catalog-product {
@@ -883,6 +896,18 @@ button:hover {
   border: 1px solid var(--line);
   background: color-mix(in srgb, var(--surface) 86%, var(--accent-soft));
   color: var(--accent-strong);
+}
+
+.text-link {
+  width: fit-content;
+  color: var(--accent-strong);
+  font-size: 0.88rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.text-link:hover {
+  text-decoration: underline;
 }
 
 .catalog-open {

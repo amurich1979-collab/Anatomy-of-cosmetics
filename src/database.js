@@ -24,11 +24,20 @@ function createId(prefix) {
   return `${prefix}_${crypto.randomBytes(12).toString("hex")}`;
 }
 
+function ensureFileDbShape(db) {
+  return {
+    users: Array.isArray(db.users) ? db.users : [],
+    settings: Array.isArray(db.settings) ? db.settings : [],
+    history: Array.isArray(db.history) ? db.history : [],
+    passwordResetTokens: Array.isArray(db.passwordResetTokens) ? db.passwordResetTokens : []
+  };
+}
+
 function readFileDb() {
   try {
-    return JSON.parse(fs.readFileSync(fileDbPath, "utf8"));
+    return ensureFileDbShape(JSON.parse(fs.readFileSync(fileDbPath, "utf8")));
   } catch {
-    return { users: [], settings: [], history: [] };
+    return ensureFileDbShape({});
   }
 }
 
@@ -94,6 +103,17 @@ export async function initDatabase() {
       kind text not null,
       title text not null,
       payload jsonb not null default '{}'::jsonb,
+      created_at timestamptz not null default now()
+    )
+  `);
+
+  await query(`
+    create table if not exists password_reset_tokens (
+      id text primary key,
+      user_id text references users(id) on delete cascade,
+      token_hash text unique not null,
+      expires_at timestamptz not null,
+      used_at timestamptz,
       created_at timestamptz not null default now()
     )
   `);
@@ -268,6 +288,90 @@ export async function clearUserHistory(userId) {
   return { deleted: before - db.history.length };
 }
 
+export async function createPasswordResetToken({ userId, tokenHash, expiresAt }) {
+  if (!userId || !tokenHash || !expiresAt) return null;
+  const id = createId("rst");
+
+  if (pgPool) {
+    await query("delete from password_reset_tokens where user_id = $1 and used_at is null", [userId]);
+    const result = await query(
+      `insert into password_reset_tokens (id, user_id, token_hash, expires_at)
+       values ($1, $2, $3, $4)
+       returning id, user_id, token_hash, expires_at, used_at, created_at`,
+      [id, userId, tokenHash, expiresAt]
+    );
+    return mapPasswordResetToken(result.rows[0]);
+  }
+
+  const db = readFileDb();
+  db.passwordResetTokens = db.passwordResetTokens.filter((token) => token.userId !== userId || token.usedAt);
+  const record = { id, userId, tokenHash, expiresAt, usedAt: null, createdAt: now() };
+  db.passwordResetTokens.push(record);
+  writeFileDb(db);
+  return record;
+}
+
+export async function getValidPasswordResetToken(tokenHash) {
+  if (!tokenHash) return null;
+
+  if (pgPool) {
+    const result = await query(
+      `select id, user_id, token_hash, expires_at, used_at, created_at
+       from password_reset_tokens
+       where token_hash = $1 and used_at is null and expires_at > now()`,
+      [tokenHash]
+    );
+    return result.rows[0] ? mapPasswordResetToken(result.rows[0]) : null;
+  }
+
+  const nowMs = Date.now();
+  return readFileDb().passwordResetTokens.find((token) => {
+    return token.tokenHash === tokenHash && !token.usedAt && Date.parse(token.expiresAt) > nowMs;
+  }) || null;
+}
+
+export async function markPasswordResetTokenUsed(tokenId) {
+  if (!tokenId) return null;
+
+  if (pgPool) {
+    const result = await query(
+      `update password_reset_tokens
+       set used_at = now()
+       where id = $1
+       returning id, user_id, token_hash, expires_at, used_at, created_at`,
+      [tokenId]
+    );
+    return result.rows[0] ? mapPasswordResetToken(result.rows[0]) : null;
+  }
+
+  const db = readFileDb();
+  const record = db.passwordResetTokens.find((token) => token.id === tokenId);
+  if (record) {
+    record.usedAt = now();
+    writeFileDb(db);
+  }
+  return record || null;
+}
+
+export async function updateUserPassword(userId, passwordHash) {
+  if (!userId || !passwordHash) return null;
+
+  if (pgPool) {
+    const result = await query(
+      "update users set password_hash = $1 where id = $2 returning id, email, name, provider, created_at",
+      [passwordHash, userId]
+    );
+    return result.rows[0] || null;
+  }
+
+  const db = readFileDb();
+  const user = db.users.find((record) => record.id === userId);
+  if (!user) return null;
+  user.passwordHash = passwordHash;
+  writeFileDb(db);
+  return publicUser(user);
+}
+
 export function publicUser(user) {
   if (!user) return null;
   return {
@@ -286,6 +390,17 @@ function mapHistory(record) {
     kind: record.kind,
     title: record.title,
     payload: parseJson(record.payload, {}),
+    createdAt: record.created_at || record.createdAt
+  };
+}
+
+function mapPasswordResetToken(record) {
+  return {
+    id: record.id,
+    userId: record.user_id || record.userId,
+    tokenHash: record.token_hash || record.tokenHash,
+    expiresAt: record.expires_at || record.expiresAt,
+    usedAt: record.used_at || record.usedAt || null,
     createdAt: record.created_at || record.createdAt
   };
 }

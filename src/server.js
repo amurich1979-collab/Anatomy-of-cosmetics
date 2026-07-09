@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { analyzeComposition } from "./analyzer.js";
 import { attachCurrentUser, registerAuthRoutes, requireUser } from "./auth.js";
 import { addUserHistory, clearUserHistory, getUserSettings, initDatabase, listUserHistory, updateUserSettings } from "./database.js";
-import { createReviewRequest, getProductDetails, identifyProductFromText, listReviewRequests, searchProducts } from "./products.js";
+import { createReviewRequest, getProductDetails, identifyProductFromText, listCatalogProducts, listReviewRequests, searchProducts } from "./products.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
@@ -34,6 +34,10 @@ app.get("/api/products/search", async (req, res) => {
 
   const products = await searchProducts(query);
   res.json({ products });
+});
+
+app.get("/api/products/catalog", (_req, res) => {
+  res.json({ products: listCatalogProducts() });
 });
 
 app.get("/api/products/:id", async (req, res) => {
@@ -144,6 +148,10 @@ app.get("/review", (_req, res) => {
 
 app.get("/login", (_req, res) => {
   res.sendFile(path.join(publicDir, "login.html"));
+});
+
+app.get("/reset-password", (_req, res) => {
+  res.sendFile(path.join(publicDir, "reset-password.html"));
 });
 
 app.get("/settings", (_req, res) => {

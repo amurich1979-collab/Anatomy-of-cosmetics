@@ -500,6 +500,17 @@ export async function searchProducts(query, limit = 8) {
   return [...merged, ...freshWebExternal].slice(0, limit);
 }
 
+export function listCatalogProducts() {
+  return loadProductIndex()
+    .map((product) => toSummary(product))
+    .sort((a, b) => {
+      return (
+        a.brand.localeCompare(b.brand) ||
+        a.name.localeCompare(b.name)
+      );
+    });
+}
+
 export async function getProductDetails(id) {
   const cleanId = String(id || "").trim();
   if (!cleanId) return null;

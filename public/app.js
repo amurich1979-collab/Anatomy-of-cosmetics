@@ -17,15 +17,6 @@ const photoInput = document.querySelector("#photoInput");
 const photoStatus = document.querySelector("#photoStatus");
 const tg = window.Telegram?.WebApp;
 
-const CATALOG_CATEGORIES = [
-  { label: "Волосы и кожа головы", query: "hair growth Trixosil" },
-  { label: "Кислоты и пилинги", query: "glycolic lactic salicylic peel" },
-  { label: "SPF и защита", query: "SPF zinc titanium sunscreen" },
-  { label: "Акне и комедоны", query: "acne salicylic niacinamide" },
-  { label: "Барьер и восстановление", query: "barrier panthenol ceramide" },
-  { label: "Ретиноиды", query: "retinol retinal" }
-];
-
 const STATIC_PRODUCTS = [
   {
     id: "demo-aha-post-peel",
@@ -582,52 +573,118 @@ function closeCatalog() {
   catalogDrawer?.setAttribute("aria-hidden", "true");
 }
 
-function groupProductsByBrand(products = []) {
+let catalogProductsCache = [];
+let catalogLoaded = false;
+
+function catalogText(product) {
+  return normalizeProductText(`${product.brand} ${product.name} ${product.category} ${product.source || ""} ${product.composition || ""}`);
+}
+
+function classifyCatalogProduct(product) {
+  const text = catalogText(product);
+  if (/hair|волос|scalp|шампун|бород|trixosil/.test(text)) return { category: "Волосы и кожа головы", subcategory: /shampoo|шампун/.test(text) ? "Шампуни и очищение" : "Рост и уход" };
+  if (/spf|sunscreen|zinc|titanium|uv|санскрин|защит/.test(text)) return { category: "SPF и защита", subcategory: /mineral|zinc|titanium/.test(text) ? "Минеральные фильтры" : "Солнцезащита" };
+  if (/glycolic|lactic|salicylic|aha|bha|peel|acid|кислот|пилинг/.test(text)) return { category: "Кислоты и пилинги", subcategory: /salicylic|bha/.test(text) ? "BHA" : /glycolic|lactic|aha/.test(text) ? "AHA" : "Пилинги" };
+  if (/acne|акне|comedon|комедон|clarifying/.test(text)) return { category: "Акне и комедоны", subcategory: "Себорегуляция" };
+  if (/retinol|retinal|retinoid|ретин/.test(text)) return { category: "Ретиноиды", subcategory: "Ретинол и ретиноиды" };
+  if (/barrier|panthenol|ceramide|cicalfate|repair|recovery|барьер|восстанов/.test(text)) return { category: "Барьер и восстановление", subcategory: "Восстановление" };
+  if (/clean|soap|gel|wash|очищ|мыло/.test(text)) return { category: "Очищение", subcategory: "Гели и мыло" };
+  if (/moistur|cream|serum|сыворот|крем|увлаж/.test(text)) return { category: "Уходовые средства", subcategory: /serum|сыворот/.test(text) ? "Сыворотки" : "Кремы и увлажнение" };
+  return { category: "Другое", subcategory: product.sourceType === "open_beauty_facts" ? "Open Beauty Facts" : "Локальная база" };
+}
+
+function enrichCatalogProduct(product) {
+  return { ...product, ...classifyCatalogProduct(product) };
+}
+
+async function loadCatalogProducts() {
+  if (catalogLoaded) return catalogProductsCache;
+  const response = await fetch("/api/products/catalog");
+  const data = await response.json();
+  catalogProductsCache = (data.products || []).map(enrichCatalogProduct);
+  catalogLoaded = true;
+  return catalogProductsCache;
+}
+
+function uniqueSorted(items) {
+  return [...new Set(items.filter(Boolean))].sort((a, b) => a.localeCompare(b));
+}
+
+function renderCatalogFilters(products) {
+  if (!catalogCategories) return;
+  const brands = uniqueSorted(products.map((product) => product.brand));
+  const categories = uniqueSorted(products.map((product) => product.category));
+  catalogCategories.innerHTML = `
+    <div class="catalog-filters">
+      <label>Поиск<input id="catalogTextFilter" type="search" placeholder="Название, бренд, актив..." /></label>
+      <label>Категория<select id="catalogCategoryFilter"><option value="">Все категории</option>${categories.map((item) => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("")}</select></label>
+      <label>Производитель<select id="catalogBrandFilter"><option value="">Все производители</option>${brands.map((item) => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("")}</select></label>
+      <label>Данные<select id="catalogSourceFilter"><option value="">Любые данные</option><option value="verified">Проверенные</option><option value="hasComposition">Есть состав</option><option value="hasImage">Есть фото</option><option value="open_beauty_facts">Open Beauty Facts</option></select></label>
+    </div>
+  `;
+  catalogCategories.querySelectorAll("input, select").forEach((control) => {
+    control.addEventListener("input", () => renderCatalogTree(applyCatalogFilters(products)));
+    control.addEventListener("change", () => renderCatalogTree(applyCatalogFilters(products)));
+  });
+}
+
+function applyCatalogFilters(products) {
+  const text = normalizeProductText(document.querySelector("#catalogTextFilter")?.value || "");
+  const category = document.querySelector("#catalogCategoryFilter")?.value || "";
+  const brand = document.querySelector("#catalogBrandFilter")?.value || "";
+  const source = document.querySelector("#catalogSourceFilter")?.value || "";
+  return products.filter((product) => {
+    if (text && !catalogText(product).includes(text)) return false;
+    if (category && product.category !== category) return false;
+    if (brand && product.brand !== brand) return false;
+    if (source === "verified" && !product.verified) return false;
+    if (source === "hasComposition" && !product.hasComposition) return false;
+    if (source === "hasImage" && !product.imageUrl) return false;
+    if (source === "open_beauty_facts" && product.sourceType !== "open_beauty_facts") return false;
+    return true;
+  });
+}
+
+function groupBy(items, key) {
   const grouped = new Map();
-  products.forEach((product) => {
-    const brand = product.brand || "Р‘РµР· Р±СЂРµРЅРґР°";
-    if (!grouped.has(brand)) grouped.set(brand, []);
-    grouped.get(brand).push(product);
+  items.forEach((item) => {
+    const value = item[key] || "Без раздела";
+    if (!grouped.has(value)) grouped.set(value, []);
+    grouped.get(value).push(item);
   });
   return Array.from(grouped.entries()).sort(([a], [b]) => a.localeCompare(b));
 }
 
-async function loadCatalogSections() {
-  const sections = [];
-
-  for (const category of CATALOG_CATEGORIES) {
-    const data = await searchProductByName(category.query);
-    const products = data.products || [];
-    if (products.length) sections.push({ ...category, products });
-  }
-
-  return sections;
+function productLetter(product) {
+  return (product.name || product.brand || "#").trim().slice(0, 1).toUpperCase();
 }
 
-function renderCatalogTree(sections = []) {
+function renderCatalogTree(products = []) {
   if (!catalogResults) return;
-
-  if (!sections.length) {
-    catalogResults.innerHTML = `<p class="field-note">Р’ Р»РѕРєР°Р»СЊРЅРѕР№ Р±Р°Р·Рµ РїРѕРєР° РЅРµС‚ РєР°СЂС‚РѕС‡РµРє РґР»СЏ РєР°С‚Р°Р»РѕРіР°.</p>`;
+  if (!products.length) {
+    catalogResults.innerHTML = `<p class="field-note">По выбранным фильтрам ничего не найдено.</p>`;
     return;
   }
-
-  catalogResults.innerHTML = sections.map((section, sectionIndex) => `
-    <details class="catalog-node" ${sectionIndex === 0 ? "open" : ""}>
-      <summary>${escapeHtml(section.label)} <span>${section.products.length}</span></summary>
+  catalogResults.innerHTML = groupBy(products, "category").map(([category, categoryProducts], categoryIndex) => `
+    <details class="catalog-node" ${categoryIndex === 0 ? "open" : ""}>
+      <summary>${escapeHtml(category)} <span>${categoryProducts.length}</span></summary>
       <div class="catalog-branch">
-        ${groupProductsByBrand(section.products).map(([brand, products]) => `
+        ${groupBy(categoryProducts, "subcategory").map(([subcategory, subProducts]) => `
           <details class="catalog-node catalog-brand" open>
-            <summary>${escapeHtml(brand)} <span>${products.length}</span></summary>
-            <div class="catalog-products">
-              ${products.map((product) => `
-                <button class="catalog-product" type="button" data-product-id="${escapeHtml(product.id)}">
-                  ${productImage(product)}
-                  <span>
-                    <strong>${escapeHtml(product.name)}</strong>
-                    <small>${escapeHtml(product.category || product.source || "")}</small>
-                  </span>
-                </button>
+            <summary>${escapeHtml(subcategory)} <span>${subProducts.length}</span></summary>
+            <div class="catalog-branch">
+              ${groupBy(subProducts.map((product) => ({ ...product, letter: productLetter(product) })), "letter").map(([letter, letterProducts]) => `
+                <details class="catalog-node catalog-letter" open>
+                  <summary>${escapeHtml(letter)} <span>${letterProducts.length}</span></summary>
+                  <div class="catalog-products">
+                    ${letterProducts.sort((a, b) => a.name.localeCompare(b.name)).map((product) => `
+                      <button class="catalog-product" type="button" data-product-id="${escapeHtml(product.id)}">
+                        ${productImage(product)}
+                        <span><strong>${escapeHtml(product.name)}</strong><small>${escapeHtml(product.brand)} · ${escapeHtml(product.source || "")}</small></span>
+                      </button>
+                    `).join("")}
+                  </div>
+                </details>
               `).join("")}
             </div>
           </details>
@@ -635,11 +692,9 @@ function renderCatalogTree(sections = []) {
       </div>
     </details>
   `).join("");
-
   catalogResults.querySelectorAll(".catalog-product").forEach((button) => {
     button.addEventListener("click", async () => {
-      const productId = button.dataset.productId;
-      const product = sections.flatMap((section) => section.products).find((item) => item.id === productId);
+      const product = catalogProductsCache.find((item) => item.id === button.dataset.productId);
       if (product) await applyProduct(product);
       if (catalogOpen) catalogOpen.checked = false;
       closeCatalog();
@@ -649,14 +704,13 @@ function renderCatalogTree(sections = []) {
 
 async function renderCatalog() {
   if (!catalogResults) return;
-  catalogResults.innerHTML = `<div class="loading compact-loading">РЎРѕР±РёСЂР°СЋ РґРµСЂРµРІРѕ Р»РѕРєР°Р»СЊРЅРѕР№ Р±Р°Р·С‹...</div>`;
-  renderCatalogTree(await loadCatalogSections());
+  catalogResults.innerHTML = `<div class="loading compact-loading">Собираю каталог...</div>`;
+  const products = await loadCatalogProducts();
+  renderCatalogFilters(products);
+  renderCatalogTree(applyCatalogFilters(products));
 }
 
 function initCatalog() {
-  if (catalogCategories) {
-    catalogCategories.innerHTML = `<p class="field-note">Р Р°СЃРєСЂРѕР№С‚Рµ СЂР°Р·РґРµР», Р·Р°С‚РµРј Р±СЂРµРЅРґ Рё РІС‹Р±РµСЂРёС‚Рµ СЃСЂРµРґСЃС‚РІРѕ.</p>`;
-  }
   renderCatalog();
 }
 catalogToggle?.addEventListener("click", () => {
@@ -832,7 +886,7 @@ form.addEventListener("submit", async (event) => {
   const hasComposition = await autofillCompositionFromName();
 
   if (!hasComposition) {
-    result.innerHTML = `<div class="error">РќРµ СѓРґР°Р»РѕСЃСЊ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РїРѕРґС‚СЏРЅСѓС‚СЊ СЃРѕСЃС‚Р°РІ. РџРѕРїСЂРѕР±СѓР№С‚Рµ РІС‹Р±СЂР°С‚СЊ СЃСЂРµРґСЃС‚РІРѕ РёР· РїРѕРґСЃРєР°Р·РѕРє РёР»Рё СѓС‚РѕС‡РЅРёС‚СЊ РЅР°Р·РІР°РЅРёРµ.</div>`;
+    result.innerHTML = `<div class="error">Не удалось автоматически подтянуть состав. Выберите средство из подсказок или каталога, либо уточните название.</div>`;
     return;
   }
 
