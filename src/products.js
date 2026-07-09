@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import crypto from "node:crypto";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
@@ -59,6 +60,10 @@ function normalize(value) {
     .trim();
 }
 
+function makeExternalId(url) {
+  return `web-${crypto.createHash("sha1").update(String(url)).digest("hex").slice(0, 14)}`;
+}
+
 function tokens(value) {
   return normalize(value).split(" ").filter(Boolean);
 }
@@ -97,9 +102,34 @@ function toSummary(product) {
     verifiedAt: trusted.verifiedAt,
     importedAt: trusted.importedAt,
     compositionScope: trusted.compositionScope,
+    composition: trusted.composition,
     hasComposition: Boolean(trusted.hasComposition ?? trusted.composition),
     detailMode: trusted.detailMode || (trusted.sourceType === "open_beauty_facts" ? "open_beauty_facts" : "local")
   };
+}
+
+function stripTags(value) {
+  return String(value || "")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&quot;/g, "\"")
+    .replace(/&#x27;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractCompositionFromText(text) {
+  const clean = stripTags(text);
+  const match = clean.match(/(?:состав|inci|ingredients)\s*[:.]\s*([^<>]{30,900})/i);
+  if (!match) return "";
+
+  return match[1]
+    .replace(/\s+(?:описание|способ применения|характеристики|отзывы|купить|цена)\b.*$/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function toIndexRecord(product) {
@@ -107,7 +137,7 @@ function toIndexRecord(product) {
   return {
     ...summary,
     hasComposition: Boolean(product.composition || product.hasComposition),
-    searchText: normalize(`${summary.brand} ${summary.name} ${summary.category}`)
+    searchText: normalize(`${summary.brand} ${summary.name} ${summary.category} ${(product.searchAliases || []).join(" ")}`)
   };
 }
 
@@ -155,7 +185,7 @@ function localScore(product, query) {
   const name = normalize(product.name);
   const category = normalize(product.category);
   const full = normalize(`${product.brand} ${product.name}`);
-  const haystack = product.searchText || normalize(`${product.brand} ${product.name} ${product.category}`);
+  const haystack = product.searchText || normalize(`${product.brand} ${product.name} ${product.category} ${(product.searchAliases || []).join(" ")}`);
   const queryTokens = tokens(normalizedQuery);
   const productTokens = tokens(`${product.brand} ${product.name}`);
 
@@ -174,6 +204,8 @@ function localScore(product, query) {
     if (tokenHit) score += 70;
     else if (tokenInside && queryToken.length > 1) score += 25;
   });
+
+  if (score <= 0) return 0;
 
   if (product.verified) score += 12;
   if (product.hasComposition) score += 8;
@@ -350,15 +382,101 @@ export async function searchOpenBeautyFacts(query, limit = 5) {
   return fetchOpenBeautyFactsSearch(query, limit);
 }
 
+function parseDuckDuckGoResults(html, limit = 4) {
+  const results = [];
+  const blocks = String(html).split(/<div class="result\b/i).slice(1);
+
+  for (const block of blocks) {
+    const titleMatch = block.match(/<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/i);
+    if (!titleMatch) continue;
+
+    const snippetMatch = block.match(/<a[^>]+class="result__snippet"[^>]*>([\s\S]*?)<\/a>/i) ||
+      block.match(/<div[^>]+class="result__snippet"[^>]*>([\s\S]*?)<\/div>/i);
+    const title = stripTags(titleMatch[2])
+      .replace(/\s*[-|–]\s*(Ozon|Wildberries|Яндекс Маркет|Yandex Market|Маркет|Market).*$/i, "")
+      .trim();
+    const sourceUrl = decodeURIComponent(titleMatch[1].replace(/^.*uddg=/, "").replace(/&rut=.*$/, ""));
+    const snippet = stripTags(snippetMatch?.[1] || "");
+    const composition = extractCompositionFromText(`${title}. ${snippet}`);
+
+    if (!title || !sourceUrl || results.some((item) => item.sourceUrl === sourceUrl)) continue;
+
+    results.push(withTrust({
+      id: makeExternalId(sourceUrl),
+      name: title.slice(0, 160),
+      brand: title.split(/\s+/)[0] || "Источник из интернета",
+      category: "Найдено во внешнем поиске",
+      composition,
+      source: "Внешний поиск",
+      sourceUrl,
+      sourceType: "web_search",
+      detailMode: "web_search",
+      trustLevel: "E",
+      trustLabel: composition ? "Черновик из интернета" : "Найдено в интернете",
+      trustNote: "Карточка найдена внешним поиском. Состав нужно сверить по упаковке или официальной карточке.",
+      verified: false,
+      hasComposition: Boolean(composition),
+      importedAt: new Date().toISOString().slice(0, 10)
+    }));
+
+    if (results.length >= limit) break;
+  }
+
+  return results.map(toSummary);
+}
+
+async function fetchWebSearchProducts(query, limit = 4) {
+  if (process.env.WEB_SEARCH_FALLBACK === "false") return [];
+
+  const params = new URLSearchParams({
+    q: `${query} состав INCI косметология OR косметика`,
+    kl: "ru-ru"
+  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5500);
+
+  try {
+    const response = await fetch(`https://html.duckduckgo.com/html/?${params}`, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "AnatomyCosmetologyMVP/0.1 (external product lookup)"
+      }
+    });
+
+    if (!response.ok) return [];
+
+    const html = await response.text();
+    const products = parseDuckDuckGoResults(html, limit);
+    const cache = loadDetailsCache();
+    const details = products
+      .filter((product) => product.hasComposition)
+      .map((product) => ({
+        ...product,
+        composition: extractCompositionFromText(`${product.name}. ${product.trustNote || ""}`) || product.composition
+      }));
+
+    if (details.length) {
+      const detailIds = new Set(details.map((product) => product.id));
+      saveDetailsCache([...details, ...cache.filter((product) => !detailIds.has(product.id))]);
+    }
+
+    return products;
+  } catch {
+    return [];
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 export async function searchProducts(query, limit = 8) {
   const normalizedQuery = normalize(query);
   if (normalizedQuery.length < 1) return [];
 
   const local = searchLocalProducts(query, limit);
-  if (normalizedQuery.length < 3 || local.length >= limit) return local.slice(0, limit);
+  if (normalizedQuery.length < 3 || local.length > 0) return local.slice(0, limit);
 
-  const external = await searchOpenBeautyFacts(query, Math.max(0, limit - local.length));
-  const seen = new Set(local.map((product) => normalize(`${product.brand} ${product.name}`)));
+  const external = await searchOpenBeautyFacts(query, limit);
+  const seen = new Set();
   const freshExternal = external.filter((product) => {
     const identity = normalize(`${product.brand} ${product.name}`);
     if (seen.has(identity)) return false;
@@ -366,7 +484,18 @@ export async function searchProducts(query, limit = 8) {
     return true;
   });
 
-  return [...local, ...freshExternal].slice(0, limit);
+  const merged = freshExternal;
+  if (merged.length >= limit) return merged.slice(0, limit);
+
+  const webExternal = await fetchWebSearchProducts(query, Math.max(0, limit - merged.length));
+  const freshWebExternal = webExternal.filter((product) => {
+    const identity = normalize(`${product.brand} ${product.name}`);
+    if (seen.has(identity)) return false;
+    seen.add(identity);
+    return true;
+  });
+
+  return [...merged, ...freshWebExternal].slice(0, limit);
 }
 
 export async function getProductDetails(id) {

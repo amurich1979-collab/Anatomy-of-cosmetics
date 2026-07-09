@@ -1,7 +1,5 @@
 const THEMES = {
   fresh: "День",
-  rose: "Роза",
-  clinic: "Клиника",
   dark: "Ночь"
 };
 
@@ -29,7 +27,7 @@ function setTheme(theme) {
   writeStoredTheme(nextTheme);
 
   document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
-    button.textContent = nextTheme === "dark" ? "Ночь" : "День";
+    button.textContent = THEMES[nextTheme];
     button.setAttribute("aria-pressed", String(nextTheme === "dark"));
   });
 

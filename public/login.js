@@ -4,6 +4,8 @@ const title = document.querySelector("#authTitle");
 const submit = document.querySelector("#authSubmit");
 const tabs = document.querySelectorAll("[data-auth-mode]");
 const providerButtons = document.querySelectorAll("[data-provider]");
+const passwordInput = document.querySelector("#loginPassword");
+const passwordToggle = document.querySelector("#passwordToggle");
 
 let mode = "login";
 
@@ -70,6 +72,14 @@ providerButtons.forEach((button) => {
       setStatus(`${provider} вход требует настройки OAuth на сервере.`, "warn");
     }
   });
+});
+
+passwordToggle?.addEventListener("click", () => {
+  const isVisible = passwordInput.type === "text";
+  passwordInput.type = isVisible ? "password" : "text";
+  passwordToggle.textContent = isVisible ? "Показать" : "Скрыть";
+  passwordToggle.setAttribute("aria-label", isVisible ? "Показать пароль" : "Скрыть пароль");
+  passwordToggle.setAttribute("aria-pressed", String(!isVisible));
 });
 
 form?.addEventListener("submit", async (event) => {

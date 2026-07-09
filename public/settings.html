@@ -7,7 +7,7 @@
     <script>
       try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260709-4" />
+    <link rel="stylesheet" href="styles.css?v=20260709-5" />
   </head>
   <body>
     <div class="ambient-layer" aria-hidden="true">
@@ -19,6 +19,7 @@
       <header class="topbar">
         <a class="brand-link" href="/">Анатомия косметологии</a>
         <nav class="topnav" aria-label="Навигация">
+          <a href="/">Главная</a>
           <a href="/settings" aria-current="page">Настройки</a>
           <a href="/login" id="loginLink">Войти</a>
           <button class="theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">День</button>
@@ -54,15 +55,7 @@
             <div class="theme-grid">
               <button class="theme-card theme-card-fresh" type="button" data-theme-choice="fresh" aria-pressed="false">
                 <strong>День</strong>
-                <span>свежая зелено-коралловая</span>
-              </button>
-              <button class="theme-card theme-card-rose" type="button" data-theme-choice="rose" aria-pressed="false">
-                <strong>Роза</strong>
-                <span>мягкая теплая палитра</span>
-              </button>
-              <button class="theme-card theme-card-clinic" type="button" data-theme-choice="clinic" aria-pressed="false">
-                <strong>Клиника</strong>
-                <span>спокойная рабочая</span>
+                <span>светлая свежая палитра</span>
               </button>
               <button class="theme-card theme-card-dark" type="button" data-theme-choice="dark" aria-pressed="false">
                 <strong>Ночь</strong>
@@ -86,7 +79,7 @@
       </section>
     </main>
 
-    <script src="theme.js?v=20260709-4"></script>
-    <script src="settings.js?v=20260709-4"></script>
+    <script src="theme.js?v=20260709-5"></script>
+    <script src="settings.js?v=20260709-5"></script>
   </body>
 </html>

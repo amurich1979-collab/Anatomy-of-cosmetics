@@ -17,38 +17,6 @@
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-:root[data-theme="rose"] {
-  --bg: #fff5f4;
-  --surface: #fffdfc;
-  --ink: #2b2020;
-  --muted: #7a6260;
-  --line: #ead3d0;
-  --accent: #b85067;
-  --accent-strong: #88324a;
-  --accent-soft: #ffe5eb;
-  --coral: #d86656;
-  --coral-soft: #ffe0dc;
-  --sky: #f5e8f1;
-  --soft: #fff0f1;
-  --amber: #f7c983;
-}
-
-:root[data-theme="clinic"] {
-  --bg: #f2f7f7;
-  --surface: #ffffff;
-  --ink: #1f2b2d;
-  --muted: #607176;
-  --line: #cfdddf;
-  --accent: #087b92;
-  --accent-strong: #075266;
-  --accent-soft: #dff3f7;
-  --coral: #d88b63;
-  --coral-soft: #ffe8d8;
-  --sky: #d9f2f8;
-  --soft: #e8f5f6;
-  --amber: #e9d489;
-}
-
 :root[data-theme="dark"] {
   color-scheme: dark;
   --bg: #121615;
@@ -84,20 +52,6 @@ body {
     linear-gradient(180deg, #fffaf4 0%, #f3f6ef 48%, #eef8f5 100%),
     var(--bg);
   color: var(--ink);
-}
-
-:root[data-theme="rose"] body {
-  background:
-    linear-gradient(122deg, rgba(255, 224, 220, 0.8) 0%, rgba(245, 232, 241, 0.54) 42%, transparent 76%),
-    linear-gradient(180deg, #fff8f7 0%, #fff2f1 52%, #f8edf3 100%),
-    var(--bg);
-}
-
-:root[data-theme="clinic"] body {
-  background:
-    linear-gradient(122deg, rgba(217, 242, 248, 0.82) 0%, rgba(255, 232, 216, 0.35) 45%, transparent 78%),
-    linear-gradient(180deg, #f6fbfb 0%, #edf6f7 52%, #eaf4f2 100%),
-    var(--bg);
 }
 
 :root[data-theme="dark"] body {
@@ -166,9 +120,9 @@ select {
 }
 
 .shell {
-  width: min(1500px, calc(100% - 48px));
+  width: min(1280px, calc(100% - 28px));
   margin: 0 auto;
-  padding: clamp(22px, 3vw, 44px) 0 56px;
+  padding: clamp(18px, 2.4vw, 34px) 0 44px;
 }
 
 .topbar {
@@ -178,13 +132,13 @@ select {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  min-height: 54px;
+  min-height: 52px;
   margin-bottom: 18px;
   padding: 8px 10px 8px 16px;
   border: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
   border-radius: 8px;
   background: color-mix(in srgb, var(--surface) 72%, transparent);
-  box-shadow: 0 14px 34px rgba(35, 35, 32, 0.06);
+  box-shadow: 0 10px 24px rgba(35, 35, 32, 0.05);
   backdrop-filter: blur(14px);
 }
 
@@ -246,17 +200,17 @@ select {
 
 .workspace {
   display: grid;
-  grid-template-columns: minmax(520px, 0.9fr) minmax(560px, 1.1fr);
-  gap: clamp(22px, 2.4vw, 38px);
+  grid-template-columns: minmax(420px, 0.82fr) minmax(560px, 1fr);
+  gap: clamp(18px, 2vw, 30px);
   align-items: start;
 }
 
 .intro {
   position: sticky;
-  top: 28px;
+  top: 20px;
   overflow: hidden;
-  min-height: clamp(420px, 38vw, 560px);
-  padding: clamp(24px, 3.2vw, 38px);
+  min-height: clamp(360px, 35vw, 486px);
+  padding: clamp(22px, 2.6vw, 34px);
   border: 1px solid rgba(255, 255, 255, 0.74);
   border-radius: 8px;
   box-shadow: 0 24px 60px rgba(67, 56, 48, 0.14);
@@ -322,7 +276,7 @@ p {
 
 h1 {
   margin: 0 0 16px;
-  font-size: clamp(2.5rem, 3.65vw, 4.15rem);
+  font-size: clamp(2.35rem, 3.1vw, 3.65rem);
   line-height: 0.98;
   letter-spacing: 0;
   overflow-wrap: normal;
@@ -341,10 +295,10 @@ h3 {
 }
 
 .intro p:not(.eyebrow) {
-  max-width: 540px;
+  max-width: 500px;
   margin: 0;
   color: #4f514c;
-  font-size: 1.08rem;
+  font-size: 1.02rem;
   line-height: 1.55;
 }
 
@@ -494,6 +448,35 @@ select {
   padding: 0 12px;
 }
 
+.password-field {
+  display: grid;
+  position: relative;
+}
+
+.password-field input {
+  padding-right: 92px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 88%, var(--accent-soft));
+  color: var(--accent-strong);
+  font-size: 0.78rem;
+  box-shadow: none;
+  transform: translateY(-50%);
+}
+
+.password-toggle:hover {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
 .field-note {
   color: var(--muted);
   font-size: 0.78rem;
@@ -551,10 +534,10 @@ select {
 }
 
 .concern-chip[aria-pressed="true"] {
-  border-color: rgba(233, 111, 91, 0.48);
-  background: linear-gradient(135deg, var(--coral-soft), var(--sky));
-  color: #7f2d20;
-  box-shadow: 0 8px 18px rgba(233, 111, 91, 0.14);
+  border-color: color-mix(in srgb, var(--accent) 46%, var(--line));
+  background: linear-gradient(135deg, var(--accent-soft), color-mix(in srgb, var(--sky) 70%, var(--surface)));
+  color: var(--accent-strong);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .suggestions {
@@ -996,14 +979,6 @@ dd {
   background: linear-gradient(135deg, #dff1eb, #ffe2da);
 }
 
-.theme-card-rose {
-  background: linear-gradient(135deg, #ffe0dc, #f5e8f1);
-}
-
-.theme-card-clinic {
-  background: linear-gradient(135deg, #dff3f7, #ffe8d8);
-}
-
 .theme-card-dark {
   background: linear-gradient(135deg, #1b211f, #203b44);
   color: #f0f5ef;
@@ -1089,15 +1064,15 @@ dd {
 
 @media (min-width: 1400px) {
   h1 {
-    font-size: clamp(3.8rem, 4vw, 4.7rem);
+    font-size: clamp(3rem, 3.2vw, 4rem);
   }
 
   .workspace {
-    grid-template-columns: minmax(600px, 0.9fr) minmax(680px, 1.1fr);
+    grid-template-columns: minmax(480px, 0.82fr) minmax(640px, 1fr);
   }
 
   .intro {
-    min-height: 560px;
+    min-height: 500px;
   }
 
 .panel {
@@ -1122,15 +1097,15 @@ dd {
 
 @media (min-width: 1800px) {
   .shell {
-    width: min(1660px, calc(100% - 72px));
+    width: min(1420px, calc(100% - 72px));
   }
 
   .workspace {
-    grid-template-columns: minmax(620px, 0.9fr) minmax(720px, 1.1fr);
+    grid-template-columns: minmax(500px, 0.8fr) minmax(680px, 1fr);
   }
 
   .intro {
-    min-height: 620px;
+    min-height: 520px;
   }
 }
 
@@ -1152,7 +1127,7 @@ dd {
   .topnav {
     justify-content: stretch;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     width: 100%;
   }
 
@@ -1173,7 +1148,8 @@ dd {
 
   .topnav a,
   .theme-toggle {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
+    padding: 0 6px;
   }
 
   .grid,

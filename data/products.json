@@ -127,5 +127,32 @@
     "verifiedAt": "2026-07-08",
     "formulaVersion": "gigi-active-ingredients-2026-07-08",
     "market": "professional cosmetology"
+  },
+  {
+    "id": "trixosil-5-hair-growth-complex-50ml",
+    "name": "5% Professional Hair Growth Complex / Professionalnyy kompleks dlya rosta volos 50 ml",
+    "brand": "Trixosil",
+    "category": "Scalp serum / hair growth complex",
+    "composition": "Aqua, Isopropyl Alcohol, Pyrrolidinyl Diaminopyrimidine Oxide, Oxothiazolidinecarboxylate, Biotinoyl Tripeptide-1, Apigenin, Oleanolic Acid, Butylene Glycol, PPG-26-Buteth-26, PEG-40 Hydrogenated Castor Oil, Dextran, Acetyl Tetrapeptide-3, Trifolium Pratense (Clover) Flower Extract, Adenosine, Niacinamide, Copper Tripeptide-1, Poloxamer 188, PCA, Alanine, Glycine, Arginine, Serine, Valine, Isoleucine, Threonine, Proline, Histidine, Phenylalanine, Propylene Glycol, Citaria Ternatea Flower Extract, Capsicum Annuum Extract, Camellia Sinensis (Green Tea) Leaf Extract, Perfluorodecalin, Panthenol, Phenoxyethanol, Ethylhexylglycerin, Disodium EDTA",
+    "compositionScope": "full_label_inci_from_photo",
+    "trustLevel": "B",
+    "trustLabel": "По упаковке",
+    "trustNote": "INCI перенесен с фото упаковки пользователя. Желательно дополнительно сверить по официальной карточке производителя при появлении источника.",
+    "source": "Фото упаковки пользователя",
+    "sourceUrl": "internal://user-label-photo-2026-07-09-trixosil",
+    "sourceType": "label_photo",
+    "verified": true,
+    "verifiedAt": "2026-07-09",
+    "formulaVersion": "label-photo-2026-07-09",
+    "market": "professional cosmetology / trichology",
+    "searchAliases": [
+      "Триксосил",
+      "Trixosil 5%",
+      "Trixosil 5",
+      "профессиональный комплекс для роста волос",
+      "комплекс для роста волос",
+      "динаминопиримидина оксид",
+      "pyrrolidinyl diaminopyrimidine oxide"
+    ]
   }
 ]
