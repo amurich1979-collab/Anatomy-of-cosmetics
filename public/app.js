@@ -1007,6 +1007,24 @@ function render(data) {
   const unknown = data.unknown
     .slice(0, 16)
     .map((item) => `${item.input} (${item.concentration})`);
+  const alternatives = data.alternatives?.length
+    ? `
+      <section class="section">
+        <h2>Похожие аналоги</h2>
+        <p class="muted">MVP-подбор по локальной базе: похожесть не означает полный аналог, цену и наличие в РФ нужно сверять перед покупкой.</p>
+        <div class="insight-list">
+          ${data.alternatives.map((item) => `
+            <article class="insight-card">
+              <strong>${escapeHtml(item.brand)} ${escapeHtml(item.name)}</strong>
+              <p>${escapeHtml(item.similarity)}% похожести · ${escapeHtml(item.ruAvailability || "наличие нужно проверить")} · ${escapeHtml(item.price || "цена пока не подключена")}</p>
+              <p>${escapeHtml((item.why || []).join(", "))}</p>
+              ${(item.matchedIngredients || []).length ? `<p>Совпало: ${escapeHtml(item.matchedIngredients.join(", "))}</p>` : ""}
+            </article>
+          `).join("")}
+        </div>
+      </section>
+    `
+    : "";
   const unknownSection = unknown.length
     ? `
       <section class="section">
@@ -1078,6 +1096,8 @@ function render(data) {
       <h2>Распознанные ингредиенты</h2>
       <div class="ingredients">${found || '<p class="muted">Нет совпадений в базе MVP.</p>'}</div>
     </section>
+
+    ${alternatives}
 
     ${unknownSection}
   `;

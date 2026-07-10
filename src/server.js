@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { findFormulaAlternatives } from "./analogs.js";
 import { analyzeComposition } from "./analyzer.js";
 import { attachCurrentUser, registerAuthRoutes, requireUser } from "./auth.js";
 import { addUserHistory, clearUserHistory, getUserSettings, initDatabase, listUserHistory, updateUserSettings } from "./database.js";
@@ -121,6 +122,12 @@ app.post("/api/analyze", async (req, res) => {
   }
 
   const analysis = analyzeComposition({ text: String(text), profile: profile || {} });
+  analysis.alternatives = findFormulaAlternatives({
+    text: String(text),
+    profile: profile || {},
+    productName: req.body?.productName || "",
+    limit: 5
+  });
 
   if (req.user) {
     await addUserHistory(req.user.id, {
