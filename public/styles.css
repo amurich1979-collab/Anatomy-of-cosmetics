@@ -193,6 +193,12 @@ select {
   background: color-mix(in srgb, var(--accent-soft) 72%, var(--surface));
 }
 
+:root[data-theme="fresh"] .theme-toggle:active,
+:root[data-theme="fresh"] .theme-toggle[aria-pressed="false"] {
+  color: #fff;
+  background: var(--accent);
+}
+
 .mini-shell {
   width: min(100% - 20px, 780px);
   padding-top: 18px;
@@ -691,6 +697,10 @@ select {
   color: var(--muted);
   font-size: 0.84rem;
   line-height: 1.4;
+}
+
+.photo-status:not([hidden]) {
+  display: block;
 }
 
 .photo-review {
@@ -1483,6 +1493,15 @@ dd {
   .theme-toggle {
     font-size: 0.76rem;
     padding: 0 6px;
+  }
+
+  .photo-status {
+    position: sticky;
+    top: 8px;
+    z-index: 4;
+    color: var(--accent-strong);
+    font-weight: 800;
+    box-shadow: 0 8px 22px rgba(14, 124, 102, 0.14);
   }
 
   .grid,

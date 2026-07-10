@@ -1,444 +1,259 @@
-const INGREDIENTS = {
-  aqua: {
-    name: "Aqua",
-    ru: "вода",
-    roles: ["Водная фаза", "Растворитель"],
-    note: "Обычно основа водных формул.",
-    skin: ["Подходит большинству типов кожи"]
-  },
-  water: {
-    aliasOf: "aqua"
-  },
-  glycerin: {
-    name: "Glycerin",
-    ru: "глицерин",
-    roles: ["Увлажнитель"],
-    note: "Притягивает и удерживает воду в роговом слое. В высоких концентрациях может давать липкость.",
-    skin: ["Сухая кожа", "Обезвоженность", "Нарушенный барьер"]
-  },
-  "hyaluronic acid": {
-    name: "Hyaluronic Acid",
-    ru: "гиалуроновая кислота",
-    roles: ["Увлажнитель", "Пленкообразователь"],
-    note: "Работает как влагоудерживающий компонент. Эффект зависит от формы и молекулярной массы.",
-    skin: ["Обезвоженность", "Постпроцедурный уход"]
-  },
-  "sodium hyaluronate": {
-    name: "Sodium Hyaluronate",
-    ru: "гиалуронат натрия",
-    roles: ["Увлажнитель"],
-    note: "Соль гиалуроновой кислоты, часто используется в сыворотках и постуходе.",
-    skin: ["Обезвоженность", "Чувствительная кожа"]
-  },
-  niacinamide: {
-    name: "Niacinamide",
-    ru: "ниацинамид",
-    roles: ["Актив", "Барьер", "Себорегуляция"],
-    note: "Может поддерживать барьер, снижать видимость покраснения и себума. У чувствительной кожи возможна реактивность.",
-    skin: ["Жирная кожа", "Постакне", "Нарушенный барьер"]
-  },
-  panthenol: {
-    name: "Panthenol",
-    ru: "пантенол",
-    roles: ["Успокаивающий компонент", "Барьер"],
-    note: "Частый компонент постпроцедурного ухода, помогает снизить ощущение сухости и дискомфорта.",
-    skin: ["Чувствительная кожа", "После процедур", "Нарушенный барьер"]
-  },
-  allantoin: {
-    name: "Allantoin",
-    ru: "аллантоин",
-    roles: ["Успокаивающий компонент"],
-    note: "Мягкий компонент для снижения ощущения раздражения.",
-    skin: ["Чувствительная кожа", "Постпроцедурный уход"]
-  },
-  "salicylic acid": {
-    name: "Salicylic Acid",
-    ru: "салициловая кислота",
-    roles: ["BHA", "Кератолитик", "Актив против комедонов"],
-    note: "Жирорастворимая кислота. Может быть полезна при комедонах, но повышает риск сухости и раздражения.",
-    cautions: ["Беременность/лактация: согласовать со специалистом", "Не сочетать бездумно с ретиноидами и сильными кислотами"],
-    skin: ["Жирная кожа", "Комедоны", "Акне-склонность"]
-  },
-  "glycolic acid": {
-    name: "Glycolic Acid",
-    ru: "гликолевая кислота",
-    roles: ["AHA", "Кератолитик", "Пилинг-компонент"],
-    note: "Малая молекула AHA, потенциально активная и раздражающая. Важны pH и концентрация.",
-    cautions: ["Фоточувствительность", "Риск раздражения", "SPF обязателен"],
-    skin: ["Текстура кожи", "Пигментация", "Возрастные изменения"]
-  },
-  "lactic acid": {
-    name: "Lactic Acid",
-    ru: "молочная кислота",
-    roles: ["AHA", "Увлажняющий фактор", "Кератолитик"],
-    note: "Мягче гликолевой, но активность зависит от pH и концентрации.",
-    cautions: ["SPF обязателен при курсовом применении"],
-    skin: ["Сухая кожа", "Тусклый тон", "Текстура кожи"]
-  },
-  retinol: {
-    name: "Retinol",
-    ru: "ретинол",
-    roles: ["Ретиноид", "Актив"],
-    note: "Работает с текстурой, признаками фотостарения и высыпаниями, но требует постепенного введения.",
-    cautions: ["Беременность/лактация: не использовать без назначения врача", "Не сочетать на старте с кислотами", "SPF обязателен"],
-    skin: ["Возрастные изменения", "Постакне", "Акне-склонность"]
-  },
-  retinal: {
-    name: "Retinal",
-    ru: "ретиналь",
-    roles: ["Ретиноид", "Актив"],
-    note: "Более близкая к ретиноевой кислоте форма, может быть активнее ретинола.",
-    cautions: ["Беременность/лактация: не использовать без назначения врача", "Риск раздражения", "SPF обязателен"],
-    skin: ["Возрастные изменения", "Акне-склонность"]
-  },
-  "ascorbic acid": {
-    name: "Ascorbic Acid",
-    ru: "аскорбиновая кислота",
-    roles: ["Антиоксидант", "Актив против тусклого тона"],
-    note: "Активная форма витамина C. Может раздражать чувствительную кожу, особенно при низком pH.",
-    cautions: ["Осторожно после агрессивных процедур"],
-    skin: ["Тусклый тон", "Пигментация", "Фотостарение"]
-  },
-  "zinc oxide": {
-    name: "Zinc Oxide",
-    ru: "оксид цинка",
-    roles: ["Минеральный SPF-фильтр", "Успокаивающий компонент"],
-    note: "Покрывает UVB и часть UVA-спектра. Реальная SPF-защита зависит от концентрации, дисперсии и тестов готовой формулы.",
-    skin: ["Чувствительная кожа", "После процедур"]
-  },
-  "titanium dioxide": {
-    name: "Titanium Dioxide",
-    ru: "диоксид титана",
-    roles: ["Минеральный SPF-фильтр", "Пигмент"],
-    note: "Хорошо работает в UVB и частично UVA II. Итоговая защита зависит от всей формулы.",
-    skin: ["Чувствительная кожа", "После процедур"]
-  },
-  "ethylhexyl methoxycinnamate": {
-    name: "Ethylhexyl Methoxycinnamate",
-    ru: "октиноксат",
-    roles: ["Органический UVB-фильтр"],
-    note: "UVB-фильтр. Требует корректной комбинации с UVA-фильтрами для широкого спектра.",
-    cautions: ["Для реактивной кожи лучше оценивать переносимость индивидуально"]
-  },
-  "butyl methoxydibenzoylmethane": {
-    name: "Butyl Methoxydibenzoylmethane",
-    ru: "авобензон",
-    roles: ["Органический UVA-фильтр"],
-    note: "UVA-фильтр. Важна фотостабилизация другими компонентами формулы."
-  },
-  "phenoxyethanol": {
-    name: "Phenoxyethanol",
-    ru: "феноксиэтанол",
-    roles: ["Консервант"],
-    note: "Частый консервант. Обычно находится в низких концентрациях.",
-    cautions: ["У очень чувствительной кожи возможна индивидуальная реакция"]
-  },
-  "ethylhexylglycerin": {
-    name: "Ethylhexylglycerin",
-    ru: "этилгексилглицерин",
-    roles: ["Бустер консервации", "Смягчающий компонент"],
-    note: "Часто усиливает консервирующую систему вместе с феноксиэтанолом."
-  },
-  parfum: {
-    name: "Parfum",
-    ru: "отдушка",
-    roles: ["Отдушка"],
-    note: "Может повышать риск раздражения или сенсибилизации у чувствительной кожи.",
-    cautions: ["Осторожно при розацеа, дерматите, после процедур"]
-  },
-  fragrance: {
-    aliasOf: "parfum"
-  },
-  limonene: {
-    name: "Limonene",
-    ru: "лимонен",
-    roles: ["Фрагранс-аллерген"],
-    note: "Ароматический аллерген, чаще значим для чувствительной и аллергичной кожи.",
-    cautions: ["Осторожно при склонности к аллергическим реакциям"]
-  },
-  linalool: {
-    name: "Linalool",
-    ru: "линалоол",
-    roles: ["Фрагранс-аллерген"],
-    note: "Ароматический аллерген, может быть проблемным для реактивной кожи.",
-    cautions: ["Осторожно при чувствительной коже"]
-  },
-  "caprylic/capric triglyceride": {
-    name: "Caprylic/Capric Triglyceride",
-    ru: "каприлик/каприновый триглицерид",
-    roles: ["Эмолент", "Жировая фаза"],
-    note: "Легкий эмолент, часто улучшает распределение и снижает сухость.",
-    skin: ["Сухая кожа", "Нормальная кожа"]
-  },
-  "cetearyl alcohol": {
-    name: "Cetearyl Alcohol",
-    ru: "цетеариловый спирт",
-    roles: ["Жирный спирт", "Эмолент", "Соэмульгатор"],
-    note: "Не равен сушащему спирту. Дает плотность и смягчение эмульсии."
-  },
-  "cetyl alcohol": {
-    name: "Cetyl Alcohol",
-    ru: "цетиловый спирт",
-    roles: ["Жирный спирт", "Эмолент", "Соэмульгатор"],
-    note: "Структурообразователь и смягчающий компонент."
-  },
-  dimethicone: {
-    name: "Dimethicone",
-    ru: "диметикон",
-    roles: ["Силиконовый эмолент", "Защитная пленка"],
-    note: "Снижает трансэпидермальную потерю воды и улучшает скольжение. Часто полезен после процедур.",
-    skin: ["Нарушенный барьер", "Чувствительная кожа"]
-  },
-  "polysorbate 20": {
-    name: "Polysorbate 20",
-    ru: "полисорбат-20",
-    roles: ["Солюбилизатор", "ПАВ"],
-    note: "Помогает вводить ароматические или масляные компоненты в водную фазу."
-  },
-  "sodium laureth sulfate": {
-    name: "Sodium Laureth Sulfate",
-    ru: "SLES",
-    roles: ["Анионный ПАВ"],
-    note: "Эффективно очищает, но при частом применении может усиливать сухость у чувствительной кожи.",
-    cautions: ["Осторожно при нарушенном барьере"]
-  }
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const INGREDIENTS_PATH = path.join(__dirname, "..", "data", "ingredients-expert.json");
+
+const INGREDIENTS = JSON.parse(fs.readFileSync(INGREDIENTS_PATH, "utf8"));
+const INGREDIENT_INDEX = buildIngredientIndex(INGREDIENTS);
+
+const ROLE_GROUPS = {
+  hydration: ["увлажнитель", "humectant", "nmf", "пленкообразователь"],
+  barrier: ["эмолент", "окклюзив", "керамид", "барьер", "липид", "воск", "жирная кислота", "силикон"],
+  active: ["актив", "aha", "bha", "pha", "ретиноид", "антиоксидант", "spf-фильтр", "uv-фильтр", "пептид"],
+  irritation: ["aha", "bha", "pha", "ретиноид", "отдушка", "аллерген", "эфирное масло", "anion surfactant"]
 };
 
-const ROLE_WEIGHTS = {
-  "Ретиноид": 18,
-  "AHA": 16,
-  "BHA": 16,
-  "Кератолитик": 12,
-  "Фрагранс-аллерген": 10,
-  "Отдушка": 8,
-  "Органический UVB-фильтр": 6,
-  "Органический UVA-фильтр": 6,
-  "Консервант": 4,
-  "Анионный ПАВ": 6
+const CATEGORY_GROUPS = {
+  hydration: ["увлажнитель"],
+  barrier: ["эмолент", "керамид", "масло", "воск", "окклюзив", "силикон"],
+  active: ["актив", "кислота", "ретиноид", "spf-фильтр", "антиоксидант", "пептид"],
+  irritation: ["отдушка", "эфирное масло", "кислота", "ретиноид", "пав"]
 };
 
-function normalizeName(value) {
-  return value
+function normalize(value) {
+  return String(value || "")
     .toLowerCase()
-    .replace(/[™®]/g, "")
+    .replace(/ё/g, "е")
+    .replace(/[\u2010-\u2015]/g, "-")
+    .replace(/[^\p{L}\p{N}+\-/\s.]/gu, " ")
     .replace(/\s+/g, " ")
-    .replace(/[.;]$/g, "")
     .trim();
 }
 
-function canonicalIngredient(name) {
-  const normalized = normalizeName(name);
-  const record = INGREDIENTS[normalized];
-  if (record?.aliasOf) {
-    return record.aliasOf;
-  }
-  return normalized;
-}
-
-export function parseIngredients(rawText) {
-  const withoutHeading = rawText
-    .replace(/ingredients?\s*[:：]/gi, "")
-    .replace(/состав\s*[:：]/gi, "");
-
-  return withoutHeading
-    .split(/[,;\n]+/)
-    .map((item) => item.replace(/\(.+?\)/g, "").trim())
-    .filter(Boolean)
-    .map((item) => item.replace(/\s+/g, " "))
-    .filter((item, index, array) => array.findIndex((other) => normalizeName(other) === normalizeName(item)) === index);
+function buildIngredientIndex(items) {
+  const index = new Map();
+  items.forEach((item) => {
+    [item.name, ...(item.aliases || [])].forEach((name) => {
+      const key = normalize(name);
+      if (key) index.set(key, item);
+    });
+  });
+  return index;
 }
 
 function concentrationZone(index, total) {
-  if (index === 0) {
-    return "основа формулы";
-  }
-  if (index <= 4) {
-    return "вероятно высокая или средняя концентрационная зона";
-  }
-  if (index / Math.max(total, 1) < 0.45) {
-    return "вероятно средняя зона";
-  }
+  if (index === 0) return "основа формулы";
+  if (index <= 4) return "вероятно высокая или средняя концентрационная зона";
+  if (index / Math.max(total, 1) < 0.45) return "вероятно средняя зона";
   return "вероятно низкая зона или блок до/ниже 1%";
 }
 
-function profileWarnings(profile, found) {
-  const warnings = [];
+function positionWeight(position, total) {
+  const ratio = position / Math.max(total, 1);
+  if (position <= 5) return 1;
+  if (ratio < 0.45) return 0.72;
+  return 0.42;
+}
+
+export function parseIngredients(text) {
+  const protectedText = String(text || "")
+    .replace(/ingredients?\s*[:：]/gi, "")
+    .replace(/inci\s*[:：]/gi, "")
+    .replace(/состав\s*[:：]/gi, "")
+    .replace(/(\d),(\d)/g, "$1§$2")
+    .replace(/\.\s+(?=[A-ZА-Я0-9])/g, ", ");
+
+  return protectedText
+    .split(/[,;\n]+/)
+    .map((item) => item.replace(/§/g, ",").replace(/\(.+?\)/g, "").replace(/[.。]+$/g, "").trim())
+    .filter(Boolean)
+    .filter((item, index, arr) => arr.findIndex((other) => normalize(other) === normalize(item)) === index);
+}
+
+function findIngredient(raw) {
+  const key = normalize(raw);
+  if (INGREDIENT_INDEX.has(key)) return INGREDIENT_INDEX.get(key);
+
+  const slashParts = key.split("/").map((part) => part.trim()).filter(Boolean);
+  for (const part of slashParts) {
+    if (INGREDIENT_INDEX.has(part)) return INGREDIENT_INDEX.get(part);
+  }
+
+  return null;
+}
+
+function hasRole(item, patterns) {
+  const haystack = `${item.category} ${(item.roles || []).join(" ")}`.toLowerCase();
+  return patterns.some((pattern) => haystack.includes(pattern));
+}
+
+function scoreBy(found, group, base = 0) {
+  const rolePatterns = ROLE_GROUPS[group] || [];
+  const categoryPatterns = CATEGORY_GROUPS[group] || [];
+  const total = found.length || 1;
+  const raw = found.reduce((sum, item) => {
+    const category = item.category.toLowerCase();
+    const match = hasRole(item, rolePatterns) || categoryPatterns.some((pattern) => (
+      pattern === "кислота" ? category === "кислота" : category.includes(pattern)
+    ));
+    if (!match) return sum;
+    return sum + positionWeight(item.position, total) * (item.quality_score / 100) * 24;
+  }, base);
+  return Math.max(0, Math.min(100, Math.round(raw)));
+}
+
+function irritationScore(found, profile = {}) {
   const profileText = `${profile.skinType || ""} ${profile.concerns || ""} ${profile.context || ""}`.toLowerCase();
+  const sensitiveProfile = /чувств|розацеа|дерматит|после|барьер|жжение|покрасн/.test(profileText);
+  const acneProfile = /акне|комедон|жирн/.test(profileText);
+  const total = found.length || 1;
 
-  const hasRole = (role) => found.some((item) => item.roles.includes(role));
-  const hasAnyRole = (roles) => found.some((item) => roles.some((role) => item.roles.includes(role)));
-
-  if (/чувств|розацеа|дерматит|после|пилинг|лазер|барьер/.test(profileText) && hasAnyRole(["Отдушка", "Фрагранс-аллерген", "AHA", "BHA", "Ретиноид"])) {
-    warnings.push("Для чувствительной кожи, розацеа, дерматита или постпроцедурного периода формула требует осторожного введения: есть потенциально раздражающие активы или отдушка.");
-  }
-
-  if (/беремен|лактац/.test(profileText) && hasAnyRole(["Ретиноид", "BHA"])) {
-    warnings.push("При беременности или лактации ретиноиды и BHA-компоненты нужно согласовывать с врачом или лечащим специалистом.");
-  }
-
-  if (/пигмент|мелазм|постакне/.test(profileText) && hasAnyRole(["AHA", "BHA", "Ретиноид", "Актив против тусклого тона"])) {
-    warnings.push("При работе с пигментацией особенно важен ежедневный SPF: активы могут повышать чувствительность к солнцу.");
-  }
-
-  if (hasRole("Минеральный SPF-фильтр") || hasAnyRole(["Органический UVB-фильтр", "Органический UVA-фильтр"])) {
-    warnings.push("По одному списку INCI нельзя подтвердить реальный SPF/PPD: защита определяется тестами готового продукта, концентрацией фильтров и стабильностью формулы.");
-  }
-
-  return warnings;
-}
-
-function inferFormulaType(found, rawText) {
-  const text = rawText.toLowerCase();
-  const roles = new Set(found.flatMap((item) => item.roles));
-
-  if (roles.has("Минеральный SPF-фильтр") || roles.has("Органический UVB-фильтр") || roles.has("Органический UVA-фильтр") || /spf|sunscreen|санскрин/.test(text)) {
-    return "SPF/фотозащитное средство";
-  }
-  if (roles.has("AHA") || roles.has("BHA") || /peel|пилинг/.test(text)) {
-    return "кислотное средство или пилинг-подобная формула";
-  }
-  if (roles.has("Ретиноид")) {
-    return "ретиноидное активное средство";
-  }
-  if (roles.has("Анионный ПАВ")) {
-    return "очищающее средство";
-  }
-  if (roles.has("Жировая фаза") || roles.has("Эмолент") || roles.has("Силиконовый эмолент")) {
-    return "эмульсия/кремовая формула";
-  }
-  return "уходовое средство, тип требует уточнения по назначению производителя";
-}
-
-function scoreFormula(found, unknownCount) {
-  const risk = found.reduce((sum, item) => {
-    return sum + item.roles.reduce((roleSum, role) => roleSum + (ROLE_WEIGHTS[role] || 0), 0);
+  const raw = found.reduce((sum, item) => {
+    let add = 0;
+    if (hasRole(item, ROLE_GROUPS.irritation)) add += 14;
+    if ((item.risks || []).length) add += Math.min(12, item.risks.length * 3);
+    if (sensitiveProfile && (item.avoid_for || []).some((value) => /чувств|розацеа|дерматит|после/.test(value.toLowerCase()))) add += 10;
+    if (acneProfile && (item.avoid_for || []).some((value) => /акне|комедон|жирн/.test(value.toLowerCase()))) add += 7;
+    return sum + add * positionWeight(item.position, total);
   }, 0);
-  const unknownPenalty = Math.min(unknownCount * 2, 18);
-  const score = Math.max(0, Math.min(100, 88 - risk - unknownPenalty));
 
-  if (score >= 75) return { score, label: "низкая настороженность" };
-  if (score >= 55) return { score, label: "умеренная настороженность" };
-  return { score, label: "высокая настороженность" };
+  return Math.max(0, Math.min(100, Math.round(raw)));
 }
 
-function hasName(found, names) {
-  const wanted = new Set(names.map((name) => name.toLowerCase()));
-  return found.some((item) => wanted.has(item.name.toLowerCase()));
+function formulaScores(found, unknownCount, profile) {
+  const hydration_score = scoreBy(found, "hydration");
+  const barrier_score = scoreBy(found, "barrier");
+  const active_score = scoreBy(found, "active");
+  const irritation_risk = Math.min(100, irritationScore(found, profile) + Math.min(unknownCount * 2, 16));
+  return { hydration_score, barrier_score, irritation_risk, active_score };
 }
 
-function namesFor(found, names) {
-  const wanted = new Set(names.map((name) => name.toLowerCase()));
-  return found
-    .filter((item) => wanted.has(item.name.toLowerCase()))
-    .map((item) => item.name);
-}
-
-function buildFormulaArchitecture(found) {
-  const waterPhase = namesFor(found, ["Aqua", "Glycerin", "Sodium Hyaluronate", "Hyaluronic Acid", "Panthenol", "Niacinamide", "Allantoin"]);
-  const lipidPhase = namesFor(found, ["Caprylic/Capric Triglyceride", "Dimethicone", "Cetearyl Alcohol", "Cetyl Alcohol"]);
-  const actives = namesFor(found, ["Niacinamide", "Retinol", "Retinal", "Glycolic Acid", "Lactic Acid", "Salicylic Acid", "Ascorbic Acid"]);
-  const preservation = namesFor(found, ["Phenoxyethanol", "Ethylhexylglycerin"]);
-  const fragrance = namesFor(found, ["Parfum", "Limonene", "Linalool"]);
-  const uvFilters = namesFor(found, ["Zinc Oxide", "Titanium Dioxide", "Ethylhexyl Methoxycinnamate", "Butyl Methoxydibenzoylmethane"]);
-
-  const rows = [];
-  if (waterPhase.length) rows.push({ title: "Водная и увлажняющая часть", text: waterPhase.join(", ") });
-  if (lipidPhase.length) rows.push({ title: "Смягчающая/защитная часть", text: lipidPhase.join(", ") });
-  if (actives.length) rows.push({ title: "Активы", text: actives.join(", ") });
-  if (uvFilters.length) rows.push({ title: "UV-фильтры", text: uvFilters.join(", ") });
-  if (preservation.length) rows.push({ title: "Консервация", text: preservation.join(", ") });
-  if (fragrance.length) rows.push({ title: "Отдушка и ароматические аллергены", text: fragrance.join(", ") });
-  return rows;
-}
-
-function buildExpertSummary(found, profile, formulaType) {
-  const lines = [];
-  const profileText = `${profile.skinType || ""} ${profile.concerns || ""} ${profile.context || ""}`.toLowerCase();
-
-  if (hasName(found, ["Retinol", "Retinal"])) {
-    lines.push("Это активная ретиноидная формула: ее ценность в работе с текстурой, постакне и признаками фотостарения, но вводить ее лучше постепенно.");
-  }
-  if (hasName(found, ["Glycolic Acid", "Lactic Acid", "Salicylic Acid"])) {
-    lines.push("В составе есть кислоты: эффективность и раздражающий потенциал сильно зависят от процента и pH, которых не видно по одному INCI.");
-  }
-  if (hasName(found, ["Zinc Oxide", "Titanium Dioxide", "Ethylhexyl Methoxycinnamate", "Butyl Methoxydibenzoylmethane"])) {
-    lines.push("Это похоже на SPF-средство, но реальную защиту SPF/PPD подтверждают только тесты готовой формулы, а не список ингредиентов.");
-  }
-  if (hasName(found, ["Panthenol", "Allantoin", "Dimethicone", "Sodium Hyaluronate"])) {
-    lines.push("В формуле есть компоненты для поддержки барьера и снижения ощущения сухости: это плюс для постпроцедурного или реактивного ухода.");
-  }
-  if (hasName(found, ["Parfum", "Limonene", "Linalool"])) {
-    lines.push("Есть отдушка или ароматические аллергены: для розацеа, дерматита и кожи после процедур это частая причина лишней реактивности.");
-  }
-  if (/после|розацеа|чувств|барьер/.test(profileText) && /кислот|ретиноид/i.test(formulaType)) {
-    lines.push("С учетом указанного профиля это не лучший кандидат для агрессивного старта: сначала стоит восстановить барьер и уточнить схему у специалиста.");
-  }
-  if (!lines.length) {
-    lines.push("Формула выглядит как базовое уходовое средство. Главная неопределенность сейчас не в отдельных ингредиентах, а в процентах, pH и переносимости.");
-  }
-  return lines;
-}
-
-function buildRoutineAdvice(found) {
-  const advice = [];
-  const hasAcid = hasName(found, ["Glycolic Acid", "Lactic Acid", "Salicylic Acid"]);
-  const hasRetinoid = hasName(found, ["Retinol", "Retinal"]);
-  const hasSpf = hasName(found, ["Zinc Oxide", "Titanium Dioxide", "Ethylhexyl Methoxycinnamate", "Butyl Methoxydibenzoylmethane"]);
-
-  if (hasRetinoid) {
-    advice.push("Начинать 2-3 раза в неделю вечером, на сухую кожу, не сочетать в тот же вечер с кислотами на старте.");
-  }
-  if (hasAcid) {
-    advice.push("Не использовать в один день с другими сильными кислотами/ретиноидами без схемы. На следующий день обязателен SPF.");
-  }
-  if (hasSpf) {
-    advice.push("Наносить щедро и обновлять при длительном пребывании на улице. Для постпроцедурного периода важна не только SPF-цифра, но и переносимость.");
-  }
-  if (hasName(found, ["Parfum", "Limonene", "Linalool"])) {
-    advice.push("При чувствительной коже лучше сделать пробу на небольшом участке и не вводить средство сразу после травмирующих процедур.");
-  }
-  if (hasName(found, ["Panthenol", "Allantoin", "Dimethicone"])) {
-    advice.push("Можно рассматривать как поддержку барьера, особенно если нет жжения, покраснения и усиления сухости.");
-  }
-  if (!advice.length) {
-    advice.push("Вводить как обычное новое средство: 1 раз в день или через день, наблюдая за жжением, зудом, высыпаниями и сухостью.");
-  }
-  return advice;
-}
-
-function buildQuestions(found) {
-  const questions = ["Подходит ли это средство моему текущему состоянию кожи, а не только типу кожи?"];
-
-  if (hasName(found, ["Glycolic Acid", "Lactic Acid", "Salicylic Acid"])) {
-    questions.push("Какой процент кислот и pH у средства?");
-    questions.push("Как часто его вводить и нужен ли период восстановления после процедур?");
-  }
-  if (hasName(found, ["Retinol", "Retinal"])) {
-    questions.push("Какая концентрация ретиноида и как выстроить схему адаптации?");
-    questions.push("Что исключить из ухода на период введения ретиноида?");
-  }
-  if (hasName(found, ["Zinc Oxide", "Titanium Dioxide", "Ethylhexyl Methoxycinnamate", "Butyl Methoxydibenzoylmethane"])) {
-    questions.push("Есть ли подтвержденные SPF/PPD/UVA-PF тесты именно готового продукта?");
-  }
-  if (hasName(found, ["Parfum", "Limonene", "Linalool"])) {
-    questions.push("Есть ли версия без отдушки для чувствительной кожи или розацеа?");
-  }
-  return questions;
+function scoreFormula(expertScores, unknownCount) {
+  const supportBonus = Math.round((expertScores.hydration_score + expertScores.barrier_score + expertScores.active_score) / 12);
+  const riskPenalty = Math.round(expertScores.irritation_risk * 0.42) + Math.min(unknownCount * 2, 14);
+  const value = Math.max(0, Math.min(100, 72 + supportBonus - riskPenalty));
+  const label = value >= 75 ? "низкая настороженность" : value >= 55 ? "умеренная настороженность" : "высокая настороженность";
+  return { score: value, label };
 }
 
 function confidenceLevel(found, totalIngredients, unknownCount) {
   if (!totalIngredients) {
-    return { label: "низкая", text: "Состав не удалось разобрать: нужен полный INCI." };
+    return { label: "низкая", text: "Состав не удалось разобрать: нужен полный список ингредиентов." };
   }
-
   const ratio = found.length / totalIngredients;
-  if (ratio >= 0.85 && unknownCount <= 2) {
-    return { label: "хорошая", text: "Большая часть состава распознана. Главные ограничения: неизвестны проценты, pH и тесты готового продукта." };
+  if (ratio >= 0.85 && unknownCount <= 3) {
+    return { label: "хорошая", text: "Большая часть состава распознана. Ограничения: неизвестны проценты, pH и тесты готового продукта." };
   }
   if (ratio >= 0.55) {
     return { label: "средняя", text: "Часть состава распознана, поэтому выводы лучше считать предварительными." };
   }
-  return { label: "низкая", text: "Много ингредиентов не найдено в базе MVP, поэтому анализ требует ручной проверки." };
+  return { label: "низкая", text: "Много ингредиентов не найдено в экспертной базе, анализ требует ручной проверки." };
+}
+
+function inferFormulaType(found, rawText) {
+  const text = normalize(rawText);
+  const has = (group) => found.some((item) => hasRole(item, ROLE_GROUPS[group] || [group]));
+  const hasCategory = (pattern) => found.some((item) => item.category.toLowerCase().includes(pattern));
+
+  if (hasCategory("spf") || /spf|sunscreen|санскрин|фотозащит/.test(text)) return "SPF/фотозащитное средство";
+  if (hasCategory("ретиноид")) return "ретиноидное активное средство";
+  if (found.some((item) => item.category.toLowerCase() === "кислота" || /\b(AHA|BHA|PHA)\b/i.test(item.roles.join(" ")))) return "кислотное средство или пилинг-подобная формула";
+  if (found.some((item) => /sodium laureth sulfate|sodium lauryl sulfate|cocamidopropyl betaine|decyl glucoside/i.test(item.name))) return "очищающее средство";
+  if (has("barrier") && has("hydration")) return "питательный крем/бальзам для сухой кожи и поддержки барьера";
+  if (has("hydration")) return "увлажняющее уходовое средство";
+  return "уходовое средство, тип требует уточнения по назначению производителя";
+}
+
+function roleGroups(found) {
+  const map = new Map();
+  found.forEach((item) => {
+    item.roles.forEach((role) => {
+      if (!map.has(role)) map.set(role, []);
+      map.get(role).push(item.name);
+    });
+  });
+  return Array.from(map.entries()).map(([role, items]) => ({ role, items: [...new Set(items)] }));
+}
+
+function namesBy(found, predicate) {
+  return found.filter(predicate).map((item) => item.name);
+}
+
+function buildFormulaArchitecture(found) {
+  const rows = [
+    { title: "Водная и увлажняющая часть", items: namesBy(found, (item) => hasRole(item, ROLE_GROUPS.hydration)) },
+    { title: "Жировая/барьерная часть", items: namesBy(found, (item) => hasRole(item, ROLE_GROUPS.barrier)) },
+    { title: "Активы", items: namesBy(found, (item) => hasRole(item, ROLE_GROUPS.active)) },
+    { title: "Эмульгаторы и стабилизаторы", items: namesBy(found, (item) => /эмульгатор|стабилизатор|загуститель|солюбилизатор/i.test(`${item.category} ${item.roles.join(" ")}`)) },
+    { title: "Консервация", items: namesBy(found, (item) => /консервант|бустер консервации/i.test(`${item.category} ${item.roles.join(" ")}`)) },
+    { title: "Отдушка и потенциальные аллергены", items: namesBy(found, (item) => /отдушка|аллерген|эфирное масло/i.test(`${item.category} ${item.roles.join(" ")}`)) }
+  ];
+
+  return rows
+    .map((row) => ({ title: row.title, text: [...new Set(row.items)].join(", ") }))
+    .filter((row) => row.text);
+}
+
+function buildWarnings(found, profile) {
+  const profileText = `${profile.skinType || ""} ${profile.concerns || ""} ${profile.context || ""}`.toLowerCase();
+  const warnings = new Set(found.flatMap((item) => item.risks || []));
+
+  if (/чувств|розацеа|дерматит|после|жжение|покрасн/.test(profileText)) {
+    found.forEach((item) => {
+      if ((item.avoid_for || []).some((value) => /чувств|розацеа|дерматит|после/.test(value.toLowerCase()))) {
+        warnings.add(`${item.name}: может быть не лучшим выбором для реактивной кожи или постпроцедурного периода.`);
+      }
+    });
+  }
+  if (found.some((item) => /spf-фильтр|uv-фильтр/i.test(`${item.category} ${item.roles.join(" ")}`))) {
+    warnings.add("Реальный SPF/UVA-PF нельзя подтвердить по одному INCI: нужны тесты готового продукта.");
+  }
+  return [...warnings].slice(0, 10);
+}
+
+function buildExpertSummary(found, scores, formulaType) {
+  const lines = [
+    `Похоже на: ${formulaType}.`
+  ];
+
+  if (scores.hydration_score >= 45) lines.push("Увлажняющий блок выражен: формула содержит компоненты, которые притягивают или удерживают воду в роговом слое.");
+  if (scores.barrier_score >= 45) lines.push("Барьерная часть заметная: есть смягчающие, липидные или окклюзивные компоненты для снижения сухости и потери влаги.");
+  if (scores.active_score >= 45) lines.push("Активная часть выражена: средство может давать целевой эффект, но важны концентрации, pH и переносимость.");
+  if (scores.irritation_risk >= 55) lines.push("Риск раздражения повышен: формулу лучше вводить постепенно, особенно при чувствительности, розацеа или после процедур.");
+  if (!found.length) lines.push("База пока не распознала ключевые ингредиенты, поэтому вывод ограничен.");
+  if (lines.length === 1) lines.push("Формула выглядит как базовое уходовое средство; главная неопределенность - проценты, pH и индивидуальная переносимость.");
+
+  return lines;
+}
+
+function buildRoutineAdvice(found, scores) {
+  const advice = [];
+  if (found.some((item) => /ретиноид/i.test(`${item.category} ${item.roles.join(" ")}`))) {
+    advice.push("Ретиноиды вводить вечером постепенно, не сочетать на старте с кислотами и ежедневно использовать SPF.");
+  }
+  if (found.some((item) => /aha|bha|pha|кислота/i.test(`${item.category} ${item.roles.join(" ")}`))) {
+    advice.push("Кислоты вводить по схеме; при курсовом применении нужен SPF и контроль сухости/жжения.");
+  }
+  if (scores.barrier_score >= 55) advice.push("Можно рассматривать как поддержку барьера, если нет жжения, зуда или усиления высыпаний.");
+  if (scores.irritation_risk >= 55) advice.push("Перед регулярным применением лучше сделать пробу на небольшом участке.");
+  if (!advice.length) advice.push("Вводить как обычное новое средство: постепенно и с наблюдением за реакцией кожи.");
+  return advice;
+}
+
+function buildQuestions(found) {
+  const questions = ["Какие проценты ключевых активов, pH и назначение заявлены производителем?"];
+  if (found.some((item) => /spf-фильтр|uv-фильтр/i.test(`${item.category} ${item.roles.join(" ")}`))) {
+    questions.push("Есть ли подтвержденные SPF/UVA-PF тесты именно готового продукта?");
+  }
+  if (found.some((item) => /ретиноид|кислота/i.test(`${item.category} ${item.roles.join(" ")}`))) {
+    questions.push("Как встроить средство в текущую схему, чтобы не перегрузить кожу?");
+  }
+  if (found.some((item) => /отдушка|аллерген/i.test(`${item.category} ${item.roles.join(" ")}`))) {
+    questions.push("Есть ли версия без отдушки для чувствительной кожи?");
+  }
+  return questions;
 }
 
 export function analyzeComposition({ text, profile = {} }) {
@@ -447,84 +262,68 @@ export function analyzeComposition({ text, profile = {} }) {
   const unknown = [];
 
   ingredients.forEach((ingredient, index) => {
-    const key = canonicalIngredient(ingredient);
-    const record = INGREDIENTS[key];
-
-    if (record && !record.aliasOf) {
+    const record = findIngredient(ingredient);
+    if (record) {
       found.push({
         input: ingredient,
         name: record.name,
-        ru: record.ru,
-        roles: record.roles,
-        note: record.note,
-        cautions: record.cautions || [],
-        skin: record.skin || [],
+        ru: record.category,
+        category: record.category,
+        roles: record.roles || [],
+        benefits: record.benefits || [],
+        risks: record.risks || [],
+        best_for: record.best_for || [],
+        avoid_for: record.avoid_for || [],
+        quality_score: record.quality_score,
+        evidence_level: record.evidence_level,
+        note: [...(record.benefits || []), ...(record.risks || []).slice(0, 1)].join(" "),
+        cautions: record.risks || [],
+        skin: record.best_for || [],
         position: index + 1,
         concentration: concentrationZone(index, ingredients.length)
       });
       return;
     }
 
-    unknown.push({
-      input: ingredient,
-      position: index + 1,
-      concentration: concentrationZone(index, ingredients.length)
-    });
+    unknown.push({ input: ingredient, position: index + 1, concentration: concentrationZone(index, ingredients.length) });
   });
 
-  const roleMap = new Map();
-  found.forEach((item) => {
-    item.roles.forEach((role) => {
-      if (!roleMap.has(role)) roleMap.set(role, []);
-      roleMap.get(role).push(item.name);
-    });
-  });
-
-  const warnings = [
-    ...new Set([
-      ...found.flatMap((item) => item.cautions),
-      ...profileWarnings(profile, found)
-    ])
-  ];
-
-  const positives = [
-    ...new Set(found.flatMap((item) => item.skin))
-  ].slice(0, 8);
-
+  const expertScores = formulaScores(found, unknown.length, profile);
   const formulaType = inferFormulaType(found, text || "");
-  const score = scoreFormula(found, unknown.length);
-  const architecture = buildFormulaArchitecture(found);
-  const expertSummary = buildExpertSummary(found, profile, formulaType);
-  const routineAdvice = buildRoutineAdvice(found);
-  const questions = buildQuestions(found);
+  const warnings = buildWarnings(found, profile);
+  const positives = [...new Set(found.flatMap((item) => item.best_for || []))].slice(0, 10);
   const confidence = confidenceLevel(found, ingredients.length, unknown.length);
+  const score = scoreFormula(expertScores, unknown.length);
+  const expertSummary = buildExpertSummary(found, expertScores, formulaType);
 
   const summary = [
     `Похоже на: ${formulaType}.`,
-    found.length
-      ? `Распознано ингредиентов: ${found.length} из ${ingredients.length}.`
-      : "Пока не удалось уверенно распознать ингредиенты из базы MVP.",
-    warnings.length
-      ? "Есть факторы, которые стоит обсудить со специалистом перед применением."
-      : "Явных красных флагов в рамках базы MVP не найдено."
+    found.length ? `Распознано ингредиентов: ${found.length} из ${ingredients.length}.` : "Пока не удалось уверенно распознать ингредиенты из экспертной базы.",
+    `Оценки: увлажнение ${expertScores.hydration_score}/100, барьер ${expertScores.barrier_score}/100, активность ${expertScores.active_score}/100, риск раздражения ${expertScores.irritation_risk}/100.`,
+    warnings.length ? "Есть факторы, которые стоит учитывать перед применением." : "Явных красных флагов в текущей экспертной базе не найдено."
   ].join(" ");
 
   return {
     summary,
     formulaType,
     score,
+    hydration_score: expertScores.hydration_score,
+    barrier_score: expertScores.barrier_score,
+    irritation_risk: expertScores.irritation_risk,
+    active_score: expertScores.active_score,
+    expertScores,
     totalIngredients: ingredients.length,
     found,
     unknown,
-    groups: Array.from(roleMap.entries()).map(([role, items]) => ({ role, items })),
+    groups: roleGroups(found),
     positives,
     warnings,
-    architecture,
+    architecture: buildFormulaArchitecture(found),
     expertSummary,
-    routineAdvice,
-    questions,
+    routineAdvice: buildRoutineAdvice(found, expertScores),
+    questions: buildQuestions(found),
     confidence,
-    disclaimer: "Это справочный разбор состава, а не медицинское назначение. Точные проценты, pH, SPF/PPD и переносимость нельзя надежно определить только по INCI."
+    disclaimer: "Это справочный разбор состава, а не медицинское назначение. По INCI нельзя надежно определить точные проценты, pH, SPF/UVA-PF и индивидуальную переносимость."
   };
 }
 
@@ -536,21 +335,22 @@ export function formatTelegramReport(result) {
 
   const warnings = result.warnings.length
     ? result.warnings.slice(0, 5).map((item) => `• ${item}`).join("\n")
-    : "• Явных красных флагов в базе MVP не найдено.";
+    : "• Явных красных флагов в экспертной базе не найдено.";
 
   return [
-    `Разбор состава`,
-    ``,
+    "Разбор состава",
+    "",
     result.summary,
-    ``,
+    "",
     `Оценка: ${result.score.score}/100 (${result.score.label})`,
-    ``,
-    `Группы компонентов:`,
+    `Увлажнение: ${result.hydration_score}/100 · Барьер: ${result.barrier_score}/100 · Активность: ${result.active_score}/100 · Риск раздражения: ${result.irritation_risk}/100`,
+    "",
+    "Группы компонентов:",
     topGroups || "• Пока недостаточно распознанных компонентов.",
-    ``,
-    `На что обратить внимание:`,
+    "",
+    "На что обратить внимание:",
     warnings,
-    ``,
+    "",
     result.disclaimer
   ].join("\n");
 }
