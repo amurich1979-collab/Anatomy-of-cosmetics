@@ -8,8 +8,9 @@ const rootDir = path.join(__dirname, "..", "..");
 const expertPath = path.join(rootDir, "data", "ingredients-expert.json");
 const translationsPath = path.join(rootDir, "data", "inci-translations.json");
 
-const START_MARKER = /\b(?:ingredients?|inci)\b\s*[:：-]?|состав\s*(?:\([^)]*\))?\s*[:：-]?/i;
-const END_MARKER = /\b(?:directions?|how\s+to\s+use|warning|caution|storage|manufacturer|made\s+in|barcode|usage|use\s+by|best\s+before|expiry|eac)\b|меры\s+предосторожности|способ\s+применения|применение|изготовитель|производитель|срок\s+годности|условия\s+хранения|дата\s+изготовления|номер\s+партии|партия|гост|еас/i;
+const START_MARKER = /\b(?:ingredients?|ingre[dl]ients?|ngredients?|credients?|inci)\b\s*[:：-]?|состав\s*(?:\([^)]*\))?\s*[:：-]?/i;
+const END_MARKER = /\b(?:directions?|how\s+to\s+use|warning|caution|storage|manufacturer|made\s+in|barcode|usage|use\s+by|best\s+before|expiry|eac|code|llc|inc\.?|ltd\.?|new\s+york|ny\s+\d{5}|ho\s+chi|minh|viet\s?nam|the\s+nexus|quan\s+\d+)\b|меры\s+предосторожности|способ\s+применения|применение|изготовитель|производитель|срок\s+годности|условия\s+хранения|дата\s+изготовления|номер\s+партии|партия|гост|еас/i;
+const ADDRESS_OR_LABEL_NOISE = /\b(?:canh|bao|kha|tre|tuoi|sinh|tranh|children|external|avoid|contact|directly|manufacturer|distributor|importer|address|llc|inc\.?|ltd\.?|new\s+york|ny\s+\d{5}|ho\s+chi|minh|viet\s?nam|nexus|quan\s+\d+|tang\s+\d+|code|barcode|eac|ean)\b|предосторожности|производитель|изготовитель|адрес|импортер|штрихкод|срок|партия/i;
 
 const OCR_REPLACEMENTS = [
   { pattern: /\bnacinamide\b/gi, replacement: "Niacinamide", confidence: 1 },
@@ -18,6 +19,12 @@ const OCR_REPLACEMENTS = [
   { pattern: /\bethyherlylglycerin\b/gi, replacement: "Ethylhexylglycerin", confidence: 1 },
   { pattern: /\bethyhexylglycerin\b/gi, replacement: "Ethylhexylglycerin", confidence: 0.98 },
   { pattern: /\bpeg\s*[-–—]?\s*40\b/gi, replacement: "PEG-40", confidence: 1 },
+  { pattern: /\bcetylpalmitate\b/gi, replacement: "Cetyl Palmitate", confidence: 0.98 },
+  { pattern: /\bsodium\s+laurqyl\s+lactylate\b/gi, replacement: "Sodium Lauroyl Lactylate", confidence: 0.98 },
+  { pattern: /\bsodium\s+lauroyl\s+lactylate\b/gi, replacement: "Sodium Lauroyl Lactylate", confidence: 1 },
+  { pattern: /\bedta\s+dipqtasronate\b/gi, replacement: "Dipotassium EDTA", confidence: 0.9 },
+  { pattern: /\b(?:sodium\s+)?rimoniun\s+methosulfate\b/gi, replacement: "Behentrimonium Methosulfate", confidence: 0.85 },
+  { pattern: /\bbehentrima\b/gi, replacement: "Behentrimonium Methosulfate", confidence: 0.85 },
   { pattern: /\bcopper\s+tripeptide\s+l\b/gi, replacement: "Copper Tripeptide-1", confidence: 0.98 }
 ];
 
@@ -68,6 +75,8 @@ function normalizeRawText(value) {
     .replace(/[‘’]/g, "'")
     .replace(/[\u2010-\u2015]/g, "-")
     .replace(/[|]/g, "I")
+    .replace(/[\\]/g, " ")
+    .replace(/\b(?:CREDIENTS|NGREDIENTS|INGRELIENTS)\b/gi, "INGREDIENTS")
     .replace(/\r\n?/g, "\n")
     .replace(/[ \t]+/g, " ")
     .trim();
@@ -92,6 +101,7 @@ function stripNoiseLines(text) {
     .filter((line) => !/\b\d{8,14}\b/.test(line))
     .filter((line) => !/\b(?:ml|мл|g|гр|kg|кг)\b/i.test(line) || /,|acid|extract|oil|glycol|aqua|water/i.test(line))
     .filter((line) => !/^(?:eac|ean|barcode|batch|lot|серия|арт\.?|гост|ту)\b/i.test(line))
+    .filter((line) => !ADDRESS_OR_LABEL_NOISE.test(line))
     .join("\n");
 }
 
@@ -145,23 +155,48 @@ function translateIngredient(ingredient) {
 
 function cleanIngredientToken(value) {
   return String(value || "")
-    .replace(/^(?:ingredients?|inci|состав)\s*[:：-]?\s*/i, "")
+    .replace(/^(?:ingredients?|ingre[dl]ients?|ngredients?|credients?|inci|состав)\s*[:：-]?\s*/i, "")
     .replace(/\((?:[^)]{1,40})\)/g, " ")
     .replace(/[•*]+/g, " ")
+    .replace(/\bayy\b/gi, " ")
     .replace(/\s+/g, " ")
     .replace(/^[^\p{L}0-9(]+|[^\p{L}0-9).%+-]+$/gu, "")
+    .replace(/[.]+$/g, "")
     .trim();
 }
 
-function splitIngredientTokens(text) {
+function prepareIngredientSeparators(text) {
   return String(text || "")
+    .replace(/\bCETEARYL\s+CETEARETH\s+RYLIC\/CAPRIC\s+TRIGLYCERIDE\b/gi, "Cetearyl Alcohol, Caprylic/Capric Triglyceride")
+    .replace(/\bNP\s+CERAMIDE\b/gi, "Ceramide NP,")
+    .replace(/\bCERAMIDE\s+BEHENTRIMA\s*\+\s*CERAMIDE\s+EOP\b/gi, "Behentrimonium Methosulfate, Ceramide EOP")
+    .replace(/\bDISODIUM\s+XANTHAN\s+[O0О]\s*,?\s*PHOSPHATE\b/gi, "Disodium Phosphate, Xanthan Gum")
+    .replace(/\.\s+(?=[A-ZА-Я][A-ZА-Я0-9+\-/]{1,}(?:\s|,|$))/g, ", ")
+    .replace(/\s+[-–—]{2,}\s+/g, ", ");
+}
+
+function isPlausibleIngredientToken(item) {
+  if (!item || item.length < 2) return false;
+  if (END_MARKER.test(item) || ADDRESS_OR_LABEL_NOISE.test(item)) return false;
+  if (/^(?:only|for external use|avoid contact|keep out|warning|caution|directions?|предупреждение|только для|при возникновении)$/i.test(item)) {
+    return false;
+  }
+  if (/^[a-z]{2,4}$/i.test(item) && !candidateMatch(item)) return false;
+  const letters = item.match(/\p{L}/gu) || [];
+  if (letters.length < 2) return false;
+  const asciiLetters = item.match(/[A-Za-z]/g) || [];
+  const cyrillicLetters = item.match(/[А-Яа-яЁё]/g) || [];
+  if (cyrillicLetters.length > asciiLetters.length && !candidateMatch(item)) return false;
+  return true;
+}
+
+function splitIngredientTokens(text) {
+  return prepareIngredientSeparators(text)
     .replace(/(\d),(\d)/g, "$1§$2")
     .split(/[,;\n]+/)
     .map((item) => item.replace(/§/g, ","))
     .map(cleanIngredientToken)
-    .filter((item) => item.length >= 2)
-    .filter((item) => !END_MARKER.test(item))
-    .filter((item) => !/^(?:only|for external use|avoid contact|keep out|предупреждение|только для|при возникновении)/i.test(item));
+    .filter(isPlausibleIngredientToken);
 }
 
 function mergeBrokenTokens(tokens) {

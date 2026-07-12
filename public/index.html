@@ -70,10 +70,11 @@
 
           <div class="barcode-row">
             <label>
-              Сканировать штрихкод
+              Ввести штрихкод EAN/UPC
               <input id="barcodeInput" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="EAN / UPC" />
+              <span class="field-note">Камера-сканер пока не подключен: введите цифры под штрихкодом.</span>
             </label>
-            <button class="secondary-action" type="button" id="barcodeApply">Найти</button>
+            <button class="secondary-action" type="button" id="barcodeApply">Найти по коду</button>
           </div>
 
           <div class="photo-status" id="photoStatus" hidden></div>

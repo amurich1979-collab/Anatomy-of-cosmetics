@@ -981,7 +981,7 @@ barcodeApply?.addEventListener("click", () => {
   if (!code) return;
   productName.value = code;
   composition.value = "";
-  setProductStatus("Ищу средство по штрихкоду...");
+  setProductStatus("Ищу средство по EAN/UPC...");
   form?.requestSubmit();
 });
 
