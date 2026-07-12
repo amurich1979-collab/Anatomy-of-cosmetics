@@ -1025,6 +1025,15 @@ function render(data) {
       </section>
     `
     : "";
+  const proprietaryComplexes = data.proprietaryComplexes?.length
+    ? `
+      <section class="section">
+        <h2>Комплексы производителя</h2>
+        <p class="muted">Эти названия сохранены как указаны в INCI. Без раскрытого состава нельзя подтвердить активы, концентрации и реальный вклад комплекса.</p>
+        ${list(data.proprietaryComplexes.map((item) => `${item.name}: ${item.note}`), "Комплексов производителя не найдено.")}
+      </section>
+    `
+    : "";
   const unknownSection = unknown.length
     ? `
       <section class="section">
@@ -1096,6 +1105,8 @@ function render(data) {
       <h2>Распознанные ингредиенты</h2>
       <div class="ingredients">${found || '<p class="muted">Нет совпадений в базе MVP.</p>'}</div>
     </section>
+
+    ${proprietaryComplexes}
 
     ${alternatives}
 

@@ -23,6 +23,10 @@ const MANUAL_ALIASES = new Map([
   ["camellia sinensis green tea leaf extract", "camellia sinensis leaf extract"]
 ]);
 
+const SUGGESTED_ALIASES = new Map([
+  ["hamamelis virginiana extract", { target: "hamamelis virginiana bark/leaf extract", confidence: 0.88 }]
+]);
+
 function readRegistry() {
   try {
     return JSON.parse(fs.readFileSync(REGISTRY_PATH, "utf8"));
@@ -158,6 +162,21 @@ export function findCosIngIngredient(raw) {
       normalized: aliasKey,
       confidence: 1
     });
+  }
+
+  const suggestedAlias = SUGGESTED_ALIASES.get(aliasKey);
+  if (suggestedAlias) {
+    const suggestedRecord = INDEX.byKey.get(suggestedAlias.target);
+    if (suggestedRecord) {
+      return toSourceRecord(suggestedRecord, {
+        type: "suggested",
+        input: raw,
+        normalized: aliasKey,
+        suggested_match: suggestedRecord.name,
+        matchedKey: suggestedAlias.target,
+        confidence: suggestedAlias.confidence
+      });
+    }
   }
 
   const slashParts = aliasKey.split("/").map((part) => part.trim()).filter((part) => part.length >= 4);

@@ -9,6 +9,11 @@ const INGREDIENTS_PATH = path.join(__dirname, "..", "data", "ingredients-expert.
 const INGREDIENTS = JSON.parse(fs.readFileSync(INGREDIENTS_PATH, "utf8"));
 const INGREDIENT_INDEX = buildIngredientIndex(INGREDIENTS);
 
+const PROPRIETARY_COMPLEX_PATTERNS = [
+  /\bret\s+complex\b/i,
+  /\b[a-z0-9+\-\s]+complex\b/i
+];
+
 const ROLE_GROUPS = {
   hydration: ["увлажнитель", "humectant", "nmf", "пленкообразователь"],
   barrier: ["эмолент", "окклюзив", "керамид", "барьер", "липид", "воск", "жирная кислота", "силикон"],
@@ -74,6 +79,22 @@ export function parseIngredients(text) {
 }
 
 function findIngredient(raw) {
+  if (PROPRIETARY_COMPLEX_PATTERNS.some((pattern) => pattern.test(String(raw || "")))) {
+    return {
+      name: String(raw || "").trim(),
+      category: "proprietary_complex",
+      roles: [],
+      benefits: [],
+      risks: ["Комплекс производителя: свойства и концентрации нельзя определить по INCI без раскрытого состава."],
+      best_for: [],
+      avoid_for: [],
+      quality_score: 0,
+      evidence_level: "undisclosed",
+      dataSource: "proprietary_complex",
+      excludedFromScoring: true
+    };
+  }
+
   const key = normalize(raw);
   if (INGREDIENT_INDEX.has(key)) return INGREDIENT_INDEX.get(key);
 
@@ -110,7 +131,7 @@ function scoreBy(found, group, base = 0) {
   const rolePatterns = ROLE_GROUPS[group] || [];
   const categoryPatterns = CATEGORY_GROUPS[group] || [];
   const total = found.length || 1;
-  const raw = found.reduce((sum, item) => {
+  const raw = found.filter((item) => !item.excludedFromScoring).reduce((sum, item) => {
     const category = item.category.toLowerCase();
     const match = hasRole(item, rolePatterns) || categoryPatterns.some((pattern) => (
       pattern === "кислота" ? category === "кислота" : category.includes(pattern)
@@ -127,7 +148,7 @@ function irritationScore(found, profile = {}) {
   const acneProfile = /акне|комедон|жирн/.test(profileText);
   const total = found.length || 1;
 
-  const raw = found.reduce((sum, item) => {
+  const raw = found.filter((item) => !item.excludedFromScoring).reduce((sum, item) => {
     let add = 0;
     if (hasRole(item, ROLE_GROUPS.irritation)) add += 14;
     if ((item.risks || []).length) add += Math.min(12, item.risks.length * 3);
@@ -185,7 +206,7 @@ function inferFormulaType(found, rawText) {
 
 function roleGroups(found) {
   const map = new Map();
-  found.forEach((item) => {
+  found.filter((item) => !item.excludedFromScoring).forEach((item) => {
     item.roles.forEach((role) => {
       if (!map.has(role)) map.set(role, []);
       map.get(role).push(item.name);
@@ -199,13 +220,14 @@ function namesBy(found, predicate) {
 }
 
 function buildFormulaArchitecture(found) {
+  const scored = found.filter((item) => !item.excludedFromScoring);
   const rows = [
-    { title: "Водная и увлажняющая часть", items: namesBy(found, (item) => hasRole(item, ROLE_GROUPS.hydration)) },
-    { title: "Жировая/барьерная часть", items: namesBy(found, (item) => hasRole(item, ROLE_GROUPS.barrier)) },
-    { title: "Активы", items: namesBy(found, (item) => hasRole(item, ROLE_GROUPS.active)) },
-    { title: "Эмульгаторы и стабилизаторы", items: namesBy(found, (item) => /эмульгатор|стабилизатор|загуститель|солюбилизатор/i.test(`${item.category} ${item.roles.join(" ")}`)) },
-    { title: "Консервация", items: namesBy(found, (item) => /консервант|бустер консервации/i.test(`${item.category} ${item.roles.join(" ")}`)) },
-    { title: "Отдушка и потенциальные аллергены", items: namesBy(found, (item) => /отдушка|аллерген|эфирное масло/i.test(`${item.category} ${item.roles.join(" ")}`)) }
+    { title: "Водная и увлажняющая часть", items: namesBy(scored, (item) => hasRole(item, ROLE_GROUPS.hydration)) },
+    { title: "Жировая/барьерная часть", items: namesBy(scored, (item) => hasRole(item, ROLE_GROUPS.barrier)) },
+    { title: "Активы", items: namesBy(scored, (item) => hasRole(item, ROLE_GROUPS.active)) },
+    { title: "Эмульгаторы и стабилизаторы", items: namesBy(scored, (item) => /эмульгатор|стабилизатор|загуститель|солюбилизатор/i.test(`${item.category} ${item.roles.join(" ")}`)) },
+    { title: "Консервация", items: namesBy(scored, (item) => /консервант|бустер консервации/i.test(`${item.category} ${item.roles.join(" ")}`)) },
+    { title: "Отдушка и потенциальные аллергены", items: namesBy(scored, (item) => /отдушка|аллерген|эфирное масло/i.test(`${item.category} ${item.roles.join(" ")}`)) }
   ];
 
   return rows
@@ -215,7 +237,7 @@ function buildFormulaArchitecture(found) {
 
 function buildWarnings(found, profile) {
   const profileText = `${profile.skinType || ""} ${profile.concerns || ""} ${profile.context || ""}`.toLowerCase();
-  const warnings = new Set(found.flatMap((item) => item.risks || []));
+  const warnings = new Set(found.filter((item) => !item.excludedFromScoring).flatMap((item) => item.risks || []));
 
   if (/чувств|розацеа|дерматит|после|жжение|покрасн/.test(profileText)) {
     found.forEach((item) => {
@@ -273,6 +295,17 @@ function buildQuestions(found) {
   return questions;
 }
 
+function buildProprietaryComplexes(found) {
+  return found
+    .filter((item) => item.category === "proprietary_complex")
+    .map((item) => ({
+      name: item.name,
+      input: item.input,
+      note: "Комплекс производителя сохранен как исходное название. Его свойства, состав и концентрации нельзя определить по INCI без раскрытия производителем.",
+      excludedFromScoring: true
+    }));
+}
+
 export function analyzeComposition({ text, profile = {} }) {
   const ingredients = parseIngredients(text || "");
   const found = [];
@@ -297,6 +330,7 @@ export function analyzeComposition({ text, profile = {} }) {
         suggested_match: record.match?.suggested_match,
         match_confidence: record.match?.confidence,
         match_type: record.match?.type,
+        excludedFromScoring: Boolean(record.excludedFromScoring),
         note: [...(record.benefits || []), ...(record.risks || []).slice(0, 1)].join(" "),
         cautions: record.risks || [],
         skin: record.best_for || [],
@@ -312,10 +346,11 @@ export function analyzeComposition({ text, profile = {} }) {
   const expertScores = formulaScores(found, unknown.length, profile);
   const formulaType = inferFormulaType(found, text || "");
   const warnings = buildWarnings(found, profile);
-  const positives = [...new Set(found.flatMap((item) => item.best_for || []))].slice(0, 10);
+  const positives = [...new Set(found.filter((item) => !item.excludedFromScoring).flatMap((item) => item.best_for || []))].slice(0, 10);
   const confidence = confidenceLevel(found, ingredients.length, unknown.length);
   const score = scoreFormula(expertScores, unknown.length);
   const expertSummary = buildExpertSummary(found, expertScores, formulaType);
+  const proprietaryComplexes = buildProprietaryComplexes(found);
 
   const summary = [
     `Похоже на: ${formulaType}.`,
@@ -340,6 +375,7 @@ export function analyzeComposition({ text, profile = {} }) {
     positives,
     warnings,
     architecture: buildFormulaArchitecture(found),
+    proprietaryComplexes,
     expertSummary,
     routineAdvice: buildRoutineAdvice(found, expertScores),
     questions: buildQuestions(found),
