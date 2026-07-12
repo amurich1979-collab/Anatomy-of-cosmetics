@@ -1,0 +1,112 @@
+[
+  {
+    "canonical": "Aqua",
+    "translations": {
+      "english": ["water"],
+      "portuguese": ["agua", "água"],
+      "spanish": ["agua"],
+      "french": ["eau"],
+      "german": ["wasser"],
+      "italian": ["acqua"]
+    }
+  },
+  {
+    "canonical": "Salicylic Acid",
+    "translations": {
+      "english": ["salicylic acid"],
+      "portuguese": ["acido salicilico", "ácido salicílico"],
+      "spanish": ["acido salicilico", "ácido salicílico"],
+      "french": ["acide salicylique"],
+      "german": ["salicylsaure", "salicylsäure"],
+      "italian": ["acido salicilico"]
+    }
+  },
+  {
+    "canonical": "Sodium Benzoate",
+    "translations": {
+      "english": ["sodium benzoate"],
+      "portuguese": ["benzoato de sodio", "benzoato de sódio"],
+      "spanish": ["benzoato de sodio"],
+      "french": ["benzoate de sodium"],
+      "german": ["natriumbenzoat"],
+      "italian": ["benzoato di sodio"]
+    }
+  },
+  {
+    "canonical": "Xanthan Gum",
+    "translations": {
+      "english": ["xanthan gum"],
+      "portuguese": ["goma xantana"],
+      "spanish": ["goma xantana"],
+      "french": ["gomme xanthane"],
+      "german": ["xanthan"],
+      "italian": ["gomma xantana"]
+    }
+  },
+  {
+    "canonical": "Caprylyl Glycol",
+    "translations": {
+      "english": ["caprylyl glycol"],
+      "portuguese": ["caprililglicol", "caprylyl glycol"],
+      "spanish": ["caprilil glicol", "caprylyl glycol"],
+      "french": ["caprylyl glycol"],
+      "german": ["caprylyl glycol"],
+      "italian": ["caprylyl glycol"]
+    }
+  },
+  {
+    "canonical": "Glycerin",
+    "translations": {
+      "english": ["glycerin", "glycerine"],
+      "portuguese": ["glicerina"],
+      "spanish": ["glicerina"],
+      "french": ["glycerine", "glycérine"],
+      "german": ["glycerin"],
+      "italian": ["glicerina"]
+    }
+  },
+  {
+    "canonical": "Citric Acid",
+    "translations": {
+      "english": ["citric acid"],
+      "portuguese": ["acido citrico", "ácido cítrico"],
+      "spanish": ["acido citrico", "ácido cítrico"],
+      "french": ["acide citrique"],
+      "german": ["zitronensaure", "zitronensäure"],
+      "italian": ["acido citrico"]
+    }
+  },
+  {
+    "canonical": "Sodium Hydroxide",
+    "translations": {
+      "english": ["sodium hydroxide"],
+      "portuguese": ["hidroxido de sodio", "hidróxido de sódio"],
+      "spanish": ["hidroxido de sodio", "hidróxido de sodio"],
+      "french": ["hydroxyde de sodium"],
+      "german": ["natriumhydroxid"],
+      "italian": ["idrossido di sodio"]
+    }
+  },
+  {
+    "canonical": "Tocopherol",
+    "translations": {
+      "english": ["tocopherol"],
+      "portuguese": ["tocoferol"],
+      "spanish": ["tocoferol"],
+      "french": ["tocopherol", "tocophérol"],
+      "german": ["tocopherol"],
+      "italian": ["tocoferolo"]
+    }
+  },
+  {
+    "canonical": "Parfum",
+    "translations": {
+      "english": ["fragrance", "parfum"],
+      "portuguese": ["perfume"],
+      "spanish": ["perfume"],
+      "french": ["parfum"],
+      "german": ["parfum", "duftstoff"],
+      "italian": ["profumo"]
+    }
+  }
+]

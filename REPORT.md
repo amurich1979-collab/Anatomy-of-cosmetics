@@ -1,41 +1,39 @@
-# Отчет по аудиту и изменениям
+# Report
 
-## Измененные файлы
+## Changed Files
 
-- `data/ingredients-expert.json` - новая внешняя база ингредиентов с расширенной структурой записи.
-- `src/analyzer.js` - анализатор переведен на чтение экспертной базы вместо встроенного словаря.
-- `public/theme.js` - исправлена кодировка подписей `День` / `Ночь`.
-- `public/styles.css` - улучшена видимость прогресса OCR на мобильных экранах и читаемость текста кнопки темы в дневном режиме.
-- `REPORT.md` - этот отчет.
+- `src/services/productSources/` - added independent product-source adapters and a merge layer.
+- `src/products.js` - connected external product search through the new source layer and cached only requested external products.
+- `src/services/inciCleaner.js` - added localized ingredient translation before canonical INCI matching.
+- `data/inci-translations.json` - added initial multilingual ingredient aliases for English, Portuguese, Spanish, French, German and Italian.
+- `tests/inci-cleaner.test.js` - added tests for localized INCI normalization.
+- `tests/product-sources.test.js` - added tests for the common source interface and conflicting formulas.
+- `package.json` - extended syntax checks to include the new service modules.
+- `DATA_SOURCES.md` - documented connected APIs, limits, data usage and extension rules.
+- `REPORT.md` - this report.
 
-## Структура записи ингредиента
+## Connected Sources
 
-Каждая запись содержит базовые экспертные поля:
+- Open Beauty Facts: main open cosmetic product source for barcode/name search, images and ingredients.
+- UPCitemdb: barcode identification fallback; useful for product names and images, usually without INCI.
+- Open Products Facts: open general product fallback, not cosmetic-specific.
+- CosIng local registry: canonical INCI names, aliases, functions and CAS from imported registry data.
+- Local expert ingredient base: expert scoring and interpretation after normalization.
 
-- `name`
-- `category`
-- `roles`
-- `benefits`
-- `risks`
-- `best_for`
-- `avoid_for`
-- `quality_score`
-- `evidence_level`
+## Added Rules
 
-Для нормализации INCI также добавлено служебное поле `aliases`, чтобы `Water`, `Fragrance`, `Mineral Oil` и похожие варианты находились как один и тот же ингредиент.
+- Product source adapters share one interface: `searchByBarcode()`, `searchByName()`, `getProduct()`.
+- Barcode-like queries search external sources by barcode.
+- Name queries search external sources only after local search has no result.
+- External products are cached only when actually requested or returned to the user.
+- If multiple sources return different formulas for the same barcode/product, formulas are stored as separate `formulaVariants`.
+- Different formulas are not mixed automatically; the product receives `hasFormulaConflict` and a user-facing note.
+- Localized ingredient names are converted to canonical INCI before expert analysis.
 
-## Добавленные правила оценки
+## Remaining Limitations
 
-- `hydration_score` - растет от увлажнителей, NMF-компонентов и влагоудерживающих растворителей.
-- `barrier_score` - растет от эмолентов, окклюзивов, керамидов, липидов, жирных кислот и барьерных активов.
-- `active_score` - растет от кислот, ретиноидов, антиоксидантов, SPF-фильтров, пептидов и других целевых активов.
-- `irritation_risk` - растет от кислот, ретиноидов, отдушек, аллергенов, жестких ПАВ, рисков в карточках ингредиентов и несовпадения с профилем кожи.
-- Итоговый `score` теперь учитывает поддержку увлажнения/барьера/активов и штраф за раздражающий потенциал и неизвестные ингредиенты.
-- Итоговый вывод `summary` включает тип формулы, количество распознанных ингредиентов и четыре экспертные оценки.
-
-## Ограничения
-
-- Анализ остается предварительным: по INCI нельзя точно определить проценты, pH, SPF/UVA-PF, стабильность и реальную переносимость.
-- База покрывает фундаментальные ингредиенты, но не все коммерческие названия, экстракты, пептидные комплексы и редкие консерванты.
-- Оценки не являются медицинской рекомендацией и требуют проверки специалистом при дерматите, розацеа, беременности/лактации, после процедур и активном лечении.
-- Внешние API не использовались, маршруты API и авторизация не менялись.
+- UPCitemdb trial API is not a production-grade contract and may require an API key or paid limits later.
+- Open Products Facts is a broad fallback source and may not improve cosmetic coverage much.
+- Formula conflicts are exposed in data, but the current UI may need a later dedicated visual block to show all variants clearly.
+- Localized INCI translations are a starting dictionary, not a complete multilingual ingredient taxonomy.
+- Product data remains only as reliable as the external source and should still be verified against the package for professional recommendations.

@@ -59,6 +59,19 @@ test("Botnoyl-like OCR remains unresolved with a warning suggestion", () => {
   assert.ok(cleaned.suggestions.some((item) => item.original === "Botnoyl Tripeptide-1"));
 });
 
+test("localized ingredient names are converted to canonical INCI", () => {
+  const cleaned = cleanInciText("INCI: ÁGUA, ÁCIDO SALICÍLICO, BENZOATO DE SÓDIO, GOMA XANTANA, CAPRILILGLICOL");
+
+  assert.deepEqual(cleaned.ingredients, [
+    "Aqua",
+    "Salicylic Acid",
+    "Sodium Benzoate",
+    "Xanthan Gum",
+    "Caprylyl Glycol"
+  ]);
+  assert.ok(cleaned.autoCorrections.some((item) => item.source === "inci_translation" && item.language === "portuguese"));
+});
+
 test("analyzer exposes INCI cleaning metadata and does not analyze warnings as ingredients", () => {
   const result = analyzeComposition({ text: TRIXOSIL_OCR });
 

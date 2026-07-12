@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import crypto from "node:crypto";
+import { getExternalProduct, searchExternalProducts } from "./services/productSources/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
@@ -104,6 +105,9 @@ function toSummary(product) {
     importedAt: trusted.importedAt,
     compositionScope: trusted.compositionScope,
     composition: trusted.composition,
+    formulaVariants: trusted.formulaVariants || [],
+    hasFormulaConflict: Boolean(trusted.hasFormulaConflict),
+    formulaConflictNote: trusted.formulaConflictNote,
     hasComposition: Boolean(trusted.hasComposition ?? trusted.composition),
     detailMode: trusted.detailMode || (trusted.sourceType === "open_beauty_facts" ? "open_beauty_facts" : "local")
   };
@@ -546,14 +550,21 @@ export async function searchProducts(query, limit = 8) {
   const local = searchLocalProducts(query, limit);
   if (normalizedQuery.length < 3 || local.length > 0) return local.slice(0, limit);
 
-  const external = await searchOpenBeautyFacts(query, limit);
+  const external = await searchExternalProducts(query, { limit });
   const seen = new Set();
   const freshExternal = external.filter((product) => {
     const identity = normalize(`${product.brand} ${product.name}`);
     if (seen.has(identity)) return false;
     seen.add(identity);
     return true;
-  });
+  }).map(toSummary);
+
+  const cacheable = external.filter((product) => product.composition || product.imageUrl);
+  if (cacheable.length) {
+    const cache = loadDetailsCache();
+    const cacheKeys = new Set(cacheable.map((product) => product.id || product.code));
+    saveDetailsCache([...cacheable, ...cache.filter((product) => !cacheKeys.has(product.id || product.code))]);
+  }
 
   const merged = freshExternal;
   if (merged.length >= limit) return merged.slice(0, limit);
@@ -595,12 +606,12 @@ export async function getProductDetails(id) {
   const cached = cache.find((product) => product.id === cleanId || product.code === cleanId);
   if (cached?.composition) return withTrust(await enrichProductImage(cached, cache));
 
-  if (cleanId.startsWith("obf-") || /^\d{6,}$/.test(cleanId)) {
-    const detail = await fetchOpenBeautyFactsDetail(cleanId);
+  if (/^(obf|opf|upcitemdb)-/.test(cleanId) || /^\d{6,}$/.test(cleanId)) {
+    const detail = await getExternalProduct(cleanId);
     if (detail?.composition) {
       const nextCache = [detail, ...cache.filter((product) => product.id !== detail.id && product.code !== detail.code)];
       saveDetailsCache(nextCache);
-      return detail;
+      return withTrust(detail);
     }
   }
 

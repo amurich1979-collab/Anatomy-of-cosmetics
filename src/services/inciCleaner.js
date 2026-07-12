@@ -6,6 +6,7 @@ import { findCosIngIngredient, normalizeInciKey } from "./ingredientSources/cosi
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..", "..");
 const expertPath = path.join(rootDir, "data", "ingredients-expert.json");
+const translationsPath = path.join(rootDir, "data", "inci-translations.json");
 
 const START_MARKER = /\b(?:ingredients?|inci)\b\s*[:：-]?|состав\s*(?:\([^)]*\))?\s*[:：-]?/i;
 const END_MARKER = /\b(?:directions?|how\s+to\s+use|warning|caution|storage|manufacturer|made\s+in|barcode|usage|use\s+by|best\s+before|expiry|eac)\b|меры\s+предосторожности|способ\s+применения|применение|изготовитель|производитель|срок\s+годности|условия\s+хранения|дата\s+изготовления|номер\s+партии|партия|гост|еас/i;
@@ -42,6 +43,21 @@ readJson(expertPath, []).forEach((item) => {
   [item.name, ...(item.aliases || [])].forEach((name) => {
     const key = normalizeInciKey(name);
     if (key && !EXPERT_INDEX.has(key)) EXPERT_INDEX.set(key, item.name);
+  });
+});
+
+const TRANSLATION_INDEX = new Map();
+readJson(translationsPath, []).forEach((item) => {
+  Object.entries(item.translations || {}).forEach(([language, names]) => {
+    names.forEach((name) => {
+      const key = normalizeInciKey(name);
+      if (key && !TRANSLATION_INDEX.has(key)) {
+        TRANSLATION_INDEX.set(key, {
+          canonical: item.canonical,
+          language
+        });
+      }
+    });
   });
 });
 
@@ -114,13 +130,26 @@ function applyOcrDictionary(ingredient) {
   return { value, corrections };
 }
 
+function translateIngredient(ingredient) {
+  const translated = TRANSLATION_INDEX.get(normalizeInciKey(ingredient));
+  if (!translated) return null;
+
+  return {
+    original: ingredient,
+    corrected: translated.canonical,
+    confidence: 1,
+    source: "inci_translation",
+    language: translated.language
+  };
+}
+
 function cleanIngredientToken(value) {
   return String(value || "")
     .replace(/^(?:ingredients?|inci|состав)\s*[:：-]?\s*/i, "")
     .replace(/\((?:[^)]{1,40})\)/g, " ")
     .replace(/[•*]+/g, " ")
     .replace(/\s+/g, " ")
-    .replace(/^[^A-Za-zА-Яа-я0-9(]+|[^A-Za-zА-Яа-я0-9).%+-]+$/g, "")
+    .replace(/^[^\p{L}0-9(]+|[^\p{L}0-9).%+-]+$/gu, "")
     .trim();
 }
 
@@ -184,11 +213,13 @@ function candidateMatch(ingredient) {
 }
 
 function normalizeIngredient(ingredient) {
-  const dictionary = applyOcrDictionary(ingredient);
+  const translation = translateIngredient(ingredient);
+  const translatedIngredient = translation?.corrected || ingredient;
+  const dictionary = applyOcrDictionary(translatedIngredient);
   const corrected = cleanIngredientToken(dictionary.value);
   const match = candidateMatch(corrected);
   const suggestions = [];
-  const autoCorrections = [...dictionary.corrections];
+  const autoCorrections = [...(translation ? [translation] : []), ...dictionary.corrections];
 
   SUSPICIOUS_HINTS.forEach((hint) => {
     if (hint.pattern.test(ingredient)) {
