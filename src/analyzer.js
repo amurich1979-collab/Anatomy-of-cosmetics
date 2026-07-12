@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { findCosIngIngredient, normalizeInciText } from "./services/ingredientSources/cosing.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const INGREDIENTS_PATH = path.join(__dirname, "..", "data", "ingredients-expert.json");
@@ -58,7 +59,7 @@ function positionWeight(position, total) {
 }
 
 export function parseIngredients(text) {
-  const protectedText = String(text || "")
+  const protectedText = normalizeInciText(text || "")
     .replace(/ingredients?\s*[:：]/gi, "")
     .replace(/inci\s*[:：]/gi, "")
     .replace(/состав\s*[:：]/gi, "")
@@ -81,7 +82,23 @@ function findIngredient(raw) {
     if (INGREDIENT_INDEX.has(part)) return INGREDIENT_INDEX.get(part);
   }
 
-  return null;
+  const cosing = findCosIngIngredient(raw);
+  if (!cosing) return null;
+
+  return {
+    name: cosing.name,
+    category: cosing.functions[0] || "CosIng",
+    roles: cosing.functions,
+    benefits: cosing.functions.length ? [`Функции по CosIng: ${cosing.functions.join(", ")}.`] : ["Ингредиент найден в CosIng, функции не указаны."],
+    risks: [],
+    best_for: [],
+    avoid_for: [],
+    quality_score: 55,
+    evidence_level: "cosing",
+    dataSource: "CosIng",
+    sourceFile: cosing.sourceFile,
+    match: cosing.match
+  };
 }
 
 function hasRole(item, patterns) {
@@ -276,6 +293,10 @@ export function analyzeComposition({ text, profile = {} }) {
         avoid_for: record.avoid_for || [],
         quality_score: record.quality_score,
         evidence_level: record.evidence_level,
+        dataSource: record.dataSource || "expert",
+        suggested_match: record.match?.suggested_match,
+        match_confidence: record.match?.confidence,
+        match_type: record.match?.type,
         note: [...(record.benefits || []), ...(record.risks || []).slice(0, 1)].join(" "),
         cautions: record.risks || [],
         skin: record.best_for || [],
