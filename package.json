@@ -10,7 +10,7 @@
     "start": "node src/server.js",
     "start:prod": "NODE_ENV=production node src/server.js",
     "test": "node --test tests/*.test.js",
-    "check": "node --check src/server.js && node --check src/bot.js && node --check src/analyzer.js && node --check src/products.js && node --check src/auth.js && node --check src/database.js && node --check src/services/inciCleaner.js && node --check src/services/productSources/index.js"
+    "check": "node --check src/server.js && node --check src/bot.js && node --check src/analyzer.js && node --check src/products.js && node --check src/auth.js && node --check src/database.js && node --check src/services/inciCleaner.js && node --check src/services/productClassifier.js && node --check src/services/productSources/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

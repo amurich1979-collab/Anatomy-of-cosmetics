@@ -1030,6 +1030,16 @@ button:hover {
   padding: 20px;
 }
 
+.safety-notice {
+  border-color: color-mix(in srgb, var(--warning) 42%, var(--line));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--coral-soft) 64%, var(--surface)), var(--surface));
+}
+
+.safety-notice h2 {
+  color: var(--warning);
+}
+
 .insight-list {
   display: grid;
   gap: 10px;

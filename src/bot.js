@@ -31,7 +31,7 @@ bot.command("app", (ctx) => {
   return ctx.reply(
     "Откройте Telegram-приложение:",
     Markup.inlineKeyboard([
-      Markup.button.webApp("Анатомия косметологии", `${publicBaseUrl}/miniapp`)
+      Markup.button.webApp("Анатомия косметики", `${publicBaseUrl}/miniapp`)
     ])
   );
 });

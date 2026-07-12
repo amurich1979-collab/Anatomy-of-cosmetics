@@ -996,6 +996,16 @@ mobileAnalyze?.addEventListener("click", submitAnalysisFromSticky);
 initCatalog();
 
 function render(data) {
+  const safetyNotice = data.productSafety?.shouldScoreAsCosmetic === false
+    ? `
+      <section class="section safety-notice">
+        <h2>Это не обычное уходовое средство</h2>
+        <p>${escapeHtml(data.productSafety.message || "Формула похожа на процедурный препарат. Обычная косметическая оценка отключена.")}</p>
+        ${data.productSafety.intendedUse ? `<p><strong>Назначение:</strong> ${escapeHtml(data.productSafety.intendedUse)}</p>` : ""}
+        ${data.productSafety.application ? `<p><strong>Применение:</strong> ${escapeHtml(data.productSafety.application)}</p>` : ""}
+      </section>
+    `
+    : "";
   const expertSummary = cards(data.expertSummary, "Недостаточно данных для экспертной сводки.");
   const routineAdvice = list(data.routineAdvice, "Нет специальных рекомендаций по введению.");
   const questions = list(data.questions, "Уточняющих вопросов не сформировано.");
@@ -1099,6 +1109,8 @@ function render(data) {
         <p class="confidence">Уверенность: ${escapeHtml(data.confidence?.label || "неизвестно")} · ${escapeHtml(data.confidence?.text || "")}</p>
       </div>
     </div>
+
+    ${safetyNotice}
 
     <section class="section">
       <h2>Главный вывод</h2>

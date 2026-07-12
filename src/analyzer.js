@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { cleanInciText } from "./services/inciCleaner.js";
 import { findCosIngIngredient } from "./services/ingredientSources/cosing.js";
+import { classifyFormulaProduct } from "./services/productClassifier.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const INGREDIENTS_PATH = path.join(__dirname, "..", "data", "ingredients-expert.json");
@@ -165,6 +166,75 @@ function scoreFormula(expertScores, unknownCount) {
   const value = Math.max(0, Math.min(100, 72 + supportBonus - riskPenalty));
   const label = value >= 75 ? "низкая настороженность" : value >= 55 ? "умеренная настороженность" : "высокая настороженность";
   return { score: value, label };
+}
+
+function nonCosmeticScores() {
+  return {
+    hydration_score: 0,
+    barrier_score: 0,
+    irritation_risk: 100,
+    active_score: 0
+  };
+}
+
+function buildProcedureOverride({ safety, ingredients, found, unknown }) {
+  const detected = [
+    ...found.map((item) => item.name),
+    ...unknown.map((item) => item.input)
+  ].filter((name) => /prilocaine|lidocaine|tetracaine|benzocaine|procaine|articaine|mepivacaine|bupivacaine|frostoin/i.test(name));
+
+  const detectedText = detected.length ? ` Обнаружено: ${[...new Set(detected)].join(", ")}.` : "";
+
+  return {
+    expertScores: nonCosmeticScores(),
+    formulaType: safety.label,
+    score: { score: 0, label: "не оценивать как уходовое средство" },
+    summary: [
+      `Похоже на: ${safety.label}.`,
+      `Это не обычная косметическая формула для ухода за кожей.${detectedText}`,
+      "Косметические баллы, подбор аналогов по уходу и советы по введению в рутину здесь неприменимы.",
+      "Нужно сверить назначение, противопоказания, способ применения и ограничения по инструкции производителя или у специалиста."
+    ].join(" "),
+    positives: ["процедурное обезболивание только по инструкции производителя или назначению специалиста"],
+    warnings: [
+      ...safety.safetyNotes,
+      "Не использовать как ежедневное уходовое средство.",
+      "Не наносить на большие площади, поврежденную кожу, слизистые или под окклюзию без инструкции/назначения.",
+      "Для местных анестетиков важны дозировка, площадь нанесения, время экспозиции и противопоказания.",
+      "При беременности, лактации, заболеваниях сердца, аллергии на анестетики или при приеме лекарств нужна консультация врача."
+    ].filter((item, index, arr) => arr.indexOf(item) === index),
+    expertSummary: [
+      `Похоже на: ${safety.label}.`,
+      "Сервис остановил обычную косметическую интерпретацию, потому что в INCI есть признаки местного анестетика.",
+      "Вспомогательные компоненты вроде Aqua, эмульгаторов, загустителей и консервантов не делают такую формулу уходовым кремом.",
+      "Главная проверка здесь не «для какого типа кожи», а безопасность применения по инструкции: концентрация анестетика, площадь, время, противопоказания."
+    ],
+    routineAdvice: [
+      "Не вводить в домашний уход как крем/сыворотку.",
+      "Использовать только по назначению: перед процедурой, в указанном количестве и на указанное время.",
+      "Смывать/удалять и выдерживать ограничения так, как указано в инструкции производителя."
+    ],
+    questions: [
+      "Какая концентрация анестетика и максимальная площадь нанесения указаны в инструкции?",
+      "Сколько минут держать средство и нужно ли удалять его перед процедурой?",
+      "Какие противопоказания и ограничения есть для клиента: беременность, лактация, сердечно-сосудистые заболевания, аллергии, повреждения кожи?"
+    ],
+    architecture: [
+      {
+        title: "Процедурное назначение",
+        text: "Формула содержит признаки местного анестетика; косметическая оценка ухода отключена."
+      },
+      {
+        title: "Основа и вспомогательные компоненты",
+        text: ingredients.filter((item) => !detected.includes(item)).slice(0, 8).join(", ")
+      }
+    ].filter((item) => item.text),
+    confidence: {
+      label: "требует проверки инструкции",
+      text: "Класс продукта определен по сигнальным ингредиентам, но безопасность применения нельзя выводить только по INCI."
+    },
+    disclaimer: "Это не медицинское назначение. Для анестетиков и процедурных препаратов обязательны инструкция производителя, противопоказания и профессиональная оценка."
+  };
 }
 
 function confidenceLevel(found, totalIngredients, unknownCount) {
@@ -342,21 +412,29 @@ export function analyzeComposition({ text, profile = {} }) {
     });
   });
 
-  const expertScores = formulaScores(found, unknown.length, profile);
-  const formulaType = inferFormulaType(found, text || "");
-  const warnings = buildWarnings(found, profile);
-  const positives = [...new Set(found.filter((item) => !item.excludedFromScoring).flatMap((item) => item.best_for || []))].slice(0, 10);
-  const confidence = confidenceLevel(found, ingredients.length, unknown.length);
-  const score = scoreFormula(expertScores, unknown.length);
-  const expertSummary = buildExpertSummary(found, expertScores, formulaType);
+  const productSafety = classifyFormulaProduct({ ingredients, found, rawText: text || "" });
+  const procedureOverride = productSafety.shouldScoreAsCosmetic
+    ? null
+    : buildProcedureOverride({ safety: productSafety, ingredients, found, unknown });
+  const expertScores = procedureOverride?.expertScores || formulaScores(found, unknown.length, profile);
+  const formulaType = procedureOverride?.formulaType || (
+    productSafety.confidence >= 0.72 ? productSafety.label : inferFormulaType(found, text || "")
+  );
+  const warnings = procedureOverride?.warnings || buildWarnings(found, profile);
+  const positives = procedureOverride?.positives || [...new Set(found.filter((item) => !item.excludedFromScoring).flatMap((item) => item.best_for || []))].slice(0, 10);
+  const confidence = procedureOverride?.confidence || confidenceLevel(found, ingredients.length, unknown.length);
+  const score = procedureOverride?.score || scoreFormula(expertScores, unknown.length);
+  const expertSummary = procedureOverride?.expertSummary || buildExpertSummary(found, expertScores, formulaType);
   const proprietaryComplexes = buildProprietaryComplexes(found);
 
-  const summary = [
+  const summary = procedureOverride?.summary || [
     `Похоже на: ${formulaType}.`,
     found.length ? `Распознано ингредиентов: ${found.length} из ${ingredients.length}.` : "Пока не удалось уверенно распознать ингредиенты из экспертной базы.",
+    productSafety.intendedUse ? `Назначение: ${productSafety.intendedUse}` : "",
+    productSafety.application ? `Применение: ${productSafety.application}` : "",
     `Оценки: увлажнение ${expertScores.hydration_score}/100, барьер ${expertScores.barrier_score}/100, активность ${expertScores.active_score}/100, риск раздражения ${expertScores.irritation_risk}/100.`,
     warnings.length ? "Есть факторы, которые стоит учитывать перед применением." : "Явных красных флагов в текущей экспертной базе не найдено."
-  ].join(" ");
+  ].filter(Boolean).join(" ");
 
   return {
     summary,
@@ -367,6 +445,8 @@ export function analyzeComposition({ text, profile = {} }) {
     irritation_risk: expertScores.irritation_risk,
     active_score: expertScores.active_score,
     expertScores,
+    productSafety,
+    productClassification: productSafety,
     totalIngredients: ingredients.length,
     inciCleaning,
     found,
@@ -374,13 +454,13 @@ export function analyzeComposition({ text, profile = {} }) {
     groups: roleGroups(found),
     positives,
     warnings,
-    architecture: buildFormulaArchitecture(found),
+    architecture: procedureOverride?.architecture || buildFormulaArchitecture(found),
     proprietaryComplexes,
     expertSummary,
-    routineAdvice: buildRoutineAdvice(found, expertScores),
-    questions: buildQuestions(found),
+    routineAdvice: procedureOverride?.routineAdvice || buildRoutineAdvice(found, expertScores),
+    questions: procedureOverride?.questions || buildQuestions(found),
     confidence,
-    disclaimer: "Это справочный разбор состава, а не медицинское назначение. По INCI нельзя надежно определить точные проценты, pH, SPF/UVA-PF и индивидуальную переносимость."
+    disclaimer: procedureOverride?.disclaimer || "Это справочный разбор состава, а не медицинское назначение. По INCI нельзя надежно определить точные проценты, pH, SPF/UVA-PF и индивидуальную переносимость."
   };
 }
 

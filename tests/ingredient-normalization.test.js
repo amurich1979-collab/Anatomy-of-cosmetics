@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { analyzeComposition } from "../src/analyzer.js";
+import { findFormulaAlternatives } from "../src/analogs.js";
 
 function firstFound(text) {
   const result = analyzeComposition({ text });
@@ -45,4 +46,20 @@ test("RET Complex is treated as an undisclosed proprietary complex", () => {
   assert.equal(found.excludedFromScoring, true);
   assert.equal(found.roles.length, 0);
   assert.equal(result.groups.some((group) => group.items.includes("RET Complex")), false);
+});
+
+test("local anesthetic formulas are not treated as ordinary skin care", () => {
+  const text = "Aqua, Frostoin, Prilocaine Hydrochloride, Propylene Glycol, Sodium Hydroxide, Cetyl Palmitate, C10-16 Alkyl Glucoside, C14-22 Alcohols, Hydroxyethylcellulose, Phenoxyethanol, Ethylhexylglycerin";
+  const result = analyzeComposition({ text });
+
+  assert.equal(result.productSafety.shouldScoreAsCosmetic, false);
+  assert.equal(result.productSafety.type, "local_anesthetic");
+  assert.equal(result.formulaType, "местный анестетик / процедурный препарат");
+  assert.equal(result.score.label, "не оценивать как уходовое средство");
+  assert.equal(result.hydration_score, 0);
+  assert.equal(result.active_score, 0);
+  assert.ok(result.summary.includes("не обычная косметическая формула"));
+  assert.ok(result.warnings.some((item) => item.includes("Не использовать как ежедневное уходовое средство")));
+  assert.ok(result.routineAdvice.every((item) => !item.includes("обычное новое средство")));
+  assert.deepEqual(findFormulaAlternatives({ text }), []);
 });

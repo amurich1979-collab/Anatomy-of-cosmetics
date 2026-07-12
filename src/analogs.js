@@ -136,6 +136,8 @@ function explanation(target, candidate, ingredientOverlap, activeOverlap, suppor
 
 export function findFormulaAlternatives({ text, profile = {}, productName = "", limit = 5 }) {
   const target = analyzeComposition({ text, profile });
+  if (target.productSafety && target.productSafety.shouldScoreAsCosmetic === false) return [];
+
   const targetIngredients = setOf((target.found || []).map((item) => item.name));
   const targetActives = activeSet(target);
   const targetSupport = supportSet(target);
