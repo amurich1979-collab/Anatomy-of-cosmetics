@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { findCosIngIngredient, normalizeInciText } from "./services/ingredientSources/cosing.js";
+import { cleanInciText } from "./services/inciCleaner.js";
+import { findCosIngIngredient } from "./services/ingredientSources/cosing.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const INGREDIENTS_PATH = path.join(__dirname, "..", "data", "ingredients-expert.json");
@@ -64,18 +65,7 @@ function positionWeight(position, total) {
 }
 
 export function parseIngredients(text) {
-  const protectedText = normalizeInciText(text || "")
-    .replace(/ingredients?\s*[:：]/gi, "")
-    .replace(/inci\s*[:：]/gi, "")
-    .replace(/состав\s*[:：]/gi, "")
-    .replace(/(\d),(\d)/g, "$1§$2")
-    .replace(/\.\s+(?=[A-ZА-Я0-9])/g, ", ");
-
-  return protectedText
-    .split(/[,;\n]+/)
-    .map((item) => item.replace(/§/g, ",").replace(/\(.+?\)/g, "").replace(/[.。]+$/g, "").trim())
-    .filter(Boolean)
-    .filter((item, index, arr) => arr.findIndex((other) => normalize(other) === normalize(item)) === index);
+  return cleanInciText(text || "").ingredients;
 }
 
 function findIngredient(raw) {
@@ -105,6 +95,7 @@ function findIngredient(raw) {
 
   const cosing = findCosIngIngredient(raw);
   if (!cosing) return null;
+  if (cosing.match?.type === "fuzzy" && (cosing.match.confidence || 0) < 0.95) return null;
 
   return {
     name: cosing.name,
@@ -307,7 +298,8 @@ function buildProprietaryComplexes(found) {
 }
 
 export function analyzeComposition({ text, profile = {} }) {
-  const ingredients = parseIngredients(text || "");
+  const inciCleaning = cleanInciText(text || "");
+  const ingredients = inciCleaning.ingredients;
   const found = [];
   const unknown = [];
 
@@ -340,7 +332,14 @@ export function analyzeComposition({ text, profile = {} }) {
       return;
     }
 
-    unknown.push({ input: ingredient, position: index + 1, concentration: concentrationZone(index, ingredients.length) });
+    const suggestion = inciCleaning.suggestions.find((item) => normalize(item.original) === normalize(ingredient));
+    unknown.push({
+      input: ingredient,
+      position: index + 1,
+      concentration: concentrationZone(index, ingredients.length),
+      suggested_match: suggestion?.suggested_match,
+      match_confidence: suggestion?.confidence
+    });
   });
 
   const expertScores = formulaScores(found, unknown.length, profile);
@@ -369,6 +368,7 @@ export function analyzeComposition({ text, profile = {} }) {
     active_score: expertScores.active_score,
     expertScores,
     totalIngredients: ingredients.length,
+    inciCleaning,
     found,
     unknown,
     groups: roleGroups(found),
