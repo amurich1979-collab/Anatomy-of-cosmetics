@@ -20,6 +20,9 @@ const photoPreview = document.querySelector("#photoPreview");
 const photoText = document.querySelector("#photoText");
 const photoUseComposition = document.querySelector("#photoUseComposition");
 const photoAnalyze = document.querySelector("#photoAnalyze");
+const barcodeInput = document.querySelector("#barcodeInput");
+const barcodeApply = document.querySelector("#barcodeApply");
+const mobileAnalyze = document.querySelector("#mobileAnalyze");
 const tg = window.Telegram?.WebApp;
 
 const STATIC_PRODUCTS = [
@@ -162,6 +165,15 @@ function normalizeProductText(value) {
   if (index <= 4) return "вероятно высокая или средняя концентрационная зона";
   if (index / Math.max(total, 1) < 0.45) return "вероятно средняя зона";
   return "вероятно низкая зона или блок до/ниже 1%";
+}
+
+function scrollToResult() {
+  if (!result) return;
+  result.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function submitAnalysisFromSticky() {
+  form?.requestSubmit();
 }
 
 function parseIngredients(text) {
@@ -646,6 +658,7 @@ async function analyzeCurrentComposition(sourceLabel = "") {
   const text = composition.value.trim();
   if (!text) {
     result.innerHTML = `<div class="error">Сначала нужен состав: выберите средство, распознайте фото или вставьте список ингредиентов.</div>`;
+    scrollToResult();
     return;
   }
 
@@ -660,6 +673,7 @@ async function analyzeCurrentComposition(sourceLabel = "") {
   };
 
   result.innerHTML = `<div class="loading">Разбираю состав...</div>`;
+  scrollToResult();
 
   try {
     const response = await fetch("/api/analyze", {
@@ -672,6 +686,7 @@ async function analyzeCurrentComposition(sourceLabel = "") {
   } catch {
     render(localAnalyzeComposition(payload));
   }
+  scrollToResult();
 }
 
 function classifyCatalogProduct(product) {
@@ -923,6 +938,7 @@ photoInput?.addEventListener("change", async () => {
 
   photoStatus.hidden = false;
   photoStatus.textContent = "Фото принято. Распознаю текст с упаковки...";
+  photoStatus.scrollIntoView({ behavior: "smooth", block: "center" });
 
   if (photoReview) photoReview.hidden = false;
   if (photoPreview) {
@@ -942,8 +958,11 @@ photoInput?.addEventListener("change", async () => {
     const compositionCandidate = extractCompositionCandidate(text);
     const ingredients = parseIngredients(compositionCandidate);
     photoStatus.textContent = ingredients.length >= 3
-      ? `Текст распознан. Предварительно найдено ингредиентов: ${ingredients.length}. Нажмите “Взять состав с фото” или “Разобрать состав с фото”.`
+      ? `Текст распознан. Предварительно найдено ингредиентов: ${ingredients.length}. Запускаю разбор состава.`
       : "Текст распознан, но состав выделен неуверенно. Поправьте текст вручную или сфотографируйте ближе именно блок состава.";
+    if (ingredients.length >= 3) {
+      await applyPhotoText({ analyze: true });
+    }
   } catch (error) {
     photoStatus.textContent = error.message || "Не удалось распознать фото. Попробуйте другое фото или вставьте состав вручную.";
   }
@@ -956,6 +975,23 @@ photoUseComposition?.addEventListener("click", () => {
 photoAnalyze?.addEventListener("click", () => {
   applyPhotoText({ analyze: true });
 });
+
+barcodeApply?.addEventListener("click", () => {
+  const code = barcodeInput?.value.trim() || "";
+  if (!code) return;
+  productName.value = code;
+  composition.value = "";
+  setProductStatus("Ищу средство по штрихкоду...");
+  form?.requestSubmit();
+});
+
+barcodeInput?.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter") return;
+  event.preventDefault();
+  barcodeApply?.click();
+});
+
+mobileAnalyze?.addEventListener("click", submitAnalysisFromSticky);
 
 initCatalog();
 
@@ -1121,6 +1157,7 @@ form.addEventListener("submit", async (event) => {
 
   if (!hasComposition) {
     result.innerHTML = `<div class="error">Не удалось автоматически подтянуть состав. Выберите средство из подсказок или каталога, либо уточните название.</div>`;
+    scrollToResult();
     return;
   }
 
@@ -1135,6 +1172,7 @@ form.addEventListener("submit", async (event) => {
   };
 
   result.innerHTML = `<div class="loading">Разбираю состав...</div>`;
+  scrollToResult();
 
   try {
     const response = await fetch("/api/analyze", {
@@ -1160,4 +1198,5 @@ form.addEventListener("submit", async (event) => {
     });
     render(analysis);
   }
+  scrollToResult();
 });

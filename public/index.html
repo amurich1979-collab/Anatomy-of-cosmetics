@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Анатомия косметологии</title>
+    <title>Анатомия косметики</title>
     <script>
       try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260709-16" />
+    <link rel="stylesheet" href="styles.css?v=20260712-mobile-1" />
   </head>
   <body>
     <div class="ambient-layer" aria-hidden="true">
@@ -17,7 +17,7 @@
     </div>
     <main class="shell">
       <header class="topbar">
-        <a class="brand-link" href="/">Анатомия косметологии</a>
+        <a class="brand-link" href="/">Анатомия косметики</a>
         <nav class="topnav" aria-label="Навигация">
           <a href="/" aria-current="page">Главная</a>
           <a href="/settings">Настройки</a>
@@ -28,25 +28,26 @@
       <section class="workspace">
         <div class="intro">
           <p class="eyebrow">Разбор профессионального ухода</p>
-          <h1>Анатомия косметологии</h1>
-          <p>
+          <h1>Анатомия косметики</h1>
+          <p class="intro-full">
             Введите название средства. Сервис сам найдет карточку, подтянет состав с упаковки и разберет ингредиенты. INCI — это международная номенклатура названий ингредиентов.
             кислоты, SPF-фильтры, консерванты, отдушки, вероятные концентрационные
             зоны и риски для вашего типа кожи.
           </p>
+          <p class="intro-short">Найдите средство, сфотографируйте состав или введите штрихкод.</p>
         </div>
 
         <form id="analysisForm" class="panel">
           <div class="form-head">
             <div>
-              <p class="eyebrow">Шаг 1</p>
+              <p class="eyebrow">Анализ состава</p>
               <h2>Найдите средство</h2>
             </div>
             <span class="mode-pill">MVP</span>
           </div>
 
           <label class="product-search">
-            Название препарата или средства
+            Поиск по названию
             <span class="search-input-wrap">
               <input id="productName" autocomplete="off" placeholder="Например: Glycolic Peel, Retinol, SPF..." />
               <button class="search-clear" type="button" id="productClear" aria-label="Очистить поиск" hidden>×</button>
@@ -55,12 +56,24 @@
             <span id="productStatus" class="field-note" hidden></span>
           </label>
 
+          <div class="mobile-or" aria-hidden="true">или</div>
+
           <div class="search-tools">
             <label class="secondary-action catalog-open" for="catalogOpen" id="catalogToggle">Каталог</label>
             <label class="photo-upload" for="photoInput">
-              Фото упаковки
+              Сфотографировать состав
               <input id="photoInput" type="file" accept="image/*" />
             </label>
+          </div>
+
+          <div class="mobile-or" aria-hidden="true">или</div>
+
+          <div class="barcode-row">
+            <label>
+              Сканировать штрихкод
+              <input id="barcodeInput" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="EAN / UPC" />
+            </label>
+            <button class="secondary-action" type="button" id="barcodeApply">Найти</button>
           </div>
 
           <div class="photo-status" id="photoStatus" hidden></div>
@@ -103,55 +116,59 @@
             <button type="button" class="sample-chip" data-query="Mineral Recovery SPF 50">SPF</button>
           </div>
 
-          <div class="form-head compact">
-            <div>
-              <p class="eyebrow">Шаг 2</p>
-              <h2>Профиль кожи</h2>
+          <details class="advanced-options">
+            <summary>Дополнительно</summary>
+
+            <div class="form-head compact">
+              <div>
+                <p class="eyebrow">Профиль</p>
+                <h2>Профиль кожи</h2>
+              </div>
             </div>
-          </div>
 
-          <div class="grid">
-            <label>
-              Тип кожи
-              <select id="skinType">
-                <option>чувствительная</option>
-                <option>сухая</option>
-                <option>жирная</option>
-                <option>комбинированная</option>
-                <option>нормальная</option>
-              </select>
-            </label>
+            <div class="grid">
+              <label>
+                Тип кожи
+                <select id="skinType">
+                  <option>чувствительная</option>
+                  <option>сухая</option>
+                  <option>жирная</option>
+                  <option>комбинированная</option>
+                  <option>нормальная</option>
+                </select>
+              </label>
 
-            <label>
-              Контекст
-              <select id="context">
-                <option>после процедуры</option>
-                <option>домашний уход</option>
-                <option>перед покупкой</option>
-                <option>назначил косметолог</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="concerns-field">
-            <span class="field-label">Что беспокоит</span>
-            <div class="concern-grid" aria-label="Что беспокоит при применении средства">
-              <button type="button" class="concern-chip" aria-pressed="true" data-value="розацеа">Розацеа</button>
-              <button type="button" class="concern-chip" aria-pressed="true" data-value="пигментация">Пигментация</button>
-              <button type="button" class="concern-chip" aria-pressed="true" data-value="нарушенный барьер">Нарушенный барьер</button>
-              <button type="button" class="concern-chip" aria-pressed="false" data-value="покраснение">Покраснение</button>
-              <button type="button" class="concern-chip" aria-pressed="false" data-value="жжение или пощипывание">Жжение</button>
-              <button type="button" class="concern-chip" aria-pressed="false" data-value="зуд">Зуд</button>
-              <button type="button" class="concern-chip" aria-pressed="false" data-value="сухость и шелушение">Сухость/шелушение</button>
-              <button type="button" class="concern-chip" aria-pressed="false" data-value="акне и комедоны">Акне/комедоны</button>
-              <button type="button" class="concern-chip" aria-pressed="false" data-value="отек или крапивница">Отек/крапивница</button>
-              <button type="button" class="concern-chip" aria-pressed="false" data-value="фоточувствительность">Чувствительность к солнцу</button>
-              <button type="button" class="concern-chip" aria-pressed="false" data-value="реакция на отдушки">Отдушки</button>
-              <button type="button" class="concern-chip" aria-pressed="false" data-value="беременность или лактация">Беременность/лактация</button>
+              <label>
+                Контекст
+                <select id="context">
+                  <option>после процедуры</option>
+                  <option>домашний уход</option>
+                  <option>перед покупкой</option>
+                  <option>назначил косметолог</option>
+                </select>
+              </label>
             </div>
-            <input id="concernsCustom" placeholder="Свое: например, дерматит, купероз, после пилинга..." />
-            <input id="concerns" type="hidden" value="розацеа, пигментация, нарушенный барьер" />
-          </div>
+
+            <div class="concerns-field">
+              <span class="field-label">Что беспокоит</span>
+              <div class="concern-grid" aria-label="Что беспокоит при применении средства">
+                <button type="button" class="concern-chip" aria-pressed="true" data-value="розацеа">Розацеа</button>
+                <button type="button" class="concern-chip" aria-pressed="true" data-value="пигментация">Пигментация</button>
+                <button type="button" class="concern-chip" aria-pressed="true" data-value="нарушенный барьер">Нарушенный барьер</button>
+                <button type="button" class="concern-chip" aria-pressed="false" data-value="покраснение">Покраснение</button>
+                <button type="button" class="concern-chip" aria-pressed="false" data-value="жжение или пощипывание">Жжение</button>
+                <button type="button" class="concern-chip" aria-pressed="false" data-value="зуд">Зуд</button>
+                <button type="button" class="concern-chip" aria-pressed="false" data-value="сухость и шелушение">Сухость/шелушение</button>
+                <button type="button" class="concern-chip" aria-pressed="false" data-value="акне и комедоны">Акне/комедоны</button>
+                <button type="button" class="concern-chip" aria-pressed="false" data-value="отек или крапивница">Отек/крапивница</button>
+                <button type="button" class="concern-chip" aria-pressed="false" data-value="фоточувствительность">Чувствительность к солнцу</button>
+                <button type="button" class="concern-chip" aria-pressed="false" data-value="реакция на отдушки">Отдушки</button>
+                <button type="button" class="concern-chip" aria-pressed="false" data-value="беременность или лактация">Беременность/лактация</button>
+              </div>
+              <input id="concernsCustom" placeholder="Свое: например, дерматит, купероз, после пилинга..." />
+              <input id="concerns" type="hidden" value="розацеа, пигментация, нарушенный барьер" />
+            </div>
+          </details>
 
           <button class="primary-action" type="submit">Разобрать состав</button>
         </form>
@@ -159,9 +176,10 @@
 
       <section id="result" class="result" aria-live="polite"></section>
     </main>
+    <button class="mobile-sticky-analyze" type="button" id="mobileAnalyze">Разобрать состав</button>
 
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="theme.js?v=20260709-18"></script>
-    <script src="app.js?v=20260709-18" type="module"></script>
+    <script src="app.js?v=20260712-mobile-1" type="module"></script>
   </body>
 </html>
