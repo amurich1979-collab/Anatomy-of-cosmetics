@@ -134,10 +134,12 @@ app.post("/api/analyze", async (req, res) => {
       kind: "analysis",
       title: req.body?.productName || analysis.formulaType || "Разбор состава",
       payload: {
+        productName: req.body?.productName || "",
         score: analysis.score?.score,
         formulaType: analysis.formulaType,
         profile: profile || {},
-        composition: String(text).slice(0, 4000)
+        composition: String(text).slice(0, 4000),
+        analysis
       }
     });
   }

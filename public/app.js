@@ -355,6 +355,31 @@ async function saveServerHistory(entry) {
   }
 }
 
+function buildAnalysisHistoryEntry(payload, analysis, sourceLabel = "") {
+  const productTitle = payload.productName || sourceLabel || analysis.formulaType || "Разбор состава";
+  return {
+    kind: "analysis",
+    title: productTitle,
+    productName: payload.productName || "",
+    score: analysis.score?.score,
+    formulaType: analysis.formulaType,
+    payload: {
+      productName: payload.productName || "",
+      source: sourceLabel || "",
+      composition: String(payload.text || "").slice(0, 4000),
+      profile: payload.profile || {},
+      score: analysis.score?.score,
+      formulaType: analysis.formulaType,
+      analysis
+    }
+  };
+}
+
+function saveAnalysisSnapshot(payload, analysis, sourceLabel = "") {
+  const entry = buildAnalysisHistoryEntry(payload, analysis, sourceLabel);
+  saveLocalHistory("analysisHistory", entry, 50);
+}
+
 async function loadProductDetails(product) {
   if (product.composition) return product;
 
@@ -682,9 +707,13 @@ async function analyzeCurrentComposition(sourceLabel = "") {
       body: JSON.stringify(payload)
     });
     if (!response.ok) throw new Error("Analyze failed");
-    render(await response.json());
+    const analysis = await response.json();
+    saveAnalysisSnapshot(payload, analysis, sourceLabel);
+    render(analysis);
   } catch {
-    render(localAnalyzeComposition(payload));
+    const analysis = localAnalyzeComposition(payload);
+    saveAnalysisSnapshot(payload, analysis, sourceLabel);
+    render(analysis);
   }
   scrollToResult();
 }
@@ -1195,19 +1224,11 @@ form.addEventListener("submit", async (event) => {
 
     if (!response.ok) throw new Error("Analyze failed");
     const analysis = await response.json();
-    saveLocalHistory("analysisHistory", {
-      productName: productName?.value.trim() || "",
-      score: analysis.score?.score,
-      formulaType: analysis.formulaType
-    });
+    saveAnalysisSnapshot(payload, analysis);
     render(analysis);
   } catch {
     const analysis = localAnalyzeComposition(payload);
-    saveLocalHistory("analysisHistory", {
-      productName: productName?.value.trim() || "",
-      score: analysis.score?.score,
-      formulaType: analysis.formulaType
-    });
+    saveAnalysisSnapshot(payload, analysis);
     render(analysis);
   }
   scrollToResult();

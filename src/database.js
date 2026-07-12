@@ -156,6 +156,50 @@ export async function createUser({ email, passwordHash, name = "" }) {
   return publicUser(user);
 }
 
+export async function findOrCreateOAuthUser({ email, name = "", provider }) {
+  const cleanEmail = normalizeEmail(email);
+  const cleanProvider = String(provider || "").trim().toLowerCase();
+  if (!cleanEmail || !cleanProvider) return null;
+
+  const existing = await getUserByEmail(cleanEmail);
+  if (existing) return publicUser(existing);
+
+  const id = createId("usr");
+  const passwordHash = `oauth:${cleanProvider}:${crypto.randomBytes(24).toString("hex")}`;
+
+  if (pgPool) {
+    try {
+      const result = await query(
+        "insert into users (id, email, password_hash, name, provider) values ($1, $2, $3, $4, $5) returning id, email, name, provider, created_at",
+        [id, cleanEmail, passwordHash, name, cleanProvider]
+      );
+      await query("insert into user_settings (user_id, settings) values ($1, $2)", [id, DEFAULT_SETTINGS]);
+      return publicUser(result.rows[0]);
+    } catch (error) {
+      if (error.code === "23505") return publicUser(await getUserByEmail(cleanEmail));
+      throw error;
+    }
+  }
+
+  const db = readFileDb();
+  const racedUser = db.users.find((user) => user.email === cleanEmail);
+  if (racedUser) return publicUser(racedUser);
+
+  const user = {
+    id,
+    email: cleanEmail,
+    passwordHash,
+    name,
+    provider: cleanProvider,
+    createdAt: now()
+  };
+
+  db.users.push(user);
+  db.settings.push({ userId: id, settings: DEFAULT_SETTINGS, updatedAt: now() });
+  writeFileDb(db);
+  return publicUser(user);
+}
+
 export async function getUserByEmail(email) {
   const cleanEmail = normalizeEmail(email);
 

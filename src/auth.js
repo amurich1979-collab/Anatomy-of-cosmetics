@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import {
   createPasswordResetToken,
   createUser,
+  findOrCreateOAuthUser,
   getValidPasswordResetToken,
   getUserByEmail,
   getUserById,
@@ -11,6 +12,7 @@ import {
 } from "./database.js";
 
 const COOKIE_NAME = "anatomy_session";
+const OAUTH_STATE_COOKIE = "anatomy_oauth_state";
 const SESSION_DAYS = 30;
 const fallbackSessionSecret = crypto.randomBytes(32).toString("hex");
 
@@ -39,19 +41,32 @@ function parseCookies(header = "") {
   );
 }
 
+function appendSetCookie(res, cookie) {
+  const current = res.getHeader("Set-Cookie");
+  if (!current) {
+    res.setHeader("Set-Cookie", cookie);
+    return;
+  }
+
+  res.setHeader("Set-Cookie", Array.isArray(current) ? [...current, cookie] : [current, cookie]);
+}
+
+function secureCookiePart() {
+  return process.env.NODE_ENV === "production" ? "; Secure" : "";
+}
+
 function setSessionCookie(res, userId) {
   const expiresAt = Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000;
   const payload = base64url(JSON.stringify({ userId, expiresAt }));
   const token = `${payload}.${sign(payload)}`;
-  const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
-  res.setHeader(
-    "Set-Cookie",
-    `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${SESSION_DAYS * 24 * 60 * 60}${secure}`
+  appendSetCookie(
+    res,
+    `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${SESSION_DAYS * 24 * 60 * 60}${secureCookiePart()}`
   );
 }
 
 function clearSessionCookie(res) {
-  res.setHeader("Set-Cookie", `${COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
+  appendSetCookie(res, `${COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
 }
 
 function verifySessionToken(token) {
@@ -85,6 +100,62 @@ function appBaseUrl(req) {
   const protocol = req.headers["x-forwarded-proto"] || req.protocol || "http";
   const host = req.headers["x-forwarded-host"] || req.headers.host;
   return `${protocol}://${host}`;
+}
+
+function googleOAuthConfig(req) {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const redirectUri = process.env.GOOGLE_REDIRECT_URI || `${appBaseUrl(req)}/api/auth/google/callback`;
+  return { clientId, clientSecret, redirectUri };
+}
+
+function authRedirect(message) {
+  return `/login?auth=${encodeURIComponent(message)}`;
+}
+
+function setOAuthStateCookie(res, state) {
+  appendSetCookie(
+    res,
+    `${OAUTH_STATE_COOKIE}=${encodeURIComponent(state)}; Path=/api/auth/google; HttpOnly; SameSite=Lax; Max-Age=600${secureCookiePart()}`
+  );
+}
+
+function clearOAuthStateCookie(res) {
+  appendSetCookie(res, `${OAUTH_STATE_COOKIE}=; Path=/api/auth/google; HttpOnly; SameSite=Lax; Max-Age=0${secureCookiePart()}`);
+}
+
+async function exchangeGoogleCode({ code, config }) {
+  const response = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      code,
+      client_id: config.clientId,
+      client_secret: config.clientSecret,
+      redirect_uri: config.redirectUri,
+      grant_type: "authorization_code"
+    })
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.access_token) {
+    throw new Error(data.error_description || data.error || "Google token exchange failed");
+  }
+
+  return data;
+}
+
+async function fetchGoogleProfile(accessToken) {
+  const response = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+  const profile = await response.json().catch(() => ({}));
+  if (!response.ok || !profile.email) {
+    throw new Error(profile.error_description || profile.error || "Google profile request failed");
+  }
+
+  return profile;
 }
 
 async function sendPasswordResetEmail({ email, resetLink }) {
@@ -178,6 +249,74 @@ export function registerAuthRoutes(app) {
     res.json({ ok: true });
   });
 
+  app.get("/api/auth/google", (req, res) => {
+    const config = googleOAuthConfig(req);
+    if (!config.clientId || !config.clientSecret) {
+      res.redirect(authRedirect("google_not_configured"));
+      return;
+    }
+
+    const state = crypto.randomBytes(24).toString("base64url");
+    setOAuthStateCookie(res, state);
+
+    const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+    authUrl.searchParams.set("client_id", config.clientId);
+    authUrl.searchParams.set("redirect_uri", config.redirectUri);
+    authUrl.searchParams.set("response_type", "code");
+    authUrl.searchParams.set("scope", "openid email profile");
+    authUrl.searchParams.set("state", state);
+    authUrl.searchParams.set("access_type", "online");
+    authUrl.searchParams.set("prompt", "select_account");
+
+    res.redirect(authUrl.toString());
+  });
+
+  app.get("/api/auth/google/callback", async (req, res) => {
+    const config = googleOAuthConfig(req);
+    const cookies = parseCookies(req.headers.cookie);
+    const state = String(req.query.state || "");
+    const code = String(req.query.code || "");
+
+    clearOAuthStateCookie(res);
+
+    if (req.query.error) {
+      res.redirect(authRedirect("google_denied"));
+      return;
+    }
+
+    if (!config.clientId || !config.clientSecret || !code || !state || cookies[OAUTH_STATE_COOKIE] !== state) {
+      res.redirect(authRedirect("google_invalid"));
+      return;
+    }
+
+    try {
+      const token = await exchangeGoogleCode({ code, config });
+      const profile = await fetchGoogleProfile(token.access_token);
+
+      if (profile.email_verified === false) {
+        res.redirect(authRedirect("google_email_unverified"));
+        return;
+      }
+
+      const user = await findOrCreateOAuthUser({
+        email: profile.email,
+        name: profile.name || profile.given_name || "",
+        provider: "google"
+      });
+
+      if (!user) {
+        res.redirect(authRedirect("google_failed"));
+        return;
+      }
+
+      setSessionCookie(res, user.id);
+      res.redirect("/settings?auth=google_ok");
+    } catch (error) {
+      console.error("[google oauth]", error.message);
+      res.redirect(authRedirect("google_failed"));
+    }
+  });
+
   app.post("/api/auth/password-reset/request", async (req, res) => {
     const email = String(req.body?.email || "").trim().toLowerCase();
     const neutral = {
@@ -242,6 +381,10 @@ export function registerAuthRoutes(app) {
 
   app.post("/api/auth/oauth/:provider", (req, res) => {
     const provider = String(req.params.provider || "");
+    if (provider === "google") {
+      res.json({ url: "/api/auth/google" });
+      return;
+    }
     res.status(501).json({
       error: `${provider} вход подготовлен в интерфейсе, но требует ключи OAuth и настройку callback URL.`
     });

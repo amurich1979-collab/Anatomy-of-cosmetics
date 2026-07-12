@@ -8,12 +8,112 @@ const logoutButton = document.querySelector("#logoutButton");
 
 let currentUser = null;
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function readList(key) {
   try {
     return JSON.parse(localStorage.getItem(key) || "[]");
   } catch {
     return [];
   }
+}
+
+function historyPayload(item) {
+  return item.payload || {};
+}
+
+function compactList(items, emptyText) {
+  if (!items?.length) return `<p class="field-note">${escapeHtml(emptyText)}</p>`;
+  return `<ul>${items.slice(0, 8).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+}
+
+function renderSavedAnalysis(item) {
+  const payload = historyPayload(item);
+  const analysis = payload.analysis || {};
+  const warnings = analysis.warnings || [];
+  const positives = analysis.positives || [];
+  const found = analysis.found || [];
+  const groups = analysis.groups || [];
+  const composition = payload.composition || "";
+
+  return `
+    <div class="history-detail">
+      <div class="history-metrics">
+        <article>
+          <strong>${escapeHtml(analysis.score?.score ?? payload.score ?? "—")}</strong>
+          <span>оценка</span>
+        </article>
+        <article>
+          <strong>${escapeHtml(analysis.hydration_score ?? "—")}</strong>
+          <span>увлажнение</span>
+        </article>
+        <article>
+          <strong>${escapeHtml(analysis.irritation_risk ?? "—")}</strong>
+          <span>риск</span>
+        </article>
+      </div>
+
+      <div class="history-block">
+        <h3>${escapeHtml(analysis.formulaType || payload.formulaType || "Разбор состава")}</h3>
+        <p>${escapeHtml(analysis.summary || "Сохранен старый краткий разбор без полного текста результата.")}</p>
+      </div>
+
+      <details>
+        <summary>Исходный состав</summary>
+        <p class="history-composition">${escapeHtml(composition || "Состав не сохранен в этой записи.")}</p>
+      </details>
+
+      <details>
+        <summary>Что сервис выдал</summary>
+        <div class="history-columns">
+          <div>
+            <h3>Может быть полезно</h3>
+            ${compactList(positives, "Нет сохраненных выводов.")}
+          </div>
+          <div>
+            <h3>На что обратить внимание</h3>
+            ${compactList(warnings, "Явных предупреждений не сохранено.")}
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Компоненты и группы</summary>
+        <div class="history-columns">
+          <div>
+            <h3>Группы</h3>
+            ${compactList(groups.map((group) => `${group.role}: ${(group.items || []).join(", ")}`), "Группы не сохранены.")}
+          </div>
+          <div>
+            <h3>Ингредиенты</h3>
+            ${compactList(found.map((ingredient) => `${ingredient.name}${ingredient.ru ? ` — ${ingredient.ru}` : ""}`), "Ингредиенты не сохранены.")}
+          </div>
+        </div>
+      </details>
+    </div>
+  `;
+}
+
+function localAnalysisHistory() {
+  return readList("analysisHistory").map((item, index) => ({
+    id: item.id || `local_${index}`,
+    kind: "analysis",
+    title: item.title || item.productName || item.formulaType || "Локальный разбор состава",
+    createdAt: item.createdAt || new Date().toISOString(),
+    payload: item.payload || {
+      productName: item.productName || "",
+      score: item.score,
+      formulaType: item.formulaType,
+      analysis: item.analysis || null,
+      composition: item.composition || ""
+    }
+  }));
 }
 
 function saveUser(user) {
@@ -103,21 +203,24 @@ function renderHistorySummary(serverHistory = []) {
 function renderHistoryList(serverHistory = []) {
   if (!historyList) return;
 
-  if (!currentUser) {
-    historyList.innerHTML = `<p class="field-note">Серверная история появится после входа в аккаунт.</p>`;
+  const visibleHistory = currentUser ? serverHistory : localAnalysisHistory();
+
+  if (!visibleHistory.length) {
+    historyList.innerHTML = `<p class="field-note">${currentUser ? "Пока нет сохраненных разборов в аккаунте." : "Пока нет локальных сохраненных разборов в этом браузере."}</p>`;
     return;
   }
 
-  if (!serverHistory.length) {
-    historyList.innerHTML = `<p class="field-note">Пока нет сохраненных разборов в аккаунте.</p>`;
-    return;
-  }
-
-  historyList.innerHTML = serverHistory.slice(0, 8).map((item) => `
-    <article class="history-item">
-      <strong>${item.title}</strong>
-      <span>${item.kind === "analysis" ? "разбор состава" : item.kind} · ${new Date(item.createdAt).toLocaleString("ru-RU")}</span>
-    </article>
+  historyList.innerHTML = visibleHistory.slice(0, 12).map((item) => `
+    <details class="history-item">
+      <summary>
+        <span>
+          <strong>${escapeHtml(item.title)}</strong>
+          <small>${escapeHtml(item.kind === "analysis" ? "разбор состава" : item.kind)} · ${new Date(item.createdAt).toLocaleString("ru-RU")}</small>
+        </span>
+        <em>Открыть</em>
+      </summary>
+      ${item.kind === "analysis" ? renderSavedAnalysis(item) : `<p class="field-note">Для этой записи нет детального результата.</p>`}
+    </details>
   `).join("");
 }
 
@@ -157,6 +260,12 @@ window.addEventListener("themechange", (event) => {
 
 async function initSettingsPage() {
   await loadAccount();
+  const authCode = new URLSearchParams(window.location.search).get("auth");
+  if (authCode === "google_ok" && accountStatus) {
+    accountStatus.textContent = "Вы вошли через Google. История и настройки будут сохраняться в аккаунте.";
+    accountStatus.dataset.mode = "ok";
+    window.history.replaceState({}, "", "/settings");
+  }
   await refreshHistory();
 }
 

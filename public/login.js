@@ -25,6 +25,22 @@ function saveUser(user) {
   }));
 }
 
+function showAuthCallbackStatus() {
+  const authCode = new URLSearchParams(window.location.search).get("auth");
+  if (!authCode) return;
+
+  const messages = {
+    google_not_configured: "Google-вход почти готов: добавьте GOOGLE_CLIENT_ID и GOOGLE_CLIENT_SECRET на сервере.",
+    google_denied: "Google-вход отменен.",
+    google_invalid: "Google-вход не прошел проверку безопасности. Попробуйте еще раз.",
+    google_email_unverified: "Google не подтвердил email этого аккаунта.",
+    google_failed: "Не удалось войти через Google. Попробуйте еще раз или используйте email."
+  };
+
+  setStatus(messages[authCode] || "Google-вход не завершен.", authCode === "google_denied" ? "warn" : "warn");
+  window.history.replaceState({}, "", "/login");
+}
+
 function setMode(nextMode) {
   mode = nextMode;
   tabs.forEach((tab) => tab.setAttribute("aria-pressed", String(tab.dataset.authMode === mode)));
@@ -64,6 +80,12 @@ tabs.forEach((tab) => {
 providerButtons.forEach((button) => {
   button.addEventListener("click", async () => {
     const provider = button.dataset.provider;
+    if (provider === "google") {
+      setStatus("Перенаправляю на Google...");
+      window.location.href = "/api/auth/google";
+      return;
+    }
+
     try {
       const response = await fetch(`/api/auth/oauth/${provider}`, { method: "POST" });
       const data = await response.json();
@@ -114,4 +136,5 @@ form?.addEventListener("submit", async (event) => {
 });
 
 setMode("login");
+showAuthCallbackStatus();
 loadCurrentUser();
