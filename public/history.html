@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>История - Анатомия косметики</title>
+    <script>
+      try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
+    </script>
+    <link rel="stylesheet" href="styles.css?v=20260713-history-1" />
+  </head>
+  <body>
+    <div class="ambient-layer" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <main class="shell page-shell">
+      <header class="topbar">
+        <a class="brand-link" href="/">Анатомия косметики</a>
+        <nav class="topnav" aria-label="Навигация">
+          <a href="/">Главная</a>
+          <a href="/history" aria-current="page">История</a>
+          <a href="/settings">Настройки</a>
+          <a href="/login" id="loginLink">Войти</a>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">День</button>
+        </nav>
+      </header>
+
+      <section class="settings-layout history-layout">
+        <div class="auth-copy">
+          <p class="eyebrow">История</p>
+          <h1>Сохраненные разборы</h1>
+          <p>Откройте любой прошлый анализ, чтобы увидеть исходный состав, итоговую оценку, предупреждения, группы компонентов и распознанные ингредиенты.</p>
+          <a class="primary-action compact-action" href="/">Новый разбор</a>
+        </div>
+
+        <div class="settings-stack">
+          <section class="panel">
+            <div class="form-head">
+              <div>
+                <p class="eyebrow">Аккаунт</p>
+                <h2>Источник истории</h2>
+              </div>
+            </div>
+            <p class="field-note" id="historyStatus">Проверяю статус входа...</p>
+          </section>
+
+          <section class="panel">
+            <div class="form-head">
+              <div>
+                <p class="eyebrow">Сводка</p>
+                <h2>Поиски и разборы</h2>
+              </div>
+            </div>
+            <div class="history-summary" id="historySummary"></div>
+          </section>
+
+          <section class="panel">
+            <div class="form-head">
+              <div>
+                <p class="eyebrow">Результаты</p>
+                <h2>Все сохраненные разборы</h2>
+              </div>
+              <button class="secondary-action compact-action" type="button" id="clearHistory">Очистить</button>
+            </div>
+            <div class="history-list" id="historyList"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="theme.js?v=20260709-16"></script>
+    <script src="history.js?v=20260713-history-1"></script>
+  </body>
+</html>

@@ -167,6 +167,10 @@ app.get("/settings", (_req, res) => {
   res.sendFile(path.join(publicDir, "settings.html"));
 });
 
+app.get("/history", (_req, res) => {
+  res.sendFile(path.join(publicDir, "history.html"));
+});
+
 app.get("/health", (_req, res) => {
   res.json({ ok: true });
 });
