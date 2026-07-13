@@ -33,6 +33,10 @@ function ensureFileDbShape(db) {
   };
 }
 
+export function getDatabasePool() {
+  return pgPool;
+}
+
 function readFileDb() {
   try {
     return ensureFileDbShape(JSON.parse(fs.readFileSync(fileDbPath, "utf8")));
@@ -67,7 +71,15 @@ async function query(sql, params = []) {
 
 export async function initDatabase() {
   if (!process.env.DATABASE_URL) {
-    writeFileDb(readFileDb());
+    const db = readFileDb();
+    const adminEmails = String(process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || "")
+      .split(",").map((email) => normalizeEmail(email)).filter(Boolean);
+    for (const user of db.users) {
+      user.role ||= "client";
+      user.workspaceId ||= "default";
+      if (adminEmails.includes(user.email)) user.role = "admin";
+    }
+    writeFileDb(db);
     return { provider: "file", path: fileDbPath };
   }
 
@@ -87,6 +99,18 @@ export async function initDatabase() {
       created_at timestamptz not null default now()
     )
   `);
+
+  await query("alter table users add column if not exists role text not null default 'client'");
+  await query("alter table users add column if not exists workspace_id text not null default 'default'");
+  await query("alter table users add column if not exists disabled_at timestamptz");
+
+  const adminEmails = String(process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || "")
+    .split(",")
+    .map((email) => normalizeEmail(email))
+    .filter(Boolean);
+  if (adminEmails.length) {
+    await query("update users set role = 'admin' where email = any($1::text[])", [adminEmails]);
+  }
 
   await query(`
     create table if not exists user_settings (
@@ -215,7 +239,7 @@ export async function getUserById(id) {
   if (!id) return null;
 
   if (pgPool) {
-    const result = await query("select id, email, name, provider, created_at from users where id = $1", [id]);
+    const result = await query("select id, email, name, provider, role, workspace_id, disabled_at, created_at from users where id = $1", [id]);
     return result.rows[0] || null;
   }
 
@@ -416,6 +440,27 @@ export async function updateUserPassword(userId, passwordHash) {
   return publicUser(user);
 }
 
+export async function listUsers() {
+  if (pgPool) {
+    const result = await query("select id,email,name,provider,role,workspace_id,disabled_at,created_at from users order by created_at desc");
+    return result.rows.map(publicUser);
+  }
+  return readFileDb().users.map(publicUser);
+}
+
+export async function setUserRole(userId, role, workspaceId = "default") {
+  if (!['admin', 'cosmetologist', 'client'].includes(role)) return null;
+  if (pgPool) {
+    const result = await query("update users set role=$2,workspace_id=$3 where id=$1 returning id,email,name,provider,role,workspace_id,created_at", [userId, role, workspaceId]);
+    return result.rows[0] ? publicUser(result.rows[0]) : null;
+  }
+  const db = readFileDb();
+  const user = db.users.find((record) => record.id === userId);
+  if (!user) return null;
+  user.role = role; user.workspaceId = workspaceId; writeFileDb(db);
+  return publicUser(user);
+}
+
 export function publicUser(user) {
   if (!user) return null;
   return {
@@ -423,6 +468,8 @@ export function publicUser(user) {
     email: user.email,
     name: user.name || "",
     provider: user.provider || "email",
+    role: user.role || "client",
+    workspaceId: user.workspace_id || user.workspaceId || "default",
     createdAt: user.createdAt || user.created_at || null
   };
 }
