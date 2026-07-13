@@ -15,12 +15,20 @@ const catalogResults = document.querySelector("#catalogResults");
 const catalogOpen = document.querySelector("#catalogOpen");
 const photoInput = document.querySelector("#photoInput");
 const photoInputs = document.querySelectorAll("[data-photo-input]");
+const photoCameraOpen = document.querySelector("#photoCameraOpen");
+const photoCameraInput = document.querySelector("#photoCameraInput");
 const photoStatus = document.querySelector("#photoStatus");
 const photoReview = document.querySelector("#photoReview");
 const photoPreview = document.querySelector("#photoPreview");
 const photoText = document.querySelector("#photoText");
 const photoUseComposition = document.querySelector("#photoUseComposition");
 const photoAnalyze = document.querySelector("#photoAnalyze");
+const cameraCapture = document.querySelector("#cameraCapture");
+const cameraVideo = document.querySelector("#cameraVideo");
+const cameraCanvas = document.querySelector("#cameraCanvas");
+const cameraClose = document.querySelector("#cameraClose");
+const cameraShot = document.querySelector("#cameraShot");
+const cameraFallback = document.querySelector("#cameraFallback");
 const barcodeInput = document.querySelector("#barcodeInput");
 const barcodeApply = document.querySelector("#barcodeApply");
 const mobileAnalyze = document.querySelector("#mobileAnalyze");
@@ -1025,6 +1033,65 @@ async function handlePhotoFile(file) {
     photoStatus.textContent = error.message || "Не удалось распознать фото. Попробуйте другое фото или вставьте состав вручную.";
   }
 }
+
+let cameraStream = null;
+
+function stopCameraStream() {
+  cameraStream?.getTracks?.().forEach((track) => track.stop());
+  cameraStream = null;
+  if (cameraVideo) cameraVideo.srcObject = null;
+}
+
+async function openCameraCapture() {
+  if (!navigator.mediaDevices?.getUserMedia || !cameraCapture || !cameraVideo) {
+    photoCameraInput?.click();
+    return;
+  }
+
+  try {
+    cameraCapture.hidden = false;
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: "environment" } },
+      audio: false
+    });
+    cameraVideo.srcObject = cameraStream;
+    await cameraVideo.play();
+  } catch {
+    stopCameraStream();
+    cameraCapture.hidden = true;
+    photoCameraInput?.click();
+  }
+}
+
+async function captureCameraFrame() {
+  if (!cameraVideo || !cameraCanvas) return;
+  const width = cameraVideo.videoWidth || 1280;
+  const height = cameraVideo.videoHeight || 720;
+  cameraCanvas.width = width;
+  cameraCanvas.height = height;
+  const context = cameraCanvas.getContext("2d");
+  context.drawImage(cameraVideo, 0, 0, width, height);
+
+  cameraCanvas.toBlob(async (blob) => {
+    if (!blob) return;
+    const file = new File([blob], `label-${Date.now()}.jpg`, { type: "image/jpeg" });
+    stopCameraStream();
+    cameraCapture.hidden = true;
+    await handlePhotoFile(file);
+  }, "image/jpeg", 0.92);
+}
+
+photoCameraOpen?.addEventListener("click", openCameraCapture);
+cameraClose?.addEventListener("click", () => {
+  stopCameraStream();
+  cameraCapture.hidden = true;
+});
+cameraFallback?.addEventListener("click", () => {
+  stopCameraStream();
+  cameraCapture.hidden = true;
+  photoCameraInput?.click();
+});
+cameraShot?.addEventListener("click", captureCameraFrame);
 
 photoInputs.forEach((input) => {
   input.addEventListener("change", async () => {

@@ -67,6 +67,7 @@ async function loadCurrentUser() {
     if (data.user) {
       saveUser(data.user);
       setStatus(`Вы уже вошли: ${data.user.email}. Можно переходить к анализу или настройкам.`, "ok");
+      setTimeout(() => { window.location.href = "/profile"; }, 350);
     }
   } catch {
     // Login form remains available when the status check is unavailable.
@@ -144,7 +145,7 @@ form?.addEventListener("submit", async (event) => {
     });
     saveUser(data.user);
     setStatus(`Готово. Вы вошли как ${data.user.email}. История и настройки будут сохраняться в базе.`, "ok");
-    setTimeout(() => { window.location.href = "/settings"; }, 650);
+    setTimeout(() => { window.location.href = "/profile"; }, 650);
   } catch (error) {
     setStatus(error.message, "warn");
   } finally {

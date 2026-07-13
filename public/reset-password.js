@@ -57,7 +57,7 @@ resetForm?.addEventListener("submit", async (event) => {
 
       const data = await postJson("/api/auth/password-reset/confirm", { token: resetToken, password });
       setResetStatus(data.message || "Пароль обновлен.", "ok");
-      setTimeout(() => { window.location.href = "/settings"; }, 700);
+      setTimeout(() => { window.location.href = "/profile"; }, 700);
       return;
     }
 

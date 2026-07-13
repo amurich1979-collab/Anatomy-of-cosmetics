@@ -241,11 +241,15 @@ app.get("/reset-password", (_req, res) => {
 });
 
 app.get("/settings", (_req, res) => {
-  res.sendFile(path.join(publicDir, "settings.html"));
+  res.redirect("/profile");
 });
 
 app.get("/history", (_req, res) => {
-  res.sendFile(path.join(publicDir, "history.html"));
+  res.redirect("/profile");
+});
+
+app.get("/profile", (_req, res) => {
+  res.sendFile(path.join(publicDir, "profile.html"));
 });
 
 app.get("/health", (_req, res) => {

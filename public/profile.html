@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Настройки - Анатомия косметики</title>
+    <title>Профиль - Анатомия косметики</title>
     <script>
       try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260709-16" />
+    <link rel="stylesheet" href="styles.css?v=20260713-profile-1" />
   </head>
   <body>
     <div class="ambient-layer" aria-hidden="true">
@@ -20,16 +20,17 @@
         <a class="brand-link" href="/">Анатомия косметики</a>
         <nav class="topnav" aria-label="Навигация">
           <a href="/">Главная</a>
-          <a href="/login" id="loginLink" data-auth-link>Войти</a>
+          <a href="/profile" data-auth-link aria-current="page">Профиль</a>
           <button class="theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">День</button>
         </nav>
       </header>
 
-      <section class="settings-layout">
+      <section class="settings-layout history-layout">
         <div class="auth-copy">
-          <p class="eyebrow">Настройки</p>
-          <h1>Профиль и внешний вид</h1>
-          <p>Тема, история поиска и результаты анализа сохраняются в аккаунте после входа. Без входа сервис продолжит работать, но история останется только в этом браузере.</p>
+          <p class="eyebrow">Профиль</p>
+          <h1>Аккаунт, история и настройки</h1>
+          <p>Здесь хранятся ваши разборы, профиль входа и настройки внешнего вида. Историю можно открыть по каждому запросу и посмотреть результат повторно.</p>
+          <a class="primary-action compact-action" href="/">Новый разбор</a>
         </div>
 
         <div class="settings-stack">
@@ -37,7 +38,7 @@
             <div class="form-head">
               <div>
                 <p class="eyebrow">Аккаунт</p>
-                <h2 id="accountTitle">Гостевой режим</h2>
+                <h2 id="accountTitle">Проверяю вход...</h2>
               </div>
               <button class="secondary-action compact-action" type="button" id="logoutButton" hidden>Выйти</button>
             </div>
@@ -47,7 +48,7 @@
           <section class="panel">
             <div class="form-head">
               <div>
-                <p class="eyebrow">Тема</p>
+                <p class="eyebrow">Настройки</p>
                 <h2>Цветовая схема</h2>
               </div>
             </div>
@@ -67,11 +68,22 @@
             <div class="form-head">
               <div>
                 <p class="eyebrow">История</p>
-                <h2>Сохраненные разборы</h2>
+                <h2>Поиски и разборы</h2>
               </div>
             </div>
-            <p class="field-note">История поиска и результаты анализа вынесены в отдельный раздел.</p>
-            <a class="secondary-action compact-action" href="/history">Открыть историю</a>
+            <p class="field-note" id="historyStatus">Загружаю историю...</p>
+            <div class="history-summary" id="historySummary"></div>
+          </section>
+
+          <section class="panel">
+            <div class="form-head">
+              <div>
+                <p class="eyebrow">Результаты</p>
+                <h2>Сохраненные разборы</h2>
+              </div>
+              <button class="secondary-action compact-action" type="button" id="clearHistory">Очистить</button>
+            </div>
+            <div class="history-list" id="historyList"></div>
           </section>
         </div>
       </section>
@@ -79,6 +91,6 @@
 
     <script src="theme.js?v=20260709-16"></script>
     <script src="auth-nav.js?v=20260713-profile-1"></script>
-    <script src="settings.js?v=20260709-16"></script>
+    <script src="profile.js?v=20260713-profile-1"></script>
   </body>
 </html>
