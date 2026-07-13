@@ -1104,7 +1104,9 @@ async function captureCameraFrame() {
   }, "image/jpeg", 0.92);
 }
 
-photoCameraOpen?.addEventListener("click", openCameraCapture);
+if (photoCameraOpen?.tagName === "BUTTON") {
+  photoCameraOpen.addEventListener("click", openCameraCapture);
+}
 photoClear?.addEventListener("click", clearPhotoState);
 cameraClose?.addEventListener("click", () => {
   stopCameraStream();
