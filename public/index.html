@@ -62,8 +62,12 @@
           <div class="search-tools">
             <label class="secondary-action catalog-open" for="catalogOpen" id="catalogToggle">Каталог</label>
             <label class="photo-upload" for="photoInput">
-              Сфотографировать состав
-              <input id="photoInput" type="file" accept="image/*" />
+              Загрузить фото
+              <input id="photoInput" data-photo-input type="file" accept="image/*" />
+            </label>
+            <label class="photo-upload" for="photoCameraInput">
+              Сфотографировать этикетку
+              <input id="photoCameraInput" data-photo-input type="file" accept="image/*" capture="environment" />
             </label>
           </div>
 
@@ -82,12 +86,12 @@
           <div class="photo-review" id="photoReview" hidden>
             <img id="photoPreview" alt="Фото упаковки" />
             <label>
-              Распознанный текст с фото
-              <textarea id="photoText" spellcheck="false" placeholder="После загрузки фото здесь появится текст с упаковки. Его можно поправить вручную перед разбором."></textarea>
+              Очищенный текст с фото
+              <textarea id="photoText" spellcheck="false" placeholder="После фото здесь появится очищенный состав или найденное название средства."></textarea>
             </label>
             <div class="photo-actions">
               <button class="secondary-action" type="button" id="photoUseComposition">Взять состав с фото</button>
-              <button class="primary-action" type="button" id="photoAnalyze">Разобрать состав с фото</button>
+              <button class="primary-action" type="button" id="photoAnalyze">Разобрать по фото</button>
             </div>
           </div>
 

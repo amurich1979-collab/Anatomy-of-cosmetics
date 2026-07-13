@@ -14,6 +14,7 @@ const catalogCategories = document.querySelector("#catalogCategories");
 const catalogResults = document.querySelector("#catalogResults");
 const catalogOpen = document.querySelector("#catalogOpen");
 const photoInput = document.querySelector("#photoInput");
+const photoInputs = document.querySelectorAll("[data-photo-input]");
 const photoStatus = document.querySelector("#photoStatus");
 const photoReview = document.querySelector("#photoReview");
 const photoPreview = document.querySelector("#photoPreview");
@@ -664,6 +665,31 @@ function guessProductNameFromPhotoText(text) {
   return lines.slice(0, 4).join(" / ");
 }
 
+async function resolvePhotoText(text) {
+  try {
+    const response = await fetch("/api/photo/resolve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text })
+    });
+    if (!response.ok) throw new Error("Photo resolve failed");
+    return await response.json();
+  } catch {
+    const compositionCandidate = extractCompositionCandidate(text);
+    const ingredients = parseIngredients(compositionCandidate);
+    return {
+      mode: ingredients.length >= 3 ? "composition" : "unknown",
+      cleanedText: ingredients.join(", "),
+      ingredients,
+      composition: ingredients.join(", "),
+      confidence: ingredients.length >= 3 ? 0.45 : 0,
+      message: ingredients.length >= 3
+        ? "Серверная очистка недоступна, использована локальная очистка состава."
+        : "Не удалось обработать фото. Попробуйте еще раз."
+    };
+  }
+}
+
 async function identifyProductFromPhotoText(text) {
   try {
     const response = await fetch("/api/products/identify", {
@@ -929,44 +955,53 @@ async function applyPhotoText({ analyze = false } = {}) {
     return false;
   }
 
-  const compositionCandidate = extractCompositionCandidate(rawText);
-  const ingredients = parseIngredients(compositionCandidate);
-  if (ingredients.length < 3) {
+  const resolution = await resolvePhotoText(rawText);
+  return applyPhotoResolution(resolution, { analyze, fallbackText: rawText });
+}
+
+async function applyPhotoResolution(resolution, { analyze = false, fallbackText = "" } = {}) {
+  const ingredients = resolution.ingredients || [];
+  const product = resolution.product || null;
+  const nextComposition = resolution.composition || resolution.cleanedText || "";
+
+  if (!nextComposition || (resolution.mode !== "product" && ingredients.length < 3)) {
+    if (photoText) photoText.value = resolution.cleanedText || fallbackText;
     if (photoStatus) {
       photoStatus.hidden = false;
-      photoStatus.textContent = "Не удалось уверенно выделить состав. Поправьте распознанный текст вручную или сфотографируйте ближе блок INCI/Ingredients.";
+      photoStatus.textContent = resolution.message || "Не удалось уверенно выделить состав или определить средство. Попробуйте фото ближе, ровнее и при хорошем свете.";
     }
     return false;
   }
 
-  composition.value = ingredients.join(", ");
-  const guessedName = guessProductNameFromPhotoText(rawText);
-  if (guessedName && !productName.value.trim()) productName.value = guessedName;
+  composition.value = nextComposition;
+  if (photoText) photoText.value = nextComposition;
 
-  const identified = await identifyProductFromPhotoText(rawText);
-  if (identified) {
-    productName.value = `${identified.brand} ${identified.name}`;
-    if (identified.composition) composition.value = identified.composition;
-    setProductStatus(`По фото есть возможное совпадение: ${identified.brand} ${identified.name}. Проверьте визуально и по составу.`, "warn");
+  if (product) {
+    productName.value = `${product.brand} ${product.name}`.replace(/\s+/g, " ").trim();
+    setProductStatus(`По фото найдено: ${product.brand} ${product.name}. Источник состава: ${product.source || "база сервиса"}.`, product.composition ? "ok" : "warn");
   } else {
-    setProductStatus("Средство по фото не найдено в базе, но состав выделен и готов к разбору.", "warn");
+    const guessedName = guessProductNameFromPhotoText(fallbackText);
+    if (guessedName && !productName.value.trim()) productName.value = guessedName;
+    setProductStatus("Средство по фото не найдено в базе, но состав очищен и готов к разбору.", "warn");
   }
 
+  const purposeText = resolution.purpose?.label
+    ? ` Назначение: ${resolution.purpose.label}.`
+    : "";
   if (photoStatus) {
     photoStatus.hidden = false;
-    photoStatus.textContent = `Из фото выделено ингредиентов: ${ingredients.length}. OCR может ошибаться, проверьте текст перед выводами.`;
+    photoStatus.textContent = `${resolution.message || "Фото обработано."}${purposeText} ${ingredients.length ? `Выделено ингредиентов: ${ingredients.length}.` : "Состав подтянут из карточки средства."}`;
   }
 
-  if (analyze) await analyzeCurrentComposition("Фото состава");
+  if (analyze) await analyzeCurrentComposition(product ? "Фото лицевой этикетки" : "Фото состава");
   return true;
 }
 
-photoInput?.addEventListener("change", async () => {
-  const file = photoInput.files?.[0];
+async function handlePhotoFile(file) {
   if (!file || !photoStatus) return;
 
   photoStatus.hidden = false;
-  photoStatus.textContent = "Фото принято. Распознаю текст с упаковки...";
+  photoStatus.textContent = "Фото принято. Распознаю текст и определяю сторону упаковки...";
   photoStatus.scrollIntoView({ behavior: "smooth", block: "center" });
 
   if (photoReview) photoReview.hidden = false;
@@ -977,24 +1012,25 @@ photoInput?.addEventListener("change", async () => {
 
   try {
     const text = await recognizePhotoText(file);
-    if (photoText) photoText.value = text;
+    if (photoText) photoText.value = "Очищаю распознанный текст...";
 
     if (!text || text.length < 12) {
-      photoStatus.textContent = "Текст почти не распознан. Попробуйте фото ближе, ровнее, при хорошем свете, чтобы был виден блок INCI/Ingredients.";
+      photoStatus.textContent = "Текст почти не распознан. Попробуйте фото ближе, ровнее, при хорошем свете.";
       return;
     }
 
-    const compositionCandidate = extractCompositionCandidate(text);
-    const ingredients = parseIngredients(compositionCandidate);
-    photoStatus.textContent = ingredients.length >= 3
-      ? `Текст распознан. Предварительно найдено ингредиентов: ${ingredients.length}. Запускаю разбор состава.`
-      : "Текст распознан, но состав выделен неуверенно. Поправьте текст вручную или сфотографируйте ближе именно блок состава.";
-    if (ingredients.length >= 3) {
-      await applyPhotoText({ analyze: true });
-    }
+    const resolution = await resolvePhotoText(text);
+    await applyPhotoResolution(resolution, { analyze: true, fallbackText: text });
   } catch (error) {
     photoStatus.textContent = error.message || "Не удалось распознать фото. Попробуйте другое фото или вставьте состав вручную.";
   }
+}
+
+photoInputs.forEach((input) => {
+  input.addEventListener("change", async () => {
+    await handlePhotoFile(input.files?.[0]);
+    input.value = "";
+  });
 });
 
 photoUseComposition?.addEventListener("click", () => {
@@ -1025,6 +1061,16 @@ mobileAnalyze?.addEventListener("click", submitAnalysisFromSticky);
 initCatalog();
 
 function render(data) {
+  const purpose = data.productSafety || data.productClassification || {};
+  const purposeSection = `
+    <section class="section product-purpose">
+      <p class="eyebrow">Назначение средства</p>
+      <h2>${escapeHtml(purpose.label || data.formulaType || "Тип средства требует уточнения")}</h2>
+      <p>${escapeHtml(purpose.intendedUse || "Назначение не определено уверенно только по составу. Сверьте название, карточку товара и инструкцию производителя.")}</p>
+      ${purpose.application ? `<p><strong>Как применять:</strong> ${escapeHtml(purpose.application)}</p>` : ""}
+      ${purpose.confidence ? `<p class="confidence">Уверенность определения: ${Math.round(Number(purpose.confidence || 0) * 100)}%</p>` : ""}
+    </section>
+  `;
   const safetyNotice = data.productSafety?.shouldScoreAsCosmetic === false
     ? `
       <section class="section safety-notice">
@@ -1126,6 +1172,8 @@ function render(data) {
     `;
 
   result.innerHTML = `
+    ${purposeSection}
+
     <div class="score">
       <div class="score-number">
         <p class="eyebrow">Итог</p>

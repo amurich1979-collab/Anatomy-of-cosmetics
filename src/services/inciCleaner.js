@@ -159,6 +159,7 @@ function cleanIngredientToken(value) {
     .replace(/\((?:[^)]{1,40})\)/g, " ")
     .replace(/[•*]+/g, " ")
     .replace(/\bayy\b/gi, " ")
+    .replace(/\.\s+[A-ZА-Я]\b.*$/u, "")
     .replace(/\s+/g, " ")
     .replace(/^[^\p{L}0-9(]+|[^\p{L}0-9).%+-]+$/gu, "")
     .replace(/[.]+$/g, "")
@@ -170,8 +171,8 @@ function prepareIngredientSeparators(text) {
     .replace(/\bCETEARYL\s+CETEARETH\s+RYLIC\/CAPRIC\s+TRIGLYCERIDE\b/gi, "Cetearyl Alcohol, Caprylic/Capric Triglyceride")
     .replace(/\bNP\s+CERAMIDE\b/gi, "Ceramide NP,")
     .replace(/\bCERAMIDE\s+BEHENTRIMA\s*\+\s*CERAMIDE\s+EOP\b/gi, "Behentrimonium Methosulfate, Ceramide EOP")
-    .replace(/\bDISODIUM\s+XANTHAN\s+[O0О]\s*,?\s*PHOSPHATE\b/gi, "Disodium Phosphate, Xanthan Gum")
-    .replace(/\.\s+(?=[A-ZА-Я][A-ZА-Я0-9+\-/]{1,}(?:\s|,|$))/g, ", ")
+    .replace(/\bDISODIUM\s+XANTHAN(?:\s+[^,\s])?\s*,?\s*PHOSPHATE\b/gi, "Disodium Phosphate, Xanthan Gum")
+    .replace(/\.\s+(?=[A-ZА-Я][\p{L}0-9+\-/]{1,}(?:\s|,|$))/gu, ", ")
     .replace(/\s+[-–—]{2,}\s+/g, ", ");
 }
 
@@ -181,7 +182,8 @@ function isPlausibleIngredientToken(item) {
   if (/^(?:only|for external use|avoid contact|keep out|warning|caution|directions?|предупреждение|только для|при возникновении)$/i.test(item)) {
     return false;
   }
-  if (/^[a-z]{2,4}$/i.test(item) && !candidateMatch(item)) return false;
+  if (/^[a-z]{1,4}$/i.test(item) && !candidateMatch(item)) return false;
+  if (/^phosphate$/i.test(item) && !candidateMatch(item)) return false;
   const letters = item.match(/\p{L}/gu) || [];
   if (letters.length < 2) return false;
   const asciiLetters = item.match(/[A-Za-z]/g) || [];

@@ -8,6 +8,8 @@ import { analyzeComposition } from "./analyzer.js";
 import { attachCurrentUser, registerAuthRoutes, requireUser } from "./auth.js";
 import { addUserHistory, clearUserHistory, getUserSettings, initDatabase, listUserHistory, updateUserSettings } from "./database.js";
 import { createReviewRequest, getProductDetails, identifyProductFromText, listCatalogProducts, listReviewRequests, searchProducts } from "./products.js";
+import { cleanInciText } from "./services/inciCleaner.js";
+import { classifyFormulaProduct } from "./services/productClassifier.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
@@ -61,6 +63,81 @@ app.post("/api/products/identify", async (req, res) => {
   }
 
   res.json({ product: await identifyProductFromText(text) });
+});
+
+app.post("/api/photo/resolve", async (req, res) => {
+  const text = String(req.body?.text || "").trim();
+
+  if (text.length < 8) {
+    res.json({
+      mode: "unknown",
+      cleanedText: "",
+      ingredients: [],
+      confidence: 0,
+      message: "На фото почти не распознан текст."
+    });
+    return;
+  }
+
+  const cleaned = cleanInciText(text);
+  const hasComposition = cleaned.ingredients.length >= 3 && cleaned.confidence >= 0.45;
+  const product = await identifyProductFromText(text);
+  const productWithDetails = product?.composition ? product : product?.id ? await getProductDetails(product.id) : null;
+  const purpose = classifyFormulaProduct({
+    ingredients: hasComposition ? cleaned.ingredients : cleanInciText(productWithDetails?.composition || "").ingredients,
+    rawText: [
+      text,
+      productWithDetails?.brand,
+      productWithDetails?.name,
+      productWithDetails?.category,
+      productWithDetails?.composition
+    ].filter(Boolean).join(" ")
+  });
+
+  if (hasComposition) {
+    res.json({
+      mode: "composition",
+      cleanedText: cleaned.cleanedText,
+      extractedBlock: cleaned.extractedBlock,
+      ingredients: cleaned.ingredients,
+      confidence: cleaned.confidence,
+      autoCorrections: cleaned.autoCorrections,
+      suggestions: cleaned.suggestions,
+      product: productWithDetails || product || null,
+      purpose,
+      composition: cleaned.ingredients.join(", "),
+      message: "Фото похоже на оборотную сторону с составом. Сервис выделил только INCI-блок."
+    });
+    return;
+  }
+
+  if (productWithDetails?.composition) {
+    res.json({
+      mode: "product",
+      cleanedText: productWithDetails.composition,
+      ingredients: [],
+      confidence: productWithDetails.confidence || product?.confidence || 0.62,
+      product: productWithDetails,
+      purpose,
+      composition: productWithDetails.composition,
+      message: "Фото похоже на лицевую этикетку. Сервис определил средство и подтянул состав из базы."
+    });
+    return;
+  }
+
+  res.json({
+    mode: "unknown",
+    cleanedText: cleaned.cleanedText,
+    extractedBlock: cleaned.extractedBlock,
+    ingredients: cleaned.ingredients,
+    confidence: cleaned.confidence,
+    product: product || null,
+    purpose,
+    composition: "",
+    message: product
+      ? "Средство похоже найдено, но состав для него пока не доступен."
+      : "Не удалось уверенно понять: это лицевая этикетка или состав. Попробуйте фото ближе или добавьте бренд в поиск."
+  });
 });
 
 app.post("/api/products/review-request", (req, res) => {
