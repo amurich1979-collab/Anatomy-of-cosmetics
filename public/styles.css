@@ -1708,7 +1708,7 @@ dd {
   }
 
   .brand-link {
-    max-width: 64%;
+    max-width: 43%;
     color: var(--accent-strong);
     font-size: 0.92rem;
     white-space: nowrap;
@@ -1720,21 +1720,19 @@ dd {
     display: flex;
     width: auto;
     margin-left: auto;
+    flex: 0 0 auto;
+    gap: 3px;
   }
 
   .topnav a {
-    display: none;
-  }
-
-  .topnav a[data-auth-link] {
     display: inline-flex;
   }
 
   .topnav a,
   .theme-toggle {
     min-height: 28px;
-    padding: 0 8px;
-    font-size: 0.72rem;
+    padding: 0 6px;
+    font-size: 0.68rem;
   }
 
   .photo-status {
@@ -1867,14 +1865,19 @@ dd {
   }
 
   .search-tools {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
   }
 
   .catalog-open {
-    display: none;
+    display: inline-flex;
   }
 
+  #photoCameraOpen {
+    grid-column: 1 / -1;
+  }
+
+  .catalog-open,
   .photo-upload,
   .barcode-row .secondary-action,
   .primary-action {
