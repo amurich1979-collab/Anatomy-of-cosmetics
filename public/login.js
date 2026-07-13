@@ -73,6 +73,23 @@ async function loadCurrentUser() {
   }
 }
 
+async function loadGoogleAuthStatus() {
+  try {
+    const response = await fetch("/api/auth/google/status");
+    if (!response.ok) return;
+    const data = await response.json();
+    if (data.configured) {
+      setStatus("Google-вход настроен. Можно войти через Google аккаунт.", "ok");
+      return;
+    }
+
+    const missing = (data.missing || []).join(", ");
+    setStatus(`Google-вход ожидает настройку: ${missing || "OAuth ключи"}. Callback: ${data.redirectUri}`, "warn");
+  } catch {
+    // Email login remains available when status probing fails.
+  }
+}
+
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => setMode(tab.dataset.authMode));
 });
@@ -137,4 +154,5 @@ form?.addEventListener("submit", async (event) => {
 
 setMode("login");
 showAuthCallbackStatus();
+loadGoogleAuthStatus();
 loadCurrentUser();

@@ -13,6 +13,8 @@ APP_URL=https://anatomy-cosmetology.onrender.com
 SESSION_SECRET=long-random-secret
 ```
 
+Для локальной разработки можно скопировать `.env.example` в `.env` и заполнить значения.
+
 `GOOGLE_REDIRECT_URI` можно не задавать, если `APP_URL` указан правильно. По умолчанию callback будет:
 
 ```text
@@ -31,6 +33,35 @@ http://localhost:3000/api/auth/google/callback
 
 - `https://anatomy-cosmetology.onrender.com/api/auth/google/callback`
 - `http://localhost:3000/api/auth/google/callback` для локального теста
+
+## Render
+
+В Render откройте сервис приложения:
+
+1. `Environment`
+2. `Add Environment Variable`
+3. Добавьте `GOOGLE_CLIENT_ID`
+4. Добавьте `GOOGLE_CLIENT_SECRET`
+5. Добавьте `APP_URL=https://anatomy-cosmetology.onrender.com`
+6. Добавьте `SESSION_SECRET` со случайной длинной строкой
+7. Нажмите `Save Changes`
+8. Дождитесь redeploy
+
+После деплоя проверьте:
+
+```text
+https://anatomy-cosmetology.onrender.com/api/auth/google/status
+```
+
+Если все настроено, ответ будет содержать:
+
+```json
+{
+  "configured": true
+}
+```
+
+Если чего-то не хватает, `missing` покажет список переменных.
 
 ## Как работает
 

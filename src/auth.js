@@ -109,6 +109,19 @@ function googleOAuthConfig(req) {
   return { clientId, clientSecret, redirectUri };
 }
 
+export function getGoogleOAuthStatusForRequest(req) {
+  const config = googleOAuthConfig(req);
+  return {
+    configured: Boolean(config.clientId && config.clientSecret),
+    redirectUri: config.redirectUri,
+    missing: [
+      !config.clientId ? "GOOGLE_CLIENT_ID" : "",
+      !config.clientSecret ? "GOOGLE_CLIENT_SECRET" : "",
+      !(process.env.APP_URL || process.env.PUBLIC_URL || process.env.GOOGLE_REDIRECT_URI) ? "APP_URL" : ""
+    ].filter(Boolean)
+  };
+}
+
 function authRedirect(message) {
   return `/login?auth=${encodeURIComponent(message)}`;
 }
@@ -200,6 +213,10 @@ export function requireUser(req, res, next) {
 export function registerAuthRoutes(app) {
   app.get("/api/auth/me", (req, res) => {
     res.json({ user: req.user ? publicUser(req.user) : null });
+  });
+
+  app.get("/api/auth/google/status", (req, res) => {
+    res.json(getGoogleOAuthStatusForRequest(req));
   });
 
   app.post("/api/auth/register", async (req, res) => {
