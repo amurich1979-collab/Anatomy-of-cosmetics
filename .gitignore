@@ -1,10 +1,6 @@
 node_modules/
 .env
 data/app-db.json
-data/crm-db.json
-uploads/
-backups/
-*.bak
 work/
 outputs/
 npm-debug.log*

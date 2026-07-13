@@ -11,25 +11,26 @@ async function syncAuthNavigation() {
 
   try {
     const response = await fetch("/api/auth/me");
-    const { user = null } = await response.json();
+    const data = await response.json();
+    const user = data.user || null;
+
     links.forEach((link) => {
       if (user) {
         link.textContent = "Профиль";
         link.href = "/profile";
         link.title = `Профиль: ${user.email}`;
         link.setAttribute("aria-label", `Профиль ${user.email}`);
-      } else setSignedOut(link);
-      const current = (user && location.pathname === "/profile") || (!user && location.pathname === "/login");
-      if (current) link.setAttribute("aria-current", "page"); else link.removeAttribute("aria-current");
-    });
+      } else {
+        setSignedOut(link);
+      }
 
-    if (user) document.querySelectorAll(".topnav").forEach((nav) => {
-      if (nav.querySelector("[data-crm-link]")) return;
-      const crmLink = document.createElement("a");
-      crmLink.dataset.crmLink = "";
-      crmLink.href = user.role === "client" ? "/portal" : "/clients";
-      crmLink.textContent = user.role === "client" ? "Моя карта" : "Клиенты";
-      nav.insertBefore(crmLink, nav.querySelector("[data-auth-link]"));
+      if (user && window.location.pathname === "/profile") {
+        link.setAttribute("aria-current", "page");
+      } else if (!user && window.location.pathname === "/login") {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
     });
   } catch {
     links.forEach(setSignedOut);

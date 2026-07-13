@@ -7,8 +7,6 @@ import { findFormulaAlternatives } from "./analogs.js";
 import { analyzeComposition } from "./analyzer.js";
 import { attachCurrentUser, registerAuthRoutes, requireUser } from "./auth.js";
 import { addUserHistory, clearUserHistory, getUserSettings, initDatabase, listUserHistory, updateUserSettings } from "./database.js";
-import { crmErrorHandler, registerCrmRoutes } from "./crm.js";
-import { initCrmDatabase } from "./crmDatabase.js";
 import { createReviewRequest, getProductDetails, identifyProductFromText, listCatalogProducts, listReviewRequests, searchProducts } from "./products.js";
 import { cleanInciText } from "./services/inciCleaner.js";
 import { classifyFormulaProduct } from "./services/productClassifier.js";
@@ -27,9 +25,7 @@ app.use(attachCurrentUser);
 app.use(express.static(publicDir));
 
 const databaseInfo = await initDatabase();
-const crmDatabaseInfo = await initCrmDatabase();
 registerAuthRoutes(app);
-registerCrmRoutes(app);
 
 app.get("/api/products/search", async (req, res) => {
   const query = String(req.query.q || "").trim();
@@ -256,27 +252,9 @@ app.get("/profile", (_req, res) => {
   res.sendFile(path.join(publicDir, "profile.html"));
 });
 
-app.get("/clients", (_req, res) => {
-  res.sendFile(path.join(publicDir, "clients.html"));
-});
-
-app.get("/clients/:clientId", (_req, res) => {
-  res.sendFile(path.join(publicDir, "client.html"));
-});
-
-app.get("/portal", (_req, res) => {
-  res.sendFile(path.join(publicDir, "portal.html"));
-});
-
-app.get("/calendar", (_req, res) => {
-  res.sendFile(path.join(publicDir, "calendar.html"));
-});
-
 app.get("/health", (_req, res) => {
-  res.json({ ok: true, database: databaseInfo.provider, crm: crmDatabaseInfo.migration });
+  res.json({ ok: true });
 });
-
-app.use(crmErrorHandler);
 
 app.listen(port, host, () => {
   console.log(`Anatomy Cosmetology web app: http://localhost:${port}`);

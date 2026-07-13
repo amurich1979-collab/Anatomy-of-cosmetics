@@ -199,7 +199,6 @@ export async function attachCurrentUser(req, _res, next) {
   const cookies = parseCookies(req.headers.cookie);
   const session = verifySessionToken(cookies[COOKIE_NAME]);
   req.user = session ? await getUserById(session.userId) : null;
-  if (req.user?.disabled_at || req.user?.disabledAt) req.user = null;
   next();
 }
 
@@ -209,20 +208,6 @@ export function requireUser(req, res, next) {
     return;
   }
   next();
-}
-
-export function requireRole(...roles) {
-  return (req, res, next) => {
-    if (!req.user) {
-      res.status(401).json({ error: "Необходимо войти в аккаунт." });
-      return;
-    }
-    if (!roles.includes(req.user.role || "client")) {
-      res.status(403).json({ error: "Недостаточно прав для этого действия." });
-      return;
-    }
-    next();
-  };
 }
 
 export function registerAuthRoutes(app) {
