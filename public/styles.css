@@ -187,26 +187,6 @@ select {
   background: var(--accent-soft);
 }
 
-.topnav a.account-chip {
-  width: 36px;
-  min-width: 36px;
-  height: 36px;
-  min-height: 36px;
-  padding: 0;
-  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
-  border-radius: 999px;
-  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--mint) 72%, var(--accent)));
-  color: #fff;
-  font-size: 0.9rem;
-  font-weight: 950;
-  box-shadow: 0 8px 18px rgba(14, 124, 102, 0.2);
-}
-
-.topnav a.account-chip[aria-current="page"] {
-  background: linear-gradient(135deg, var(--accent-strong), var(--accent));
-  color: #fff;
-}
-
 .theme-toggle {
   margin-left: 4px;
   border-color: color-mix(in srgb, var(--accent) 28%, var(--line));

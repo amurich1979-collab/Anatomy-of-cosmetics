@@ -2,14 +2,9 @@ async function syncAuthNavigation() {
   const links = document.querySelectorAll("[data-auth-link]");
   if (!links.length) return;
 
-  function userInitial(user) {
-    return String(user?.name || user?.email || "П").trim().slice(0, 1).toUpperCase();
-  }
-
   function setSignedOut(link) {
     link.textContent = "Войти";
     link.href = "/login";
-    link.classList.remove("account-chip");
     link.removeAttribute("title");
     link.setAttribute("aria-label", "Войти");
   }
@@ -21,9 +16,8 @@ async function syncAuthNavigation() {
 
     links.forEach((link) => {
       if (user) {
-        link.textContent = userInitial(user);
+        link.textContent = "Профиль";
         link.href = "/profile";
-        link.classList.add("account-chip");
         link.title = `Профиль: ${user.email}`;
         link.setAttribute("aria-label", `Профиль ${user.email}`);
       } else {
