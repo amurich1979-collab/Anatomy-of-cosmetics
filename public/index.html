@@ -80,7 +80,10 @@
 
           <div class="photo-status" id="photoStatus" hidden></div>
           <div class="photo-review" id="photoReview" hidden>
-            <img id="photoPreview" alt="Фото упаковки" />
+            <div class="photo-preview-wrap">
+              <img id="photoPreview" alt="Фото упаковки" />
+              <button class="photo-clear" type="button" id="photoClear" aria-label="Очистить фото">×</button>
+            </div>
             <label>
               Очищенный текст с фото
               <textarea id="photoText" spellcheck="false" placeholder="После фото здесь появится очищенный состав или найденное название средства."></textarea>

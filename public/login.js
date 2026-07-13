@@ -145,7 +145,7 @@ form?.addEventListener("submit", async (event) => {
     });
     saveUser(data.user);
     setStatus(`Готово. Вы вошли как ${data.user.email}. История и настройки будут сохраняться в базе.`, "ok");
-    setTimeout(() => { window.location.href = "/profile"; }, 650);
+    setTimeout(() => { window.location.href = "/"; }, 650);
   } catch (error) {
     setStatus(error.message, "warn");
   } finally {

@@ -20,6 +20,7 @@ const photoCameraInput = document.querySelector("#photoCameraInput");
 const photoStatus = document.querySelector("#photoStatus");
 const photoReview = document.querySelector("#photoReview");
 const photoPreview = document.querySelector("#photoPreview");
+const photoClear = document.querySelector("#photoClear");
 const photoText = document.querySelector("#photoText");
 const photoUseComposition = document.querySelector("#photoUseComposition");
 const photoAnalyze = document.querySelector("#photoAnalyze");
@@ -185,6 +186,20 @@ function submitAnalysisFromSticky() {
   form?.requestSubmit();
 }
 
+function clearPhotoState() {
+  photoInputs.forEach((input) => { input.value = ""; });
+  if (photoPreview) {
+    if (photoPreview.src?.startsWith("blob:")) URL.revokeObjectURL(photoPreview.src);
+    photoPreview.removeAttribute("src");
+  }
+  if (photoText) photoText.value = "";
+  if (photoStatus) {
+    photoStatus.textContent = "";
+    photoStatus.hidden = true;
+  }
+  if (photoReview) photoReview.hidden = true;
+}
+
 function parseIngredients(text) {
   return String(text || "")
     .replace(/ingredients?\s*[:：]/gi, "")
@@ -325,6 +340,13 @@ function setProductStatus(text, mode = "") {
   productStatus.textContent = text;
   productStatus.dataset.mode = mode;
   productStatus.hidden = !text;
+}
+
+function showAuthReturnStatus() {
+  const authCode = new URLSearchParams(window.location.search).get("auth");
+  if (authCode !== "google_ok") return;
+  setProductStatus("Вы вошли через Google. История разборов будет сохраняться в профиле.", "ok");
+  window.history.replaceState({}, "", "/");
 }
 
 function hideSuggestions() {
@@ -1014,6 +1036,7 @@ async function handlePhotoFile(file) {
 
   if (photoReview) photoReview.hidden = false;
   if (photoPreview) {
+    if (photoPreview.src?.startsWith("blob:")) URL.revokeObjectURL(photoPreview.src);
     photoPreview.src = URL.createObjectURL(file);
     photoPreview.hidden = false;
   }
@@ -1082,6 +1105,7 @@ async function captureCameraFrame() {
 }
 
 photoCameraOpen?.addEventListener("click", openCameraCapture);
+photoClear?.addEventListener("click", clearPhotoState);
 cameraClose?.addEventListener("click", () => {
   stopCameraStream();
   cameraCapture.hidden = true;
@@ -1348,3 +1372,5 @@ form.addEventListener("submit", async (event) => {
   }
   scrollToResult();
 });
+
+showAuthReturnStatus();

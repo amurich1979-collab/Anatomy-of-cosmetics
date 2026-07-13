@@ -327,7 +327,7 @@ export function registerAuthRoutes(app) {
       }
 
       setSessionCookie(res, user.id);
-      res.redirect("/profile?auth=google_ok");
+      res.redirect("/?auth=google_ok");
     } catch (error) {
       console.error("[google oauth]", error.message);
       res.redirect(authRedirect("google_failed"));
