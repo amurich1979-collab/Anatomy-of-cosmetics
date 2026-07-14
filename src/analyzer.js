@@ -431,7 +431,7 @@ function buildProprietaryComplexes(found) {
     }));
 }
 
-export function analyzeComposition({ text, profile = {} }) {
+export function analyzeComposition({ text, profile = {}, productName = "" }) {
   const inciCleaning = cleanInciText(text || "");
   const ingredients = inciCleaning.ingredients;
   const found = [];
@@ -479,7 +479,7 @@ export function analyzeComposition({ text, profile = {} }) {
     });
   });
 
-  const productSafety = classifyFormulaProduct({ ingredients, found, rawText: text || "" });
+  const productSafety = classifyFormulaProduct({ ingredients, found, rawText: text || "", productName });
   const procedureOverride = productSafety.shouldScoreAsCosmetic
     ? null
     : buildProcedureOverride({ safety: productSafety, ingredients, found, unknown });

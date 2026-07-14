@@ -198,7 +198,11 @@ app.post("/api/analyze", async (req, res) => {
     return;
   }
 
-  const analysis = analyzeComposition({ text: String(text), profile: profile || {} });
+  const analysis = analyzeComposition({
+    text: String(text),
+    profile: profile || {},
+    productName: req.body?.productName || ""
+  });
   analysis.alternatives = findFormulaAlternatives({
     text: String(text),
     profile: profile || {},
