@@ -231,6 +231,22 @@ select {
   --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 9V5h4M15 5h4v4M19 15v4h-4M9 19H5v-4' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M7 12h10' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
+#authSubmit::before {
+  --icon-bg: #0e7c66;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5v-9Z' fill='white'/%3E%3Cpath d='m5.7 7.4 6.3 5 6.3-5' fill='none' stroke='%230e7c66' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+button[data-provider="google"]::before {
+  --icon-bg: #ffffff;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.8 3-4.3 3-7.3Z' fill='%234285F4'/%3E%3Cpath d='M12 22c2.7 0 5-0.9 6.6-2.5L15.4 17c-.9.6-2 .9-3.4.9-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22Z' fill='%2334A853'/%3E%3Cpath d='M6.4 13.8A6 6 0 0 1 6 12c0-.6.1-1.2.4-1.8V7.6H3.1A10 10 0 0 0 2 12c0 1.6.4 3.1 1.1 4.4l3.3-2.6Z' fill='%23FBBC05'/%3E%3Cpath d='M12 6.1c1.5 0 2.8.5 3.8 1.5l2.9-2.9A9.6 9.6 0 0 0 12 2a10 10 0 0 0-8.9 5.6l3.3 2.6C7.2 7.9 9.4 6.1 12 6.1Z' fill='%23EA4335'/%3E%3C/svg%3E");
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--line) 90%, transparent);
+}
+
+button[data-provider="telegram"]::before {
+  --icon-bg: #2aabee;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20.8 4.5 17.9 19c-.2 1-.8 1.2-1.6.7l-4.4-3.2-2.1 2c-.2.2-.4.4-.9.4l.3-4.5 8.2-7.4c.4-.3-.1-.5-.5-.2L6.8 13.2 2.4 11.8c-.9-.3-.9-1 .2-1.4l17.2-6.6c.8-.3 1.5.2 1 1Z' fill='white'/%3E%3C/svg%3E");
+}
+
 #photoAnalyze::before,
 .primary-action[type="submit"]::before {
   --icon-bg: color-mix(in srgb, #ffffff 24%, transparent);
