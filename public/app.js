@@ -31,7 +31,12 @@ const cameraClose = document.querySelector("#cameraClose");
 const cameraShot = document.querySelector("#cameraShot");
 const cameraFallback = document.querySelector("#cameraFallback");
 const barcodeInput = document.querySelector("#barcodeInput");
+const barcodeScan = document.querySelector("#barcodeScan");
 const barcodeApply = document.querySelector("#barcodeApply");
+const barcodeCapture = document.querySelector("#barcodeCapture");
+const barcodeVideo = document.querySelector("#barcodeVideo");
+const barcodeScanClose = document.querySelector("#barcodeScanClose");
+const barcodeScanStatus = document.querySelector("#barcodeScanStatus");
 const mobileAnalyze = document.querySelector("#mobileAnalyze");
 const tg = window.Telegram?.WebApp;
 
@@ -1058,11 +1063,90 @@ async function handlePhotoFile(file) {
 }
 
 let cameraStream = null;
+let barcodeStream = null;
+let barcodeFrameRequest = null;
 
 function stopCameraStream() {
   cameraStream?.getTracks?.().forEach((track) => track.stop());
   cameraStream = null;
   if (cameraVideo) cameraVideo.srcObject = null;
+}
+
+function stopBarcodeScanner() {
+  if (barcodeFrameRequest) cancelAnimationFrame(barcodeFrameRequest);
+  barcodeFrameRequest = null;
+  barcodeStream?.getTracks?.().forEach((track) => track.stop());
+  barcodeStream = null;
+  if (barcodeVideo) barcodeVideo.srcObject = null;
+  if (barcodeCapture) barcodeCapture.hidden = true;
+}
+
+function extractBarcodeValue(rawValue = "") {
+  const raw = String(rawValue || "").trim();
+  const digitMatch = raw.match(/(?:^|[^\d])(\d{8,14})(?:[^\d]|$)/);
+  return digitMatch?.[1] || raw;
+}
+
+function applyScannedCode(rawValue = "") {
+  const value = extractBarcodeValue(rawValue);
+  stopBarcodeScanner();
+
+  if (/^\d{8,14}$/.test(value)) {
+    barcodeInput.value = value;
+    setProductStatus(`Код распознан: ${value}. Ищу товар...`, "ok");
+    barcodeApply?.click();
+    return;
+  }
+
+  if (value) {
+    productName.value = value;
+    composition.value = "";
+    setProductStatus("QR распознан. Пробую найти средство по содержимому QR...", "ok");
+    form?.requestSubmit();
+  }
+}
+
+async function openBarcodeScanner() {
+  if (!("BarcodeDetector" in window) || !navigator.mediaDevices?.getUserMedia || !barcodeCapture || !barcodeVideo) {
+    setProductStatus("Сканер штрихкодов недоступен в этом браузере. Введите EAN/UPC вручную.", "warn");
+    barcodeInput?.focus();
+    return;
+  }
+
+  try {
+    const detector = new window.BarcodeDetector({
+      formats: ["ean_13", "ean_8", "upc_a", "upc_e", "qr_code", "code_128", "code_39", "itf"]
+    });
+    barcodeCapture.hidden = false;
+    barcodeScanStatus.textContent = "Разрешите доступ к камере и наведите ее на код.";
+    barcodeStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: "environment" } },
+      audio: false
+    });
+    barcodeVideo.srcObject = barcodeStream;
+    await barcodeVideo.play();
+    barcodeScanStatus.textContent = "Ищу штрихкод или QR в кадре...";
+
+    const scanFrame = async () => {
+      if (!barcodeStream || barcodeCapture.hidden) return;
+      try {
+        const codes = await detector.detect(barcodeVideo);
+        if (codes?.length) {
+          applyScannedCode(codes[0].rawValue || "");
+          return;
+        }
+      } catch {
+        barcodeScanStatus.textContent = "Не удалось прочитать код. Держите упаковку ровнее и ближе к камере.";
+      }
+      barcodeFrameRequest = requestAnimationFrame(scanFrame);
+    };
+
+    barcodeFrameRequest = requestAnimationFrame(scanFrame);
+  } catch {
+    stopBarcodeScanner();
+    setProductStatus("Не удалось открыть камеру для сканирования. Введите EAN/UPC вручную.", "warn");
+    barcodeInput?.focus();
+  }
 }
 
 async function openCameraCapture() {
@@ -1143,6 +1227,9 @@ barcodeApply?.addEventListener("click", () => {
   form?.requestSubmit();
 });
 
+barcodeScan?.addEventListener("click", openBarcodeScanner);
+barcodeScanClose?.addEventListener("click", stopBarcodeScanner);
+
 barcodeInput?.addEventListener("keydown", (event) => {
   if (event.key !== "Enter") return;
   event.preventDefault();
@@ -1201,14 +1288,36 @@ function render(data) {
     `)
     .join("");
 
+  const quality = data.qualitySummary || {};
+  const qualityScore = quality.score == null ? "—" : `${quality.score}/10`;
+  const qualitySection = `
+    <section class="section quality-section">
+      <div class="quality-head">
+        <div>
+          <p class="eyebrow">Компонентная база</p>
+          <h2>Качество компонентов</h2>
+          <p>${escapeHtml(quality.methodology || "Оценка строится по экспертной базе ингредиентов и не заменяет документы производителя.")}</p>
+        </div>
+        <div class="quality-total">
+          <strong>${escapeHtml(qualityScore)}</strong>
+          <span>${escapeHtml(quality.label || "недостаточно данных")}</span>
+        </div>
+      </div>
+      <p class="confidence">Уверенность: ${escapeHtml(quality.confidence || "неизвестно")} · распознано для оценки ${escapeHtml(quality.knownCount ?? 0)} из ${escapeHtml(quality.totalIngredients ?? data.totalIngredients ?? 0)}, неизвестных ${escapeHtml(quality.unknownCount ?? data.unknown?.length ?? 0)}.</p>
+    </section>
+  `;
+
   const found = data.found
     .map((item) => `
       <article class="ingredient">
         <div>
           <h3>${escapeHtml(item.name)} <span>${escapeHtml(item.ru || "")}</span></h3>
           <p>${escapeHtml(item.note)}</p>
+          ${item.quality_note ? `<p class="quality-note">${escapeHtml(item.quality_note)}</p>` : ""}
         </div>
         <dl>
+          <dt>Качество</dt>
+          <dd>${item.ingredient_quality_score == null ? "—" : `${escapeHtml(item.ingredient_quality_score)}/10`}</dd>
           <dt>Позиция</dt>
           <dd>${item.position}</dd>
           <dt>Зона</dt>
@@ -1291,6 +1400,8 @@ function render(data) {
       <h2>Как устроена формула</h2>
       ${architecture}
     </section>
+
+    ${qualitySection}
 
     <section class="section">
       <h2>Группы компонентов</h2>

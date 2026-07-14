@@ -46,6 +46,18 @@ test("RET Complex is treated as an undisclosed proprietary complex", () => {
   assert.equal(found.excludedFromScoring, true);
   assert.equal(found.roles.length, 0);
   assert.equal(result.groups.some((group) => group.items.includes("RET Complex")), false);
+  assert.equal(found.ingredient_quality_score, null);
+});
+
+test("ingredient quality summary is exposed on a 10 point scale", () => {
+  const result = analyzeComposition({ text: "Aqua, Glycerin, Niacinamide, Panthenol, Phenoxyethanol" });
+  const niacinamide = result.found.find((item) => item.name === "Niacinamide");
+
+  assert.ok(result.qualitySummary.score >= 7);
+  assert.equal(result.qualitySummary.totalIngredients, 5);
+  assert.equal(result.qualitySummary.unknownCount, 0);
+  assert.equal(niacinamide.ingredient_quality_score, 9);
+  assert.ok(niacinamide.quality_note);
 });
 
 test("local anesthetic formulas are not treated as ordinary skin care", () => {
@@ -58,6 +70,8 @@ test("local anesthetic formulas are not treated as ordinary skin care", () => {
   assert.equal(result.score.label, "не оценивать как уходовое средство");
   assert.equal(result.hydration_score, 0);
   assert.equal(result.active_score, 0);
+  assert.equal(result.qualitySummary.score, null);
+  assert.equal(result.qualitySummary.label, "не оценивается как косметическая формула");
   assert.ok(result.summary.includes("не обычная косметическая формула"));
   assert.ok(result.warnings.some((item) => item.includes("Не использовать как ежедневное уходовое средство")));
   assert.ok(result.routineAdvice.every((item) => !item.includes("обычное новое средство")));

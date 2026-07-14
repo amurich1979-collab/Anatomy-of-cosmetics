@@ -212,6 +212,10 @@ select {
   content: "▥";
 }
 
+#barcodeScan::before {
+  content: "⌖";
+}
+
 #photoAnalyze::before,
 .primary-action[type="submit"]::before {
   content: "✓";
@@ -751,7 +755,7 @@ select {
 
 .barcode-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 104px;
+  grid-template-columns: minmax(0, 1fr) 120px 104px;
   gap: 10px;
   align-items: end;
 }
@@ -845,7 +849,8 @@ select {
   gap: 10px;
 }
 
-.camera-capture {
+.camera-capture,
+.barcode-capture {
   position: fixed;
   inset: 0;
   z-index: 80;
@@ -855,7 +860,8 @@ select {
   background: rgba(10, 16, 14, 0.72);
 }
 
-.camera-capture[hidden] {
+.camera-capture[hidden],
+.barcode-capture[hidden] {
   display: none;
 }
 
@@ -1261,6 +1267,52 @@ li + li {
 .ingredient span {
   color: var(--muted);
   font-weight: 500;
+}
+
+.quality-section {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent-soft) 82%, var(--surface)), var(--surface));
+}
+
+.quality-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 148px;
+  gap: 16px;
+  align-items: center;
+}
+
+.quality-head p {
+  margin: 8px 0 0;
+}
+
+.quality-total {
+  display: grid;
+  gap: 4px;
+  place-items: center;
+  min-height: 118px;
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 88%, var(--accent-soft));
+  color: var(--accent-strong);
+  text-align: center;
+}
+
+.quality-total strong {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1;
+}
+
+.quality-total span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.quality-note {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 dl {
@@ -1843,6 +1895,7 @@ dd {
   .history-metrics,
   .history-columns,
   .tiles,
+  .quality-head,
   .architecture-grid {
     grid-template-columns: 1fr;
   }
@@ -1970,8 +2023,12 @@ dd {
   }
 
   .barcode-row {
-    grid-template-columns: minmax(0, 1fr) 82px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
+  }
+
+  .barcode-row label {
+    grid-column: 1 / -1;
   }
 
   .barcode-row .secondary-action {

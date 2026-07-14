@@ -160,6 +160,69 @@ function formulaScores(found, unknownCount, profile) {
   return { hydration_score, barrier_score, irritation_risk, active_score };
 }
 
+function qualityLevel(score) {
+  if (score >= 8.5) return "сильная компонентная база";
+  if (score >= 7) return "хорошая компонентная база";
+  if (score >= 5.5) return "средняя компонентная база";
+  return "требует проверки";
+}
+
+function qualityNote(item) {
+  if (item.excludedFromScoring) {
+    return "Не оценивается: это скрытый комплекс производителя без раскрытого состава.";
+  }
+  if (item.dataSource === "CosIng") {
+    return "Найден в CosIng: функция подтверждена справочником, но экспертная оценка ограничена.";
+  }
+  if (item.evidence_level === "high") {
+    return "Хорошо изученный компонент с понятной ролью в формуле.";
+  }
+  if (item.evidence_level === "medium") {
+    return "Рабочий компонент, но итоговая ценность сильнее зависит от концентрации и общей формулы.";
+  }
+  return "Оценка предварительная: нужны концентрация, pH и данные готового продукта.";
+}
+
+function componentQualityScore(item) {
+  if (item.excludedFromScoring) return null;
+  const raw = Number(item.quality_score);
+  if (!Number.isFinite(raw) || raw <= 0) return null;
+  return Math.max(1, Math.min(10, Math.round(raw / 10)));
+}
+
+function buildQualitySummary(found, unknownCount, totalIngredients, productSafety) {
+  if (productSafety?.shouldScoreAsCosmetic === false) {
+    return {
+      score: null,
+      label: "не оценивается как косметическая формула",
+      confidence: "низкая",
+      methodology: "Оценка качества компонентной базы отключена: средство похоже на процедурный препарат, а не на обычный уход.",
+      knownCount: found.filter((item) => !item.excludedFromScoring).length,
+      unknownCount,
+      totalIngredients
+    };
+  }
+
+  const scored = found.filter((item) => !item.excludedFromScoring && Number.isFinite(Number(item.quality_score)));
+  const total = totalIngredients || found.length + unknownCount || 1;
+  const weightedSum = scored.reduce((sum, item) => sum + componentQualityScore(item) * positionWeight(item.position, total), 0);
+  const weightSum = scored.reduce((sum, item) => sum + positionWeight(item.position, total), 0);
+  const baseScore = weightSum ? weightedSum / weightSum : 0;
+  const unknownPenalty = Math.min(1.6, unknownCount * 0.18);
+  const score = scored.length ? Math.max(1, Math.min(10, Math.round((baseScore - unknownPenalty) * 10) / 10)) : null;
+  const coverage = totalIngredients ? scored.length / totalIngredients : 0;
+
+  return {
+    score,
+    label: score ? qualityLevel(score) : "недостаточно данных",
+    confidence: coverage >= 0.85 && unknownCount <= 2 ? "хорошая" : coverage >= 0.55 ? "средняя" : "низкая",
+    methodology: "Это оценка качества компонентной базы по INCI: доказанность роли, уместность функции, профиль переносимости и место в списке. Это не оценка чистоты сырья, поставщика, процента ввода, pH или лабораторных тестов готового продукта.",
+    knownCount: scored.length,
+    unknownCount,
+    totalIngredients
+  };
+}
+
 function scoreFormula(expertScores, unknownCount) {
   const supportBonus = Math.round((expertScores.hydration_score + expertScores.barrier_score + expertScores.active_score) / 12);
   const riskPenalty = Math.round(expertScores.irritation_risk * 0.42) + Math.min(unknownCount * 2, 14);
@@ -387,6 +450,9 @@ export function analyzeComposition({ text, profile = {} }) {
         best_for: record.best_for || [],
         avoid_for: record.avoid_for || [],
         quality_score: record.quality_score,
+        ingredient_quality_score: componentQualityScore(record),
+        quality_label: componentQualityScore(record) ? qualityLevel(componentQualityScore(record)) : "не оценивается",
+        quality_note: qualityNote(record),
         evidence_level: record.evidence_level,
         dataSource: record.dataSource || "expert",
         suggested_match: record.match?.suggested_match,
@@ -426,6 +492,7 @@ export function analyzeComposition({ text, profile = {} }) {
   const score = procedureOverride?.score || scoreFormula(expertScores, unknown.length);
   const expertSummary = procedureOverride?.expertSummary || buildExpertSummary(found, expertScores, formulaType);
   const proprietaryComplexes = buildProprietaryComplexes(found);
+  const qualitySummary = buildQualitySummary(found, unknown.length, ingredients.length, productSafety);
 
   const summary = procedureOverride?.summary || [
     `Похоже на: ${formulaType}.`,
@@ -445,6 +512,7 @@ export function analyzeComposition({ text, profile = {} }) {
     irritation_risk: expertScores.irritation_risk,
     active_score: expertScores.active_score,
     expertScores,
+    qualitySummary,
     productSafety,
     productClassification: productSafety,
     totalIngredients: ingredients.length,
