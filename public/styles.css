@@ -1411,6 +1411,19 @@ li + li {
   font-weight: 900;
 }
 
+.quality-summary {
+  padding-block: 14px;
+}
+
+.quality-summary .quality-total {
+  min-height: 86px;
+  padding: 12px;
+}
+
+.quality-summary .quality-total strong {
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+}
+
 .quality-note {
   margin-top: 8px;
   color: var(--muted);

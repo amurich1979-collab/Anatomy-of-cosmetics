@@ -1290,12 +1290,28 @@ function render(data) {
 
   const quality = data.qualitySummary || {};
   const qualityScore = quality.score == null ? "—" : `${quality.score}/10`;
+  const qualityTopSection = `
+    <section class="section quality-section quality-summary">
+      <div class="quality-head">
+        <div>
+          <p class="eyebrow">Компонентная база</p>
+          <h2>Качество компонентов</h2>
+          <p>Короткая сводка по INCI: ${escapeHtml(quality.label || "недостаточно данных")}.</p>
+        </div>
+        <div class="quality-total">
+          <strong>${escapeHtml(qualityScore)}</strong>
+          <span>${escapeHtml(quality.confidence || "уверенность неизвестна")}</span>
+        </div>
+      </div>
+      <p class="confidence">Учтено ${escapeHtml(quality.knownCount ?? 0)} из ${escapeHtml(quality.totalIngredients ?? data.totalIngredients ?? 0)} ингредиентов, неизвестных ${escapeHtml(quality.unknownCount ?? data.unknown?.length ?? 0)}.</p>
+    </section>
+  `;
   const qualitySection = `
     <section class="section quality-section">
       <div class="quality-head">
         <div>
           <p class="eyebrow">Компонентная база</p>
-          <h2>Качество компонентов</h2>
+          <h2>Как считается качество</h2>
           <p>${escapeHtml(quality.methodology || "Оценка строится по экспертной базе ингредиентов и не заменяет документы производителя.")}</p>
         </div>
         <div class="quality-total">
@@ -1388,6 +1404,8 @@ function render(data) {
         <p class="confidence">Уверенность: ${escapeHtml(data.confidence?.label || "неизвестно")} · ${escapeHtml(data.confidence?.text || "")}</p>
       </div>
     </div>
+
+    ${qualityTopSection}
 
     ${safetyNotice}
 
