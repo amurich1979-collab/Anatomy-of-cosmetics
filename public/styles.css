@@ -167,71 +167,90 @@ select {
   display: inline-grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 1.05em;
-  height: 1.05em;
-  margin-right: 0.4em;
-  color: currentColor;
-  font-size: 1em;
-  line-height: 1;
+  width: 22px;
+  height: 22px;
+  margin-right: 0.48em;
+  border-radius: 999px;
+  background-color: var(--icon-bg, color-mix(in srgb, var(--accent) 88%, #ffffff));
+  background-image: var(--icon);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 13px 13px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #ffffff 34%, transparent);
+  content: "";
 }
 
 .brand-link::before {
-  content: "◆";
+  --icon-bg: color-mix(in srgb, var(--accent) 88%, var(--coral));
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 4c3 3.3 5.2 6.7 5.2 10A5.2 5.2 0 0 1 12 19.2 5.2 5.2 0 0 1 6.8 14C6.8 10.7 9 7.3 12 4Z' fill='white'/%3E%3C/svg%3E");
 }
 
 .topnav a[href="/"]::before {
-  content: "⌂";
+  --icon-bg: #0e7c66;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 11.3 12 5l8 6.3v7.2a1 1 0 0 1-1 1h-4.3v-5.2H9.3v5.2H5a1 1 0 0 1-1-1v-7.2Z' fill='white'/%3E%3C/svg%3E");
 }
 
 .topnav a[data-auth-link]::before {
-  content: "◉";
+  --icon-bg: #159a80;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='8.5' r='3.6' fill='white'/%3E%3Cpath d='M5.5 19c1.1-3.5 3.4-5.3 6.5-5.3s5.4 1.8 6.5 5.3' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 .theme-toggle::before {
-  content: "☼";
+  --icon-bg: #f1b84b;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='4.2' fill='white'/%3E%3Cpath d='M12 3v2.3M12 18.7V21M3 12h2.3M18.7 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 :root[data-theme="dark"] .theme-toggle::before {
-  content: "☾";
+  --icon-bg: #5268d9;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16.8 18.4A7.7 7.7 0 0 1 10.2 5a7 7 0 1 0 6.6 13.4Z' fill='white'/%3E%3C/svg%3E");
 }
 
 .catalog-open::before {
-  content: "☷";
+  --icon-bg: #0e7c66;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 6h12v3H7V6Zm0 5h12v3H7v-3Zm0 5h12v3H7v-3Z' fill='white'/%3E%3Ccircle cx='4' cy='7.5' r='1.5' fill='white'/%3E%3Ccircle cx='4' cy='12.5' r='1.5' fill='white'/%3E%3Ccircle cx='4' cy='17.5' r='1.5' fill='white'/%3E%3C/svg%3E");
 }
 
 .photo-upload::before {
-  content: "⇧";
+  --icon-bg: #199f88;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 4 7.5 8.5h3V15h3V8.5h3L12 4Z' fill='white'/%3E%3Cpath d='M6 17h12v2.5H6V17Z' fill='white'/%3E%3C/svg%3E");
 }
 
 .camera-upload::before,
 #photoCameraOpen::before {
-  content: "▣";
+  --icon-bg: #e96f5b;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.2 7 9.6 5h4.8l1.4 2H19a2 2 0 0 1 2 2v8.2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3.2Z' fill='white'/%3E%3Ccircle cx='12' cy='13' r='3.4' fill='%23e96f5b'/%3E%3Ccircle cx='12' cy='13' r='1.8' fill='white'/%3E%3C/svg%3E");
 }
 
 #barcodeApply::before {
-  content: "▥";
+  --icon-bg: #0e7c66;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6h1.8v12H4V6Zm3.2 0h1v12h-1V6Zm2.5 0h2.2v12H9.7V6Zm3.6 0h1v12h-1V6Zm2.4 0h1.8v12h-1.8V6Zm3.2 0H20v12h-1.1V6Z' fill='white'/%3E%3C/svg%3E");
 }
 
 #barcodeScan::before {
-  content: "⌖";
+  --icon-bg: #159a80;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 9V5h4M15 5h4v4M19 15v4h-4M9 19H5v-4' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M7 12h10' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 #photoAnalyze::before,
 .primary-action[type="submit"]::before {
-  content: "✓";
+  --icon-bg: color-mix(in srgb, #ffffff 24%, transparent);
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m5 12 4.2 4.2L19 6.8' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
 .compact-action::before {
-  content: "+";
+  --icon-bg: color-mix(in srgb, #ffffff 24%, transparent);
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 5v14M5 12h14' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 #cameraShot::before {
-  content: "▣";
+  --icon-bg: color-mix(in srgb, #ffffff 24%, transparent);
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.2 7 9.6 5h4.8l1.4 2H19a2 2 0 0 1 2 2v8.2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3.2Z' fill='white'/%3E%3Ccircle cx='12' cy='13' r='2.5' fill='%230e7c66'/%3E%3C/svg%3E");
 }
 
 #cameraFallback::before,
 #photoUseComposition::before {
-  content: "⇧";
+  --icon-bg: #199f88;
+  --icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 4 7.5 8.5h3V15h3V8.5h3L12 4Z' fill='white'/%3E%3Cpath d='M6 17h12v2.5H6V17Z' fill='white'/%3E%3C/svg%3E");
 }
 
 .topnav {
@@ -753,11 +772,23 @@ select {
   gap: 10px;
 }
 
+.search-tools > *,
+.barcode-row > .secondary-action {
+  min-width: 0;
+  text-align: center;
+}
+
 .barcode-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 120px 104px;
+  grid-template-columns: minmax(0, 1fr) minmax(128px, 0.3fr) minmax(128px, 0.3fr);
   gap: 10px;
-  align-items: end;
+  align-items: start;
+}
+
+.barcode-row > .secondary-action {
+  align-self: start;
+  margin-top: 26px;
+  line-height: 1.15;
 }
 
 .photo-upload {
@@ -2025,6 +2056,7 @@ dd {
   .barcode-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
+    align-items: stretch;
   }
 
   .barcode-row label {
@@ -2032,7 +2064,12 @@ dd {
   }
 
   .barcode-row .secondary-action {
+    display: inline-flex;
+    width: 100%;
+    margin-top: 0;
     padding: 0 8px;
+    white-space: normal;
+    word-break: normal;
   }
 
   .sample-row {

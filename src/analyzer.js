@@ -209,8 +209,9 @@ function buildQualitySummary(found, unknownCount, totalIngredients, productSafet
   const weightSum = scored.reduce((sum, item) => sum + positionWeight(item.position, total), 0);
   const baseScore = weightSum ? weightedSum / weightSum : 0;
   const unknownPenalty = Math.min(1.6, unknownCount * 0.18);
-  const score = scored.length ? Math.max(1, Math.min(10, Math.round((baseScore - unknownPenalty) * 10) / 10)) : null;
   const coverage = totalIngredients ? scored.length / totalIngredients : 0;
+  const canScore = scored.length > 0 && coverage >= 0.55;
+  const score = canScore ? Math.max(1, Math.min(10, Math.round((baseScore - unknownPenalty) * 10) / 10)) : null;
 
   return {
     score,
