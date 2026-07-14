@@ -157,6 +157,79 @@ select {
   text-overflow: ellipsis;
 }
 
+.brand-link::before,
+.topnav a::before,
+.theme-toggle::before,
+.catalog-open::before,
+.photo-upload::before,
+.secondary-action::before,
+.primary-action::before {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.05em;
+  height: 1.05em;
+  margin-right: 0.4em;
+  color: currentColor;
+  font-size: 1em;
+  line-height: 1;
+}
+
+.brand-link::before {
+  content: "◆";
+}
+
+.topnav a[href="/"]::before {
+  content: "⌂";
+}
+
+.topnav a[data-auth-link]::before {
+  content: "◉";
+}
+
+.theme-toggle::before {
+  content: "☼";
+}
+
+:root[data-theme="dark"] .theme-toggle::before {
+  content: "☾";
+}
+
+.catalog-open::before {
+  content: "☷";
+}
+
+.photo-upload::before {
+  content: "⇧";
+}
+
+.camera-upload::before,
+#photoCameraOpen::before {
+  content: "▣";
+}
+
+#barcodeApply::before {
+  content: "▥";
+}
+
+#photoAnalyze::before,
+.primary-action[type="submit"]::before {
+  content: "✓";
+}
+
+.compact-action::before {
+  content: "+";
+}
+
+#cameraShot::before {
+  content: "▣";
+}
+
+#cameraFallback::before,
+#photoUseComposition::before {
+  content: "⇧";
+}
+
 .topnav {
   display: flex;
   align-items: center;
@@ -1733,6 +1806,18 @@ dd {
     min-height: 28px;
     padding: 0 6px;
     font-size: 0.68rem;
+  }
+
+  .brand-link::before,
+  .topnav a::before,
+  .theme-toggle::before,
+  .catalog-open::before,
+  .photo-upload::before,
+  .secondary-action::before,
+  .primary-action::before {
+    width: 0.95em;
+    height: 0.95em;
+    margin-right: 0.26em;
   }
 
   .photo-status {
