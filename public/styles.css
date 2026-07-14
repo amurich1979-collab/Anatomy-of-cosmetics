@@ -1188,6 +1188,9 @@ button {
   color: #fff;
   cursor: pointer;
   font-weight: 800;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
 button:hover {
@@ -1204,6 +1207,8 @@ button:hover {
   border: 1px solid var(--line);
   background: color-mix(in srgb, var(--surface) 86%, var(--accent-soft));
   color: var(--accent-strong);
+  line-height: 1.15;
+  text-wrap: balance;
 }
 
 .text-link {
@@ -2125,12 +2130,16 @@ dd {
   .barcode-row .secondary-action,
   .primary-action {
     min-height: 44px;
+    line-height: 1.12;
+    text-align: center;
+    text-wrap: balance;
   }
 
   .barcode-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
     align-items: stretch;
+    overflow: visible;
   }
 
   .barcode-row label {
@@ -2139,11 +2148,22 @@ dd {
 
   .barcode-row .secondary-action {
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: auto;
     width: 100%;
+    min-width: 0;
     margin-top: 0;
     padding: 0 8px;
     white-space: normal;
     word-break: normal;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .search-tools > *,
+  .barcode-row .secondary-action {
+    font-size: clamp(0.78rem, 3.35vw, 0.9rem);
   }
 
   .sample-row {
