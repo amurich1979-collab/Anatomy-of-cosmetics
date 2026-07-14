@@ -1,8 +1,11 @@
 const THEMES = {
   fresh: "День",
-  dark: "Ночь"
+  dark: "Ночь",
+  clinic: "Клиника",
+  berry: "Ягода"
 };
 
+const THEME_ORDER = Object.keys(THEMES);
 const STORAGE_KEY = "theme";
 
 function readStoredTheme() {
@@ -40,7 +43,8 @@ function setTheme(theme) {
 
 function cycleTheme() {
   const current = document.documentElement.dataset.theme || "fresh";
-  setTheme(current === "dark" ? "fresh" : "dark");
+  const index = THEME_ORDER.indexOf(current);
+  setTheme(THEME_ORDER[(index + 1) % THEME_ORDER.length] || "fresh");
 }
 
 setTheme(readStoredTheme() || document.documentElement.dataset.theme || "fresh");

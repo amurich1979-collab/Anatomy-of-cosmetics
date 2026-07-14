@@ -8,7 +8,7 @@
     <script>
       try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260714-icons-1" />
+    <link rel="stylesheet" href="styles.css?v=20260714-themes-1" />
   </head>
   <body>
     <div class="ambient-layer" aria-hidden="true">
@@ -57,6 +57,14 @@
                 <strong>День</strong>
                 <span>светлая свежая палитра</span>
               </button>
+              <button class="theme-card theme-card-clinic" type="button" data-theme-choice="clinic" aria-pressed="false">
+                <strong>Клиника</strong>
+                <span>чистая голубовато-зеленая палитра</span>
+              </button>
+              <button class="theme-card theme-card-berry" type="button" data-theme-choice="berry" aria-pressed="false">
+                <strong>Ягода</strong>
+                <span>теплая пудрово-ягодная палитра</span>
+              </button>
               <button class="theme-card theme-card-dark" type="button" data-theme-choice="dark" aria-pressed="false">
                 <strong>Ночь</strong>
                 <span>темная с мягким контрастом</span>
@@ -78,7 +86,7 @@
       </section>
     </main>
 
-    <script src="theme.js?v=20260709-16"></script>
+    <script src="theme.js?v=20260714-themes-1"></script>
     <script src="auth-nav.js?v=20260713-profile-1"></script>
     <script src="settings.js?v=20260709-16"></script>
   </body>

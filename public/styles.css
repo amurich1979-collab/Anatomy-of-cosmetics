@@ -35,6 +35,42 @@
   --amber: #f0ca78;
 }
 
+:root[data-theme="clinic"] {
+  color-scheme: light;
+  --bg: #eef8f8;
+  --surface: #ffffff;
+  --ink: #162c2d;
+  --muted: #607676;
+  --line: #c9dedf;
+  --accent: #087e91;
+  --accent-strong: #055869;
+  --accent-soft: #d9f2f5;
+  --coral: #e27c70;
+  --coral-soft: #ffe5df;
+  --sky: #d7eff8;
+  --warning: #a34a34;
+  --soft: #e6f5f3;
+  --amber: #e8cf7a;
+}
+
+:root[data-theme="berry"] {
+  color-scheme: light;
+  --bg: #fbf4f7;
+  --surface: #ffffff;
+  --ink: #2b2026;
+  --muted: #75666d;
+  --line: #ead2dc;
+  --accent: #9d3d68;
+  --accent-strong: #6f2449;
+  --accent-soft: #f5e1ea;
+  --coral: #d96d79;
+  --coral-soft: #ffe2e7;
+  --sky: #e5f0f3;
+  --warning: #9d4632;
+  --soft: #f7edf2;
+  --amber: #ebca77;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -58,6 +94,20 @@ body {
   background:
     linear-gradient(122deg, rgba(73, 198, 162, 0.12) 0%, rgba(255, 146, 125, 0.1) 42%, transparent 76%),
     linear-gradient(180deg, #111514 0%, #151b19 48%, #0f1516 100%),
+    var(--bg);
+}
+
+:root[data-theme="clinic"] body {
+  background:
+    linear-gradient(122deg, rgba(8, 126, 145, 0.12) 0%, rgba(215, 239, 248, 0.72) 42%, transparent 76%),
+    linear-gradient(180deg, #f8ffff 0%, #eef8f8 52%, #e7f3f0 100%),
+    var(--bg);
+}
+
+:root[data-theme="berry"] body {
+  background:
+    linear-gradient(122deg, rgba(245, 225, 234, 0.9) 0%, rgba(229, 240, 243, 0.58) 40%, transparent 74%),
+    linear-gradient(180deg, #fff9fb 0%, #fbf4f7 52%, #f4edf1 100%),
     var(--bg);
 }
 
@@ -1569,6 +1619,14 @@ dd {
 
 .theme-card-dark span {
   color: #bfd0ca;
+}
+
+.theme-card-clinic {
+  background: linear-gradient(135deg, #d9f2f5, #f8ffff);
+}
+
+.theme-card-berry {
+  background: linear-gradient(135deg, #f5e1ea, #ffe2e7);
 }
 
 .mini-stats {
