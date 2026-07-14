@@ -1308,18 +1308,9 @@ function render(data) {
   `;
   const qualitySection = `
     <section class="section quality-section">
-      <div class="quality-head">
-        <div>
-          <p class="eyebrow">Компонентная база</p>
-          <h2>Как считается качество</h2>
-          <p>${escapeHtml(quality.methodology || "Оценка строится по экспертной базе ингредиентов и не заменяет документы производителя.")}</p>
-        </div>
-        <div class="quality-total">
-          <strong>${escapeHtml(qualityScore)}</strong>
-          <span>${escapeHtml(quality.label || "недостаточно данных")}</span>
-        </div>
-      </div>
-      <p class="confidence">Уверенность: ${escapeHtml(quality.confidence || "неизвестно")} · распознано для оценки ${escapeHtml(quality.knownCount ?? 0)} из ${escapeHtml(quality.totalIngredients ?? data.totalIngredients ?? 0)}, неизвестных ${escapeHtml(quality.unknownCount ?? data.unknown?.length ?? 0)}.</p>
+      <p class="eyebrow">Подробнее</p>
+      <h2>Как считается оценка</h2>
+      <p>${escapeHtml(quality.methodology || "Оценка строится по экспертной базе ингредиентов и не заменяет документы производителя.")}</p>
     </section>
   `;
 
