@@ -104,6 +104,10 @@ function toSummary(product) {
     verifiedAt: trusted.verifiedAt,
     importedAt: trusted.importedAt,
     compositionScope: trusted.compositionScope,
+    compositionAvailabilityNote: trusted.compositionAvailabilityNote,
+    activeIngredients: trusted.activeIngredients,
+    description: trusted.description,
+    useInstructions: trusted.useInstructions,
     composition: trusted.composition,
     formulaVariants: trusted.formulaVariants || [],
     hasFormulaConflict: Boolean(trusted.hasFormulaConflict),
@@ -548,7 +552,7 @@ export async function searchProducts(query, limit = 8) {
   if (normalizedQuery.length < 1) return [];
 
   const local = searchLocalProducts(query, limit);
-  if (normalizedQuery.length < 3 || local.length > 0) return local.slice(0, limit);
+  if (normalizedQuery.length < 3) return local.slice(0, limit);
 
   const external = await searchExternalProducts(query, { limit });
   const seen = new Set();
@@ -566,7 +570,10 @@ export async function searchProducts(query, limit = 8) {
     saveDetailsCache([...cacheable, ...cache.filter((product) => !cacheKeys.has(product.id || product.code))]);
   }
 
-  const merged = freshExternal;
+  const merged = [...local, ...freshExternal].filter((product, index, list) => {
+    const identity = normalize(`${product.brand} ${product.name}`);
+    return list.findIndex((candidate) => normalize(`${candidate.brand} ${candidate.name}`) === identity) === index;
+  });
   if (merged.length >= limit) return merged.slice(0, limit);
 
   const webExternal = await fetchWebSearchProducts(query, Math.max(0, limit - merged.length));
@@ -600,15 +607,15 @@ export async function getProductDetails(id) {
   if (!cleanId) return null;
 
   const local = loadProducts().find((product) => product.id === cleanId || product.code === cleanId);
-  if (local?.composition) return withTrust(await enrichProductImage(local));
+  if (local) return withTrust(await enrichProductImage(local));
 
   const cache = loadDetailsCache();
   const cached = cache.find((product) => product.id === cleanId || product.code === cleanId);
-  if (cached?.composition) return withTrust(await enrichProductImage(cached, cache));
+  if (cached) return withTrust(await enrichProductImage(cached, cache));
 
-  if (/^(obf|opf|upcitemdb)-/.test(cleanId) || /^\d{6,}$/.test(cleanId)) {
+  if (/^(obf|opf|upcitemdb|gigi-official|external-catalog|incidecoder)-/.test(cleanId) || /^\d{6,}$/.test(cleanId)) {
     const detail = await getExternalProduct(cleanId);
-    if (detail?.composition) {
+    if (detail) {
       const nextCache = [detail, ...cache.filter((product) => product.id !== detail.id && product.code !== detail.code)];
       saveDetailsCache(nextCache);
       return withTrust(detail);

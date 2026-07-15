@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mergeSourceProducts, productSources } from "../src/services/productSources/index.js";
+import { mergeSourceProducts, productSources, rankSourceProducts } from "../src/services/productSources/index.js";
 
 test("product sources expose the common adapter interface", () => {
-  assert.ok(productSources.length >= 3);
+  assert.ok(productSources.length >= 6);
   productSources.forEach((source) => {
     assert.equal(typeof source.searchByBarcode, "function");
     assert.equal(typeof source.searchByName, "function");
@@ -41,4 +41,22 @@ test("different source formulas are kept as variants and not mixed", () => {
   assert.equal(merged[0].hasFormulaConflict, true);
   assert.equal(merged[0].formulaVariants.length, 2);
   assert.equal(merged[0].composition, "Aqua, Glycerin");
+});
+
+test("external product results are ranked by the full product query", () => {
+  const ranked = rankSourceProducts([
+    { brand: "GIGI", name: "All Purpose Honee Wax", category: "wax", sourceType: "open_beauty_facts" },
+    { brand: "GIGI", name: "Acnon Day Control Moisturizer", category: "face cream", sourceType: "gigi_official" }
+  ], "GIGI Acnon");
+
+  assert.equal(ranked[0].name, "Acnon Day Control Moisturizer");
+});
+
+test("a matching card with an INCI is preferred over a title-only match", () => {
+  const ranked = rankSourceProducts([
+    { brand: "Geek & Gorgeous", name: "A-Game 5 Retinal Serum", category: "serum", sourceType: "upcitemdb" },
+    { brand: "Не указан", name: "Geek & Gorgeous A-Game 5", category: "serum", composition: "Aqua, Glycerin, Retinal, Panthenol", sourceType: "inci_decoder" }
+  ], "Geek and Gorgeous A-Game 5 retinal serum");
+
+  assert.equal(ranked[0].sourceType, "inci_decoder");
 });

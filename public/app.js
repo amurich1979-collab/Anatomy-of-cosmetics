@@ -436,7 +436,7 @@ async function applyProduct(product) {
 
   if (!detailedProduct.composition) {
     hideSuggestions();
-    setProductStatus("Карточка найдена, но состав пока не подтянулся. Можно вставить состав вручную.", "warn");
+    setProductStatus(detailedProduct.compositionAvailabilityNote || "Карточка найдена, но состав пока не подтянулся. Можно вставить состав вручную.", "warn");
     return;
   }
 

@@ -69,6 +69,27 @@ export async function fetchJson(url, { timeoutMs = 4500, headers = {} } = {}) {
   }
 }
 
+export async function fetchText(url, { timeoutMs = 6500, headers = {} } = {}) {
+  const timeout = timeoutSignal(timeoutMs);
+  try {
+    const response = await fetch(url, {
+      signal: timeout.signal,
+      headers: {
+        "User-Agent": PRODUCT_SOURCE_USER_AGENT,
+        "Accept-Language": "ru-RU,ru;q=0.9,en;q=0.7",
+        ...headers
+      }
+    });
+
+    if (!response.ok) return "";
+    return await response.text();
+  } catch {
+    return "";
+  } finally {
+    timeout.clear();
+  }
+}
+
 export function sourceProduct({
   id,
   code = "",

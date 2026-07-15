@@ -1,12 +1,18 @@
 import { openBeautyFactsSource } from "./openBeautyFacts.js";
 import { openProductsFactsSource } from "./openProductsFacts.js";
 import { upcItemDbSource } from "./upcItemDb.js";
+import { gigiOfficialSource } from "./gigiOfficial.js";
+import { externalCatalogDiscoverySource } from "./externalCatalogDiscovery.js";
+import { inciDecoderSource } from "./inciDecoder.js";
 import { isBarcode, normalizeProductText } from "./utils.js";
 
 export const productSources = [
+  gigiOfficialSource,
   openBeautyFactsSource,
   upcItemDbSource,
-  openProductsFactsSource
+  openProductsFactsSource,
+  inciDecoderSource,
+  externalCatalogDiscoverySource
 ];
 
 function normalizeFormula(value) {
@@ -23,6 +29,32 @@ function normalizeFormula(value) {
 function identity(product) {
   if (product.code) return `code:${product.code}`;
   return normalizeProductText(`${product.brand} ${product.name}`);
+}
+
+export function rankSourceProducts(products, query) {
+  const ignoredTokens = new Set(["and", "the", "for", "with", "и", "для", "с", "по"]);
+  const queryTokens = normalizeProductText(query)
+    .split(" ")
+    .filter((token) => token.length > 1 && !ignoredTokens.has(token));
+  if (!queryTokens.length) return products;
+
+  return products
+    .map((product) => {
+      const searchable = normalizeProductText(`${product.brand} ${product.name} ${product.category}`);
+      const tokenScore = queryTokens.reduce((score, token) => {
+        if (!searchable.includes(token)) return score;
+        return score + (/^\d+(?:\.\d+)?$/.test(token) ? 10 : 5);
+      }, 0);
+      const hits = queryTokens.filter((token) => searchable.includes(token)).length;
+      const exactName = searchable.includes(queryTokens.join(" ")) ? 4 : 0;
+      const completeMatch = hits === queryTokens.length ? 3 : 0;
+      const officialBoost = product.sourceType === "gigi_official" ? 1 : 0;
+      const compositionBoost = product.composition ? 10 : 0;
+      return { product, score: tokenScore + exactName + completeMatch + officialBoost + compositionBoost };
+    })
+    .filter(({ score }) => score > 0)
+    .sort((left, right) => right.score - left.score)
+    .map(({ product }) => product);
 }
 
 export function mergeSourceProducts(products) {
@@ -84,9 +116,9 @@ export function mergeSourceProducts(products) {
   return Array.from(byIdentity.values());
 }
 
-async function runSources(method, value, options = {}) {
+async function runSources(sources, method, value, options = {}) {
   const settled = await Promise.allSettled(
-    productSources.map(async (source) => {
+    sources.map(async (source) => {
       const results = await source[method](value, options);
       return (Array.isArray(results) ? results : [results]).filter(Boolean);
     })
@@ -99,18 +131,34 @@ export async function searchExternalProducts(query, { limit = 8 } = {}) {
   const cleanQuery = String(query || "").trim();
   if (!cleanQuery) return [];
 
-  const products = isBarcode(cleanQuery)
-    ? await runSources("searchByBarcode", cleanQuery, { limit })
-    : await runSources("searchByName", cleanQuery, { limit });
+  const primarySources = productSources.filter((source) => !source.isFallback);
+  const primaryProducts = isBarcode(cleanQuery)
+    ? await runSources(primarySources, "searchByBarcode", cleanQuery, { limit })
+    : await runSources(primarySources, "searchByName", cleanQuery, { limit });
+  let merged = rankSourceProducts(mergeSourceProducts(primaryProducts), cleanQuery);
 
-  return mergeSourceProducts(products).slice(0, limit);
+  const needsDiscovery = !isBarcode(cleanQuery) && (
+    merged.length < Math.min(limit, 3) ||
+    !merged.some((product) => product.hasComposition || product.composition)
+  );
+  if (needsDiscovery) {
+    const fallbackProducts = await runSources(
+      productSources.filter((source) => source.isFallback),
+      "searchByName",
+      cleanQuery,
+      { limit: Math.min(limit, 4) }
+    );
+    merged = rankSourceProducts(mergeSourceProducts([...primaryProducts, ...fallbackProducts]), cleanQuery);
+  }
+
+  return merged.slice(0, limit);
 }
 
 export async function searchExternalProductByBarcode(barcode, { limit = 8 } = {}) {
   const cleanBarcode = String(barcode || "").trim();
   if (!isBarcode(cleanBarcode)) return [];
 
-  return mergeSourceProducts(await runSources("searchByBarcode", cleanBarcode, { limit })).slice(0, limit);
+  return mergeSourceProducts(await runSources(productSources.filter((source) => !source.isFallback), "searchByBarcode", cleanBarcode, { limit })).slice(0, limit);
 }
 
 export async function getExternalProduct(idOrBarcode) {

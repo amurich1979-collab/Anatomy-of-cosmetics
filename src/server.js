@@ -90,6 +90,8 @@ app.post("/api/photo/resolve", async (req, res) => {
       productWithDetails?.brand,
       productWithDetails?.name,
       productWithDetails?.category,
+      productWithDetails?.description,
+      productWithDetails?.activeIngredients,
       productWithDetails?.composition
     ].filter(Boolean).join(" ")
   });

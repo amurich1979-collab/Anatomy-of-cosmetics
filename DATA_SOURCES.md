@@ -13,6 +13,33 @@ The project should not keep a local copy of a huge global product catalog. It no
 - Quality: best open source for cosmetic products, but data is crowdsourced and must be checked against the package.
 - Limitation: not all professional/cosmetology products are present; ingredients may differ by market or product version.
 
+### Official GIGI catalogue
+
+- Adapter: `src/services/productSources/gigiOfficial.js`
+- Source: `https://www.gigi.ru/search/?q={product}` and official product cards.
+- API key: not required. The integration reads only public catalogue pages and runs only for GIGI or recognised GIGI product-line queries.
+- Data used: product name, brand, internal SKU, photo, description, intended use, use instructions and manufacturer-declared active ingredients.
+- Quality: first-party source for identity and intended use. It is therefore preferred over crowdsourced catalogues for recognising GIGI products.
+- Limitation: many official cards publish active ingredients rather than a complete INCI list. The adapter never labels those active ingredients as a full formula and asks for the label INCI before formula analysis.
+
+### External product-card discovery
+
+- Adapter: `src/services/productSources/externalCatalogDiscovery.js`
+- Source: a public web-search index, followed by product pages that expose `schema.org/Product` structured data.
+- API key: not required.
+- Data used: product name, brand, SKU/GTIN when published, photo, description and an INCI string only when the page explicitly publishes one.
+- Quality: a broad fallback for brands missing from Open Beauty Facts and without their own adapter. Every result keeps its domain and is marked as requiring label verification.
+- Limitation: this is discovery, not an authoritative database. Pages without structured product data are ignored; INCI is never inferred from a description or ingredient marketing claims.
+
+### INCI Decoder
+
+- Adapter: `src/services/productSources/inciDecoder.js`
+- Source: `https://incidecoder.com/products/`, discovered by exact user query. Its published `robots.txt` permits public crawling of product pages.
+- API key: not required.
+- Data used: product title and the INCI list explicitly published in a product-card description.
+- Quality: useful additional coverage for international consumer cosmetics missing from Open Beauty Facts.
+- Limitation: third-party data only. The service marks every formula as unverified and never merges it with a different formula from another source.
+
 ### UPCitemdb
 
 - Adapter: `src/services/productSources/upcItemDb.js`
@@ -39,6 +66,8 @@ Search order is:
 2. Product name.
 3. Brand/name text from OCR.
 4. OCR ingredient text as the last fallback.
+
+For a text search the service does not stop after the local cache or Open Beauty Facts returns a match. It combines relevant cards from all configured sources, ranks them by the query, keeps formulas from different sources separate, and then uses the web fallback only if the source results do not fill the list. This allows official brand catalogues to cover products that are absent from Open Beauty Facts.
 
 If the same product is found in multiple sources, the system merges product identity fields but does not mix formulas. Different INCI strings are stored in `formulaVariants` with source, source URL and fetch date. A product receives `hasFormulaConflict: true` and `formulaConflictNote` when sources disagree.
 
