@@ -2941,4 +2941,195 @@ button:hover {
   .panel > label:has(#composition) textarea {
     min-height: 92px;
   }
+
+  #analysisForm > button.primary-action[type="submit"] {
+    display: none;
+  }
+}
+
+/* Fidelity pass: match the approved desktop and mobile mockups. */
+.topnav {
+  flex: 1;
+}
+
+.top-search-link {
+  margin-left: 24px;
+}
+
+.top-catalog-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 12px;
+  color: var(--accent-strong);
+  cursor: pointer;
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+
+.top-catalog-link::before {
+  width: 22px;
+  height: 22px;
+  background: center / 20px 20px no-repeat url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 5.5c2.7-.7 5.3-.2 8 1.4v12c-2.7-1.6-5.3-2.1-8-1.4v-12Zm16 0c-2.7-.7-5.3-.2-8 1.4v12c2.7-1.6 5.3-2.1 8-1.4v-12Z' fill='none' stroke='%230b6b58' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E");
+  content: "";
+}
+
+.topnav a[href="/"][aria-current="page"] {
+  display: none;
+}
+
+.intro {
+  min-height: 700px;
+  padding: 38px;
+  border-color: var(--line);
+  background: #fcfbf8;
+}
+
+.intro::before {
+  background:
+    linear-gradient(90deg, rgba(252, 251, 248, 0.98) 0%, rgba(252, 251, 248, 0.9) 42%, rgba(252, 251, 248, 0.08) 76%),
+    linear-gradient(180deg, transparent 58%, rgba(252, 251, 248, 0.16)),
+    url("assets/cosmetology-hero-brand-v2.png") 62% center / cover;
+}
+
+.intro::after {
+  display: none;
+}
+
+.intro h1 {
+  max-width: 420px;
+  color: #123b32;
+}
+
+.intro .eyebrow {
+  color: #0b6b58;
+}
+
+.intro-tagline,
+.intro-benefits li {
+  color: #273b35 !important;
+}
+
+.panel {
+  gap: 14px;
+  padding: 26px;
+}
+
+.search-tools > .photo-upload {
+  min-height: 130px;
+  gap: 12px;
+}
+
+.search-tools > .photo-upload::before {
+  width: 62px;
+  height: 62px;
+  border-radius: 0;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='10' y='11' width='44' height='42' rx='6' fill='none' stroke='%230b6b58' stroke-width='4'/%3E%3Ccircle cx='25' cy='25' r='5' fill='none' stroke='%230b6b58' stroke-width='4'/%3E%3Cpath d='m14 47 12-12 9 9 7-7 8 10' fill='none' stroke='%230b6b58' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: contain;
+}
+
+.search-tools > .camera-upload::before {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 20h10l4-7h12l4 7h10a5 5 0 0 1 5 5v25a5 5 0 0 1-5 5H12a5 5 0 0 1-5-5V25a5 5 0 0 1 5-5Z' fill='none' stroke='%23e87866' stroke-width='4' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='37' r='10' fill='none' stroke='%23e87866' stroke-width='4'/%3E%3C/svg%3E");
+}
+
+.search-tools > .catalog-open {
+  display: none;
+}
+
+.barcode-row {
+  padding: 16px;
+}
+
+.barcode-row > label {
+  text-align: center;
+}
+
+.barcode-row > label input,
+.barcode-row > label .field-note {
+  text-align: left;
+}
+
+.manual-entry,
+.advanced-options {
+  display: grid;
+  gap: 10px;
+}
+
+.manual-entry summary,
+.advanced-options summary {
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--accent-strong);
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.manual-entry > *:not(summary) {
+  margin-top: 10px;
+}
+
+.manual-entry textarea {
+  min-height: 112px;
+}
+
+.panel > .primary-action {
+  order: 0;
+  margin-top: 2px;
+}
+
+@media (max-width: 1080px) {
+  .topnav .top-search-link,
+  .topnav .top-catalog-link {
+    display: none;
+  }
+
+  .intro {
+    min-height: 360px;
+  }
+
+  .search-tools > .catalog-open {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 560px) {
+  .intro {
+    align-items: center;
+    min-height: 0;
+    background: var(--surface);
+    text-align: center;
+  }
+
+  .intro::before {
+    display: none;
+  }
+
+  .search-tools > .photo-upload {
+    min-height: 132px;
+  }
+
+  .search-tools > .photo-upload::before {
+    width: 52px;
+    height: 52px;
+  }
+
+  .search-tools > .catalog-open {
+    display: inline-flex;
+  }
+
+  .topnav .top-search-link,
+  .topnav .top-catalog-link {
+    display: none;
+  }
+
+  .manual-entry,
+  .advanced-options {
+    margin-top: 0;
+  }
 }

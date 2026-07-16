@@ -8,7 +8,7 @@
     <script>
       try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260717-brand-v2" />
+    <link rel="stylesheet" href="styles.css?v=20260717-brand-v4" />
   </head>
   <body>
     <div class="ambient-layer" aria-hidden="true">
@@ -20,6 +20,8 @@
       <header class="topbar">
         <a class="brand-link" href="/">Анатомия косметики</a>
         <nav class="topnav" aria-label="Навигация">
+          <a class="top-search-link" href="#analysisForm">Найти средство</a>
+          <label class="top-catalog-link" for="catalogOpen">Каталог</label>
           <a href="/" aria-current="page">Главная</a>
           <a href="/login" data-auth-link>Войти</a>
           <button class="theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">День</button>
@@ -104,6 +106,8 @@
             </div>
           </div>
 
+          <button class="primary-action" type="submit">Разобрать состав</button>
+
           <input class="catalog-state" id="catalogOpen" type="checkbox" hidden />
           <aside class="catalog-drawer" id="catalogDrawer" aria-hidden="true">
             <div class="catalog-panel">
@@ -120,16 +124,19 @@
             </div>
           </aside>
 
-          <label>
-            Состав с упаковки, если нужен ручной ввод
-            <textarea id="composition" spellcheck="false" placeholder="Заполнится автоматически после выбора средства. Если сервис не нашел состав, сюда можно вставить список ингредиентов вручную."></textarea>
-          </label>
+          <details class="manual-entry">
+            <summary>Ввести состав вручную</summary>
+            <label>
+              Состав с упаковки
+              <textarea id="composition" spellcheck="false" placeholder="Заполнится автоматически после выбора средства. Если сервис не нашел состав, сюда можно вставить список ингредиентов вручную."></textarea>
+            </label>
 
-          <div class="sample-row" aria-label="Примеры средств">
-            <button type="button" class="sample-chip" data-query="Retinol Barrier Night Concentrate">Retinol</button>
-            <button type="button" class="sample-chip" data-query="Glycolic Renewal Peel 20">Glycolic Peel</button>
-            <button type="button" class="sample-chip" data-query="Mineral Recovery SPF 50">SPF</button>
-          </div>
+            <div class="sample-row" aria-label="Примеры средств">
+              <button type="button" class="sample-chip" data-query="Retinol Barrier Night Concentrate">Retinol</button>
+              <button type="button" class="sample-chip" data-query="Glycolic Renewal Peel 20">Glycolic Peel</button>
+              <button type="button" class="sample-chip" data-query="Mineral Recovery SPF 50">SPF</button>
+            </div>
+          </details>
 
           <details class="advanced-options">
             <summary>Дополнительно</summary>
@@ -184,8 +191,6 @@
               <input id="concerns" type="hidden" value="розацеа, пигментация, нарушенный барьер" />
             </div>
           </details>
-
-          <button class="primary-action" type="submit">Разобрать состав</button>
         </form>
       </section>
 
