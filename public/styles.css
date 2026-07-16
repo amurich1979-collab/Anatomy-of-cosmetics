@@ -2714,3 +2714,231 @@ button:hover {
     height: 16px;
   }
 }
+
+/* Generated concept implementation: structural composition, not only recoloring. */
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.intro-full,
+.intro-short {
+  display: none;
+}
+
+.intro-tagline {
+  display: block;
+  max-width: 410px !important;
+  margin-top: 4px !important;
+  color: #36423e !important;
+  font-size: 1.05rem !important;
+  line-height: 1.55 !important;
+}
+
+.intro-benefits {
+  display: grid;
+  gap: 13px;
+  max-width: 390px;
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.intro-benefits li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  color: #36423e;
+  font-size: 0.93rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.intro-benefits li::before {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--line));
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--accent-strong);
+  content: "✓";
+  font-weight: 900;
+}
+
+:root[data-theme="dark"] .intro-tagline,
+:root[data-theme="dark"] .intro-benefits li {
+  color: #d8e6df !important;
+}
+
+:root[data-theme="dark"] .intro-benefits li::before {
+  background: rgba(16, 22, 20, 0.72);
+}
+
+.panel {
+  align-content: start;
+  gap: 18px;
+}
+
+.product-search input {
+  min-height: 54px;
+  padding-right: 50px;
+  font-size: 0.98rem;
+}
+
+.search-tools {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.search-tools > .photo-upload {
+  order: 1;
+  min-height: 142px;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 62%, var(--accent-soft));
+  font-size: 1rem;
+}
+
+.search-tools > .camera-upload {
+  border-color: color-mix(in srgb, var(--coral) 46%, var(--line));
+  background: color-mix(in srgb, var(--surface) 60%, var(--coral-soft));
+}
+
+.search-tools > .photo-upload::before {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background-size: 30px 30px;
+  box-shadow: none;
+}
+
+.search-tools > .catalog-open {
+  order: 2;
+  grid-column: 1 / -1;
+  min-height: 44px;
+  background: transparent;
+}
+
+.barcode-row {
+  gap: 10px 12px;
+  margin-top: 0;
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 68%, var(--accent-soft));
+}
+
+.barcode-row > label {
+  color: var(--ink);
+  font-size: 0.93rem;
+}
+
+.barcode-row input {
+  background: var(--surface);
+}
+
+.barcode-row .field-note {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 550;
+}
+
+.barcode-row > .secondary-action {
+  background: var(--surface);
+}
+
+.panel > label:has(#composition) {
+  padding-top: 2px;
+}
+
+.panel > label:has(#composition) textarea {
+  min-height: 112px;
+  background: color-mix(in srgb, var(--surface) 92%, var(--soft));
+}
+
+.panel > .primary-action {
+  min-height: 56px;
+  font-size: 1rem;
+}
+
+@media (max-width: 1080px) {
+  .intro {
+    min-height: 330px;
+  }
+
+  .intro-benefits {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: none;
+    margin-top: 26px;
+  }
+
+  .intro-benefits li {
+    align-items: start;
+    grid-template-columns: 24px minmax(0, 1fr);
+    font-size: 0.82rem;
+  }
+
+  .intro-benefits li::before {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .intro {
+    min-height: 0;
+  }
+
+  .intro-tagline {
+    margin-top: 6px !important;
+    font-size: 0.88rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .intro-benefits {
+    display: none;
+  }
+
+  .panel {
+    gap: 11px;
+  }
+
+  .search-tools {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .search-tools > .photo-upload {
+    min-height: 116px;
+    gap: 10px;
+    padding: 12px 8px;
+    font-size: clamp(0.78rem, 3.35vw, 0.9rem);
+  }
+
+  .search-tools > .photo-upload::before {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background-size: 23px 23px;
+  }
+
+  .search-tools > .catalog-open {
+    min-height: 42px;
+  }
+
+  .barcode-row {
+    padding: 12px;
+  }
+
+  .panel > label:has(#composition) textarea {
+    min-height: 92px;
+  }
+}

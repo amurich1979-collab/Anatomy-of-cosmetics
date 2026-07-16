@@ -1,8 +1,6 @@
 const THEMES = {
   fresh: "День",
-  dark: "Ночь",
-  clinic: "Клиника",
-  berry: "Ягода"
+  dark: "Ночь"
 };
 
 const THEME_ORDER = Object.keys(THEMES);
