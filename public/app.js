@@ -4,6 +4,7 @@ const productName = document.querySelector("#productName");
 const productSuggestions = document.querySelector("#productSuggestions");
 const productStatus = document.querySelector("#productStatus");
 const productClear = document.querySelector("#productClear");
+const productSearchAction = document.querySelector("#productSearchAction");
 const composition = document.querySelector("#composition");
 const sampleChips = document.querySelectorAll(".sample-chip");
 const concernChips = document.querySelectorAll(".concern-chip");
@@ -613,6 +614,17 @@ productClear?.addEventListener("click", () => {
   hideSuggestions();
   setProductStatus("");
   syncSearchClear();
+  productName.focus();
+});
+
+productSearchAction?.addEventListener("click", () => {
+  if (!productName?.value.trim()) {
+    setProductStatus("Введите название или бренд средства.", "warn");
+    productName?.focus();
+    return;
+  }
+
+  productName.dispatchEvent(new Event("input", { bubbles: true }));
   productName.focus();
 });
 

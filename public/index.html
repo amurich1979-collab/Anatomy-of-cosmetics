@@ -8,7 +8,7 @@
     <script>
       try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260717-brand-v4" />
+    <link rel="stylesheet" href="styles.css?v=20260717-reference-v1" />
   </head>
   <body>
     <div class="ambient-layer" aria-hidden="true">
@@ -30,7 +30,8 @@
       <section class="workspace">
         <div class="intro">
           <p class="eyebrow">Разбор профессионального ухода</p>
-          <h1>Анатомия косметики</h1>
+          <h1 class="intro-title-desktop">Анатомия косметики</h1>
+          <h1 class="intro-title-mobile">Проверьте состав косметики<br />за пару минут</h1>
           <p class="intro-full">
             Введите название средства. Сервис сам найдет карточку, подтянет состав с упаковки и разберет ингредиенты. INCI — это международная номенклатура названий ингредиентов.
             кислоты, SPF-фильтры, консерванты, отдушки, вероятные концентрационные
@@ -54,26 +55,31 @@
             <span class="mode-pill">MVP</span>
           </div>
 
-          <label class="product-search">
-            Поиск по названию
-            <span class="search-input-wrap">
-              <input id="productName" autocomplete="off" placeholder="Например: Glycolic Peel, Retinol, SPF..." />
-              <button class="search-clear" type="button" id="productClear" aria-label="Очистить поиск" hidden>×</button>
-            </span>
-            <div id="productSuggestions" class="suggestions" hidden></div>
-            <span id="productStatus" class="field-note" hidden></span>
-          </label>
+          <div class="product-search-row">
+            <label class="product-search">
+              Поиск по названию
+              <span class="search-input-wrap">
+                <input id="productName" autocomplete="off" placeholder="Название или бренд" />
+                <button class="search-clear" type="button" id="productClear" aria-label="Очистить поиск" hidden>×</button>
+              </span>
+              <div id="productSuggestions" class="suggestions" hidden></div>
+              <span id="productStatus" class="field-note" hidden></span>
+            </label>
+            <button class="product-search-action" type="button" id="productSearchAction">Найти</button>
+          </div>
 
           <div class="mobile-or" aria-hidden="true">или</div>
 
           <div class="search-tools">
             <label class="secondary-action catalog-open" for="catalogOpen" id="catalogToggle">Каталог</label>
             <label class="photo-upload" for="photoInput">
-              Загрузить фото
+              <span class="photo-upload-title">Загрузить фото</span>
+              <span class="photo-upload-cta">Загрузить фото</span>
               <input id="photoInput" data-photo-input type="file" accept="image/*" />
             </label>
             <label class="photo-upload camera-upload" for="photoCameraInput" id="photoCameraOpen">
-              Сфотографировать этикетку
+              <span class="photo-upload-title">Сфотографировать</span>
+              <span class="photo-upload-cta">Сфотографировать</span>
               <input id="photoCameraInput" data-photo-input type="file" accept="image/*" capture="environment" />
             </label>
           </div>
@@ -233,6 +239,6 @@
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="theme.js?v=20260717-day-night-1"></script>
     <script src="auth-nav.js?v=20260713-profile-1"></script>
-    <script src="app.js?v=20260714-quality-top-1" type="module"></script>
+    <script src="app.js?v=20260717-search-action-1" type="module"></script>
   </body>
 </html>

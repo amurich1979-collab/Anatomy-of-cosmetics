@@ -2950,10 +2950,15 @@ button:hover {
 /* Fidelity pass: match the approved desktop and mobile mockups. */
 .topnav {
   flex: 1;
+  justify-content: flex-start;
 }
 
 .top-search-link {
   margin-left: 24px;
+}
+
+.topnav a[data-auth-link] {
+  margin-left: auto;
 }
 
 .top-catalog-link {
@@ -3131,5 +3136,400 @@ button:hover {
   .manual-entry,
   .advanced-options {
     margin-top: 0;
+  }
+}
+
+/* Reference-layout pass: full split-screen desktop and task-first mobile. */
+body {
+  background: var(--surface);
+}
+
+.shell {
+  width: 100%;
+  padding: 0;
+}
+
+.topbar {
+  min-height: 86px;
+  margin: 0;
+  padding: 0 38px;
+  background: var(--surface);
+}
+
+.brand-link {
+  font-size: 1.15rem;
+}
+
+.brand-link::before {
+  width: 42px;
+  height: 42px;
+  border-radius: 0;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17 5h14M21 5v13L10 39c-1 2 0 4 3 4h22c3 0 4-2 3-4L27 18V5' fill='none' stroke='%230b6b58' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M15 34c8-2 14 5 21 1M31 16c8-1 11 3 12 9-7 1-12-1-12-9Z' fill='none' stroke='%230b6b58' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: contain;
+  box-shadow: none;
+}
+
+.workspace {
+  grid-template-columns: 41% 59%;
+  gap: 0;
+  min-height: calc(100vh - 86px);
+}
+
+.intro,
+.panel {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.intro {
+  position: relative;
+  top: auto;
+  min-height: calc(100vh - 86px);
+  padding: clamp(42px, 4vw, 68px) clamp(34px, 4vw, 64px);
+}
+
+.intro h1 {
+  font-size: clamp(3rem, 4.1vw, 4.4rem);
+  line-height: 0.98;
+}
+
+.intro-title-mobile {
+  display: none;
+}
+
+.intro-benefits {
+  gap: 20px;
+  margin-top: 42px;
+}
+
+.panel {
+  padding: clamp(42px, 4.6vw, 70px) clamp(42px, 5.4vw, 82px);
+}
+
+.form-head .eyebrow,
+.mode-pill {
+  display: none;
+}
+
+.form-head h2 {
+  font-size: 1.55rem;
+}
+
+.product-search-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 160px;
+  align-items: start;
+  gap: 22px;
+}
+
+.product-search {
+  font-size: 0;
+}
+
+.product-search input {
+  min-height: 58px;
+  padding-left: 58px;
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 28 28' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='7' fill='none' stroke='%230b6b58' stroke-width='2'/%3E%3Cpath d='m17 17 6 6' stroke='%230b6b58' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 20px center;
+  background-size: 28px;
+  font-size: 1rem;
+}
+
+.product-search .field-note,
+.product-search .suggestions {
+  font-size: 0.84rem;
+}
+
+.product-search-action {
+  min-height: 58px;
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.search-tools {
+  gap: 22px;
+}
+
+.search-tools > .photo-upload {
+  min-height: 270px;
+  padding: 22px 18px 18px;
+}
+
+.photo-upload-title {
+  order: 0;
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+.search-tools > .photo-upload::before {
+  order: 1;
+  width: 78px;
+  height: 78px;
+  margin: auto 0;
+}
+
+.photo-upload-cta {
+  display: inline-flex;
+  order: 2;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 58px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.camera-upload .photo-upload-cta {
+  background: var(--coral);
+}
+
+.barcode-row {
+  min-height: 190px;
+  padding: 20px;
+}
+
+.barcode-row > label::before {
+  display: block;
+  width: 54px;
+  height: 42px;
+  margin: 4px auto;
+  background: center / contain no-repeat url("data:image/svg+xml,%3Csvg viewBox='0 0 64 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 14V6h8M50 6h8v8M58 34v8h-8M14 42H6v-8' fill='none' stroke='%230b6b58' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M18 14v20M23 14v20M29 14v20M36 14v20M40 14v20M46 14v20' stroke='%230b6b58' stroke-width='2.5'/%3E%3C/svg%3E");
+  content: "";
+}
+
+.panel > .primary-action {
+  min-height: 68px;
+  font-size: 1.35rem;
+}
+
+.manual-entry,
+.advanced-options {
+  margin-top: 0;
+}
+
+.result {
+  width: min(1240px, calc(100% - 32px));
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (max-width: 1080px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .intro {
+    min-height: 420px;
+  }
+
+  .panel {
+    padding: 32px;
+  }
+}
+
+@media (max-width: 560px) {
+  body {
+    background: var(--surface);
+  }
+
+  .topbar {
+    min-height: 86px;
+    margin: 0;
+    gap: 8px;
+    padding: 0 14px;
+  }
+
+  .brand-link {
+    flex: 1 1 auto;
+    max-width: none;
+    font-size: 1rem;
+  }
+
+  .brand-link::before {
+    width: 34px;
+    height: 34px;
+  }
+
+  .topnav {
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .topnav a[data-auth-link] {
+    order: 1;
+    width: 40px;
+    margin-left: 0;
+    padding: 0;
+    font-size: 0;
+  }
+
+  .topnav a[data-auth-link]::before {
+    width: 30px;
+    height: 30px;
+    background-size: 18px;
+  }
+
+  .topnav .top-catalog-link {
+    display: inline-flex;
+    order: 2;
+    width: 40px;
+    padding: 0;
+    font-size: 0;
+  }
+
+  .topnav .top-catalog-link::before {
+    width: 30px;
+    height: 30px;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 8h22M5 16h22M5 24h22' stroke='%230b6b58' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-size: contain;
+  }
+
+  .theme-toggle {
+    display: none;
+  }
+
+  .workspace {
+    display: block;
+    min-height: 0;
+  }
+
+  .intro {
+    min-height: 0;
+    padding: 54px 24px 34px;
+  }
+
+  .intro-title-desktop,
+  .intro-tagline,
+  .intro-benefits,
+  .intro .eyebrow {
+    display: none;
+  }
+
+  .intro .intro-title-mobile {
+    display: block;
+    width: 100%;
+    max-width: 330px;
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(1.75rem, 7.7vw, 2.2rem);
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  .brand-link::before {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24 5C14 13 10 22 13 31c2 7 7 11 11 12 4-1 9-5 11-12 3-9-1-18-11-26Z' fill='none' stroke='%230b6b58' stroke-width='2.6'/%3E%3Cpath d='M24 13v28M24 22l-7-5M24 29l8-6M24 35l-6-4' fill='none' stroke='%230b6b58' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  }
+
+  .panel {
+    gap: 26px;
+    padding: 28px 24px 40px;
+  }
+
+  .form-head {
+    justify-content: center;
+  }
+
+  .form-head h2 {
+    font-size: 1.35rem;
+    text-align: center;
+  }
+
+  .product-search-row {
+    display: block;
+  }
+
+  .product-search-action {
+    display: none;
+  }
+
+  .product-search input {
+    min-height: 56px;
+    padding-left: 52px;
+    font-size: 1rem;
+  }
+
+  .mobile-or {
+    display: none;
+  }
+
+  .search-tools {
+    gap: 12px;
+  }
+
+  .search-tools > .photo-upload {
+    min-height: 190px;
+    padding: 22px 10px;
+  }
+
+  .photo-upload-title {
+    display: none;
+  }
+
+  .search-tools > .photo-upload::before {
+    order: 1;
+    width: 72px;
+    height: 72px;
+    margin: auto 0 10px;
+  }
+
+  .photo-upload-cta,
+  .camera-upload .photo-upload-cta {
+    min-height: 0;
+    max-width: 100%;
+    padding: 0;
+    background: transparent;
+    color: var(--ink);
+    font-size: 0.96rem;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  .search-tools > .catalog-open {
+    display: none;
+  }
+
+  .barcode-row {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .barcode-row > label {
+    gap: 10px;
+    font-size: 1.15rem;
+  }
+
+  .barcode-row > label::before {
+    display: none;
+  }
+
+  .barcode-row .field-note {
+    display: none;
+  }
+
+  .barcode-row > .secondary-action {
+    min-height: 64px;
+  }
+
+  .manual-entry,
+  .advanced-options {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .photo-upload-cta,
+  .camera-upload .photo-upload-cta {
+    font-size: 0.86rem;
   }
 }
