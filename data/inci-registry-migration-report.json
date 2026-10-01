@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "migration": "legacy-array-to-registry-document",
+  "legacyArchive": "data\\inci-registry.legacy-array.json",
+  "source": {
+    "id": "openbeautyfacts-cosing-mirror-legacy",
+    "type": "third_party_mirror_legacy_snapshot",
+    "url": "https://raw.githubusercontent.com/openfoodfacts/openbeautyfacts/develop/cosing/COSING_Ingredients-Fragrance.Inventory_v2.csv",
+    "version": null,
+    "exportedAt": null,
+    "retrievedAt": null,
+    "sha256": "dc355ad34419fa4dee09efcd70ff48a740e08bbfc05f97f9c79763ea0735372d",
+    "checksumScope": "normalized legacy registry JSON snapshot; not a downloaded source CSV"
+  },
+  "registryVersion": "legacy-snapshot:dc355ad34419fa4d",
+  "records": 24100,
+  "limitations": [
+    "The legacy snapshot did not contain a source export date, source version, CAS, restrictions, or per-row source locators; these remain null/not_available."
+  ]
+}

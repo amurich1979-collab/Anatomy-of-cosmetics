@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-10-01T00:51:35Z",
+  "status": "provisional_external_transcription_not_human_gold",
+  "partition": "setup",
+  "warning": "Real files and the production browser pipeline were used without mocks. Reference text is an external source transcription, not independently approved project gold.",
+  "pipeline": "licensed image file -> Tesseract.js eng+rus -> /api/photo/resolve -> cleaner -> /api/analyze",
+  "initialFullResolutionAttempt": {
+    "records": 1,
+    "timeoutMs": 180000,
+    "completed": 0,
+    "action": "Stopped the batch and applied a documented max-edge 1800px preprocessing step."
+  },
+  "ingredientImages": {
+    "records": 3,
+    "truePositive": 42,
+    "falsePositive": 14,
+    "falseNegative": 57,
+    "precision": 0.75,
+    "recall": 0.4242,
+    "analysisCompleted": 1
+  },
+  "frontImages": {
+    "records": 1,
+    "identifiedCandidates": 0,
+    "analysisCompleted": 0
+  },
+  "browserPageErrors": [],
+  "cases": [
+    {
+      "id": "obf-8809670683313",
+      "kind": "ingredients",
+      "language": "en",
+      "elapsedMs": 34074,
+      "state": "confirmation",
+      "statusText": "Этикетка с составом. Подтверждено позиций: 46. Нужно проверить сомнительные позиции (10): Macadamia Temifolia Seed Oil, Phytosteryl/Behenyl/ Octyldodecyl, Lauroyl Glutamate, С12-20 Alkyl Glucoside, Ethylhexyiglycerin, Disodium, РУМ/МА Copolymer, [+/- С! 40800 (beta-Carotene)] ~~~ 7 \"0 700, ee соленое A, a it Rl Pet бий нуу Ls pA ALG Bt о wa вой вого оо ЙЕ ПЕ „пораавылалиия. Они сохранены в тексте, а состав помечен неполным. Подтвердите состав перед разбором.",
+      "productName": "",
+      "expectedIngredientCount": 52,
+      "extractedIngredientCount": 56,
+      "comparison": {
+        "truePositive": 42,
+        "falsePositive": 14,
+        "falseNegative": 10,
+        "precision": 0.75,
+        "recall": 0.8077
+      },
+      "analysisCompleted": true,
+      "reportLength": 9821,
+      "reportExcerpt": "ТОВАР И НАЗНАЧЕНИЕ\n\nФото состава\n\nИдентификация товара: не найдено в текущем справочнике\n\nочищающее средство\n\nГипотеза по названию и составу; производитель не подтвержден: очищающее средство.\n\nОснование: Гипотеза по названию и функциональным признакам состава\n\nСпособ применения: Способ применения не",
+      "downloadBytes": 312109,
+      "dimensions": {
+        "original": {
+          "width": 2246,
+          "height": 654
+        },
+        "processed": {
+          "width": 1800,
+          "height": 524
+        },
+        "resized": true
+      }
+    },
+    {
+      "id": "obf-0764302026051",
+      "kind": "ingredients",
+      "language": "en",
+      "elapsedMs": 30542,
+      "state": "clarification",
+      "statusText": "Не удалось уверенно понять: это лицевая этикетка или состав. Попробуйте фото ближе или добавьте бренд в поиск. Снимите отдельно название или состав, ближе и без бликов.",
+      "productName": "",
+      "expectedIngredientCount": 30,
+      "extractedIngredientCount": 0,
+      "comparison": {
+        "truePositive": 0,
+        "falsePositive": 0,
+        "falseNegative": 30,
+        "precision": null,
+        "recall": 0.0
+      },
+      "analysisCompleted": false,
+      "reportLength": 0,
+      "reportExcerpt": "",
+      "downloadBytes": 1016679,
+      "dimensions": {
+        "original": {
+          "width": 2250,
+          "height": 3000
+        },
+        "processed": {
+          "width": 1350,
+          "height": 1800
+        },
+        "resized": true
+      }
+    },
+    {
+      "id": "obf-5054563288325",
+      "kind": "ingredients",
+      "language": "fr",
+      "elapsedMs": 24012,
+      "state": "clarification",
+      "statusText": "Не удалось уверенно понять: это лицевая этикетка или состав. Попробуйте фото ближе или добавьте бренд в поиск. Снимите отдельно название или состав, ближе и без бликов.",
+      "productName": "",
+      "expectedIngredientCount": 17,
+      "extractedIngredientCount": 0,
+      "comparison": {
+        "truePositive": 0,
+        "falsePositive": 0,
+        "falseNegative": 17,
+        "precision": null,
+        "recall": 0.0
+      },
+      "analysisCompleted": false,
+      "reportLength": 0,
+      "reportExcerpt": "",
+      "downloadBytes": 1290261,
+      "dimensions": {
+        "original": {
+          "width": 3024,
+          "height": 4032
+        },
+        "processed": {
+          "width": 1350,
+          "height": 1800
+        },
+        "resized": true
+      }
+    },
+    {
+      "id": "obf-8858229093493",
+      "kind": "front",
+      "language": "en",
+      "elapsedMs": 10730,
+      "state": "clarification",
+      "statusText": "Не удалось уверенно понять: это лицевая этикетка или состав. Попробуйте фото ближе или добавьте бренд в поиск. Снимите отдельно название или состав, ближе и без бликов.",
+      "productName": "",
+      "expectedIngredientCount": 0,
+      "extractedIngredientCount": 0,
+      "comparison": null,
+      "analysisCompleted": false,
+      "reportLength": 0,
+      "reportExcerpt": "",
+      "downloadBytes": 239049,
+      "dimensions": {
+        "original": {
+          "width": 971,
+          "height": 2518
+        },
+        "processed": {
+          "width": 694,
+          "height": 1800
+        },
+        "resized": true
+      }
+    }
+  ]
+}

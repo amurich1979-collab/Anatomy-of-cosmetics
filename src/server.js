@@ -3,13 +3,16 @@ import cors from "cors";
 import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { findFormulaAlternatives } from "./analogs.js";
+import { createAnalysisContract } from "./analysisContract.js";
+import { findFormulaAlternativesDetailed } from "./analogs.js";
 import { analyzeComposition } from "./analyzer.js";
 import { attachCurrentUser, registerAuthRoutes, requireUser } from "./auth.js";
 import { addUserHistory, clearUserHistory, getUserSettings, initDatabase, listUserHistory, updateUserSettings } from "./database.js";
-import { createReviewRequest, getProductDetails, identifyProductFromText, listCatalogProducts, listReviewRequests, searchProducts } from "./products.js";
+import { createReviewRequest, getProductDetails, identifyProductFromText, listCatalogProducts, listReviewRequests, searchProductsDetailed } from "./products.js";
 import { cleanInciText } from "./services/inciCleaner.js";
 import { classifyFormulaProduct } from "./services/productClassifier.js";
+import { isSessionOnlyHistory } from "../public/analysis-profile.js";
+import { buildAnalysisHistoryEntry, inspectAnalysisHistoryEntry, sanitizeHistoryEntryForPrivacy } from "../public/history-snapshot.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
@@ -35,8 +38,13 @@ app.get("/api/products/search", async (req, res) => {
     return;
   }
 
-  const products = await searchProducts(query);
-  res.json({ products });
+  const result = await searchProductsDetailed(query);
+  res.json({
+    products: result.products,
+    lookupStatus: result.lookupStatus,
+    sourceStatuses: result.sourceStatuses,
+    cache: result.cache
+  });
 });
 
 app.get("/api/products/catalog", (_req, res) => {
@@ -85,6 +93,20 @@ app.post("/api/photo/resolve", async (req, res) => {
   const productWithDetails = product?.composition ? product : product?.id ? await getProductDetails(product.id) : null;
   const purpose = classifyFormulaProduct({
     ingredients: hasComposition ? cleaned.ingredients : cleanInciText(productWithDetails?.composition || "").ingredients,
+    productName: productWithDetails?.name || product?.name || "",
+    productEvidence: productWithDetails || product ? {
+      identificationStatus: "suggested",
+      name: productWithDetails?.name || product?.name || null,
+      category: productWithDetails?.category || product?.category || null,
+      description: productWithDetails?.description || product?.description || null,
+      useInstructions: productWithDetails?.useInstructions || product?.useInstructions || null,
+      source: {
+        name: productWithDetails?.source || product?.source || null,
+        type: productWithDetails?.sourceType || product?.sourceType || null,
+        url: productWithDetails?.sourceUrl || product?.sourceUrl || null,
+        retrievedAt: productWithDetails?.importedAt || productWithDetails?.verifiedAt || product?.importedAt || product?.verifiedAt || null
+      }
+    } : {},
     rawText: [
       text,
       productWithDetails?.brand,
@@ -101,6 +123,7 @@ app.post("/api/photo/resolve", async (req, res) => {
       mode: "composition",
       cleanedText: cleaned.cleanedText,
       extractedBlock: cleaned.extractedBlock,
+      entries: cleaned.entries,
       ingredients: cleaned.ingredients,
       confidence: cleaned.confidence,
       autoCorrections: cleaned.autoCorrections,
@@ -174,10 +197,29 @@ app.get("/api/user/history", requireUser, async (req, res) => {
 });
 
 app.post("/api/user/history", requireUser, async (req, res) => {
+  if (isSessionOnlyHistory(req.body)) {
+    res.status(400).json({ error: "Персональный разбор используется только в текущем сеансе и не сохраняется без отдельного согласия." });
+    return;
+  }
+  let historyEntry = sanitizeHistoryEntryForPrivacy(req.body || {});
+  if (historyEntry.kind === "analysis") {
+    const inspected = inspectAnalysisHistoryEntry(historyEntry);
+    if (inspected.status === "invalid") {
+      res.status(400).json({ error: "В историю можно сохранить только завершённый анализ." });
+      return;
+    }
+    if (inspected.status === "legacy") {
+      historyEntry = buildAnalysisHistoryEntry({
+        text: inspected.composition,
+        productName: historyEntry.payload?.productName || historyEntry.title
+      }, inspected.analysis, historyEntry.payload?.source || "");
+    }
+  }
+
   const record = await addUserHistory(req.user.id, {
-    kind: req.body?.kind,
-    title: req.body?.title,
-    payload: req.body?.payload || {}
+    kind: historyEntry?.kind,
+    title: historyEntry?.title,
+    payload: historyEntry?.payload || {}
   });
 
   if (!record) {
@@ -193,6 +235,7 @@ app.delete("/api/user/history", requireUser, async (req, res) => {
 });
 
 app.post("/api/analyze", async (req, res) => {
+  res.set("Cache-Control", "no-store");
   const { text, profile } = req.body || {};
 
   if (!text || String(text).trim().length < 3) {
@@ -203,28 +246,37 @@ app.post("/api/analyze", async (req, res) => {
   const analysis = analyzeComposition({
     text: String(text),
     profile: profile || {},
-    productName: req.body?.productName || ""
+    productName: req.body?.productName || "",
+    formulaScope: req.body?.evidence?.formula?.scope || "unknown",
+    productEvidence: req.body?.evidence?.product || {}
   });
-  analysis.alternatives = findFormulaAlternatives({
+  const alternativeSearch = findFormulaAlternativesDetailed({
     text: String(text),
     profile: profile || {},
     productName: req.body?.productName || "",
+    formulaScope: req.body?.evidence?.formula?.scope || "unknown",
+    productEvidence: req.body?.evidence?.product || {},
+    sourceProduct: req.body?.product || req.body?.evidence?.product || {},
     limit: 5
   });
+  analysis.alternatives = alternativeSearch.alternatives;
+  analysis.alternativeSearch = { ...alternativeSearch, alternatives: undefined };
+  analysis.analysisContract = createAnalysisContract({
+    analysis,
+    request: {
+      text: String(text),
+      productName: req.body?.productName || "",
+      profile: profile || {},
+      evidence: req.body?.evidence || {}
+    }
+  });
 
-  if (req.user) {
-    await addUserHistory(req.user.id, {
-      kind: "analysis",
-      title: req.body?.productName || analysis.formulaType || "Разбор состава",
-      payload: {
-        productName: req.body?.productName || "",
-        score: analysis.score?.score,
-        formulaType: analysis.formulaType,
-        profile: profile || {},
-        composition: String(text).slice(0, 4000),
-        analysis
-      }
-    });
+  if (req.user && analysis.historyPolicy.mode !== "session_only") {
+    const historyEntry = buildAnalysisHistoryEntry({
+      text: String(text),
+      productName: req.body?.productName || ""
+    }, analysis, req.body?.evidence?.formula?.source?.name || "");
+    if (historyEntry) await addUserHistory(req.user.id, historyEntry);
   }
 
   res.json(analysis);
@@ -262,9 +314,15 @@ app.get("/health", (_req, res) => {
   res.json({ ok: true });
 });
 
-app.listen(port, host, () => {
-  console.log(`Anatomy Cosmetology web app: http://localhost:${port}`);
-  console.log(`Network access: http://${host}:${port}`);
-  console.log(`Telegram Mini App preview: http://localhost:${port}/miniapp`);
-  console.log(`Database: ${databaseInfo.provider}${databaseInfo.path ? ` (${databaseInfo.path})` : ""}`);
-});
+const isMainModule = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isMainModule) {
+  app.listen(port, host, () => {
+    console.log(`Anatomy Cosmetology web app: http://localhost:${port}`);
+    console.log(`Network access: http://${host}:${port}`);
+    console.log(`Telegram Mini App preview: http://localhost:${port}/miniapp`);
+    console.log(`Database: ${databaseInfo.provider}${databaseInfo.path ? ` (${databaseInfo.path})` : ""}`);
+  });
+}
+
+export { app };

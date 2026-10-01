@@ -1,3 +1,10 @@
+import {
+  buildAnalysisHistoryEntry,
+  buildReanalysisRequest,
+  inspectAnalysisHistoryEntry,
+  sanitizeHistoryEntryForPrivacy
+} from "./history-snapshot.js";
+
 const historySummary = document.querySelector("#historySummary");
 const historyList = document.querySelector("#historyList");
 const clearHistory = document.querySelector("#clearHistory");
@@ -5,6 +12,7 @@ const historyStatus = document.querySelector("#historyStatus");
 const loginLink = document.querySelector("#loginLink");
 
 let currentUser = null;
+let visibleHistory = [];
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -16,7 +24,13 @@ function escapeHtml(value) {
 
 function readList(key) {
   try {
-    return JSON.parse(localStorage.getItem(key) || "[]");
+    const items = JSON.parse(localStorage.getItem(key) || "[]");
+    if (key !== "analysisHistory" || !Array.isArray(items)) return items;
+    const safeItems = items.map(sanitizeHistoryEntryForPrivacy);
+    if (JSON.stringify(items) !== JSON.stringify(safeItems)) {
+      localStorage.setItem(key, JSON.stringify(safeItems));
+    }
+    return safeItems;
   } catch {
     return [];
   }
@@ -39,28 +53,80 @@ function compactList(items, emptyText) {
   return `<ul>${items.slice(0, 10).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
 }
 
+function contractNotice(analysis) {
+  const contract = analysis?.analysisContract;
+  if (!contract || contract.schemaVersion !== "1.0") {
+    return "Старый результат: полнота состава и происхождение совпадений тогда не сохранялись.";
+  }
+
+  const scopeLabels = {
+    full: "полный INCI по заявлению источника",
+    active_only: "только активные ингредиенты",
+    partial: "неполный состав",
+    unknown: "полнота состава не подтверждена"
+  };
+  const scope = scopeLabels[contract.formula?.scope] || scopeLabels.unknown;
+  const source = contract.formula?.source?.name;
+  return `Достоверность: ${scope}${source ? `; источник: ${source}` : "; источник не указан"}.`;
+}
+
+function snapshotNotice(item) {
+  const inspected = inspectAnalysisHistoryEntry(item);
+  if (inspected.status !== "snapshot") return inspected.legacyNotice;
+  const snapshot = inspected.snapshot;
+  const capturedAt = snapshot.capturedAt ? new Date(snapshot.capturedAt).toLocaleString("ru-RU") : "дата не сохранена";
+  const algorithm = snapshot.algorithmVersion || "версия правил не сохранена";
+  const registry = snapshot.evidenceVersions?.registry || snapshot.evidenceVersions?.knowledge || "версия справочника не сохранена";
+  return `Исторический снимок от ${capturedAt}. Правила: ${algorithm}. Справочник: ${registry}.`;
+}
+
+function sourceNotice(item) {
+  const inspected = inspectAnalysisHistoryEntry(item);
+  const source = inspected.snapshot?.formula?.source || inspected.analysis?.analysisContract?.formula?.source || {};
+  const scope = inspected.snapshot?.formula?.scope || inspected.analysis?.analysisContract?.formula?.scope || "unknown";
+  const sourceName = source.name || item.payload?.source || "источник не сохранён";
+  const version = inspected.snapshot?.formula?.version || inspected.analysis?.analysisContract?.formula?.version;
+  const market = inspected.snapshot?.formula?.market || inspected.analysis?.analysisContract?.formula?.market;
+  return `Источник состава: ${sourceName}; полнота: ${scope}${version ? `; версия: ${version}` : ""}${market ? `; рынок: ${market}` : ""}.`;
+}
+
+function metricValue(value) {
+  return typeof value === "number" && Number.isFinite(value) ? String(value) : "—";
+}
+
+function assessmentNotice(analysis) {
+  if (analysis?.assessment?.status !== "not_assessed") return "";
+  return "Итоговая оценка, риск и рекомендации не рассчитывались: данных о полной формуле недостаточно.";
+}
+
 function renderSavedAnalysis(item) {
-  const payload = historyPayload(item);
-  const analysis = payload.analysis || {};
+  const inspected = inspectAnalysisHistoryEntry(item);
+  const payload = historyPayload(inspected.entry);
+  const analysis = inspected.analysis || {};
   const warnings = analysis.warnings || [];
   const positives = analysis.positives || [];
   const found = analysis.found || [];
   const groups = analysis.groups || [];
-  const composition = payload.composition || "";
+  const composition = inspected.composition || "";
+  const storedScore = analysis.score?.score ?? payload.score;
 
   return `
     <div class="history-detail">
+      <p class="field-note history-snapshot-notice">${escapeHtml(snapshotNotice(item))}</p>
+      <p class="field-note">${escapeHtml(sourceNotice(item))}</p>
+      <p class="field-note">${escapeHtml(contractNotice(analysis))}</p>
+      ${assessmentNotice(analysis) ? `<p class="field-note">${escapeHtml(assessmentNotice(analysis))}</p>` : ""}
       <div class="history-metrics">
         <article>
-          <strong>${escapeHtml(analysis.score?.score ?? payload.score ?? "—")}</strong>
+          <strong>${escapeHtml(metricValue(storedScore))}</strong>
           <span>оценка</span>
         </article>
         <article>
-          <strong>${escapeHtml(analysis.hydration_score ?? "—")}</strong>
+          <strong>${escapeHtml(metricValue(analysis.hydration_score))}</strong>
           <span>увлажнение</span>
         </article>
         <article>
-          <strong>${escapeHtml(analysis.irritation_risk ?? "—")}</strong>
+          <strong>${escapeHtml(metricValue(analysis.irritation_risk))}</strong>
           <span>риск</span>
         </article>
       </div>
@@ -102,6 +168,13 @@ function renderSavedAnalysis(item) {
           </div>
         </div>
       </details>
+
+      ${inspected.status !== "invalid" ? `
+        <div class="history-actions">
+          <button class="secondary-action compact-action" type="button" data-history-reanalyze>Повторить анализ</button>
+          <span class="field-note" data-history-action-status aria-live="polite"></span>
+        </div>
+      ` : ""}
     </div>
   `;
 }
@@ -189,15 +262,15 @@ function renderHistorySummary(serverHistory = []) {
 function renderHistoryList(serverHistory = []) {
   if (!historyList) return;
 
-  const visibleHistory = currentUser ? serverHistory : localAnalysisHistory();
+  visibleHistory = currentUser ? serverHistory : localAnalysisHistory();
 
   if (!visibleHistory.length) {
     historyList.innerHTML = `<p class="field-note">${currentUser ? "Пока нет сохраненных разборов в аккаунте." : "Пока нет локальных сохраненных разборов в этом браузере."}</p>`;
     return;
   }
 
-  historyList.innerHTML = visibleHistory.slice(0, 50).map((item) => `
-    <details class="history-item">
+  historyList.innerHTML = visibleHistory.slice(0, 50).map((item, index) => `
+    <details class="history-item" data-history-index="${index}">
       <summary>
         <span>
           <strong>${escapeHtml(item.title)}</strong>
@@ -208,6 +281,44 @@ function renderHistoryList(serverHistory = []) {
       ${item.kind === "analysis" ? renderSavedAnalysis(item) : `<p class="field-note">Для этой записи нет детального результата.</p>`}
     </details>
   `).join("");
+
+  historyList.querySelectorAll("[data-history-reanalyze]").forEach((button) => {
+    button.addEventListener("click", () => rerunHistoryAnalysis(button));
+  });
+}
+
+async function rerunHistoryAnalysis(button) {
+  const container = button.closest("[data-history-index]");
+  const item = visibleHistory[Number(container?.dataset.historyIndex)];
+  const request = buildReanalysisRequest(item);
+  const status = container?.querySelector("[data-history-action-status]");
+  if (!request) {
+    if (status) status.textContent = "Повторный анализ невозможен: исходный состав не сохранён.";
+    return;
+  }
+
+  button.disabled = true;
+  if (status) status.textContent = "Выполняю новый анализ...";
+  try {
+    const response = await fetch("/api/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(request)
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const analysis = await response.json();
+    if (!currentUser) {
+      const entry = buildAnalysisHistoryEntry(request, analysis, request.evidence?.formula?.source?.name || "");
+      if (!entry) throw new Error("analysis was not completed");
+      const items = readList("analysisHistory");
+      items.unshift({ ...entry, createdAt: new Date().toISOString() });
+      localStorage.setItem("analysisHistory", JSON.stringify(items.slice(0, 50)));
+    }
+    await refreshHistory();
+  } catch {
+    button.disabled = false;
+    if (status) status.textContent = "Не удалось выполнить новый анализ. Историческая запись не изменена.";
+  }
 }
 
 async function refreshHistory() {

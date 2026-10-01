@@ -10,10 +10,11 @@ function firstFound(text) {
 }
 
 test("Hamamelis Virginiana Extract returns a suggested CosIng match", () => {
-  const item = firstFound("Hamamelis Virginiana Extract");
-  assert.equal(item.name, "Hamamelis Virginiana Bark/Leaf Extract");
-  assert.equal(item.dataSource, "CosIng");
-  assert.equal(item.match_type, "suggested");
+  const result = analyzeComposition({ text: "Hamamelis Virginiana Extract" });
+  assert.equal(result.found.length, 0);
+  const item = result.unknown[0];
+  assert.equal(item.name, "Hamamelis Virginiana Extract");
+  assert.equal(item.status, "suggested");
   assert.equal(item.suggested_match, "Hamamelis Virginiana Bark/Leaf Extract");
   assert.ok(item.match_confidence >= 0.8 && item.match_confidence < 1);
 });
@@ -21,7 +22,7 @@ test("Hamamelis Virginiana Extract returns a suggested CosIng match", () => {
 test("Hamamelis Virginiana Water stays a separate exact INCI", () => {
   const item = firstFound("Hamamelis Virginiana Water");
   assert.equal(item.name, "Hamamelis Virginiana Water");
-  assert.equal(item.dataSource, "CosIng");
+  assert.equal(item.dataSource, "INCI registry");
   assert.equal(item.match_type, "exact");
   assert.equal(item.match_confidence, 1);
 });
@@ -29,7 +30,7 @@ test("Hamamelis Virginiana Water stays a separate exact INCI", () => {
 test("Hamamelis Virginiana Leaf Extract stays a separate exact INCI", () => {
   const item = firstFound("Hamamelis Virginiana Leaf Extract");
   assert.equal(item.name, "Hamamelis Virginiana Leaf Extract");
-  assert.equal(item.dataSource, "CosIng");
+  assert.equal(item.dataSource, "INCI registry");
   assert.equal(item.match_type, "exact");
   assert.equal(item.match_confidence, 1);
 });
@@ -49,14 +50,15 @@ test("RET Complex is treated as an undisclosed proprietary complex", () => {
   assert.equal(found.ingredient_quality_score, null);
 });
 
-test("ingredient quality summary is exposed on a 10 point scale", () => {
-  const result = analyzeComposition({ text: "Aqua, Glycerin, Niacinamide, Panthenol, Phenoxyethanol" });
+test("legacy unsourced quality scores are not exposed as an expert assessment", () => {
+  const result = analyzeComposition({ formulaScope: "full", text: "Aqua, Glycerin, Niacinamide, Panthenol, Phenoxyethanol" });
   const niacinamide = result.found.find((item) => item.name === "Niacinamide");
 
-  assert.ok(result.qualitySummary.score >= 7);
+  assert.equal(result.qualitySummary.score, null);
   assert.equal(result.qualitySummary.totalIngredients, 5);
   assert.equal(result.qualitySummary.unknownCount, 0);
-  assert.equal(niacinamide.ingredient_quality_score, 9);
+  assert.equal(niacinamide.ingredient_quality_score, null);
+  assert.ok(niacinamide.findings.some((item) => item.ruleId === "literature.niacinamide.appearance" && item.review.status === "pending"));
   assert.ok(niacinamide.quality_note);
 });
 
@@ -68,8 +70,9 @@ test("local anesthetic formulas are not treated as ordinary skin care", () => {
   assert.equal(result.productSafety.type, "local_anesthetic");
   assert.equal(result.formulaType, "местный анестетик / процедурный препарат");
   assert.equal(result.score.label, "не оценивать как уходовое средство");
-  assert.equal(result.hydration_score, 0);
-  assert.equal(result.active_score, 0);
+  assert.equal(result.hydration_score, null);
+  assert.equal(result.active_score, null);
+  assert.deepEqual(result.assessment, { status: "not_assessed", reason: "non_cosmetic_formula" });
   assert.equal(result.qualitySummary.score, null);
   assert.equal(result.qualitySummary.label, "не оценивается как косметическая формула");
   assert.ok(result.summary.includes("не обычная косметическая формула"));

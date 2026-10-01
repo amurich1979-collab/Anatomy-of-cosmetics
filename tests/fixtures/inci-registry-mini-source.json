@@ -1,0 +1,8 @@
+{
+  "id": "test-fixture-cosing",
+  "type": "test_fixture",
+  "url": "https://example.test/cosing-mini.csv",
+  "version": "fixture-v1",
+  "exportedAt": "2026-09-01",
+  "retrievedAt": null
+}

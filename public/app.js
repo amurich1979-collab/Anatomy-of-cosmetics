@@ -1,10 +1,14 @@
 ﻿const form = document.querySelector("#analysisForm");
+import { normalizeProductIdentifier } from "./barcode-utils.js";
+import { normalizeAnalysisProfile, hasPersonalProfile, isSessionOnlyHistory } from "./analysis-profile.js";
+import { buildAnalysisHistoryEntry } from "./history-snapshot.js";
 const result = document.querySelector("#result");
 const productName = document.querySelector("#productName");
 const productSuggestions = document.querySelector("#productSuggestions");
 const productStatus = document.querySelector("#productStatus");
 const productClear = document.querySelector("#productClear");
 const productSearchAction = document.querySelector("#productSearchAction");
+const formulaVariantChoices = document.querySelector("#formulaVariantChoices");
 const composition = document.querySelector("#composition");
 const sampleChips = document.querySelectorAll(".sample-chip");
 const concernChips = document.querySelectorAll(".concern-chip");
@@ -34,12 +38,50 @@ const cameraFallback = document.querySelector("#cameraFallback");
 const barcodeInput = document.querySelector("#barcodeInput");
 const barcodeScan = document.querySelector("#barcodeScan");
 const barcodeApply = document.querySelector("#barcodeApply");
+const barcodeImageUpload = document.querySelector("#barcodeImageUpload");
+const barcodeImageInput = document.querySelector("#barcodeImageInput");
 const barcodeCapture = document.querySelector("#barcodeCapture");
 const barcodeVideo = document.querySelector("#barcodeVideo");
 const barcodeScanClose = document.querySelector("#barcodeScanClose");
 const barcodeScanStatus = document.querySelector("#barcodeScanStatus");
 const mobileAnalyze = document.querySelector("#mobileAnalyze");
 const tg = window.Telegram?.WebApp;
+
+let selectedProductCard = null;
+let compositionOrigin = {
+  mode: "empty",
+  productId: "",
+  source: "",
+  sourceType: "",
+  sourceUrl: "",
+  sourceDate: null,
+  formulaScope: "unknown",
+  formulaVersion: null,
+  market: null
+};
+let productSelectionRevision = 0;
+let productSearchRevision = 0;
+let activeProductSearchController = null;
+let lastProductSearchText = productName?.value.trim() || "";
+let personalProfileRevision = 0;
+
+function readAnalysisProfile() {
+  const value = (id) => document.getElementById(id)?.value || "";
+  return normalizeAnalysisProfile({
+    skinType: value("skinType"), context: value("context"), concerns: value("concerns"),
+    goals: value("profileGoal") ? [value("profileGoal")] : [],
+    applicationArea: value("applicationArea"), allergyStatus: value("allergyStatus"),
+    allergens: value("allergens"), previousReaction: value("previousReaction")
+  });
+}
+
+document.querySelectorAll("#skinType, #context, #concernsCustom, .concern-chip, #profileGoal, #applicationArea, #allergyStatus, #allergens, #previousReaction").forEach((control) => {
+  control.addEventListener(control.matches("button") ? "click" : "input", () => {
+    personalProfileRevision += 1;
+    clearAnalysisResult();
+    result?.removeAttribute("aria-busy");
+  });
+});
 
 const STATIC_PRODUCTS = [
   {
@@ -192,7 +234,234 @@ function submitAnalysisFromSticky() {
   form?.requestSubmit();
 }
 
+function productDisplayName(product) {
+  return `${product?.brand || ""} ${product?.name || ""}`.replace(/\s+/g, " ").trim();
+}
+
+function clearAnalysisResult() {
+  if (result) result.innerHTML = "";
+}
+
+function syncSelectedProductDataset() {
+  if (!productName) return;
+  if (!selectedProductCard) {
+    delete productName.dataset.selectedProductId;
+    delete productName.dataset.selectedProductSource;
+    return;
+  }
+  productName.dataset.selectedProductId = String(selectedProductCard.id || "");
+  productName.dataset.selectedProductSource = String(selectedProductCard.source || "");
+}
+
+function setSelectedProduct(product) {
+  selectedProductCard = product || null;
+  syncSelectedProductDataset();
+}
+
+function setCompositionValue(value, {
+  mode = "empty",
+  product = null,
+  source = "",
+  sourceType = "",
+  sourceUrl = "",
+  sourceDate = null,
+  formulaScope = "unknown",
+  formulaVersion = null,
+  market = null
+} = {}) {
+  if (composition) composition.value = value || "";
+  compositionOrigin = value
+    ? {
+        mode,
+        productId: product?.id || "",
+        source: source || product?.source || "",
+        sourceType: sourceType || product?.sourceType || mode,
+        sourceUrl,
+        sourceDate,
+        formulaScope: formulaScope || "unknown",
+        formulaVersion,
+        market
+      }
+    : {
+        mode: "empty",
+        productId: "",
+        source: "",
+        sourceType: "",
+        sourceUrl: "",
+        sourceDate: null,
+        formulaScope: "unknown",
+        formulaVersion: null,
+        market: null
+      };
+}
+
+function normalizeFormulaText(value) {
+  return String(value || "").replace(/\s+/g, " ").trim().toLocaleLowerCase();
+}
+
+function productFormulaVariants(product) {
+  const variants = [];
+  const add = (variant) => {
+    if (!variant?.composition || variants.some((item) => normalizeFormulaText(item.composition) === normalizeFormulaText(variant.composition))) return;
+    variants.push({
+      composition: variant.composition,
+      source: variant.source || product?.source || "Источник не указан",
+      sourceType: variant.sourceType || product?.sourceType || "unknown",
+      sourceUrl: variant.sourceUrl || product?.sourceUrl || null,
+      updatedAt: variant.updatedAt || null,
+      fetchedAt: variant.fetchedAt || variant.retrievedAt || product?.importedAt || null,
+      market: variant.market || product?.market || null,
+      variant: variant.variant || product?.variant || null,
+      formulaVersion: variant.formulaVersion || product?.formulaVersion || null,
+      compositionScope: variant.compositionScope || product?.compositionScope || "unknown"
+    });
+  };
+
+  add(product);
+  (product?.formulaVariants || []).forEach(add);
+  return variants;
+}
+
+function safeExternalUrl(value) {
+  try {
+    const url = new URL(String(value || ""));
+    return ["http:", "https:"].includes(url.protocol) ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+
+function formulaVariantLabel(variant, index) {
+  const details = [variant.source, variant.market, variant.variant || variant.formulaVersion, variant.updatedAt]
+    .filter(Boolean)
+    .join(" · ");
+  return details || `Версия состава ${index + 1}`;
+}
+
+function clearFormulaVariantChoices() {
+  if (!formulaVariantChoices) return;
+  formulaVariantChoices.hidden = true;
+  formulaVariantChoices.innerHTML = "";
+}
+
+function applyFormulaVariant(product, variant) {
+  if (!variant?.composition) return;
+  const keepsIndependentComposition = ["manual", "photo"].includes(compositionOrigin.mode)
+    && composition?.value.trim()
+    && normalizeFormulaText(composition.value) !== normalizeFormulaText(variant.composition);
+  if (keepsIndependentComposition && !window.confirm("Заменить текущий независимый состав выбранной версией из карточки товара?")) {
+    setProductStatus("Сохранён текущий независимый состав. Версия из карточки не подставлена.", "warn");
+    return;
+  }
+  setSelectedProduct(product);
+  setCompositionValue(variant.composition, {
+    mode: "product",
+    product,
+    source: variant.source,
+    sourceType: variant.sourceType,
+    sourceUrl: variant.sourceUrl,
+    sourceDate: variant.updatedAt || variant.fetchedAt || null,
+    formulaScope: variant.compositionScope,
+    formulaVersion: variant.formulaVersion || variant.variant || null,
+    market: variant.market || null
+  });
+  clearFormulaVariantChoices();
+  clearAnalysisResult();
+  setProductStatus(`Выбрана версия состава: ${formulaVariantLabel(variant, 0)}.`, "ok");
+}
+
+function renderFormulaVariantChoices(product) {
+  const variants = productFormulaVariants(product);
+  if (!formulaVariantChoices || variants.length < 2) {
+    clearFormulaVariantChoices();
+    return false;
+  }
+
+  formulaVariantChoices.innerHTML = `
+    <section class="formula-variant-picker" aria-labelledby="formulaVariantTitle">
+      <h3 id="formulaVariantTitle">Найдены разные версии состава</h3>
+      <p>Источники сообщают различный INCI. Формулы не объединены: выберите одну версию для разбора.</p>
+      <div class="formula-variant-list">
+        ${variants.map((variant, index) => `
+          <button class="formula-variant-option" type="button" data-formula-variant-index="${index}">
+            <strong>Версия ${index + 1}</strong>
+            <span>${escapeHtml(formulaVariantLabel(variant, index))}</span>
+          </button>
+        `).join("")}
+      </div>
+    </section>
+  `;
+  formulaVariantChoices.hidden = false;
+  formulaVariantChoices.querySelectorAll("[data-formula-variant-index]").forEach((button) => {
+    button.addEventListener("click", () => {
+      applyFormulaVariant(product, variants[Number(button.dataset.formulaVariantIndex)]);
+    });
+  });
+  return true;
+}
+
+function buildAnalysisEvidence() {
+  const product = selectedProductCard;
+  const productIdentificationStatus = product
+    ? (compositionOrigin.mode === "photo" ? "suggested" : "confirmed")
+    : "unknown";
+
+  return {
+    product: {
+      id: product?.id || null,
+      barcode: product?.code || product?.barcode || null,
+      brand: product?.brand || null,
+      name: product?.name || productName?.value.trim() || null,
+      category: product?.category || null,
+      description: product?.description || null,
+      useInstructions: product?.useInstructions || null,
+      identificationStatus: productIdentificationStatus,
+      source: {
+        name: product?.source || null,
+        type: product?.sourceType || null,
+        url: product?.sourceUrl || null,
+        retrievedAt: product?.importedAt || product?.verifiedAt || null
+      }
+    },
+    formula: {
+      scope: compositionOrigin.formulaScope || "unknown",
+      version: compositionOrigin.formulaVersion || null,
+      market: compositionOrigin.market || null,
+      source: {
+        name: compositionOrigin.source || null,
+        type: compositionOrigin.sourceType || null,
+        url: compositionOrigin.sourceUrl || null,
+        retrievedAt: compositionOrigin.sourceDate || null
+      }
+    },
+    metrics: {
+      ocrReadability: compositionOrigin.mode === "photo" && Number.isFinite(photoJob?.ocr?.confidence)
+        ? { value: photoJob.ocr.confidence / 100, status: "measured", method: "tesseract_confidence" }
+        : null,
+      productIdentification: null
+    }
+  };
+}
+
+function cancelPendingProductWork() {
+  productSearchRevision += 1;
+  productSelectionRevision += 1;
+  activeProductSearchController?.abort();
+  activeProductSearchController = null;
+}
+
+function invalidateSelectedProduct({ preserveIndependentComposition = true } = {}) {
+  const shouldClearComposition = compositionOrigin.mode === "product"
+    || (!preserveIndependentComposition && Boolean(composition?.value.trim()));
+  setSelectedProduct(null);
+  if (shouldClearComposition) setCompositionValue("");
+  clearAnalysisResult();
+}
+
 function clearPhotoState() {
+  cancelPhotoJob();
+  stopCameraStream();
+  if (cameraCapture) cameraCapture.hidden = true;
   photoInputs.forEach((input) => { input.value = ""; });
   if (photoPreview) {
     if (photoPreview.src?.startsWith("blob:")) URL.revokeObjectURL(photoPreview.src);
@@ -204,6 +473,17 @@ function clearPhotoState() {
     photoStatus.hidden = true;
   }
   if (photoReview) photoReview.hidden = true;
+  if (compositionOrigin.mode === "photo") {
+    cancelPendingProductWork();
+    setCompositionValue("");
+    setSelectedProduct(null);
+    if (productName) {
+      productName.value = "";
+      lastProductSearchText = "";
+      syncSearchClear();
+    }
+    clearAnalysisResult();
+  }
 }
 
 function parseIngredients(text) {
@@ -392,29 +672,86 @@ async function saveServerHistory(entry) {
   }
 }
 
-function buildAnalysisHistoryEntry(payload, analysis, sourceLabel = "") {
-  const productTitle = payload.productName || sourceLabel || analysis.formulaType || "Разбор состава";
-  return {
-    kind: "analysis",
-    title: productTitle,
-    productName: payload.productName || "",
-    score: analysis.score?.score,
-    formulaType: analysis.formulaType,
-    payload: {
-      productName: payload.productName || "",
-      source: sourceLabel || "",
-      composition: String(payload.text || "").slice(0, 4000),
-      profile: payload.profile || {},
-      score: analysis.score?.score,
-      formulaType: analysis.formulaType,
-      analysis
-    }
-  };
+function saveAnalysisSnapshot(payload, analysis, sourceLabel = "") {
+  if (hasPersonalProfile(payload.profile) || isSessionOnlyHistory({ analysis })) return;
+  const entry = buildAnalysisHistoryEntry(payload, analysis, sourceLabel);
+  if (!entry) return;
+  saveLocalHistory("analysisHistory", entry, 50);
 }
 
-function saveAnalysisSnapshot(payload, analysis, sourceLabel = "") {
-  const entry = buildAnalysisHistoryEntry(payload, analysis, sourceLabel);
-  saveLocalHistory("analysisHistory", entry, 50);
+function analyzeTimeoutMs() {
+  const configured = Number(window.__ANALYZE_TIMEOUT_MS__);
+  return Number.isFinite(configured) && configured > 0 ? configured : 20000;
+}
+
+async function requestServerAnalysis(payload) {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), analyzeTimeoutMs());
+
+  try {
+    const response = await fetch("/api/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+
+    if (!response.ok) {
+      const error = new Error(`Analyze request failed with HTTP ${response.status}`);
+      error.status = response.status;
+      throw error;
+    }
+
+    return await response.json();
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+function renderAnalysisFailure(payload, sourceLabel, error) {
+  const timedOut = error?.name === "AbortError";
+  const message = timedOut
+    ? "Сервер анализа не ответил вовремя. Состав и фото сохранены на странице — попробуйте повторить запрос."
+    : "Не удалось получить разбор с сервера. Состав и фото сохранены на странице — проверьте соединение и повторите запрос.";
+
+  result.innerHTML = `
+    <section class="error analysis-failure" role="alert">
+      <h2>Разбор не выполнен</h2>
+      <p>${message}</p>
+      <button class="secondary-action" type="button" id="analysisRetry">Повторить анализ</button>
+    </section>
+  `;
+
+  result.querySelector("#analysisRetry")?.addEventListener("click", () => {
+    runServerAnalysis(payload, sourceLabel);
+  });
+}
+
+async function runServerAnalysis(payload, sourceLabel = "", isCurrent = null) {
+  const photoAtStart = compositionOrigin.mode === "photo" ? photoJob : null;
+  const priorIsCurrent = isCurrent || (photoAtStart ? () => currentPhoto(photoAtStart) : () => true);
+  const profileRevision = personalProfileRevision;
+  isCurrent = () => priorIsCurrent() && profileRevision === personalProfileRevision;
+  result.setAttribute("aria-busy", "true");
+  result.innerHTML = `<div class="loading">Разбираю состав...</div>`;
+  scrollToResult();
+
+  try {
+    const analysis = await requestServerAnalysis(payload);
+    if (!isCurrent()) return null;
+    saveAnalysisSnapshot(payload, analysis, sourceLabel);
+    render(analysis);
+    return analysis;
+  } catch (error) {
+    if (!isCurrent()) return null;
+    renderAnalysisFailure(payload, sourceLabel, error);
+    return null;
+  } finally {
+    if (isCurrent()) {
+      result.removeAttribute("aria-busy");
+      scrollToResult();
+    }
+  }
 }
 
 async function loadProductDetails(product) {
@@ -431,17 +768,72 @@ async function loadProductDetails(product) {
 }
 
 async function applyProduct(product) {
-  productName.value = `${product.brand} ${product.name}`.trim();
+  const selectionRevision = ++productSelectionRevision;
+  const displayName = productDisplayName(product);
+  const previousMode = compositionOrigin.mode;
+
+  productName.value = displayName;
+  lastProductSearchText = displayName;
+  syncSearchClear();
+  setSelectedProduct(null);
+  if (previousMode === "product") setCompositionValue("");
+  clearAnalysisResult();
   setProductStatus("Подтягиваю состав из базы...");
   const detailedProduct = await loadProductDetails(product);
 
-  if (!detailedProduct.composition) {
-    hideSuggestions();
-    setProductStatus(detailedProduct.compositionAvailabilityNote || "Карточка найдена, но состав пока не подтянулся. Можно вставить состав вручную.", "warn");
-    return;
+  if (selectionRevision !== productSelectionRevision || productName.value.trim() !== displayName) {
+    return null;
   }
 
-  composition.value = detailedProduct.composition;
+  setSelectedProduct(detailedProduct);
+  const hasIndependentComposition = Boolean(composition.value.trim())
+    && (compositionOrigin.mode === "manual" || compositionOrigin.mode === "photo");
+
+  if (productFormulaVariants(detailedProduct).length > 1) {
+    if (!hasIndependentComposition) setCompositionValue("");
+    hideSuggestions();
+    renderFormulaVariantChoices(detailedProduct);
+    setProductStatus(
+      detailedProduct.formulaConflictNote || "Найдены разные версии состава. Выберите одну версию, чтобы не смешивать INCI из разных источников.",
+      "warn"
+    );
+    return detailedProduct;
+  }
+
+  clearFormulaVariantChoices();
+
+  if (!detailedProduct.composition) {
+    hideSuggestions();
+    const preservedNote = hasIndependentComposition
+      ? " Сохранён независимый состав, введённый вручную или полученный с фото."
+      : "";
+    setProductStatus(`${detailedProduct.compositionAvailabilityNote || "Карточка найдена, но состав пока не подтянулся."}${preservedNote}`, "warn");
+    return detailedProduct;
+  }
+
+  if (hasIndependentComposition) {
+    const replaceExisting = window.confirm("Заменить текущий ручной состав составом из выбранной карточки товара?");
+    if (selectionRevision !== productSelectionRevision || productName.value.trim() !== displayName) {
+      return null;
+    }
+    if (!replaceExisting) {
+      hideSuggestions();
+      setProductStatus("Карточка выбрана. Сохранён независимый ручной состав; состав из карточки не подставлен.", "warn");
+      return { ...detailedProduct, compositionPreserved: true };
+    }
+  }
+
+  setCompositionValue(detailedProduct.composition, {
+    mode: "product",
+    product: detailedProduct,
+    source: detailedProduct.source,
+    sourceType: detailedProduct.sourceType,
+    sourceUrl: detailedProduct.sourceUrl,
+    sourceDate: detailedProduct.importedAt || detailedProduct.verifiedAt || null,
+    formulaScope: detailedProduct.compositionScope || "unknown",
+    formulaVersion: detailedProduct.formulaVersion || null,
+    market: detailedProduct.market || null
+  });
   hideSuggestions();
   saveLocalHistory("productSearchHistory", {
     id: detailedProduct.id,
@@ -475,20 +867,22 @@ async function autofillCompositionFromName() {
   if (composition.value.trim()) return true;
   if (!query) return false;
 
-  setProductStatus("Ищу состав по названию средства...");
+  setProductStatus("Ищу варианты по названию средства...");
 
   try {
     const data = await searchProductByName(query);
-    const candidate = (data.products || []).find((product) => product.hasComposition || product.composition);
+    if (productName.value.trim() !== query) return false;
+    const products = data.products || [];
 
-    if (!candidate) {
+    if (!products.length) {
       hideSuggestions();
       setProductStatus("Состав по названию пока не найден. Уточните бренд/название или вставьте состав с упаковки вручную.", "warn");
       return false;
     }
 
-    const detailedProduct = await applyProduct(candidate);
-    return Boolean(detailedProduct?.composition || composition.value.trim());
+    renderSuggestions(products);
+    setProductStatus("Выберите конкретное средство из списка. Состав не подставляется без выбора карточки.", "warn");
+    return false;
   } catch {
     setProductStatus("Поиск временно недоступен. Можно попробовать позже или вставить состав с упаковки вручную.", "warn");
     return false;
@@ -567,18 +961,19 @@ function renderSuggestions(products) {
 
   return false;
 }
-async function searchProductByName(query) {
+async function searchProductByName(query, { signal } = {}) {
   try {
-    const response = await fetch(`/api/products/search?q=${encodeURIComponent(query)}`);
+    const response = await fetch(`/api/products/search?q=${encodeURIComponent(query)}`, { signal });
     if (!response.ok) throw new Error("Search failed");
     return response.json();
-  } catch {
+  } catch (error) {
+    if (error?.name === "AbortError") return { products: [], aborted: true };
     return { products: localSearchProducts(query), staticMode: true };
   }
 }
 
-const searchProducts = debounce(async () => {
-  const query = productName?.value.trim() || "";
+const searchProducts = debounce(async (revision, query) => {
+  if (revision !== productSearchRevision || query !== productName?.value.trim()) return;
 
   if (query.length < 1) {
     hideSuggestions();
@@ -587,9 +982,13 @@ const searchProducts = debounce(async () => {
   }
 
   setProductStatus("Ищу состав по названию...");
+  const controller = new AbortController();
+  activeProductSearchController?.abort();
+  activeProductSearchController = controller;
 
   try {
-    const data = await searchProductByName(query);
+    const data = await searchProductByName(query, { signal: controller.signal });
+    if (data.aborted || revision !== productSearchRevision || query !== productName?.value.trim()) return;
     const wasApplied = renderSuggestions(data.products || []);
     if (wasApplied) return;
 
@@ -600,17 +999,52 @@ const searchProducts = debounce(async () => {
       data.products?.length ? "ok" : "warn"
     );
   } catch {
+    if (revision !== productSearchRevision || query !== productName?.value.trim()) return;
     hideSuggestions();
     setProductStatus("Поиск временно недоступен. Состав можно вставить вручную.", "warn");
+  } finally {
+    if (activeProductSearchController === controller) activeProductSearchController = null;
   }
 });
 
-productName?.addEventListener("input", searchProducts);
-productName?.addEventListener("input", syncSearchClear);
+function handleProductNameInput() {
+  const query = productName?.value.trim() || "";
+  const valueChanged = query !== lastProductSearchText;
+  const selectedName = productDisplayName(selectedProductCard);
+
+  if (valueChanged) {
+    productSelectionRevision += 1;
+    if (selectedProductCard && query !== selectedName) {
+      invalidateSelectedProduct({ preserveIndependentComposition: true });
+    } else {
+      clearAnalysisResult();
+    }
+    lastProductSearchText = query;
+  }
+
+  productSearchRevision += 1;
+  activeProductSearchController?.abort();
+  activeProductSearchController = null;
+  clearFormulaVariantChoices();
+  hideSuggestions();
+  syncSearchClear();
+
+  if (!query) {
+    setProductStatus("");
+    return;
+  }
+
+  searchProducts(productSearchRevision, query);
+}
+
+productName?.addEventListener("input", handleProductNameInput);
 
 productClear?.addEventListener("click", () => {
+  cancelPendingProductWork();
   productName.value = "";
-  composition.value = "";
+  lastProductSearchText = "";
+  invalidateSelectedProduct({ preserveIndependentComposition: true });
+  clearFormulaVariantChoices();
   hideSuggestions();
   setProductStatus("");
   syncSearchClear();
@@ -647,6 +1081,17 @@ concernChips.forEach((chip) => {
 });
 
 document.querySelector("#concernsCustom")?.addEventListener("input", syncConcernInput);
+
+composition?.addEventListener("input", () => {
+  setCompositionValue(composition.value, {
+    mode: composition.value.trim() ? "manual" : "empty",
+    source: composition.value.trim() ? "manual" : ""
+  });
+  clearAnalysisResult();
+  if (composition.value.trim()) {
+    setProductStatus("Используется состав, введённый вручную. Он не будет заменён карточкой без подтверждения.", "ok");
+  }
+});
 
 sampleChips.forEach((chip) => {
   chip.addEventListener("click", () => {
@@ -712,29 +1157,15 @@ function guessProductNameFromPhotoText(text) {
   return lines.slice(0, 4).join(" / ");
 }
 
-async function resolvePhotoText(text) {
-  try {
+async function resolvePhotoText(text, signal) {
     const response = await fetch("/api/photo/resolve", {
       method: "POST",
+      signal,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text })
     });
-    if (!response.ok) throw new Error("Photo resolve failed");
+    if (!response.ok) throw new Error("Обработка фото недоступна. Повторите загрузку позже.");
     return await response.json();
-  } catch {
-    const compositionCandidate = extractCompositionCandidate(text);
-    const ingredients = parseIngredients(compositionCandidate);
-    return {
-      mode: ingredients.length >= 3 ? "composition" : "unknown",
-      cleanedText: ingredients.join(", "),
-      ingredients,
-      composition: ingredients.join(", "),
-      confidence: ingredients.length >= 3 ? 0.45 : 0,
-      message: ingredients.length >= 3
-        ? "Серверная очистка недоступна, использована локальная очистка состава."
-        : "Не удалось обработать фото. Попробуйте еще раз."
-    };
-  }
 }
 
 async function identifyProductFromPhotoText(text) {
@@ -752,7 +1183,7 @@ async function identifyProductFromPhotoText(text) {
   }
 }
 
-async function analyzeCurrentComposition(sourceLabel = "") {
+async function analyzeCurrentComposition(sourceLabel = "", isCurrent = () => true) {
   const text = composition.value.trim();
   if (!text) {
     result.innerHTML = `<div class="error">Сначала нужен состав: выберите средство, распознайте фото или вставьте список ингредиентов.</div>`;
@@ -763,32 +1194,11 @@ async function analyzeCurrentComposition(sourceLabel = "") {
   const payload = {
     text,
     productName: productName?.value.trim() || sourceLabel,
-    profile: {
-      skinType: document.querySelector("#skinType").value,
-      context: document.querySelector("#context").value,
-      concerns: document.querySelector("#concerns").value
-    }
+    evidence: buildAnalysisEvidence(),
+    profile: readAnalysisProfile()
   };
 
-  result.innerHTML = `<div class="loading">Разбираю состав...</div>`;
-  scrollToResult();
-
-  try {
-    const response = await fetch("/api/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    if (!response.ok) throw new Error("Analyze failed");
-    const analysis = await response.json();
-    saveAnalysisSnapshot(payload, analysis, sourceLabel);
-    render(analysis);
-  } catch {
-    const analysis = localAnalyzeComposition(payload);
-    saveAnalysisSnapshot(payload, analysis, sourceLabel);
-    render(analysis);
-  }
-  scrollToResult();
+  return runServerAnalysis(payload, sourceLabel, isCurrent);
 }
 
 function classifyCatalogProduct(product) {
@@ -976,23 +1386,67 @@ catalogDrawer?.addEventListener("click", (event) => {
   if (event.target === catalogDrawer) closeCatalog();
 });
 
-async function recognizePhotoText(file) {
+let photoJob = null;
+let photoRevision = 0;
+
+function cancelPhotoJob() {
+  photoRevision += 1;
+  photoJob?.controller.abort();
+  photoJob?.worker?.terminate().catch(() => {});
+  photoJob = null;
+  if (photoUseComposition) photoUseComposition.disabled = true;
+  if (photoAnalyze) photoAnalyze.disabled = true;
+}
+
+function currentPhoto(job) {
+  return job === photoJob && !job.controller.signal.aborted;
+}
+
+function photoStage(job, state, message) {
+  if (!currentPhoto(job)) return;
+  job.state = state;
+  photoStatus.dataset.state = state;
+  photoStatus.hidden = false;
+  photoStatus.textContent = message;
+  const ready = state === "confirmation" && !!job.resolution;
+  photoUseComposition.disabled = !ready;
+  photoAnalyze.disabled = !ready;
+}
+
+async function recognizePhotoText(file, job) {
   if (!window.Tesseract?.recognize) {
     throw new Error("OCR-модуль не загрузился. Проверьте интернет-соединение и попробуйте еще раз.");
   }
 
-  const result = await window.Tesseract.recognize(file, "eng+rus", {
+  const options = {
     logger: (event) => {
-      if (!photoStatus || event.status !== "recognizing text") return;
+      if (!currentPhoto(job) || event.status !== "recognizing text") return;
       const progress = Math.round((event.progress || 0) * 100);
-      photoStatus.textContent = `Распознаю текст с фото: ${progress}%`;
+      photoStage(job, "reading", `Распознаю текст с фото: ${progress}%`);
     }
-  });
-
+  };
+  let result;
+  if (window.Tesseract.createWorker) {
+    const worker = await window.Tesseract.createWorker("eng+rus", 1, options);
+    if (!currentPhoto(job)) { await worker.terminate(); return ""; }
+    job.worker = worker;
+    try { result = await worker.recognize(file); }
+    finally { await worker.terminate(); job.worker = null; }
+  } else {
+    result = await window.Tesseract.recognize(file, "eng+rus", options);
+  }
+  if (!currentPhoto(job)) return "";
+  job.ocr = {
+    confidence: Number.isFinite(result?.data?.confidence) ? result.data.confidence : null,
+    words: (result?.data?.words || []).map(({ text, confidence, bbox }) => ({ text, confidence, bbox })),
+    lines: (result?.data?.lines || []).map(({ text, confidence, bbox }) => ({ text, confidence, bbox }))
+  };
   return cleanOcrText(result?.data?.text || "");
 }
 
 async function applyPhotoText({ analyze = false } = {}) {
+  const job = photoJob;
+  if (!job || job.state !== "confirmation" || !job.resolution) return false;
   const rawText = photoText?.value.trim() || "";
   if (!rawText) {
     if (photoStatus) {
@@ -1002,16 +1456,30 @@ async function applyPhotoText({ analyze = false } = {}) {
     return false;
   }
 
-  const resolution = await resolvePhotoText(rawText);
-  return applyPhotoResolution(resolution, { analyze, fallbackText: rawText });
+  try {
+    // Edited text must pass the same server cleaner again, not bypass it.
+    if (rawText !== job.previewText) {
+      photoStage(job, "label_type", "Проверяю исправленный состав...");
+      const resolution = await resolvePhotoText(rawText, job.controller.signal);
+      if (currentPhoto(job)) stagePhotoResolution(job, resolution);
+      return false;
+    }
+    photoStage(job, "analysis", analyze ? "Разбираю подтверждённый состав..." : "Состав подтверждён.");
+    const applied = await applyPhotoResolution(job.resolution, { analyze, fallbackText: rawText, job });
+    if (currentPhoto(job)) photoStage(job, applied ? "confirmed" : "error", applied ? "Состав подтверждён и передан для разбора." : "Разбор не завершён. Сообщение об ошибке показано ниже.");
+    return applied;
+  } catch (error) {
+    photoStage(job, "error", error.message);
+    return false;
+  }
 }
 
-async function applyPhotoResolution(resolution, { analyze = false, fallbackText = "" } = {}) {
+async function applyPhotoResolution(resolution, { analyze = false, fallbackText = "", job = photoJob } = {}) {
   const ingredients = resolution.ingredients || [];
   const product = resolution.product || null;
   const nextComposition = resolution.composition || resolution.cleanedText || "";
 
-  if (!nextComposition || (resolution.mode !== "product" && ingredients.length < 3)) {
+  if (!currentPhoto(job) || !["composition", "product"].includes(resolution.mode) || !nextComposition || (resolution.mode !== "product" && ingredients.length < 3)) {
     if (photoText) photoText.value = resolution.cleanedText || fallbackText;
     if (photoStatus) {
       photoStatus.hidden = false;
@@ -1020,17 +1488,39 @@ async function applyPhotoResolution(resolution, { analyze = false, fallbackText 
     return false;
   }
 
-  composition.value = nextComposition;
+  cancelPendingProductWork();
+  hideSuggestions();
+  clearAnalysisResult();
+  setCompositionValue(nextComposition, {
+    mode: "photo",
+    product,
+    source: resolution.mode === "product" ? (product?.source || "photo") : "photo_ocr",
+    sourceType: resolution.mode === "product" ? (product?.sourceType || "product_source") : "photo_ocr",
+    sourceUrl: resolution.mode === "product" ? (product?.sourceUrl || "") : "",
+    sourceDate: resolution.mode === "product" ? (product?.importedAt || product?.verifiedAt || null) : null,
+    formulaScope: resolution.mode === "product"
+      ? (product?.compositionScope || "unknown")
+      : (resolution.compositionScope || "unknown"),
+    formulaVersion: resolution.mode === "product" ? (product?.formulaVersion || null) : null,
+    market: resolution.mode === "product" ? (product?.market || null) : null
+  });
   if (photoText) photoText.value = nextComposition;
 
   if (product) {
-    productName.value = `${product.brand} ${product.name}`.replace(/\s+/g, " ").trim();
+    const displayName = productDisplayName(product);
+    productName.value = displayName;
+    lastProductSearchText = displayName;
+    setSelectedProduct(product);
     setProductStatus(`По фото найдено: ${product.brand} ${product.name}. Источник состава: ${product.source || "база сервиса"}.`, product.composition ? "ok" : "warn");
   } else {
+    setSelectedProduct(null);
+    productName.value = "";
     const guessedName = guessProductNameFromPhotoText(fallbackText);
-    if (guessedName && !productName.value.trim()) productName.value = guessedName;
+    if (guessedName) productName.value = guessedName;
+    lastProductSearchText = productName.value.trim();
     setProductStatus("Средство по фото не найдено в базе, но состав очищен и готов к разбору.", "warn");
   }
+  syncSearchClear();
 
   const purposeText = resolution.purpose?.label
     ? ` Назначение: ${resolution.purpose.label}.`
@@ -1040,16 +1530,73 @@ async function applyPhotoResolution(resolution, { analyze = false, fallbackText 
     photoStatus.textContent = `${resolution.message || "Фото обработано."}${purposeText} ${ingredients.length ? `Выделено ингредиентов: ${ingredients.length}.` : "Состав подтянут из карточки средства."}`;
   }
 
-  if (analyze) await analyzeCurrentComposition(product ? "Фото лицевой этикетки" : "Фото состава");
+  if (analyze) return !!(await analyzeCurrentComposition(product ? "Фото лицевой этикетки" : "Фото состава", () => currentPhoto(job)));
   return true;
+}
+
+function stagePhotoResolution(job, resolution) {
+  if (!currentPhoto(job)) return;
+  job.resolution = null;
+  const entries = resolution.entries || [];
+  const confirmed = entries.filter((entry) => entry.status === "confirmed");
+  const uncertain = entries.length - confirmed.length;
+  const poor = job.ocr?.confidence !== null && job.ocr?.confidence < 60;
+  if (!["composition", "product"].includes(resolution.mode) || poor || resolution.mode === "mixed") {
+    photoText.value = resolution.cleanedText || "";
+    photoStage(job, "clarification", `${resolution.message || "Тип этикетки не определён."} Снимите отдельно название или состав, ближе и без бликов.`);
+    return;
+  }
+  if (resolution.mode === "composition") {
+    if (confirmed.length < 3) {
+      photoText.value = resolution.cleanedText || "";
+      photoStage(job, "clarification", "Недостаточно подтверждённых ингредиентов. Снимите состав крупнее или введите его вручную.");
+      return;
+    }
+    const uncertainRatio = entries.length ? uncertain / entries.length : 1;
+    if (uncertainRatio > 0.25) {
+      photoText.value = resolution.cleanedText || "";
+      photoStage(job, "clarification", "В распознанном составе слишком много сомнительных позиций. Исправьте текст вручную или переснимите этикетку ближе, ровнее и без бликов.");
+      return;
+    }
+    const reviewIngredients = entries.map((entry) => entry.canonicalName || entry.ingredient || entry.raw).filter(Boolean);
+    resolution = {
+      ...resolution,
+      product: null,
+      ingredients: reviewIngredients,
+      compositionScope: uncertain ? "partial" : "unknown"
+    };
+    resolution.composition = resolution.cleanedText || [...new Set(reviewIngredients)].join(", ");
+  } else if (!resolution.product?.composition) {
+    photoStage(job, "clarification", "У найденного кандидата нет состава. Сфотографируйте оборотную этикетку.");
+    return;
+  }
+  job.resolution = resolution;
+  job.previewText = resolution.composition;
+  photoText.value = job.previewText;
+  const source = resolution.mode === "product"
+    ? `Кандидат: ${productDisplayName(resolution.product)}. Источник состава: ${resolution.product.source || resolution.product.sourceType || "не указан"}. Сверьте название и версию с упаковкой.`
+    : `Этикетка с составом. Подтверждено позиций: ${confirmed.length}. ${uncertain ? `Нужно проверить сомнительные позиции (${uncertain}): ${entries.filter((entry) => entry.status !== "confirmed").map((entry) => entry.raw || entry.ingredient).join(", ")}. Они сохранены в тексте, а состав помечен неполным.` : "Сверьте состав с фотографией."}`;
+  photoStage(job, "confirmation", `${source} Подтвердите состав перед разбором.`);
 }
 
 async function handlePhotoFile(file) {
   if (!file || !photoStatus) return;
-
-  photoStatus.hidden = false;
-  photoStatus.textContent = "Фото принято. Распознаю текст и определяю сторону упаковки...";
-  photoStatus.scrollIntoView({ behavior: "smooth", block: "center" });
+  clearPhotoState();
+  cancelPendingProductWork();
+  hideSuggestions();
+  setCompositionValue("");
+  setSelectedProduct(null);
+  productName.value = "";
+  lastProductSearchText = "";
+  syncSearchClear();
+  clearAnalysisResult();
+  const job = { id: photoRevision, controller: new AbortController(), worker: null, ocr: null, resolution: null };
+  photoJob = job;
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || !file.size || file.size > 15 * 1024 * 1024) {
+    photoStage(job, "error", "Загрузите JPEG, PNG или WebP размером до 15 МБ.");
+    return;
+  }
+  photoStage(job, "accepted", "Фото принято. Подготавливаю распознавание...");
 
   if (photoReview) photoReview.hidden = false;
   if (photoPreview) {
@@ -1059,105 +1606,245 @@ async function handlePhotoFile(file) {
   }
 
   try {
-    const text = await recognizePhotoText(file);
+    const decoded = await createImageBitmap(file);
+    const pixels = decoded.width * decoded.height;
+    decoded.close();
+    if (!currentPhoto(job)) return;
+    if (pixels > 40000000) throw new Error("Фото слишком большое: уменьшите его до 40 мегапикселей.");
+    photoStage(job, "reading", "Читаю текст с фото...");
+    const text = await recognizePhotoText(file, job);
+    if (!currentPhoto(job)) return;
     if (photoText) photoText.value = "Очищаю распознанный текст...";
 
     if (!text || text.length < 12) {
-      photoStatus.textContent = "Текст почти не распознан. Попробуйте фото ближе, ровнее, при хорошем свете.";
+      photoStage(job, "clarification", "Текст почти не распознан. Попробуйте фото ближе, ровнее, при хорошем свете.");
       return;
     }
 
-    const resolution = await resolvePhotoText(text);
-    await applyPhotoResolution(resolution, { analyze: true, fallbackText: text });
+    job.rawText = text;
+    photoStage(job, "label_type", "Определяю тип этикетки и очищаю состав...");
+    const resolution = await resolvePhotoText(text, job.controller.signal);
+    stagePhotoResolution(job, resolution);
   } catch (error) {
-    photoStatus.textContent = error.message || "Не удалось распознать фото. Попробуйте другое фото или вставьте состав вручную.";
+    photoStage(job, "error", error.message || "Не удалось распознать фото. Попробуйте другое фото или вставьте состав вручную.");
   }
 }
 
 let cameraStream = null;
+let cameraRevision = 0;
 let barcodeStream = null;
 let barcodeFrameRequest = null;
+let barcodeScannerControls = null;
+let barcodeScanRevision = 0;
+let barcodeLookupRevision = 0;
+let barcodeLookupController = null;
+let lastAcceptedBarcode = { code: "", at: 0 };
+
+const NATIVE_BARCODE_FORMATS = ["ean_13", "ean_8", "upc_a", "upc_e", "qr_code"];
 
 function stopCameraStream() {
+  cameraRevision += 1;
   cameraStream?.getTracks?.().forEach((track) => track.stop());
   cameraStream = null;
   if (cameraVideo) cameraVideo.srcObject = null;
 }
 
 function stopBarcodeScanner() {
+  barcodeScanRevision += 1;
   if (barcodeFrameRequest) cancelAnimationFrame(barcodeFrameRequest);
   barcodeFrameRequest = null;
+  barcodeScannerControls?.stop?.();
+  barcodeScannerControls = null;
   barcodeStream?.getTracks?.().forEach((track) => track.stop());
   barcodeStream = null;
   if (barcodeVideo) barcodeVideo.srcObject = null;
   if (barcodeCapture) barcodeCapture.hidden = true;
 }
 
-function extractBarcodeValue(rawValue = "") {
-  const raw = String(rawValue || "").trim();
-  const digitMatch = raw.match(/(?:^|[^\d])(\d{8,14})(?:[^\d]|$)/);
-  return digitMatch?.[1] || raw;
+async function createNativeBarcodeDetector() {
+  if (typeof window.BarcodeDetector !== "function" || typeof window.BarcodeDetector.getSupportedFormats !== "function") return null;
+  try {
+    const supported = await window.BarcodeDetector.getSupportedFormats();
+    if (!NATIVE_BARCODE_FORMATS.every((format) => supported.includes(format))) return null;
+    return new window.BarcodeDetector({ formats: NATIVE_BARCODE_FORMATS });
+  } catch {
+    return null;
+  }
 }
 
-function applyScannedCode(rawValue = "") {
-  const value = extractBarcodeValue(rawValue);
+function createZxingBarcodeReader() {
+  const zxing = window.ZXingBrowser;
+  if (!zxing?.BrowserMultiFormatReader || !zxing?.BarcodeFormat) return null;
+  const reader = new zxing.BrowserMultiFormatReader();
+  reader.possibleFormats = [
+    zxing.BarcodeFormat.EAN_13,
+    zxing.BarcodeFormat.EAN_8,
+    zxing.BarcodeFormat.UPC_A,
+    zxing.BarcodeFormat.UPC_E,
+    zxing.BarcodeFormat.QR_CODE
+  ];
+  return reader;
+}
+
+function zxingFormat(result) {
+  const value = result?.getBarcodeFormat?.();
+  return String(window.ZXingBrowser?.BarcodeFormat?.[value] || "").toLowerCase();
+}
+
+async function lookupBarcode(normalized) {
+  const revision = ++barcodeLookupRevision;
+  barcodeLookupController?.abort();
+  const controller = new AbortController();
+  barcodeLookupController = controller;
+  cancelPendingProductWork();
+  setSelectedProduct(null);
+  setCompositionValue("");
+  clearAnalysisResult();
+  hideSuggestions();
+
+  barcodeInput.value = normalized.lookupCode;
+  productName.value = normalized.lookupCode;
+  lastProductSearchText = normalized.lookupCode;
+  syncSearchClear();
+  const equivalentNote = normalized.raw !== normalized.lookupCode
+    ? ` ${normalized.type} ${normalized.raw} эквивалентен коду ${normalized.lookupCode}.`
+    : "";
+  setProductStatus(`Код подтверждён.${equivalentNote} Ищу карточку товара...`, "ok");
+
+  const data = await searchProductByName(normalized.lookupCode, { signal: controller.signal });
+  if (data.aborted || revision !== barcodeLookupRevision) return false;
+  barcodeLookupController = null;
+  const products = data.products || [];
+  if (products.length) {
+    renderSuggestions(products);
+    setProductStatus(`Код ${normalized.lookupCode} найден.${equivalentNote} Выберите карточку товара для загрузки состава.`, "ok");
+  } else {
+    hideSuggestions();
+    setProductStatus(`Код ${normalized.lookupCode} корректен.${equivalentNote} Карточка товара в подключённых источниках не найдена.`, "warn");
+  }
+  return true;
+}
+
+function applyScannedCode(rawValue = "", format = "", source = "camera") {
+  const normalized = normalizeProductIdentifier(rawValue, format);
+  if (!normalized.valid) {
+    const label = format === "qr_code" ? "QR не принят" : "Код не принят";
+    setProductStatus(`${label}: ${normalized.reason}`, "warn");
+    if (barcodeScanStatus && source === "camera") barcodeScanStatus.textContent = `${normalized.reason} Наведите камеру на другой код.`;
+    return false;
+  }
+
+  const now = Date.now();
+  if (lastAcceptedBarcode.code === normalized.lookupCode && now - lastAcceptedBarcode.at < 2500) return false;
+  lastAcceptedBarcode = { code: normalized.lookupCode, at: now };
   stopBarcodeScanner();
-
-  if (/^\d{8,14}$/.test(value)) {
-    barcodeInput.value = value;
-    setProductStatus(`Код распознан: ${value}. Ищу товар...`, "ok");
-    barcodeApply?.click();
-    return;
-  }
-
-  if (value) {
-    productName.value = value;
-    composition.value = "";
-    setProductStatus("QR распознан. Пробую найти средство по содержимому QR...", "ok");
-    form?.requestSubmit();
-  }
+  void lookupBarcode(normalized);
+  return true;
 }
 
 async function openBarcodeScanner() {
-  if (!("BarcodeDetector" in window) || !navigator.mediaDevices?.getUserMedia || !barcodeCapture || !barcodeVideo) {
-    setProductStatus("Сканер штрихкодов недоступен в этом браузере. Введите EAN/UPC вручную.", "warn");
+  if (!navigator.mediaDevices?.getUserMedia || !barcodeCapture || !barcodeVideo) {
+    setProductStatus("Камера недоступна. Загрузите фото кода или введите EAN/UPC вручную.", "warn");
     barcodeInput?.focus();
     return;
   }
 
+  stopBarcodeScanner();
+  const revision = barcodeScanRevision;
   try {
-    const detector = new window.BarcodeDetector({
-      formats: ["ean_13", "ean_8", "upc_a", "upc_e", "qr_code", "code_128", "code_39", "itf"]
-    });
     barcodeCapture.hidden = false;
     barcodeScanStatus.textContent = "Разрешите доступ к камере и наведите ее на код.";
-    barcodeStream = await navigator.mediaDevices.getUserMedia({
+    const stream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: { ideal: "environment" } },
       audio: false
     });
+    if (revision !== barcodeScanRevision) {
+      stream.getTracks().forEach((track) => track.stop());
+      return;
+    }
+    barcodeStream = stream;
     barcodeVideo.srcObject = barcodeStream;
     await barcodeVideo.play();
+    if (revision !== barcodeScanRevision) return;
     barcodeScanStatus.textContent = "Ищу штрихкод или QR в кадре...";
 
-    const scanFrame = async () => {
-      if (!barcodeStream || barcodeCapture.hidden) return;
-      try {
-        const codes = await detector.detect(barcodeVideo);
-        if (codes?.length) {
-          applyScannedCode(codes[0].rawValue || "");
-          return;
+    const detector = await createNativeBarcodeDetector();
+    if (revision !== barcodeScanRevision) return;
+    if (detector) {
+      const scanFrame = async () => {
+        if (revision !== barcodeScanRevision || !barcodeStream || barcodeCapture.hidden) return;
+        try {
+          const codes = await detector.detect(barcodeVideo);
+          for (const code of codes || []) {
+            if (applyScannedCode(code.rawValue || "", code.format || "", "camera")) return;
+          }
+        } catch {
+          barcodeScanStatus.textContent = "Не удалось прочитать код. Держите упаковку ровнее и ближе к камере.";
         }
-      } catch {
-        barcodeScanStatus.textContent = "Не удалось прочитать код. Держите упаковку ровнее и ближе к камере.";
-      }
+        barcodeFrameRequest = requestAnimationFrame(scanFrame);
+      };
       barcodeFrameRequest = requestAnimationFrame(scanFrame);
-    };
+      return;
+    }
 
-    barcodeFrameRequest = requestAnimationFrame(scanFrame);
+    const reader = createZxingBarcodeReader();
+    if (!reader) throw new Error("fallback-unavailable");
+    barcodeScannerControls = await reader.decodeFromVideoElement(barcodeVideo, (result, error, controls) => {
+      if (revision !== barcodeScanRevision) {
+        controls?.stop?.();
+        return;
+      }
+      if (result) applyScannedCode(result.getText(), zxingFormat(result), "camera");
+      else if (error && !/NotFound/i.test(error.name || error.constructor?.name || "")) {
+        barcodeScanStatus.textContent = "Код пока не читается. Приблизьте упаковку и уберите блики.";
+      }
+    });
   } catch {
+    if (revision !== barcodeScanRevision) return;
     stopBarcodeScanner();
-    setProductStatus("Не удалось открыть камеру для сканирования. Введите EAN/UPC вручную.", "warn");
+    setProductStatus("Не удалось открыть камеру. Загрузите фото кода или введите EAN/UPC вручную.", "warn");
     barcodeInput?.focus();
+  }
+}
+
+function loadBarcodeImage(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => resolve({ image, url });
+    image.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Не удалось открыть изображение.")); };
+    image.src = url;
+  });
+}
+
+async function decodeBarcodeImage(file) {
+  if (!file) return;
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || !file.size || file.size > 15 * 1024 * 1024) {
+    setProductStatus("Загрузите JPEG, PNG или WebP размером до 15 МБ.", "warn");
+    return;
+  }
+  setProductStatus("Читаю штрихкод с изображения...");
+  let loaded;
+  try {
+    loaded = await loadBarcodeImage(file);
+    const detector = await createNativeBarcodeDetector();
+    if (detector) {
+      const results = await detector.detect(loaded.image);
+      for (const result of results || []) {
+        if (applyScannedCode(result.rawValue || "", result.format || "", "image")) return;
+      }
+    }
+
+    const reader = createZxingBarcodeReader();
+    if (!reader) throw new Error("Декодер штрихкодов не загрузился.");
+    const result = await reader.decodeFromImageElement(loaded.image);
+    if (!applyScannedCode(result.getText(), zxingFormat(result), "image")) {
+      throw new Error("На изображении нет допустимого товарного EAN/UPC или GS1 QR.");
+    }
+  } catch (error) {
+    setProductStatus(error.message || "Не удалось распознать код. Снимите его крупнее, ровно и без бликов.", "warn");
+  } finally {
+    if (loaded?.url) URL.revokeObjectURL(loaded.url);
   }
 }
 
@@ -1167,23 +1854,33 @@ async function openCameraCapture() {
     return;
   }
 
+  stopCameraStream();
+  const revision = cameraRevision;
   try {
     cameraCapture.hidden = false;
-    cameraStream = await navigator.mediaDevices.getUserMedia({
+    const stream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: { ideal: "environment" } },
       audio: false
     });
+    if (revision !== cameraRevision) {
+      stream.getTracks().forEach((track) => track.stop());
+      return;
+    }
+    cameraStream = stream;
     cameraVideo.srcObject = cameraStream;
     await cameraVideo.play();
   } catch {
+    if (revision !== cameraRevision) return;
     stopCameraStream();
     cameraCapture.hidden = true;
-    photoCameraInput?.click();
+    photoStatus.hidden = false;
+    photoStatus.textContent = "Камера недоступна или доступ запрещён. Выберите «Загрузить фото».";
   }
 }
 
 async function captureCameraFrame() {
-  if (!cameraVideo || !cameraCanvas) return;
+  if (!cameraVideo || !cameraCanvas || !cameraStream || !cameraVideo.videoWidth) return;
+  const revision = cameraRevision;
   const width = cameraVideo.videoWidth || 1280;
   const height = cameraVideo.videoHeight || 720;
   cameraCanvas.width = width;
@@ -1192,7 +1889,7 @@ async function captureCameraFrame() {
   context.drawImage(cameraVideo, 0, 0, width, height);
 
   cameraCanvas.toBlob(async (blob) => {
-    if (!blob) return;
+    if (!blob || revision !== cameraRevision) return;
     const file = new File([blob], `label-${Date.now()}.jpg`, { type: "image/jpeg" });
     stopCameraStream();
     cameraCapture.hidden = true;
@@ -1211,9 +1908,22 @@ cameraClose?.addEventListener("click", () => {
 cameraFallback?.addEventListener("click", () => {
   stopCameraStream();
   cameraCapture.hidden = true;
-  photoCameraInput?.click();
+  document.querySelector("#photoInput")?.click();
 });
 cameraShot?.addEventListener("click", captureCameraFrame);
+window.addEventListener("pagehide", () => {
+  clearPhotoState();
+  stopBarcodeScanner();
+  barcodeLookupRevision += 1;
+  barcodeLookupController?.abort();
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopCameraStream();
+    if (cameraCapture) cameraCapture.hidden = true;
+    stopBarcodeScanner();
+  }
+});
 
 photoInputs.forEach((input) => {
   input.addEventListener("change", async () => {
@@ -1231,16 +1941,16 @@ photoAnalyze?.addEventListener("click", () => {
 });
 
 barcodeApply?.addEventListener("click", () => {
-  const code = barcodeInput?.value.trim() || "";
-  if (!code) return;
-  productName.value = code;
-  composition.value = "";
-  setProductStatus("Ищу средство по EAN/UPC...");
-  form?.requestSubmit();
+  applyScannedCode(barcodeInput?.value || "", "", "manual");
 });
 
 barcodeScan?.addEventListener("click", openBarcodeScanner);
 barcodeScanClose?.addEventListener("click", stopBarcodeScanner);
+barcodeImageUpload?.addEventListener("click", () => barcodeImageInput?.click());
+barcodeImageInput?.addEventListener("change", async () => {
+  await decodeBarcodeImage(barcodeImageInput.files?.[0]);
+  barcodeImageInput.value = "";
+});
 
 barcodeInput?.addEventListener("keydown", (event) => {
   if (event.key !== "Enter") return;
@@ -1248,220 +1958,330 @@ barcodeInput?.addEventListener("keydown", (event) => {
   barcodeApply?.click();
 });
 
+if (["localhost", "127.0.0.1"].includes(window.location.hostname)) {
+  window.__barcodeTest = { apply: applyScannedCode };
+}
+
 mobileAnalyze?.addEventListener("click", submitAnalysisFromSticky);
+
+// Keep the fixed mobile action above an on-screen keyboard without changing the form flow.
+function syncMobileKeyboardInset() {
+  const viewport = window.visualViewport;
+  if (!viewport || window.matchMedia("(min-width: 561px)").matches) {
+    document.documentElement.style.removeProperty("--mobile-keyboard-inset");
+    return;
+  }
+
+  const inset = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
+  document.documentElement.style.setProperty("--mobile-keyboard-inset", `${Math.round(inset)}px`);
+}
+
+window.visualViewport?.addEventListener("resize", syncMobileKeyboardInset);
+window.visualViewport?.addEventListener("scroll", syncMobileKeyboardInset);
+window.addEventListener("resize", syncMobileKeyboardInset);
+syncMobileKeyboardInset();
 
 initCatalog();
 
-function render(data) {
-  const purpose = data.productSafety || data.productClassification || {};
-  const purposeSection = `
-    <section class="section product-purpose">
-      <p class="eyebrow">Назначение средства</p>
-      <h2>${escapeHtml(purpose.label || data.formulaType || "Тип средства требует уточнения")}</h2>
-      <p>${escapeHtml(purpose.intendedUse || "Назначение не определено уверенно только по составу. Сверьте название, карточку товара и инструкцию производителя.")}</p>
-      ${purpose.application ? `<p><strong>Как применять:</strong> ${escapeHtml(purpose.application)}</p>` : ""}
-      ${purpose.confidence ? `<p class="confidence">Уверенность определения: ${Math.round(Number(purpose.confidence || 0) * 100)}%</p>` : ""}
-    </section>
-  `;
-  const safetyNotice = data.productSafety?.shouldScoreAsCosmetic === false
-    ? `
-      <section class="section safety-notice">
-        <h2>Это не обычное уходовое средство</h2>
-        <p>${escapeHtml(data.productSafety.message || "Формула похожа на процедурный препарат. Обычная косметическая оценка отключена.")}</p>
-        ${data.productSafety.intendedUse ? `<p><strong>Назначение:</strong> ${escapeHtml(data.productSafety.intendedUse)}</p>` : ""}
-        ${data.productSafety.application ? `<p><strong>Применение:</strong> ${escapeHtml(data.productSafety.application)}</p>` : ""}
-      </section>
-    `
-    : "";
-  const expertSummary = cards(data.expertSummary, "Недостаточно данных для экспертной сводки.");
-  const routineAdvice = list(data.routineAdvice, "Нет специальных рекомендаций по введению.");
-  const questions = list(data.questions, "Уточняющих вопросов не сформировано.");
-  const architecture = data.architecture?.length
-    ? `
-      <div class="architecture-grid">
-        ${data.architecture
-          .map((item) => `
-            <article class="architecture-card">
-              <h3>${escapeHtml(item.title)}</h3>
-              <p>${escapeHtml(item.text)}</p>
-            </article>
-          `)
-          .join("")}
-      </div>
-    `
-    : `<p class="muted">Пока недостаточно распознанных компонентов, чтобы описать структуру формулы.</p>`;
+const FUNCTION_LABELS = {
+  ABSORBENT: "абсорбент",
+  ANTISTATIC: "антистатическая функция",
+  BINDING: "связующая функция",
+  BUFFERING: "буферная функция",
+  DENATURANT: "денатурант",
+  EMULSIFYING: "эмульгирующая функция",
+  FILM_FORMING: "плёнкообразующая функция",
+  HUMECTANT: "увлажняющий компонент",
+  MASKING: "маскирующая функция",
+  ORAL_CARE: "функция для средств полости рта",
+  PERFUMING: "парфюмирующая функция",
+  PRESERVATIVE: "консервант",
+  SKIN_CONDITIONING: "кондиционирование кожи",
+  SKIN_PROTECTING: "защита кожи",
+  SOLVENT: "растворитель",
+  SURFACTANT: "поверхностно-активное вещество",
+  VISCOSITY_CONTROLLING: "регулятор вязкости",
+  HAIR_CONDITIONING: "кондиционирование волос"
+};
 
-  const groups = data.groups
-    .map((group) => `
-      <article class="tile">
-        <h3>${escapeHtml(group.role)}</h3>
-        <p>${escapeHtml(group.items.join(", "))}</p>
-      </article>
-    `)
-    .join("");
+const FORMULA_SCOPE_LABELS = {
+  full: "Источник сообщил полный INCI.",
+  active_only: "Источник указал только активные компоненты, а не полный INCI.",
+  partial: "Доступен неполный фрагмент формулы.",
+  unknown: "Полнота состава не подтверждена источником."
+};
 
-  const quality = data.qualitySummary || {};
-  const qualityScore = quality.score == null ? "—" : `${quality.score}/10`;
-  const qualityTopSection = `
-    <section class="section quality-section quality-summary">
-      <div class="quality-head">
-        <div>
-          <p class="eyebrow">Компонентная база</p>
-          <h2>Качество компонентов</h2>
-          <p>Короткая сводка по INCI: ${escapeHtml(quality.label || "недостаточно данных")}.</p>
-        </div>
-        <div class="quality-total">
-          <strong>${escapeHtml(qualityScore)}</strong>
-          <span>${escapeHtml(quality.confidence || "уверенность неизвестна")}</span>
-        </div>
-      </div>
-      <p class="confidence">Учтено ${escapeHtml(quality.knownCount ?? 0)} из ${escapeHtml(quality.totalIngredients ?? data.totalIngredients ?? 0)} ингредиентов, неизвестных ${escapeHtml(quality.unknownCount ?? data.unknown?.length ?? 0)}.</p>
-    </section>
-  `;
-  const qualitySection = `
-    <section class="section quality-section">
-      <p class="eyebrow">Подробнее</p>
-      <h2>Как считается оценка</h2>
-      <p>${escapeHtml(quality.methodology || "Оценка строится по экспертной базе ингредиентов и не заменяет документы производителя.")}</p>
-    </section>
-  `;
+const MATCH_STATUS_LABELS = {
+  confirmed: "подтверждённое совпадение",
+  suggested: "возможное совпадение, требует проверки",
+  unknown: "не найдено в текущем справочнике"
+};
 
-  const found = data.found
-    .map((item) => `
-      <article class="ingredient">
-        <div>
-          <h3>${escapeHtml(item.name)} <span>${escapeHtml(item.ru || "")}</span></h3>
-          <p>${escapeHtml(item.note)}</p>
-          ${item.quality_note ? `<p class="quality-note">${escapeHtml(item.quality_note)}</p>` : ""}
-        </div>
-        <dl>
-          <dt>Качество</dt>
-          <dd>${item.ingredient_quality_score == null ? "—" : `${escapeHtml(item.ingredient_quality_score)}/10`}</dd>
-          <dt>Позиция</dt>
-          <dd>${item.position}</dd>
-          <dt>Зона</dt>
-          <dd>${escapeHtml(item.concentration)}</dd>
+function reportFunctionLabel(value) {
+  const raw = String(value || "").trim();
+  const key = raw.replace(/\s*\(.*?\)\s*/g, "").replace(/[\s-]+/g, "_").toUpperCase();
+  return FUNCTION_LABELS[key] || (/[A-Z]{3,}/.test(raw) ? `справочная функция: ${raw}` : raw || "функция не указана");
+}
+
+function uniqueText(items) {
+  return [...new Set((items || []).map((item) => String(item || "").trim()).filter(Boolean))];
+}
+
+function reportSourceLink(source, fallback = "Источник не указан") {
+  const name = String(source?.name || fallback);
+  const url = safeExternalUrl(source?.url);
+  return url
+    ? `<a class="source-link" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${escapeHtml(name)}</a>`
+    : escapeHtml(name);
+}
+
+function reportIngredientSources(item) {
+  const sources = [];
+  (item.findings || []).forEach((finding) => {
+    (finding.basis || []).forEach((basis) => {
+      const url = safeExternalUrl(basis.url || basis.recordSourceUrl);
+      if (url) sources.push({ name: basis.title || basis.record || basis.source || item.dataSource || "Источник", url });
+    });
+  });
+  if (!sources.length && item.dataSource) sources.push({ name: item.dataSource, url: null });
+  return uniqueText(sources.map((source) => `${source.name}|${source.url || ""}`)).map((value) => {
+    const [name, url] = value.split("|");
+    return reportSourceLink({ name, url });
+  });
+}
+
+function reportUncertainIngredients(data, contract) {
+  const uncertain = [];
+  const seen = new Set();
+  const add = (item) => {
+    const input = String(item?.input || item?.ingredient || "").trim();
+    if (!input || seen.has(input.toLowerCase())) return;
+    seen.add(input.toLowerCase());
+    const status = item?.status === "suggested" || item?.suggested_match || item?.match?.suggestedName ? "suggested" : "unknown";
+    uncertain.push({
+      input,
+      status,
+      suggestedName: item?.suggested_match || item?.match?.suggestedName || null
+    });
+  };
+  (contract?.ingredients || []).filter((item) => item?.status !== "confirmed").forEach(add);
+  (data.unknown || []).forEach(add);
+  return uncertain;
+}
+
+function reportIngredientCard(item) {
+  const status = item.status === "suggested" ? "suggested" : item.status === "unknown" ? "unknown" : "confirmed";
+  const rawName = item.input || item.provenance?.raw || item.name || "Неизвестный фрагмент";
+  const canonicalName = status === "confirmed" ? item.name : item.suggested_match || item.name || null;
+  const roles = uniqueText((item.roles || []).map(reportFunctionLabel));
+  const references = uniqueText((item.findings || []).filter((finding) => finding.kind === "reference").map((finding) => finding.text));
+  const expert = uniqueText((item.findings || []).filter((finding) => finding.kind === "expert").map((finding) => finding.text));
+  const limits = uniqueText([
+    ...(item.cautions || []),
+    ...(item.findings || []).flatMap((finding) => finding.limitations || [])
+  ]);
+  const sources = reportIngredientSources(item);
+  return `
+    <details class="ingredient-report" data-ingredient-search="${escapeHtml(`${rawName} ${canonicalName || ""} ${roles.join(" ")}`.toLowerCase())}">
+      <summary>
+        <span class="ingredient-position">${escapeHtml(item.position || "-")}</span>
+        <span><strong>${escapeHtml(rawName)}</strong>${canonicalName && canonicalName !== rawName ? `<small>Каноническое имя: ${escapeHtml(canonicalName)}</small>` : ""}</span>
+        <span class="match-status match-status-${status}">${escapeHtml(MATCH_STATUS_LABELS[status])}</span>
+      </summary>
+      <div class="ingredient-report-body">
+        <dl class="ingredient-data">
+          <dt>Исходное имя</dt><dd>${escapeHtml(rawName)}</dd>
+          <dt>Совпадение</dt><dd>${canonicalName ? escapeHtml(canonicalName) : "нет"}</dd>
+          <dt>Роль в формуле</dt><dd>${roles.length ? escapeHtml(roles.join(", ")) : "не указана в ответе анализатора"}</dd>
+          <dt>Позиция в INCI</dt><dd>${escapeHtml(item.position || "не указана")}</dd>
         </dl>
-      </article>
-    `)
-    .join("");
+        ${references.length ? `<h4>Справочные сведения</h4>${list(references, "")}` : ""}
+        ${expert.length ? `<h4>Сведения, требующие предметной проверки</h4>${list(expert, "")}` : ""}
+        ${limits.length ? `<h4>Условия и ограничения</h4>${list(limits, "")}` : ""}
+        <p class="ingredient-source"><strong>Источник:</strong> ${sources.length ? sources.join(", ") : "не указан в ответе анализатора"}</p>
+      </div>
+    </details>
+  `;
+}
 
-  const unknown = data.unknown
-    .slice(0, 16)
-    .map((item) => `${item.input} (${item.concentration})`);
-  const alternatives = data.alternatives?.length
-    ? `
-      <section class="section">
-        <h2>Похожие аналоги</h2>
-        <p class="muted">MVP-подбор по локальной базе: похожесть не означает полный аналог, цену и наличие в РФ нужно сверять перед покупкой.</p>
-        <div class="insight-list">
-          ${data.alternatives.map((item) => `
-            <article class="insight-card">
-              <strong>${escapeHtml(item.brand)} ${escapeHtml(item.name)}</strong>
-              <p>${escapeHtml(item.similarity)}% похожести · ${escapeHtml(item.ruAvailability || "наличие нужно проверить")} · ${escapeHtml(item.price || "цена пока не подключена")}</p>
-              <p>${escapeHtml((item.why || []).join(", "))}</p>
-              ${(item.matchedIngredients || []).length ? `<p>Совпало: ${escapeHtml(item.matchedIngredients.join(", "))}</p>` : ""}
-            </article>
-          `).join("")}
-        </div>
-      </section>
-    `
-    : "";
-  const proprietaryComplexes = data.proprietaryComplexes?.length
-    ? `
-      <section class="section">
-        <h2>Комплексы производителя</h2>
-        <p class="muted">Эти названия сохранены как указаны в INCI. Без раскрытого состава нельзя подтвердить активы, концентрации и реальный вклад комплекса.</p>
-        ${list(data.proprietaryComplexes.map((item) => `${item.name}: ${item.note}`), "Комплексов производителя не найдено.")}
-      </section>
-    `
-    : "";
-  const unknownSection = unknown.length
-    ? `
-      <section class="section">
-        <h2>Что требует проверки</h2>
-        <p class="muted">Эти позиции не найдены в текущей базе MVP. Их стоит сверить по этикетке или расширенной базе ингредиентов.</p>
-        ${list(unknown, "Все ингредиенты из состава распознаны базой MVP.")}
-        <p class="disclaimer">${escapeHtml(data.disclaimer)}</p>
-      </section>
-    `
-    : `
-      <section class="section">
-        <h2>Ограничения анализа</h2>
-        <p class="disclaimer">${escapeHtml(data.disclaimer)}</p>
-      </section>
-    `;
+function render(data) {
+  const contract = data.analysisContract || {};
+  const personal = data.personalization;
+  const profileLabels = { skinType: "Тип кожи", context: "Контекст", concerns: "Состояние кожи", goals: "Цели", applicationArea: "Зона нанесения", allergyStatus: "Аллергии", allergens: "Аллергены", previousReaction: "Прошлая реакция", invalidFields: "Некорректные поля" };
+  const valueLabels = { hydration: "увлажнение", barrier: "поддержка барьера", appearance: "внешний вид кожи", cleansing: "очищение", face: "лицо", body: "тело", hair_or_scalp: "волосы и кожа головы", eye_area: "область глаз", lips: "губы", none_reported: "не известны / не замечены", reported: "есть подтверждённые", this_product: "на этот продукт", other_product: "на другое средство" };
+  const identity = contract.product?.identity || {};
+  const productTitle = [identity.brand, identity.name].filter(Boolean).join(" ") || productName?.value.trim() || "Средство не идентифицировано";
+  const productStatus = contract.product?.identificationStatus || "unknown";
+  const formula = contract.formula || {};
+  const formulaScope = formula.scope || "unknown";
+  const purpose = data.productSafety || data.productClassification || {};
+  const purposeSource = purpose.purposeEvidence?.source || null;
+  const purposeBasis = purpose.purposeStatus === "confirmed_manufacturer"
+    ? `Карточка производителя: ${reportSourceLink(purposeSource)}`
+    : purpose.purposeStatus === "source_backed"
+      ? `Карточка источника: ${reportSourceLink(purposeSource)}`
+      : purpose.purposeStatus === "hypothesis"
+        ? "Гипотеза по названию и функциональным признакам состава"
+        : purpose.purposeStatus === "safety_flag"
+          ? "Защитное правило по сигнальным ингредиентам"
+          : "Недостаточно данных или есть противоречие";
+  const assessment = data.assessment || { status: "not_assessed", reason: "insufficient_data" };
+  const uncertain = reportUncertainIngredients(data, contract);
+  const groups = (data.groups || []).map((group) => `
+    <article class="tile">
+      <h3>${escapeHtml(reportFunctionLabel(group.role))}</h3>
+      <p>${escapeHtml((group.items || []).join(", "))}</p>
+    </article>
+  `).join("");
+  const ingredientCards = (data.found || []).map(reportIngredientCard).join("");
+  const expertSummary = cards(data.expertSummary, "Проверяемых экспертных утверждений для этой формулы нет.");
+  const availableVariants = productFormulaVariants(selectedProductCard);
+  const formulaVersions = availableVariants.length > 1 ? `
+    <section class="section formula-versions" aria-labelledby="reportFormulaVersionsTitle">
+      <h2 id="reportFormulaVersionsTitle">Версии формулы из источников</h2>
+      <p>Источники сообщают разные составы. Текущий отчёт относится только к выбранной версии; формулы не объединяются.</p>
+      <div class="formula-variant-list">
+        ${availableVariants.map((variant, index) => `
+          <button class="formula-variant-option" type="button" data-report-formula-index="${index}">
+            <strong>${escapeHtml(`Версия ${index + 1}`)}</strong>
+            <span>${escapeHtml(formulaVariantLabel(variant, index))}</span>
+          </button>
+        `).join("")}
+      </div>
+    </section>
+  ` : "";
+  const personalSection = personal ? `
+    <section class="section" id="personalAssessment">
+      <h2>${personal.profileProvided ? "Персональный итог" : "Персональная оценка"}</h2>
+      <p>${escapeHtml(personal.summary || "Профиль не указан.")}</p>
+      ${personal.restrictions?.length ? `<h3>Ограничения</h3>${list(personal.restrictions.map((item) => item.text), "")}` : ""}
+      ${personal.precautions?.length ? `<h3>Что требует уточнения</h3>${list(personal.precautions.map((item) => item.text), "")}` : ""}
+      ${personal.potentialBenefits?.length ? `<h3>Потенциальная польза с ограничениями</h3>${list(personal.potentialBenefits.map((item) => item.text), "")}` : ""}
+      ${list(personal.limitations || [], "Персональная применимость не установлена.")}
+      <details><summary>Что учтено в разборе</summary>
+        ${list((personal.usedInputs || []).map((item) => `${profileLabels[item.field] || item.field}: ${(Array.isArray(item.value) ? item.value : [item.value]).map((value) => valueLabels[value] || value).join(", ")}. ${item.reason}`), "Профиль не указан.")}
+        ${personal.missingFields?.length ? `<p>Не указано: ${escapeHtml(personal.missingFields.map((item) => profileLabels[item] || item).join(", "))}.</p>` : ""}
+      </details>
+      ${data.historyPolicy?.mode === "session_only" ? '<p class="field-note">Персональный результат не сохранён в историю. Данные профиля действуют только в текущем разборе.</p>' : ""}
+    </section>` : "";
+  const safetyNotice = data.productSafety?.shouldScoreAsCosmetic === false ? `
+    <section class="section safety-notice">
+      <h2>Это не обычное уходовое средство</h2>
+      <p>${escapeHtml(data.productSafety.message || "Косметическая оценка отключена.")}</p>
+      ${data.productSafety.intendedUse ? `<p><strong>Назначение:</strong> ${escapeHtml(data.productSafety.intendedUse)}</p>` : ""}
+      ${data.productSafety.application ? `<p><strong>Применение:</strong> ${escapeHtml(data.productSafety.application)}</p>` : ""}
+    </section>` : "";
+  const proprietaryComplexes = data.proprietaryComplexes?.length ? `
+    <section class="section">
+      <h2>Комплексы производителя</h2>
+      <p class="muted">Состав комплекса не раскрыт в INCI: его активы, концентрации и вклад нельзя подтвердить.</p>
+      ${list(data.proprietaryComplexes.map((item) => `${item.name}: ${item.note}`), "")}
+    </section>` : "";
+  const additionalGuidance = data.routineAdvice?.length || data.questions?.length ? `
+    <details class="section report-additional">
+      <summary>Дополнительные вопросы и рекомендации</summary>
+      ${data.routineAdvice?.length ? `<h3>Как вводить в уход</h3>${list(data.routineAdvice, "")}` : ""}
+      ${data.questions?.length ? `<h3>Что уточнить у специалиста</h3>${list(data.questions, "")}` : ""}
+    </details>` : "";
+  const alternativesSection = data.alternativeSearch || data.alternatives?.length ? `
+    <section class="section" id="formulaAlternatives">
+      <h2>Возможные аналоги</h2>
+      <p>${escapeHtml(data.alternativeSearch?.message || "Найдены кандидаты для сравнения состава.")}</p>
+      ${data.alternatives?.length ? `<div class="tiles">${data.alternatives.map((item) => `
+        <article class="tile alternative-card">
+          <h3>${escapeHtml([item.brand, item.name].filter(Boolean).join(" "))}</h3>
+          <p><strong>${escapeHtml(item.similarityLabel || "Сходство состава")}:</strong> ${escapeHtml(item.similarity)}%</p>
+          ${list(item.why || [], "")}
+          <p><strong>Цена:</strong> ${escapeHtml(item.priceComparison?.label || item.price || "неизвестна")}</p>
+          <p><strong>Наличие:</strong> ${escapeHtml(item.availabilityEvidence?.label || item.ruAvailability || "неизвестно")}</p>
+          <p class="muted">${escapeHtml(item.note || "Это кандидат для сравнения, а не подтверждённо идентичная замена.")}</p>
+          ${safeExternalUrl(item.sourceUrl) ? `<a class="source-link" href="${escapeHtml(safeExternalUrl(item.sourceUrl))}" target="_blank" rel="noreferrer">Источник карточки</a>` : ""}
+        </article>`).join("")}</div>` : ""}
+    </section>` : "";
 
   result.innerHTML = `
-    ${purposeSection}
+    <section class="section report-product">
+      <p class="eyebrow">Товар и назначение</p>
+      <h2>${escapeHtml(productTitle)}</h2>
+      <p class="report-status">Идентификация товара: ${escapeHtml(MATCH_STATUS_LABELS[productStatus] || "не подтверждена")}</p>
+      <h3>${escapeHtml(purpose.label || data.formulaType || "Тип средства требует уточнения")}</h3>
+      <p>${escapeHtml(purpose.intendedUse || "Назначение нельзя надёжно определить только по составу.")}</p>
+      <p><strong>Основание:</strong> ${purposeBasis}</p>
+      ${purpose.application ? `<p><strong>Способ применения:</strong> ${escapeHtml(purpose.application)}</p>` : ""}
+    </section>
 
-    <div class="score">
-      <div class="score-number">
-        <p class="eyebrow">Итог</p>
-        <h2>${escapeHtml(data.score.score)}/100</h2>
-        <p>${escapeHtml(data.score.label)}</p>
-      </div>
-      <div>
-        <h2>${escapeHtml(data.formulaType)}</h2>
-        <p>${escapeHtml(data.summary)}</p>
-        <p class="confidence">Уверенность: ${escapeHtml(data.confidence?.label || "неизвестно")} · ${escapeHtml(data.confidence?.text || "")}</p>
-      </div>
-    </div>
+    <section class="section report-formula">
+      <p class="eyebrow">Состав и происхождение</p>
+      <h2>Что именно разобрано</h2>
+      <dl class="report-meta">
+        <dt>Полнота</dt><dd>${escapeHtml(FORMULA_SCOPE_LABELS[formulaScope] || FORMULA_SCOPE_LABELS.unknown)}</dd>
+        <dt>Источник</dt><dd>${reportSourceLink(formula.source)}</dd>
+        <dt>Версия</dt><dd>${escapeHtml(formula.version || "не указана")}</dd>
+        <dt>Рынок</dt><dd>${escapeHtml(formula.market || "не указан")}</dd>
+        <dt>Распознано</dt><dd>${escapeHtml(contract.metrics?.knowledgeCoverage?.confirmed ?? data.found?.length ?? 0)} из ${escapeHtml(contract.metrics?.knowledgeCoverage?.total ?? data.totalIngredients ?? 0)} ингредиентов с подтверждённым совпадением</dd>
+      </dl>
+      ${assessment.status === "not_assessed" ? `<p class="report-caution">Итоговая оценка не выполнена: ${escapeHtml(data.qualitySummary?.methodology || "недостаточно подтверждённых данных о готовом продукте")}</p>` : ""}
+    </section>
 
-    ${qualityTopSection}
+    ${formulaVersions}
 
+    ${uncertain.length ? `
+      <section class="section report-uncertain">
+        <h2>Позиции, которые нужно проверить до выводов</h2>
+        <p>Они не считаются подтверждёнными ингредиентами и не используются как установленный факт в разборе.</p>
+        <ul>${uncertain.map((item) => `<li><strong>${escapeHtml(item.input)}</strong>: ${escapeHtml(item.status === "suggested" ? `возможное совпадение${item.suggestedName ? ` с ${item.suggestedName}` : ""}; проверьте этикетку.` : "не найдено в текущем справочнике.")}</li>`).join("")}</ul>
+      </section>` : ""}
+
+    ${personalSection}
     ${safetyNotice}
 
     <section class="section">
-      <h2>Главный вывод</h2>
+      <h2>Главное по имеющимся данным</h2>
+      <p class="report-summary">${escapeHtml(data.summary || "Сводка пока недоступна.")}</p>
       ${expertSummary}
     </section>
 
     <section class="section">
-      <h2>Как устроена формула</h2>
-      ${architecture}
+      <h2>Функциональные блоки формулы</h2>
+      <p class="muted">Это справочные функции компонентов, а не доказательство эффекта или назначения готового продукта.</p>
+      <div class="tiles">${groups || '<p class="muted">Функциональные блоки пока не выделены.</p>'}</div>
     </section>
 
-    ${qualitySection}
-
-    <section class="section">
-      <h2>Группы компонентов</h2>
-      <div class="tiles">${groups || '<p class="muted">Пока недостаточно распознанных компонентов.</p>'}</div>
-    </section>
-
-    <section class="section two">
-      <div>
-        <h2>Может быть полезно при</h2>
-        ${list(data.positives, "По текущей базе MVP нет уверенных выводов.")}
+    <section class="section ingredient-section">
+      <div class="ingredient-section-head">
+        <div><h2>Ингредиенты</h2><p class="muted">Откройте компонент, чтобы увидеть исходное имя, совпадение, роль, ограничения и источник.</p></div>
+        <label class="ingredient-filter-label">Поиск по составу<input id="ingredientFilter" type="search" autocomplete="off" placeholder="Название ингредиента" /></label>
       </div>
-      <div>
-        <h2>На что обратить внимание</h2>
-        ${list(data.warnings, "Явных красных флагов в базе MVP не найдено.")}
-      </div>
-    </section>
-
-    <section class="section two">
-      <div>
-        <h2>Как вводить в уход</h2>
-        ${routineAdvice}
-      </div>
-      <div>
-        <h2>Что спросить у косметолога</h2>
-        ${questions}
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Распознанные ингредиенты</h2>
-      <div class="ingredients">${found || '<p class="muted">Нет совпадений в базе MVP.</p>'}</div>
+      <p id="ingredientFilterStatus" class="field-note" aria-live="polite"></p>
+      <div class="ingredient-reports">${ingredientCards || '<p class="muted">Нет подтверждённых совпадений в текущем справочнике.</p>'}</div>
     </section>
 
     ${proprietaryComplexes}
-
-    ${alternatives}
-
-    ${unknownSection}
+    ${alternativesSection}
+    ${additionalGuidance}
+    <section class="section report-limitations"><h2>Ограничения анализа</h2><p class="disclaimer">${escapeHtml(data.disclaimer || "Данные о готовом продукте ограничены.")}</p></section>
   `;
+
+  result.querySelector("#ingredientFilter")?.addEventListener("input", (event) => {
+    const query = String(event.target.value || "").trim().toLocaleLowerCase();
+    const cards = Array.from(result.querySelectorAll(".ingredient-report"));
+    let visible = 0;
+    cards.forEach((card) => {
+      const matches = !query || card.dataset.ingredientSearch.includes(query);
+      card.hidden = !matches;
+      if (matches) visible += 1;
+    });
+    const status = result.querySelector("#ingredientFilterStatus");
+    if (status) status.textContent = query ? `Показано компонентов: ${visible}.` : "";
+  });
+
+  result.querySelectorAll("[data-report-formula-index]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const variant = availableVariants[Number(button.dataset.reportFormulaIndex)];
+      applyFormulaVariant(selectedProductCard, variant);
+      if (compositionOrigin.mode === "product") await analyzeCurrentComposition(variant.source || "");
+    });
+  });
 }
 
 form.addEventListener("submit", async (event) => {
@@ -1478,33 +2298,11 @@ form.addEventListener("submit", async (event) => {
   const payload = {
     text: composition.value,
     productName: productName?.value.trim() || "",
-    profile: {
-      skinType: document.querySelector("#skinType").value,
-      context: document.querySelector("#context").value,
-      concerns: document.querySelector("#concerns").value
-    }
+    evidence: buildAnalysisEvidence(),
+    profile: readAnalysisProfile()
   };
 
-  result.innerHTML = `<div class="loading">Разбираю состав...</div>`;
-  scrollToResult();
-
-  try {
-    const response = await fetch("/api/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) throw new Error("Analyze failed");
-    const analysis = await response.json();
-    saveAnalysisSnapshot(payload, analysis);
-    render(analysis);
-  } catch {
-    const analysis = localAnalyzeComposition(payload);
-    saveAnalysisSnapshot(payload, analysis);
-    render(analysis);
-  }
-  scrollToResult();
+  await runServerAnalysis(payload, compositionOrigin.source);
 });
 
 showAuthReturnStatus();

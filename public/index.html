@@ -67,6 +67,7 @@
             </label>
             <button class="product-search-action" type="button" id="productSearchAction">Найти</button>
           </div>
+          <div class="formula-variant-choices" id="formulaVariantChoices" aria-live="polite" hidden></div>
 
           <div class="mobile-or" aria-hidden="true">или</div>
 
@@ -77,11 +78,11 @@
               <span class="photo-upload-cta">Загрузить фото</span>
               <input id="photoInput" data-photo-input type="file" accept="image/*" />
             </label>
-            <label class="photo-upload camera-upload" for="photoCameraInput" id="photoCameraOpen">
+            <button type="button" class="photo-upload camera-upload" id="photoCameraOpen" aria-label="Сфотографировать этикетку" title="Сфотографировать этикетку">
               <span class="photo-upload-title">Сфотографировать</span>
               <span class="photo-upload-cta">Сфотографировать</span>
-              <input id="photoCameraInput" data-photo-input type="file" accept="image/*" capture="environment" />
-            </label>
+            </button>
+            <input id="photoCameraInput" data-photo-input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" hidden />
           </div>
 
           <div class="mobile-or" aria-hidden="true">или</div>
@@ -92,11 +93,13 @@
               <input id="barcodeInput" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="EAN / UPC" />
               <span class="field-note">Можно ввести цифры вручную или открыть сканер камеры. QR используется, если в нем есть код товара.</span>
             </label>
-            <button class="secondary-action" type="button" id="barcodeScan">Сканировать</button>
-            <button class="secondary-action" type="button" id="barcodeApply">Найти по коду</button>
+            <button class="secondary-action" type="button" id="barcodeScan" aria-label="Сканировать штрихкод или QR-код" title="Сканировать штрихкод или QR-код">Сканировать</button>
+            <button class="secondary-action" type="button" id="barcodeImageUpload" aria-label="Загрузить фотографию штрихкода" title="Загрузить фотографию штрихкода">Фото кода</button>
+            <input id="barcodeImageInput" type="file" accept="image/jpeg,image/png,image/webp" hidden />
+            <button class="secondary-action" type="button" id="barcodeApply" aria-label="Найти средство по штрихкоду" title="Найти средство по штрихкоду">Найти</button>
           </div>
 
-          <div class="photo-status" id="photoStatus" hidden></div>
+          <div class="photo-status" id="photoStatus" role="status" aria-live="polite" hidden></div>
           <div class="photo-review" id="photoReview" hidden>
             <div class="photo-preview-wrap">
               <img id="photoPreview" alt="Фото упаковки" />
@@ -107,8 +110,8 @@
               <textarea id="photoText" spellcheck="false" placeholder="После фото здесь появится очищенный состав или найденное название средства."></textarea>
             </label>
             <div class="photo-actions">
-              <button class="secondary-action" type="button" id="photoUseComposition">Взять состав с фото</button>
-              <button class="primary-action" type="button" id="photoAnalyze">Разобрать по фото</button>
+              <button class="secondary-action" type="button" id="photoUseComposition" disabled>Подтвердить состав</button>
+              <button class="primary-action" type="button" id="photoAnalyze" disabled>Подтвердить и разобрать</button>
             </div>
           </div>
 
@@ -158,6 +161,7 @@
               <label>
                 Тип кожи
                 <select id="skinType">
+                  <option value="">Не указано</option>
                   <option>чувствительная</option>
                   <option>сухая</option>
                   <option>жирная</option>
@@ -169,6 +173,7 @@
               <label>
                 Контекст
                 <select id="context">
+                  <option value="">Не указано</option>
                   <option>после процедуры</option>
                   <option>домашний уход</option>
                   <option>перед покупкой</option>
@@ -180,9 +185,9 @@
             <div class="concerns-field">
               <span class="field-label">Что беспокоит</span>
               <div class="concern-grid" aria-label="Что беспокоит при применении средства">
-                <button type="button" class="concern-chip" aria-pressed="true" data-value="розацеа">Розацеа</button>
-                <button type="button" class="concern-chip" aria-pressed="true" data-value="пигментация">Пигментация</button>
-                <button type="button" class="concern-chip" aria-pressed="true" data-value="нарушенный барьер">Нарушенный барьер</button>
+                <button type="button" class="concern-chip" aria-pressed="false" data-value="розацеа">Розацеа</button>
+                <button type="button" class="concern-chip" aria-pressed="false" data-value="пигментация">Пигментация</button>
+                <button type="button" class="concern-chip" aria-pressed="false" data-value="нарушенный барьер">Нарушенный барьер</button>
                 <button type="button" class="concern-chip" aria-pressed="false" data-value="покраснение">Покраснение</button>
                 <button type="button" class="concern-chip" aria-pressed="false" data-value="жжение или пощипывание">Жжение</button>
                 <button type="button" class="concern-chip" aria-pressed="false" data-value="зуд">Зуд</button>
@@ -194,8 +199,48 @@
                 <button type="button" class="concern-chip" aria-pressed="false" data-value="беременность или лактация">Беременность/лактация</button>
               </div>
               <input id="concernsCustom" placeholder="Свое: например, дерматит, купероз, после пилинга..." />
-              <input id="concerns" type="hidden" value="розацеа, пигментация, нарушенный барьер" />
+              <input id="concerns" type="hidden" value="" />
             </div>
+            <div class="grid">
+              <label>Цель
+                <select id="profileGoal">
+                  <option value="">Не указано</option>
+                  <option value="hydration">Увлажнение</option>
+                  <option value="barrier">Поддержка барьера</option>
+                  <option value="appearance">Внешний вид кожи</option>
+                  <option value="cleansing">Очищение</option>
+                </select>
+              </label>
+              <label>Зона нанесения
+                <select id="applicationArea">
+                  <option value="">Не указано</option>
+                  <option value="face">Лицо</option>
+                  <option value="body">Тело</option>
+                  <option value="hair_or_scalp">Волосы и кожа головы</option>
+                  <option value="eye_area">Область глаз</option>
+                  <option value="lips">Губы</option>
+                </select>
+              </label>
+              <label>Подтверждённые аллергии
+                <select id="allergyStatus">
+                  <option value="">Не указано</option>
+                  <option value="none_reported">Мне не известны</option>
+                  <option value="reported">Есть подтверждённые</option>
+                </select>
+              </label>
+              <label>Реакция на прошлые средства
+                <select id="previousReaction">
+                  <option value="">Не указано</option>
+                  <option value="none_reported">Не замечал(а)</option>
+                  <option value="this_product">Была на этот продукт</option>
+                  <option value="other_product">Была на другое средство</option>
+                </select>
+              </label>
+            </div>
+            <label>Компоненты с подтверждённой аллергией (INCI)
+              <input id="allergens" maxlength="2000" placeholder="Точные названия через точку с запятой" autocomplete="off" />
+            </label>
+            <p class="field-note">Профиль необязателен. Данные профиля и персональный результат используются только в текущем разборе и не сохраняются в историю.</p>
           </details>
         </form>
       </section>
@@ -237,6 +282,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="vendor/zxing/zxing-browser-0.2.1.min.js"></script>
     <script src="theme.js?v=20260717-day-night-1"></script>
     <script src="auth-nav.js?v=20260713-profile-1"></script>
     <script src="app.js?v=20260717-search-action-1" type="module"></script>

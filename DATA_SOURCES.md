@@ -69,7 +69,11 @@ Search order is:
 
 For a text search the service does not stop after the local cache or Open Beauty Facts returns a match. It combines relevant cards from all configured sources, ranks them by the query, keeps formulas from different sources separate, and then uses the web fallback only if the source results do not fill the list. This allows official brand catalogues to cover products that are absent from Open Beauty Facts.
 
-If the same product is found in multiple sources, the system merges product identity fields but does not mix formulas. Different INCI strings are stored in `formulaVariants` with source, source URL and fetch date. A product receives `hasFormulaConflict: true` and `formulaConflictNote` when sources disagree.
+If the same product is found in multiple sources, the system merges product identity fields but does not mix formulas. Different INCI strings are stored in `formulaVariants` with source, source URL, retrieval date and, when the source publishes them, update date, market and product variant. A product receives `hasFormulaConflict: true` and `formulaConflictNote` when sources disagree.
+
+An exact barcode identifies the product even when no source publishes INCI. In that case the response status is `no_inci`, and the service searches the remaining adapters by the confirmed brand and model. A formula is attached only after brand, model and numeric variant checks; the presence of INCI alone is never treated as an identity match.
+
+Source attempts expose separate `not_found`, `no_inci` and `unavailable` states. Results and `no_inci` identities are cached in memory for 6 hours, `not_found` for 5 minutes, and temporary source failures for 30 seconds. The cache is bounded to 500 user-requested lookups. External discovery IDs may fetch only URLs issued by the discovery adapter during the current process; a user-supplied encoded URL is rejected.
 
 ## Local Product Cache
 
@@ -83,9 +87,11 @@ If the same product is found in multiple sources, the system merges product iden
 ### CosIng / INCI Registry
 
 - Local registry: `data/inci-registry.json`
+- Local additions: `data/inci-registry-local-additions.json`
 - Import script: `scripts/import-cosing-inci-registry.js`
-- Data used: canonical INCI name, aliases, functions, CAS, source metadata.
-- Strategy: use official export/import where possible. Do not scrape pages if source rules do not allow it.
+- Restore script: `scripts/restore-inci-registry-backup.js`
+- Data used: canonical INCI name, imported aliases/functions/CAS/restrictions when the source actually includes them, plus source metadata.
+- Strategy: import a supplied export or explicitly requested URL with a matching source manifest. The normal command makes no network request. A mirror is labelled as a mirror, not as a live CosIng lookup. See `docs/INCI_REGISTRY_IMPORT.md`.
 
 ### Expert Ingredient Knowledge
 

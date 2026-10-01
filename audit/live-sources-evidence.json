@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-09-20T02:41:19.235Z",
+  "results": [
+    {
+      "source": "open_beauty_facts",
+      "code": "3401528519895",
+      "elapsedMs": 695,
+      "found": true,
+      "name": "Atoderm huile de douche",
+      "composition": "aqua/water/eau, glycerin, PEG-7 glyceryl cocoate, sodium cocoamphoacetate, lauryl glucoside, coco-glucoside, glyceryl oleate, citric acid, PEG-90 glyceryl isostearate, fragrance (parfum), mannitol, polysorbate 20, xylitol, laureth-2, rhamnose, niacinamide, fructooligosaccharides, tocopherol, hydrogenated palm glycerides citrate, lecithin,ascorbyl palmitate.",
+      "recognized": 21,
+      "total": 21,
+      "expert": 10,
+      "registry": 11,
+      "type": "cleanser"
+    },
+    {
+      "source": "open_beauty_facts",
+      "code": "3401572288129",
+      "elapsedMs": 122,
+      "found": true,
+      "name": "Bioderma - Créaline H2O",
+      "composition": "Water (aqua), PEG-6 caprylic/capric glycerides, fructooligosaccharides, mannitol, xylitol, rhamnose, cucumis sativus (cucumber) fruit extract,\r\npropylène glycol, cetrimonium bromide, disodium EDTA. [BI 446]",
+      "recognized": 9,
+      "total": 10,
+      "expert": 3,
+      "registry": 6,
+      "type": "cleanser"
+    },
+    {
+      "source": "upcitemdb",
+      "code": "3401572288129",
+      "elapsedMs": 858,
+      "found": true,
+      "name": "Crealine H2O Micelle Solution Without Perfume by Bioderma for Women - 8.5 oz Cleanser",
+      "composition": ""
+    }
+  ]
+}

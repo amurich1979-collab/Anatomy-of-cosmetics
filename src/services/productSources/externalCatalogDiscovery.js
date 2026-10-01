@@ -2,6 +2,27 @@ import { fetchText, sourceProduct } from "./utils.js";
 
 const SEARCH_URL = "https://html.duckduckgo.com/html/";
 const BLOCKED_HOSTS = /(?:duckduckgo\.com|google\.com|bing\.com|facebook\.com|instagram\.com|youtube\.com|tiktok\.com)/i;
+const discoveredProductUrls = new Set();
+
+function rememberDiscoveredUrl(url) {
+  if (discoveredProductUrls.size >= 500) discoveredProductUrls.delete(discoveredProductUrls.values().next().value);
+  discoveredProductUrls.add(url);
+}
+
+function isPublicHttpsUrl(value) {
+  try {
+    const url = new URL(value);
+    const host = url.hostname.toLowerCase();
+    if (url.protocol !== "https:" || !host || host === "localhost" || host.endsWith(".local")) return false;
+    if (/^(?:127\.|10\.|169\.254\.|192\.168\.|0\.)/.test(host)) return false;
+    const private172 = host.match(/^172\.(\d+)\./);
+    if (private172 && Number(private172[1]) >= 16 && Number(private172[1]) <= 31) return false;
+    if (host === "::1" || host.startsWith("fc") || host.startsWith("fd") || host.startsWith("fe80:")) return false;
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 function decodeHtml(value = "") {
   return String(value)
@@ -71,7 +92,7 @@ function urlFromExternalId(id = "") {
   if (!encoded || encoded === id) return "";
   try {
     const url = Buffer.from(encoded, "base64url").toString("utf8");
-    return /^https?:\/\//i.test(url) ? url : "";
+    return isPublicHttpsUrl(url) && discoveredProductUrls.has(url) ? url : "";
   } catch {
     return "";
   }
@@ -90,7 +111,8 @@ function resultUrl(raw = "") {
   const normalized = candidate.startsWith("//") ? `https:${candidate}` : candidate;
   try {
     const url = new URL(normalized);
-    return BLOCKED_HOSTS.test(url.hostname) ? "" : url.toString();
+    const result = url.toString();
+    return BLOCKED_HOSTS.test(url.hostname) || !isPublicHttpsUrl(result) ? "" : result;
   } catch {
     return "";
   }
@@ -102,7 +124,10 @@ export function extractExternalSearchUrls(html, limit = 4) {
   for (const block of blocks) {
     const match = block.match(/<a[^>]+class=["'][^"']*result__a[^"']*["'][^>]+href=["']([^"']+)/i);
     const url = resultUrl(match?.[1]);
-    if (url) urls.add(url);
+    if (url) {
+      urls.add(url);
+      rememberDiscoveredUrl(url);
+    }
     if (urls.size >= limit) break;
   }
   return Array.from(urls);

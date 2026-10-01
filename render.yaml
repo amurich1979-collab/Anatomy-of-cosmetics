@@ -11,3 +11,15 @@ services:
         value: 0.0.0.0
       - key: NODE_ENV
         value: production
+      - key: APP_URL
+        value: https://anatomy-cosmetology.onrender.com
+      - key: SESSION_SECRET
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_SSL
+        value: "true"
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false

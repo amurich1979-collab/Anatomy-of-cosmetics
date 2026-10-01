@@ -1,0 +1,8 @@
+{
+  "id": "openbeautyfacts-cosing-mirror-legacy",
+  "type": "third_party_mirror_legacy_snapshot",
+  "url": "https://raw.githubusercontent.com/openfoodfacts/openbeautyfacts/develop/cosing/COSING_Ingredients-Fragrance.Inventory_v2.csv",
+  "version": null,
+  "exportedAt": null,
+  "retrievedAt": null
+}

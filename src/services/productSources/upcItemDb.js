@@ -16,6 +16,7 @@ function toProduct(item = {}) {
     source: "UPCitemdb",
     sourceType: "upcitemdb",
     sourceUrl: item.offers?.[0]?.link || (code ? `https://www.upcitemdb.com/upc/${code}` : ""),
+    variant: String(item.model || item.size || "").trim() || undefined,
     raw: item
   });
 }

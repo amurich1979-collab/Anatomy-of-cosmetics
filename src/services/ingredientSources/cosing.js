@@ -1,9 +1,4 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const REGISTRY_PATH = path.join(__dirname, "..", "..", "..", "data", "inci-registry.json");
+import { getInciRegistrySnapshot } from "./inciRegistry.js";
 
 const OCR_REPLACEMENTS = [
   [/phenoxyethanal/gi, "phenoxyethanol"],
@@ -13,27 +8,6 @@ const OCR_REPLACEMENTS = [
   [/\bcopper\s+tripeptide\s+l\b/gi, "copper tripeptide-1"],
   [/\bgreen\s+tea\s+leaf\s+extract\b/gi, "camellia sinensis leaf extract"]
 ];
-
-const MANUAL_ALIASES = new Map([
-  ["water", "aqua"],
-  ["fragrance", "parfum"],
-  ["mineral oil", "paraffinum liquidum"],
-  ["beeswax", "cera alba"],
-  ["green tea leaf extract", "camellia sinensis leaf extract"],
-  ["camellia sinensis green tea leaf extract", "camellia sinensis leaf extract"]
-]);
-
-const SUGGESTED_ALIASES = new Map([
-  ["hamamelis virginiana extract", { target: "hamamelis virginiana bark/leaf extract", confidence: 0.88 }]
-]);
-
-function readRegistry() {
-  try {
-    return JSON.parse(fs.readFileSync(REGISTRY_PATH, "utf8"));
-  } catch {
-    return [];
-  }
-}
 
 export function normalizeInciKey(value) {
   return String(value || "")
@@ -84,7 +58,18 @@ function buildIndex(registry) {
   return { byKey, searchable };
 }
 
-const REGISTRY = readRegistry();
+const SNAPSHOT = getInciRegistrySnapshot();
+const REGISTRY = SNAPSHOT.records;
+const MANUAL_ALIASES = new Map(
+  SNAPSHOT.local.aliases
+    .filter((addition) => addition.reviewStatus !== "rejected")
+    .map((addition) => [normalizeInciKey(addition.alias), normalizeInciKey(addition.target)])
+);
+const SUGGESTED_ALIASES = new Map(
+  SNAPSHOT.local.suggestions
+    .filter((addition) => addition.reviewStatus !== "rejected")
+    .map((addition) => [normalizeInciKey(addition.alias), { target: normalizeInciKey(addition.target), confidence: addition.confidence }])
+);
 const INDEX = buildIndex(REGISTRY);
 
 function levenshtein(a, b) {
@@ -143,8 +128,22 @@ function toSourceRecord(record, match) {
     name: record.name,
     aliases: record.aliases || [],
     functions: record.functions || [],
-    source: "CosIng",
+    source: "INCI registry",
+    referenceType: "inci_registry",
     sourceFile: "data/inci-registry.json",
+    cas: record.cas,
+    restrictions: record.restrictions,
+    sourceMetadata: {
+      registryVersion: SNAPSHOT.metadata.registryVersion,
+      registrySha256: SNAPSHOT.metadata.registrySha256,
+      sourceType: SNAPSHOT.metadata.source.type,
+      sourceUrl: SNAPSHOT.metadata.source.url,
+      sourceVersion: SNAPSHOT.metadata.source.version,
+      sourceExportedAt: SNAPSHOT.metadata.source.exportedAt,
+      sourceRetrievedAt: SNAPSHOT.metadata.source.retrievedAt,
+      recordProvenance: record.provenance,
+      localAliases: record.localAliases
+    },
     match
   };
 }

@@ -1,0 +1,2890 @@
+{
+  "schemaVersion": "1.0",
+  "version": "1.0.0",
+  "checkedAt": "2026-09-29",
+  "corpus": {
+    "totalDeduplicatedProducts": 14,
+    "eligibleRealFullFormulas": 1,
+    "excludedProducts": 13,
+    "exclusionsByReason": {
+      "demo_formula": 5,
+      "missing_composition": 5,
+      "partial_active_ingredients_only": 3
+    },
+    "eligible": [
+      {
+        "id": "trixosil-5-hair-growth-complex-50ml",
+        "name": "5% Professional Hair Growth Complex / Professionalnyy kompleks dlya rosta volos 50 ml",
+        "brand": "Trixosil",
+        "dataset": "products",
+        "sourceType": "label_photo",
+        "sourceUrl": "internal://user-label-photo-2026-07-09-trixosil",
+        "compositionScope": "full_label_inci_from_photo",
+        "reason": "real_full_composition",
+        "ingredientCount": 37
+      }
+    ],
+    "excluded": [
+      {
+        "id": "demo-aha-post-peel",
+        "name": "AHA Post-Peel Recovery Serum",
+        "brand": "Demo Professional",
+        "dataset": "products",
+        "sourceType": null,
+        "sourceUrl": "internal://verified-demo",
+        "compositionScope": null,
+        "reason": "demo_formula"
+      },
+      {
+        "id": "demo-glycolic-peel",
+        "name": "Glycolic Renewal Peel 20",
+        "brand": "Demo Clinic Lab",
+        "dataset": "products",
+        "sourceType": null,
+        "sourceUrl": "internal://verified-demo",
+        "compositionScope": null,
+        "reason": "demo_formula"
+      },
+      {
+        "id": "demo-retinol-night",
+        "name": "Retinol Barrier Night Concentrate",
+        "brand": "Demo Cosmeceuticals",
+        "dataset": "products",
+        "sourceType": null,
+        "sourceUrl": "internal://verified-demo",
+        "compositionScope": null,
+        "reason": "demo_formula"
+      },
+      {
+        "id": "demo-mineral-spf",
+        "name": "Mineral Recovery SPF 50",
+        "brand": "Demo Dermatology",
+        "dataset": "products",
+        "sourceType": null,
+        "sourceUrl": "internal://verified-demo",
+        "compositionScope": null,
+        "reason": "demo_formula"
+      },
+      {
+        "id": "demo-salicylic-gel",
+        "name": "BHA Clarifying Gel",
+        "brand": "Demo Acne Care",
+        "dataset": "products",
+        "sourceType": null,
+        "sourceUrl": "internal://verified-demo",
+        "compositionScope": null,
+        "reason": "demo_formula"
+      },
+      {
+        "id": "gigi-47010-lipacid-facial-soap",
+        "name": "47010 Lipacid Facial Soap / Mylo zhidkoe 120 ml",
+        "brand": "GIGI",
+        "dataset": "products",
+        "sourceType": "official_brand_page",
+        "sourceUrl": "https://www.gigi.ru/product/47010_lip_mylo_zhidkoe_120_ml/",
+        "compositionScope": "active_ingredients_only",
+        "reason": "partial_active_ingredients_only"
+      },
+      {
+        "id": "gigi-27110-acnon-day-control-moisturizer",
+        "name": "27110 Acnon Day Control Moisturizer / Krem dnevnoy acne control 50 ml",
+        "brand": "GIGI",
+        "dataset": "products",
+        "sourceType": "official_brand_page",
+        "sourceUrl": "https://www.gigi.ru/product/27110_an_day_control_moisturizer_krem_dnevnoy_aknekontrol_50ml/?sphrase_id=1714162",
+        "compositionScope": "active_ingredients_only",
+        "reason": "partial_active_ingredients_only"
+      },
+      {
+        "id": "gigi-27116-acnon-multi-peeling",
+        "name": "27116 Acnon Multi Peeling / Gel multipiling 120 ml",
+        "brand": "GIGI",
+        "dataset": "products",
+        "sourceType": "official_brand_page",
+        "sourceUrl": "https://www.gigi.ru/product/27116_an_multi_peeling_gel_multipiling_120ml/?sphrase_id=1714162",
+        "compositionScope": "active_ingredients_only",
+        "reason": "partial_active_ingredients_only"
+      },
+      {
+        "id": "gigi-official-27134_an_facial_cleanser_for_sensitive_skin_mylo_dlya_chuvstvitelnoy_kozhi_100ml",
+        "name": "27134 Мыло для чувствительной кожи GIGI Acnon Smoothing Facial Cleanser, 100 мл",
+        "brand": "GIGI",
+        "dataset": "productDetailsCache",
+        "sourceType": "gigi_official",
+        "sourceUrl": "https://www.gigi.ru/product/27134_an_facial_cleanser_for_sensitive_skin_mylo_dlya_chuvstvitelnoy_kozhi_100ml/",
+        "compositionScope": "active_ingredients_only",
+        "reason": "missing_composition"
+      },
+      {
+        "id": "gigi-official-27130_an_spot_gel_antisepticheskiy_zazhivlyayushchiy_gel_5gr",
+        "name": "27130 Антисептический заживляющий гель GIGI Acnon Spot Gel, 5 гр.",
+        "brand": "GIGI",
+        "dataset": "productDetailsCache",
+        "sourceType": "gigi_official",
+        "sourceUrl": "https://www.gigi.ru/product/27130_an_spot_gel_antisepticheskiy_zazhivlyayushchiy_gel_5gr/",
+        "compositionScope": "active_ingredients_only",
+        "reason": "missing_composition"
+      },
+      {
+        "id": "gigi-official-27116_an_multi_peeling_gel_multipiling_120ml",
+        "name": "27116 Гель-мультипилинг GIGI Acnon Multi Peeling, 120 мл",
+        "brand": "GIGI",
+        "dataset": "productDetailsCache",
+        "sourceType": "gigi_official",
+        "sourceUrl": "https://www.gigi.ru/product/27116_an_multi_peeling_gel_multipiling_120ml/",
+        "compositionScope": "active_ingredients_only",
+        "reason": "missing_composition"
+      },
+      {
+        "id": "gigi-official-27106_an_overnight_treatment_krem_nochnoy_50ml",
+        "name": "27106 Ночной крем GIGI Acnon Overnight treatment, 50мл",
+        "brand": "GIGI",
+        "dataset": "productDetailsCache",
+        "sourceType": "gigi_official",
+        "sourceUrl": "https://www.gigi.ru/product/27106_an_overnight_treatment_krem_nochnoy_50ml/",
+        "compositionScope": "active_ingredients_only",
+        "reason": "missing_composition"
+      },
+      {
+        "id": "gigi-official-27108_an_pre_treatment_softening_gel_gel_razmyagchayushchiy_240ml",
+        "name": "27108 Гель размягчающий GIGI Acnon Pre-Treatment Softening Gel, 240 мл",
+        "brand": "GIGI",
+        "dataset": "productDetailsCache",
+        "sourceType": "gigi_official",
+        "sourceUrl": "https://www.gigi.ru/product/27108_an_pre_treatment_softening_gel_gel_razmyagchayushchiy_240ml/",
+        "compositionScope": "active_ingredients_only",
+        "reason": "missing_composition"
+      }
+    ],
+    "limitation": "Локально доступен слишком малый корпус для репрезентативной оценки рынка. Частота используется только как воспроизводимый внутренний приоритет."
+  },
+  "coverage": {
+    "nameRecognition": {
+      "numerator": 34,
+      "denominator": 37,
+      "rate": 0.9189,
+      "definition": "Уникальные названия из допустимого корпуса, подтвержденные точным/alias/partial сопоставлением с INCI registry."
+    },
+    "expertExplanation": {
+      "numerator": 2,
+      "denominator": 34,
+      "rate": 0.0588,
+      "definition": "Распознанные ингредиенты, для которых есть отдельное source-backed утверждение; pending учитывается отдельно от предметно проверенного."
+    },
+    "domainReviewedExplanation": {
+      "numerator": 0,
+      "denominator": 34,
+      "rate": 0,
+      "definition": "Распознанные ингредиенты с утверждением, одобренным предметным специалистом."
+    },
+    "warning": "Рост распознавания имен не считается ростом экспертного покрытия. Pending и insufficient_data не показываются как проверенный факт."
+  },
+  "priorityMethod": "frequency_desc_then_mean_formula_position_then_name; demo and partial active-only lists excluded",
+  "priorityBatch": [
+    {
+      "rank": 1,
+      "ingredient": "Aqua",
+      "observedAs": "Aqua",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 1,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "SOLVENT"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 2,
+      "ingredient": "Isopropyl Alcohol",
+      "observedAs": "Isopropyl Alcohol",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 2,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "ANTIFOAMING",
+        "PERFUMING",
+        "SOLVENT",
+        "VISCOSITY CONTROLLING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 3,
+      "ingredient": "Pyrrolidinyl Diaminopyrimidine Oxide",
+      "observedAs": "Pyrrolidinyl Diaminopyrimidine Oxide",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 3,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "HAIR CONDITIONING",
+        "HAIR WAVING OR STRAIGHTENING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 4,
+      "ingredient": "Oxothiazolidinecarboxylate",
+      "observedAs": "Oxothiazolidinecarboxylate",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 4,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "unknown",
+        "suggestedMatch": null,
+        "confidence": null
+      },
+      "roles": [],
+      "roleEvidence": null,
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 5,
+      "ingredient": "Biotinoyl Tripeptide-1",
+      "observedAs": "Biotinoyl Tripeptide-1",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 5,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "HAIR CONDITIONING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 6,
+      "ingredient": "Apigenin",
+      "observedAs": "Apigenin",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 6,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "ANTIOXIDANT",
+        "HAIR CONDITIONING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 7,
+      "ingredient": "Oleanolic Acid",
+      "observedAs": "Oleanolic Acid",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 7,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "SKIN CONDITIONING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 8,
+      "ingredient": "Butylene Glycol",
+      "observedAs": "Butylene Glycol",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 8,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "HUMECTANT",
+        "MASKING",
+        "SKIN CONDITIONING",
+        "SOLVENT",
+        "VISCOSITY CONTROLLING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 9,
+      "ingredient": "Ppg-26-Buteth-26",
+      "observedAs": "PPG-26-Buteth-26",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 9,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "HAIR CONDITIONING",
+        "SKIN CONDITIONING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 10,
+      "ingredient": "Peg-40 Hydrogenated Castor Oil",
+      "observedAs": "PEG-40 Hydrogenated Castor Oil",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 10,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "EMULSIFYING",
+        "SURFACTANT"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 11,
+      "ingredient": "Dextran",
+      "observedAs": "Dextran",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 11,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "BINDING",
+        "VISCOSITY CONTROLLING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 12,
+      "ingredient": "Acetyl Tetrapeptide-3",
+      "observedAs": "Acetyl Tetrapeptide-3",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 12,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "SKIN PROTECTING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 13,
+      "ingredient": "Trifolium Pratense (Clover) Flower Extract",
+      "observedAs": "Trifolium Pratense (Clover) Flower Extract",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 13,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "unknown",
+        "suggestedMatch": null,
+        "confidence": null
+      },
+      "roles": [],
+      "roleEvidence": null,
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 14,
+      "ingredient": "Adenosine",
+      "observedAs": "Adenosine",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 14,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "SKIN CONDITIONING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 15,
+      "ingredient": "Niacinamide",
+      "observedAs": "Niacinamide",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 15,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "SMOOTHING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [
+        {
+          "ruleId": "literature.niacinamide.appearance",
+          "possibleContribution": "В исследовании формулы с 5% ниацинамида отмечены улучшения ряда показателей внешнего вида кожи лица по сравнению с основой.",
+          "conditions": {
+            "applicationSite": "face",
+            "usage": "leave_on",
+            "concentrationPercent": 5,
+            "productForm": "facial leave-on formulation"
+          },
+          "limitations": [
+            "5% относится только к исследованию, концентрация в анализируемом составе неизвестна.",
+            "Ограниченная группа участников и конкретная формула; результат нельзя переносить на другие продукты или режимы применения."
+          ],
+          "sources": [
+            {
+              "sourceId": "pmid-16029679",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/16029679/",
+              "locator": "Abstract: Methods, Results",
+              "checkedAt": "2026-09-29"
+            }
+          ]
+        }
+      ],
+      "riskAssessment": [
+        {
+          "ruleId": "literature.niacinamide.appearance",
+          "status": "insufficient_data",
+          "statements": [],
+          "limitations": [
+            "Аннотация не устанавливает профиль риска ниацинамида для иных концентраций, формул, популяций или режимов применения."
+          ]
+        }
+      ],
+      "limitations": [
+        "5% относится только к исследованию, концентрация в анализируемом составе неизвестна.",
+        "Ограниченная группа участников и конкретная формула; результат нельзя переносить на другие продукты или режимы применения."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "review_required",
+      "statusLabel": "Требует предметной проверки"
+    },
+    {
+      "rank": 16,
+      "ingredient": "Copper Tripeptide-1",
+      "observedAs": "Copper Tripeptide-1",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 16,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "SKIN CONDITIONING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 17,
+      "ingredient": "Poloxamer 188",
+      "observedAs": "Poloxamer 188",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 17,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "EMULSIFYING",
+        "SURFACTANT"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 18,
+      "ingredient": "Pca",
+      "observedAs": "PCA",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 18,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "HUMECTANT",
+        "MOISTURISING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 19,
+      "ingredient": "Alanine",
+      "observedAs": "Alanine",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 19,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "ANTISTATIC",
+        "HAIR CONDITIONING",
+        "MASKING",
+        "SKIN CONDITIONING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 20,
+      "ingredient": "Glycine",
+      "observedAs": "Glycine",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 20,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "ANTISTATIC",
+        "BUFFERING",
+        "HAIR CONDITIONING",
+        "SKIN CONDITIONING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 21,
+      "ingredient": "Arginine",
+      "observedAs": "Arginine",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 21,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "ANTISTATIC",
+        "HAIR CONDITIONING",
+        "MASKING",
+        "SKIN CONDITIONING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 22,
+      "ingredient": "Serine",
+      "observedAs": "Serine",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 22,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "ANTISTATIC",
+        "HAIR CONDITIONING",
+        "MASKING",
+        "SKIN CONDITIONING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 23,
+      "ingredient": "Valine",
+      "observedAs": "Valine",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 23,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "ANTISTATIC",
+        "HAIR CONDITIONING",
+        "MASKING",
+        "SKIN CONDITIONING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 24,
+      "ingredient": "Isoleucine",
+      "observedAs": "Isoleucine",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 24,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "ANTISTATIC",
+        "HAIR CONDITIONING",
+        "SKIN CONDITIONING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    },
+    {
+      "rank": 25,
+      "ingredient": "Threonine",
+      "observedAs": "Threonine",
+      "frequency": {
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "corpusFormulaCount": 1
+      },
+      "tieBreak": {
+        "meanPosition": 25,
+        "rule": "frequency_desc_then_mean_formula_position_then_name"
+      },
+      "nameRecognition": {
+        "status": "confirmed",
+        "suggestedMatch": null,
+        "confidence": 1
+      },
+      "roles": [
+        "ANTISTATIC",
+        "HAIR CONDITIONING",
+        "HAIR WAVING OR STRAIGHTENING"
+      ],
+      "roleEvidence": {
+        "status": "reference_only_legacy_snapshot",
+        "sourceUrl": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+        "checkedAt": "2026-09-29",
+        "limitation": "Функции взяты из локального legacy-снимка справочника. Официальная страница CosIng объясняет назначение базы, но не подтверждает актуальность этой конкретной локальной строки."
+      },
+      "effects": [],
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Проверяемый источник о рисках для этой записи не добавлен."
+        ]
+      },
+      "limitations": [
+        "Нет проверяемого экспертного утверждения. Роль справочника не доказывает эффект, безопасность или качество сырья."
+      ],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "insufficient_data",
+      "statusLabel": "Недостаточно данных"
+    }
+  ],
+  "legacyAudit": {
+    "recordCount": 122,
+    "summary": {
+      "missingSources": 122,
+      "unsupportedNumericQualityScores": 122,
+      "unsupportedEvidenceLabels": 122,
+      "unsourcedDomainClaims": 122,
+      "strongWordingRequiresReview": 7,
+      "structuredBestAvoidConflicts": 0,
+      "aliasCollisions": 0
+    },
+    "contradictionScope": "Проверены только машинно доказуемые пересечения best_for/avoid_for и alias-коллизии. Смысловые противоречия требуют предметной проверки и не объявляются автоматически.",
+    "aliasCollisions": [],
+    "records": [
+      {
+        "ingredient": "Aqua",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Glycerin",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sodium Hyaluronate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Hyaluronic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sodium PCA",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "PCA",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Urea",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Betaine",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Trehalose",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sorbitol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Xylitol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Mannitol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Propanediol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Butylene Glycol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Pentylene Glycol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "1,2-Hexanediol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Panthenol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Allantoin",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Aloe Barbadensis Leaf Juice",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Niacinamide",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Ceramide NP",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Ceramide AP",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Ceramide EOP",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Cholesterol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Phytosphingosine",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Squalane",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Caprylic/Capric Triglyceride",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Cetearyl Ethylhexanoate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Isopropyl Isostearate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Paraffinum Liquidum",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims",
+          "strong_wording_requires_review"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Petrolatum",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Dimethicone",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Cyclopentasiloxane",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Shea Butter",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Jojoba Oil",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sunflower Seed Oil",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Cera Alba",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Candelilla Wax",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Palmitic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Stearic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Linoleic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Cetearyl Alcohol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Cetyl Alcohol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Stearyl Alcohol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Glyceryl Stearate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "PEG-100 Stearate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Polysorbate 20",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Polysorbate 60",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sorbitan Isostearate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sorbitan Olivate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Cetearyl Olivate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Hydroxyethyl Acrylate/Sodium Acryloyldimethyl Taurate Copolymer",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Xanthan Gum",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Carbomer",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sodium Hydroxide",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Citric Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Disodium EDTA",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Phenoxyethanol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Ethylhexylglycerin",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Caprylyl Glycol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Chlorphenesin",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sodium Benzoate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Potassium Sorbate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Benzyl Alcohol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Parfum",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Limonene",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Linalool",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Citronellol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Geraniol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Eugenol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Lavandula Angustifolia Oil",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Menthol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Alcohol Denat.",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Glycolic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims",
+          "strong_wording_requires_review"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Lactic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Mandelic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Salicylic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Gluconolactone",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Lactobionic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Azelaic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Retinol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims",
+          "strong_wording_requires_review"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Retinal",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Retinyl Palmitate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Bakuchiol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Ascorbic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sodium Ascorbyl Phosphate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "3-O-Ethyl Ascorbic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Tocopherol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Ferulic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Resveratrol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Green Tea Extract",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Centella Asiatica Extract",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Madecassoside",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Bisabolol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Zinc PCA",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Zinc Oxide",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Titanium Dioxide",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Butyl Methoxydibenzoylmethane",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Ethylhexyl Methoxycinnamate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Octocrylene",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Methylene Bis-Benzotriazolyl Tetramethylbutylphenol",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims",
+          "strong_wording_requires_review"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Diethylamino Hydroxybenzoyl Hexyl Benzoate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Ethylhexyl Triazone",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims",
+          "strong_wording_requires_review"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Homosalate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sodium Laureth Sulfate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims",
+          "strong_wording_requires_review"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sodium Lauryl Sulfate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims",
+          "strong_wording_requires_review"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Cocamidopropyl Betaine",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Decyl Glucoside",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Lauryl Glucoside",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sodium Cocoyl Isethionate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Sodium Lauroyl Sarcosinate",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "PEG-40 Hydrogenated Castor Oil",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Hydrogenated Castor Oil",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Acetyl Hexapeptide-8",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Palmitoyl Tripeptide-1",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Palmitoyl Tetrapeptide-7",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Copper Tripeptide-1",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Caffeine",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Arbutin",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Tranexamic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      },
+      {
+        "ingredient": "Kojic Acid",
+        "evidenceStatus": "insufficient_data",
+        "statusLabel": "Недостаточно данных",
+        "issueCodes": [
+          "missing_sources",
+          "unsupported_numeric_quality_score",
+          "unsupported_evidence_label",
+          "unsourced_domain_claims"
+        ],
+        "structuredConflicts": [],
+        "note": "Старая запись допускается для идентичности/эвристик, но ее эффекты, риски и числовой балл не являются проверенным экспертным фактом."
+      }
+    ]
+  }
+}

@@ -28,15 +28,6 @@ const OCR_REPLACEMENTS = [
   { pattern: /\bcopper\s+tripeptide\s+l\b/gi, replacement: "Copper Tripeptide-1", confidence: 0.98 }
 ];
 
-const SUSPICIOUS_HINTS = [
-  {
-    pattern: /\bbotnoyl\b/i,
-    suggested_match: "Botulinum/Botox-like peptide or proprietary component",
-    confidence: 0.55,
-    reason: "Похоже на OCR-ошибку или торговое название; автоматически не исправлено."
-  }
-];
-
 function readJson(filePath, fallback) {
   try {
     return JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -68,269 +59,203 @@ readJson(translationsPath, []).forEach((item) => {
   });
 });
 
-function normalizeRawText(value) {
-  return String(value || "")
-    .replace(/\u0000/g, " ")
-    .replace(/[“”]/g, "\"")
-    .replace(/[‘’]/g, "'")
-    .replace(/[\u2010-\u2015]/g, "-")
-    .replace(/[|]/g, "I")
-    .replace(/[\\]/g, " ")
-    .replace(/\b(?:CREDIENTS|NGREDIENTS|INGRELIENTS)\b/gi, "INGREDIENTS")
-    .replace(/\r\n?/g, "\n")
-    .replace(/[ \t]+/g, " ")
-    .trim();
+// Offsets always refer to the original JS string (UTF-16, end exclusive).
+function compact(value) {
+  return value.replace(/[\u2010-\u2015]/g, "-").replace(/\s+/g, " ").replace(/\s*-\s*/g, "-").trim();
 }
 
-function joinBrokenIngredients(text) {
-  return String(text || "")
-    .replace(/([A-Za-z]+)-\s*\n\s*(\d+)/g, "$1-$2")
-    .replace(/([A-Za-z])-\s*\n\s*([A-Za-z])/g, "$1-$2")
-    .replace(/\bPEG-\s+(\d+)/gi, "PEG-$1")
-    .replace(/\bPPG-\s+(\d+)/gi, "PPG-$1")
-    .replace(/\b([A-Za-z]+)\s+Tripeptide-\s+(\d+)\b/gi, "$1 Tripeptide-$2");
+function candidateMatch(input) {
+  const key = normalizeInciKey(input);
+  if (EXPERT_INDEX.has(key)) return { canonical: EXPERT_INDEX.get(key), type: "exact", confidence: 1, origin: "expert" };
+  const record = findCosIngIngredient(input);
+  if (!record || record.match?.type === "partial") return null;
+  return { canonical: record.name, type: record.match.type, confidence: record.match.confidence, origin: "cosing" };
 }
 
-function stripNoiseLines(text) {
-  return String(text || "")
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .filter((line) => !/https?:\/\/|www\.|\.ru\b|\.com\b|@/.test(line))
-    .filter((line) => !/(тел\.?|phone|fax|\+?\d[\d\s()\-]{7,})/i.test(line))
-    .filter((line) => !/\b\d{8,14}\b/.test(line))
-    .filter((line) => !/\b(?:ml|мл|g|гр|kg|кг)\b/i.test(line) || /,|acid|extract|oil|glycol|aqua|water/i.test(line))
-    .filter((line) => !/^(?:eac|ean|barcode|batch|lot|серия|арт\.?|гост|ту)\b/i.test(line))
-    .filter((line) => !ADDRESS_OR_LABEL_NOISE.test(line))
-    .join("\n");
+function exactMatch(input) {
+  const match = candidateMatch(input);
+  return match && ["exact", "alias"].includes(match.type) ? match : null;
+}
+
+function labelledMatch(input) {
+  const direct = exactMatch(input);
+  if (direct) return direct;
+  const withoutParentheses = input.replace(/\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
+  if (withoutParentheses !== input) {
+    const match = exactMatch(withoutParentheses);
+    if (match) return { ...match, type: "alias" };
+  }
+  const parts = input.split("/").map(x => exactMatch(x.trim()));
+  if (parts.length > 1 && parts.every(Boolean) && parts.every(x => x.canonical === parts[0].canonical)) {
+    return { ...parts[0], type: "alias" };
+  }
+  return null;
+}
+
+function extractBlock(raw, transformations) {
+  const marker = raw.match(START_MARKER);
+  let start = marker ? marker.index + marker[0].length : 0;
+  let end = raw.length;
+  const remaining = raw.slice(start);
+  const stops = [
+    END_MARKER,
+    /\b(?:ean|batch|lot|net\s+weight|distributor|importer|address)\b|адрес|штрихкод|тел(?:ефон)?\s*[.:]|phone|fax/i,
+    /https?:\/\/|www\.|[\w.+-]+@[\w.-]+\.\w+/i,
+    /\b\d{8,14}\b|\+\d[\d ()-]{7,}/,
+    /\b\d+(?:[.,]\d+)?\s*(?:ml|kg|g)\b|\d+\s*(?:мл|кг|гр)\b/i
+  ];
+  for (const pattern of stops) {
+    const found = remaining.match(pattern);
+    if (found) end = Math.min(end, start + found.index);
+  }
+  if (start) transformations.push({ type: "remove_prefix", start: 0, end: start, original: raw.slice(0, start), replacement: "" });
+  if (end < raw.length) transformations.push({ type: "remove_metadata", start: end, end: raw.length, original: raw.slice(end), replacement: "" });
+  while (start < end && /\s/.test(raw[start])) start++;
+  while (end > start && /\s/.test(raw[end - 1])) end--;
+  return { start, end, hasMarker: Boolean(marker) };
 }
 
 export function extractInciBlock(rawText) {
-  const normalized = joinBrokenIngredients(normalizeRawText(rawText));
-  const startMatch = normalized.match(START_MARKER);
-  let block = startMatch
-    ? normalized.slice((startMatch.index || 0) + startMatch[0].length)
-    : normalized;
-
-  const endMatch = block.match(END_MARKER);
-  if (endMatch) block = block.slice(0, endMatch.index);
-
-  return stripNoiseLines(block)
-    .replace(/\n{2,}/g, "\n")
-    .trim();
+  const raw = String(rawText || "");
+  const block = extractBlock(raw, []);
+  return raw.slice(block.start, block.end);
 }
 
-function applyOcrDictionary(ingredient) {
-  let value = ingredient;
-  const corrections = [];
-
-  OCR_REPLACEMENTS.forEach((rule) => {
-    const before = value;
-    value = value.replace(rule.pattern, rule.replacement);
-    if (value !== before) {
-      corrections.push({
-        original: ingredient,
-        corrected: value,
-        confidence: rule.confidence,
-        source: "ocr_dictionary"
-      });
-    }
-  });
-
-  return { value, corrections };
-}
-
-function translateIngredient(ingredient) {
-  const translated = TRANSLATION_INDEX.get(normalizeInciKey(ingredient));
-  if (!translated) return null;
-
-  return {
-    original: ingredient,
-    corrected: translated.canonical,
-    confidence: 1,
-    source: "inci_translation",
-    language: translated.language
-  };
-}
-
-function cleanIngredientToken(value) {
-  return String(value || "")
-    .replace(/^(?:ingredients?|ingre[dl]ients?|ngredients?|credients?|inci|состав)\s*[:：-]?\s*/i, "")
-    .replace(/\((?:[^)]{1,40})\)/g, " ")
-    .replace(/[•*]+/g, " ")
-    .replace(/\bayy\b/gi, " ")
-    .replace(/\.\s+[A-ZА-Я]\b.*$/u, "")
-    .replace(/\s+/g, " ")
-    .replace(/^[^\p{L}0-9(]+|[^\p{L}0-9).%+-]+$/gu, "")
-    .replace(/[.]+$/g, "")
-    .trim();
-}
-
-function prepareIngredientSeparators(text) {
-  return String(text || "")
-    .replace(/\bCETEARYL\s+CETEARETH\s+RYLIC\/CAPRIC\s+TRIGLYCERIDE\b/gi, "Cetearyl Alcohol, Caprylic/Capric Triglyceride")
-    .replace(/\bNP\s+CERAMIDE\b/gi, "Ceramide NP,")
-    .replace(/\bCERAMIDE\s+BEHENTRIMA\s*\+\s*CERAMIDE\s+EOP\b/gi, "Behentrimonium Methosulfate, Ceramide EOP")
-    .replace(/\bDISODIUM\s+XANTHAN(?:\s+[^,\s])?\s*,?\s*PHOSPHATE\b/gi, "Disodium Phosphate, Xanthan Gum")
-    .replace(/\.\s+(?=[A-ZА-Я][\p{L}0-9+\-/]{1,}(?:\s|,|$))/gu, ", ")
-    .replace(/\s+[-–—]{2,}\s+/g, ", ");
-}
-
-function isPlausibleIngredientToken(item) {
-  if (!item || item.length < 2) return false;
-  if (END_MARKER.test(item) || ADDRESS_OR_LABEL_NOISE.test(item)) return false;
-  if (/^(?:only|for external use|avoid contact|keep out|warning|caution|directions?|предупреждение|только для|при возникновении)$/i.test(item)) {
-    return false;
+function splitTokens(raw, block, transformations) {
+  const tokens = [];
+  let begin = block.start;
+  let depth = 0;
+  function push(end, separator) {
+    let start = begin;
+    while (start < end && /\s/.test(raw[start])) start++;
+    while (end > start && /\s/.test(raw[end - 1])) end--;
+    if (end > start) tokens.push({ start, end, raw: raw.slice(start, end), separator });
   }
-  if (/^[a-z]{1,4}$/i.test(item) && !candidateMatch(item)) return false;
-  if (/^phosphate$/i.test(item) && !candidateMatch(item)) return false;
-  const letters = item.match(/\p{L}/gu) || [];
-  if (letters.length < 2) return false;
-  const asciiLetters = item.match(/[A-Za-z]/g) || [];
-  const cyrillicLetters = item.match(/[А-Яа-яЁё]/g) || [];
-  if (cyrillicLetters.length > asciiLetters.length && !candidateMatch(item)) return false;
-  return true;
+  for (let i = block.start; i < block.end; i++) {
+    const c = raw[i];
+    if (c === "(") depth++;
+    if (c === ")") depth = Math.max(0, depth - 1);
+    const numericComma = c === "," && /\d/.test(raw[i - 1] || "") && /\d/.test(raw[i + 1] || "");
+    const dot = c === "." && (i + 1 === block.end || /\s/.test(raw[i + 1]));
+    if (!depth && ((c === "," && !numericComma) || c === ";" || c === "\n" || c === "\r" || dot)) {
+      push(i, c);
+      transformations.push({ type: "split", start: i, end: i + 1, original: c, replacement: ", " });
+      begin = i + 1;
+    }
+  }
+  push(block.end, "");
+  return tokens;
 }
 
-function splitIngredientTokens(text) {
-  return prepareIngredientSeparators(text)
-    .replace(/(\d),(\d)/g, "$1§$2")
-    .split(/[,;\n]+/)
-    .map((item) => item.replace(/§/g, ","))
-    .map(cleanIngredientToken)
-    .filter(isPlausibleIngredientToken);
-}
-
-function mergeBrokenTokens(tokens) {
-  const merged = [];
-  for (let index = 0; index < tokens.length; index += 1) {
-    const current = tokens[index];
-    const next = tokens[index + 1];
-    const next2 = tokens[index + 2];
-
-    if (next && !candidateMatch(current)) {
-      const two = `${current} ${next}`.replace(/\s+/g, " ").trim();
-      if (candidateMatch(two)) {
-        merged.push(two);
-        index += 1;
-        continue;
-      }
-
-      if (next2) {
-        const three = `${current} ${next} ${next2}`.replace(/\s+/g, " ").trim();
-        if (candidateMatch(three)) {
-          merged.push(three);
-          index += 2;
-          continue;
+function mergeLines(tokens, raw, transformations) {
+  const result = [];
+  for (let i = 0; i < tokens.length; i++) {
+    let token = tokens[i];
+    if (!labelledMatch(compact(token.raw))) {
+      for (let j = i + 1; j < Math.min(tokens.length, i + 5); j++) {
+        const gap = raw.slice(tokens[j - 1].end, tokens[j].start);
+        if (!/^[\r\n\s]+$/.test(gap)) break;
+        const original = raw.slice(token.start, tokens[j].end);
+        const variants = [compact(original), compact(original.replace(/-\s*[\r\n]+\s*/g, ""))];
+        const joined = variants.find(value => labelledMatch(value));
+        if (joined) {
+          transformations.push({ type: "join_lines", start: token.start, end: tokens[j].end, original, replacement: joined });
+          token = { ...token, end: tokens[j].end, raw: original, joined };
+          i = j;
+          break;
         }
       }
     }
-
-    merged.push(current);
+    result.push(token);
   }
-  return merged;
+  return result;
 }
 
-function candidateMatch(ingredient) {
-  const key = normalizeInciKey(ingredient);
-  if (EXPERT_INDEX.has(key)) {
-    return { canonical: EXPERT_INDEX.get(key), type: "expert", confidence: 1 };
+function normalizeToken(token, transformations, autoCorrections, suggestions) {
+  let value = token.joined || compact(token.raw).replace(/^[^\p{L}\d]+|[^\p{L}\d)]+$/gu, "");
+  const log = (type, original, replacement, extra = {}) => transformations.push({
+    type, start: token.start, end: token.end, original, replacement, ...extra
+  });
+  if (value !== token.raw) log("normalize_format", token.raw, value);
+  if (!value || ADDRESS_OR_LABEL_NOISE.test(value) || !/\p{L}{2}/u.test(value) || /^(?:ayy|phosphate)$/i.test(value)) {
+    log("reject_noise", value, "");
+    return null;
   }
-
-  const cosing = findCosIngIngredient(ingredient);
-  if (!cosing) return null;
-
+  if (/\b(?:complex|комплекс)\b/i.test(value)) {
+    return { ...token, ingredient: value, canonicalName: null, status: "unknown", method: "undisclosed", origin: "proprietary_complex" };
+  }
+  let pending = null;
+  const addSuggestion = (name, confidence, reason) => {
+    pending = { original: value, suggested_match: name, confidence, reason, start: token.start, end: token.end };
+    suggestions.push(pending);
+    log("suggest", value, null, { suggested_match: name, confidence, reason });
+  };
+  const translation = TRANSLATION_INDEX.get(normalizeInciKey(value));
+  if (translation && normalizeInciKey(value) !== normalizeInciKey(translation.canonical)) {
+    const before = value;
+    value = translation.canonical;
+    autoCorrections.push({ original: before, corrected: value, source: "inci_translation", language: translation.language, confidence: 1 });
+    log("inci_translation", before, value);
+  }
+  for (const rule of OCR_REPLACEMENTS) {
+    const next = value.replace(rule.pattern, rule.replacement);
+    if (next === value) continue;
+    if (rule.confidence <= 0.95) {
+      addSuggestion(next, rule.confidence, "Uncertain OCR dictionary correction");
+    } else {
+      autoCorrections.push({ original: value, corrected: next, confidence: rule.confidence, source: "ocr_dictionary" });
+      log("ocr_dictionary", value, next);
+      value = next;
+    }
+  }
+  if (/\bbotnoyl\b/i.test(value)) addSuggestion(null, null, "Unresolved OCR or trade name; no chemical identity inferred");
+  const exact = labelledMatch(value);
+  const match = exact || candidateMatch(value);
+  if (!pending && match && !exact) addSuggestion(match.canonical, match.confidence, "Candidate requires confirmation");
+  const status = pending ? "suggested" : exact ? "confirmed" : "unknown";
+  // Keep complete slash names and parenthetical label text; canonical identity is separate.
+  const display = status === "confirmed" && !/[()/]/.test(value) ? exact.canonical : value;
+  if (display !== value) log("canonicalize", value, display);
+  if (status === "confirmed" && display !== exact.canonical) {
+    log("match_alias", display, display, { canonicalName: exact.canonical });
+  }
   return {
-    canonical: cosing.name,
-    type: cosing.match?.type || "cosing",
-    confidence: cosing.match?.confidence ?? 1,
-    suggested_match: cosing.match?.suggested_match || cosing.name,
-    functions: cosing.functions || []
+    ...token, ingredient: display, canonicalName: status === "confirmed" ? exact.canonical : null,
+    status, method: pending ? "suggested" : exact?.type || "none",
+    origin: match?.origin || "none", suggested_match: pending?.suggested_match || null,
+    match_confidence: pending?.confidence ?? exact?.confidence ?? null
   };
 }
 
-function normalizeIngredient(ingredient) {
-  const translation = translateIngredient(ingredient);
-  const translatedIngredient = translation?.corrected || ingredient;
-  const dictionary = applyOcrDictionary(translatedIngredient);
-  const corrected = cleanIngredientToken(dictionary.value);
-  const match = candidateMatch(corrected);
-  const suggestions = [];
-  const autoCorrections = [...(translation ? [translation] : []), ...dictionary.corrections];
-
-  SUSPICIOUS_HINTS.forEach((hint) => {
-    if (hint.pattern.test(ingredient)) {
-      suggestions.push({
-        original: ingredient,
-        suggested_match: hint.suggested_match,
-        confidence: hint.confidence,
-        reason: hint.reason
-      });
-    }
-  });
-
-  if (match?.confidence > 0.95) {
-    if (normalizeInciKey(match.canonical) !== normalizeInciKey(corrected)) {
-      autoCorrections.push({
-        original: ingredient,
-        corrected: match.canonical,
-        confidence: Number(match.confidence.toFixed(3)),
-        source: match.type
-      });
-    }
-    return { ingredient: match.canonical, autoCorrections, suggestions };
-  }
-
-  if (match?.confidence >= 0.8) {
-    suggestions.push({
-      original: ingredient,
-      suggested_match: match.suggested_match || match.canonical,
-      confidence: Number(match.confidence.toFixed(3)),
-      reason: "Похоже на INCI, но уверенность ниже порога автоисправления."
-    });
-  }
-
-  return { ingredient: corrected, autoCorrections, suggestions };
-}
-
-function uniqueByNormalized(items) {
-  const seen = new Set();
-  return items.filter((item) => {
-    const key = normalizeInciKey(item);
-    if (!key || seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-}
-
-function estimateConfidence({ ingredients, suggestions, cleanedText }) {
-  if (!ingredients.length) return 0;
-  const withMatches = ingredients.filter((ingredient) => candidateMatch(ingredient)).length;
-  const matchRatio = withMatches / ingredients.length;
-  const suggestionPenalty = Math.min(0.25, suggestions.length * 0.04);
-  const textPenalty = cleanedText.length < 25 ? 0.25 : 0;
-  return Math.max(0.1, Math.min(0.99, Number((0.35 + matchRatio * 0.6 - suggestionPenalty - textPenalty).toFixed(2))));
-}
-
 export function cleanInciText(rawText) {
-  const cleanedText = extractInciBlock(rawText);
-  const rawIngredients = mergeBrokenTokens(splitIngredientTokens(cleanedText));
-  const autoCorrections = [];
-  const suggestions = [];
-  const normalizedIngredients = rawIngredients.map((ingredient) => {
-    const normalized = normalizeIngredient(ingredient);
-    autoCorrections.push(...normalized.autoCorrections);
-    suggestions.push(...normalized.suggestions);
-    return normalized.ingredient;
+  const raw = String(rawText || "");
+  const transformations = [], autoCorrections = [], suggestions = [];
+  const block = extractBlock(raw, transformations);
+  const tokens = mergeLines(splitTokens(raw, block, transformations), raw, transformations);
+  let entries = tokens.map(token => normalizeToken(token, transformations, autoCorrections, suggestions)).filter(Boolean);
+  const hasEvidence = entries.some(x => x.status !== "unknown" || x.origin === "proprietary_complex");
+  if (!block.hasMarker && !hasEvidence) {
+    for (const item of entries) transformations.push({ type: "reject_unanchored_text", start: item.start, end: item.end, original: item.raw, replacement: "" });
+    entries = [];
+  }
+  const seen = new Map();
+  const ingredients = [];
+  entries.forEach((entry, index) => {
+    entry.position = index + 1;
+    const key = normalizeInciKey(entry.ingredient);
+    entry.duplicateOf = seen.get(key) || null;
+    if (entry.duplicateOf) {
+      transformations.push({ type: "duplicate", start: entry.start, end: entry.end, original: entry.raw, replacement: null, duplicateOf: entry.duplicateOf });
+    } else {
+      seen.set(key, entry.position);
+      ingredients.push(entry.ingredient);
+    }
   });
-  const ingredients = uniqueByNormalized(normalizedIngredients);
-
+  const recognized = entries.filter(x => x.status === "confirmed").length;
   return {
-    cleanedText: ingredients.join(", "),
-    extractedBlock: cleanedText,
-    ingredients,
-    autoCorrections,
-    suggestions,
-    confidence: estimateConfidence({ ingredients, suggestions, cleanedText })
+    rawText: raw, extractedBlock: raw.slice(block.start, block.end), block: { start: block.start, end: block.end },
+    cleanedText: ingredients.join(", "), ingredients, entries, transformations, autoCorrections, suggestions,
+    // Compatibility-only match coverage heuristic, never an OCR probability.
+    confidence: entries.length ? recognized / entries.length : 0
   };
 }

@@ -18,8 +18,16 @@ const FIELDS = [
   "url",
   "image_url",
   "image_front_url",
-  "selected_images"
+  "selected_images",
+  "countries",
+  "quantity",
+  "last_modified_t"
 ].join(",");
+
+function sourceUpdatedAt(value) {
+  const timestamp = Number(value);
+  return Number.isFinite(timestamp) && timestamp > 0 ? new Date(timestamp * 1000).toISOString() : undefined;
+}
 
 function toProduct(product = {}) {
   const code = product.code || "";
@@ -35,6 +43,9 @@ function toProduct(product = {}) {
     source: "Open Beauty Facts",
     sourceType: "open_beauty_facts",
     sourceUrl: product.url || (code ? `${BASE_URL}/product/${code}` : ""),
+    updatedAt: sourceUpdatedAt(product.last_modified_t),
+    market: String(product.countries || "").trim() || undefined,
+    variant: String(product.quantity || "").trim() || undefined,
     raw: product
   });
 }

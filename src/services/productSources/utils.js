@@ -14,6 +14,24 @@ export function isBarcode(value) {
   return /^\d{6,14}$/.test(String(value || "").trim());
 }
 
+export function barcodesEquivalent(left, right) {
+  const a = String(left || "").trim();
+  const b = String(right || "").trim();
+  if (!a || !b || !/^\d+$/.test(a) || !/^\d+$/.test(b)) return false;
+  if (a === b) return true;
+  return (a.length === 13 && a.startsWith("0") && a.slice(1) === b) ||
+    (b.length === 13 && b.startsWith("0") && b.slice(1) === a);
+}
+
+export class ProductSourceUnavailableError extends Error {
+  constructor(message, { code = "source_error", status } = {}) {
+    super(message);
+    this.name = "ProductSourceUnavailableError";
+    this.code = code;
+    this.status = status;
+  }
+}
+
 export function pickIngredients(product = {}) {
   return (
     product.ingredients_text ||
@@ -60,10 +78,19 @@ export async function fetchJson(url, { timeoutMs = 4500, headers = {} } = {}) {
       }
     });
 
-    if (!response.ok) return null;
+    if (response.status === 404) return null;
+    if (!response.ok) {
+      throw new ProductSourceUnavailableError(`Product source returned HTTP ${response.status}`, {
+        code: response.status === 429 ? "rate_limited" : "http_error",
+        status: response.status
+      });
+    }
     return await response.json();
-  } catch {
-    return null;
+  } catch (error) {
+    if (error instanceof ProductSourceUnavailableError) throw error;
+    throw new ProductSourceUnavailableError("Product source request failed", {
+      code: error?.name === "AbortError" ? "timeout" : "network_error"
+    });
   } finally {
     timeout.clear();
   }
@@ -81,10 +108,19 @@ export async function fetchText(url, { timeoutMs = 6500, headers = {} } = {}) {
       }
     });
 
-    if (!response.ok) return "";
+    if (response.status === 404) return "";
+    if (!response.ok) {
+      throw new ProductSourceUnavailableError(`Product source returned HTTP ${response.status}`, {
+        code: response.status === 429 ? "rate_limited" : "http_error",
+        status: response.status
+      });
+    }
     return await response.text();
-  } catch {
-    return "";
+  } catch (error) {
+    if (error instanceof ProductSourceUnavailableError) throw error;
+    throw new ProductSourceUnavailableError("Product source request failed", {
+      code: error?.name === "AbortError" ? "timeout" : "network_error"
+    });
   } finally {
     timeout.clear();
   }
@@ -100,7 +136,11 @@ export function sourceProduct({
   composition = "",
   source,
   sourceType,
-  sourceUrl = ""
+  sourceUrl = "",
+  updatedAt,
+  market,
+  variant,
+  formulaVersion
 }) {
   const cleanName = String(name || "").trim();
   const cleanCode = String(code || "").trim();
@@ -118,6 +158,10 @@ export function sourceProduct({
     source,
     sourceType,
     sourceUrl,
+    updatedAt,
+    market,
+    variant,
+    formulaVersion,
     trustLevel: sourceType === "open_beauty_facts" ? "D" : "E",
     verified: false,
     hasComposition: Boolean(composition),

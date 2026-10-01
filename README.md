@@ -65,7 +65,36 @@ Get-NetIPAddress -AddressFamily IPv4
 ```text
 HOST=0.0.0.0
 NODE_ENV=production
+APP_URL=https://anatomy-cosmetology.onrender.com
+SESSION_SECRET=<случайная строка минимум 32 байта>
+DATABASE_URL=<строка подключения к управляемому PostgreSQL>
+DATABASE_SSL=true
+GOOGLE_CLIENT_ID=<OAuth client ID>
+GOOGLE_CLIENT_SECRET=<OAuth client secret>
 ```
+
+`SESSION_SECRET` должен оставаться неизменным между перезапусками. Без `DATABASE_URL`
+приложение использует `data/app-db.json`; на эфемерном диске Render это допустимо
+только для временного локального демо, но не для аккаунтов и истории пользователей.
+
+Callback для Google OAuth:
+
+```text
+https://anatomy-cosmetology.onrender.com/api/auth/google/callback
+```
+
+Перед закрытой бетой выполните локально:
+
+```bash
+npm ci
+npm run check
+npm test
+npm run test:regressions
+npm run test:t19
+```
+
+Актуальное решение о готовности и известные ограничения перечислены в
+`reports/T19.md`.
 
 ### Railway
 

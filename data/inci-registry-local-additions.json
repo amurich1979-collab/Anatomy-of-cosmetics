@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "version": "legacy-manual-aliases-2026-09-29",
+  "aliases": [
+    { "alias": "water", "target": "Aqua", "reviewStatus": "unreviewed", "provenance": { "kind": "legacy_manual_alias", "note": "Extracted unchanged from src/services/ingredientSources/cosing.js during T11 migration.", "addedAt": "2026-09-29" } },
+    { "alias": "fragrance", "target": "Parfum", "reviewStatus": "unreviewed", "provenance": { "kind": "legacy_manual_alias", "note": "Extracted unchanged from src/services/ingredientSources/cosing.js during T11 migration.", "addedAt": "2026-09-29" } },
+    { "alias": "mineral oil", "target": "Paraffinum Liquidum", "reviewStatus": "unreviewed", "provenance": { "kind": "legacy_manual_alias", "note": "Extracted unchanged from src/services/ingredientSources/cosing.js during T11 migration.", "addedAt": "2026-09-29" } },
+    { "alias": "beeswax", "target": "Cera Alba", "reviewStatus": "unreviewed", "provenance": { "kind": "legacy_manual_alias", "note": "Extracted unchanged from src/services/ingredientSources/cosing.js during T11 migration.", "addedAt": "2026-09-29" } },
+    { "alias": "green tea leaf extract", "target": "Camellia Sinensis Leaf Extract", "reviewStatus": "unreviewed", "provenance": { "kind": "legacy_manual_alias", "note": "Extracted unchanged from src/services/ingredientSources/cosing.js during T11 migration.", "addedAt": "2026-09-29" } },
+    { "alias": "camellia sinensis green tea leaf extract", "target": "Camellia Sinensis Leaf Extract", "reviewStatus": "unreviewed", "provenance": { "kind": "legacy_manual_alias", "note": "Extracted unchanged from src/services/ingredientSources/cosing.js during T11 migration.", "addedAt": "2026-09-29" } }
+  ],
+  "suggestions": [
+    { "alias": "hamamelis virginiana extract", "target": "Hamamelis Virginiana Bark/Leaf Extract", "confidence": 0.88, "reviewStatus": "unreviewed", "provenance": { "kind": "legacy_suggestion", "note": "Extracted unchanged from src/services/ingredientSources/cosing.js during T11 migration; remains a suggestion, not an alias.", "addedAt": "2026-09-29" } }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0",
+  "cases": [
+    {
+      "id": "user-anesthetic-label",
+      "sourceType": "user_provided_label_transcription",
+      "sourceNote": "User identified the photographed product as an anesthetic in the project conversation; formula is the user-provided OCR transcription retained in the audit request.",
+      "productName": "User photographed anesthetic",
+      "formulaScope": "full",
+      "text": "Aqua, Frostoin, Prilocaine Hydrochloride, Propylene Glycol, Sodium Hydroxide, CetylPalmitate, C10-16 Alkyl Glucoside, C14-22 Alcohols, Hydroxyethylcellulose, Phenoxyethanol",
+      "expect": {
+        "productType": "local_anesthetic",
+        "assessmentStatus": "not_assessed",
+        "score": null,
+        "routineAdviceCount": 0,
+        "positiveRecommendationCount": 0
+      }
+    },
+    {
+      "id": "gigi-active-only-peeling",
+      "sourceType": "official_brand_active_ingredients",
+      "sourceNote": "Existing local product record sourced from the official GIGI product page; the source publishes active ingredients only.",
+      "productId": "gigi-27116-acnon-multi-peeling",
+      "expect": {
+        "assessmentStatus": "not_assessed",
+        "assessmentReason": "active_only_formula",
+        "score": null,
+        "routineAdviceCount": 0
+      }
+    },
+    {
+      "id": "real-front-label-text",
+      "sourceType": "open_beauty_facts_product_identity",
+      "sourceNote": "Resolved at runtime from the first corpus record with a front image; brand and product name are not an INCI list.",
+      "fromCorpus": "front_label",
+      "expect": {
+        "acceptedIngredientCount": 0,
+        "assessmentStatus": "not_assessed",
+        "score": null
+      }
+    }
+  ]
+}

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import crypto from "node:crypto";
-import { getExternalProduct, searchExternalProducts } from "./services/productSources/index.js";
+import { getExternalProduct, searchExternalProductsDetailed } from "./services/productSources/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
@@ -69,6 +69,31 @@ function tokens(value) {
   return normalize(value).split(" ").filter(Boolean);
 }
 
+const GENERIC_PRODUCT_IDENTITY_TOKENS = new Set([
+  "the", "and", "for", "with", "serum", "cream", "gel", "lotion", "cleanser", "soap",
+  "shampoo", "mask", "retinol", "facial", "face", "skin", "hair", "care", "beauty",
+  "cosmetic", "moisturizing", "hydrating", "calming", "daily", "shot", "spf"
+]);
+
+export function hasProductIdentityEvidence(labelText, product = {}) {
+  const label = normalize(labelText);
+  if (!label) return false;
+  const labelTokens = new Set(tokens(label));
+  const brandTokens = tokens(product.brand).filter((token) => token.length > 2 && !GENERIC_PRODUCT_IDENTITY_TOKENS.has(token));
+  const nameTokens = tokens(product.name).filter((token) => (
+    token.length > 2
+    && !GENERIC_PRODUCT_IDENTITY_TOKENS.has(token)
+    && !brandTokens.includes(token)
+  ));
+  const brandHits = brandTokens.filter((token) => labelTokens.has(token)).length;
+  const nameHits = nameTokens.filter((token) => labelTokens.has(token)).length;
+  const fullIdentity = normalize(`${product.brand || ""} ${product.name || ""}`);
+
+  if (fullIdentity.length >= 8 && label.includes(fullIdentity)) return true;
+  if (brandHits >= 1 && (nameHits >= 1 || brandTokens.length === 1)) return true;
+  return false;
+}
+
 function trustMeta(product) {
   const trust = TRUST[product.trustLevel] || TRUST.E;
   return {
@@ -103,6 +128,10 @@ function toSummary(product) {
     verified: trusted.verified,
     verifiedAt: trusted.verifiedAt,
     importedAt: trusted.importedAt,
+    updatedAt: trusted.updatedAt,
+    market: trusted.market,
+    variant: trusted.variant,
+    formulaVersion: trusted.formulaVersion,
     compositionScope: trusted.compositionScope,
     compositionAvailabilityNote: trusted.compositionAvailabilityNote,
     activeIngredients: trusted.activeIngredients,
@@ -199,6 +228,8 @@ function localScore(product, query) {
   const productTokens = tokens(`${product.brand} ${product.name}`);
 
   let score = 0;
+
+  if (String(product.code || "").trim() === String(query || "").trim()) score += 1000;
 
   if (full === normalizedQuery || name === normalizedQuery) score += 500;
   if (name.startsWith(normalizedQuery)) score += 220;
@@ -547,14 +578,25 @@ async function fetchWebSearchProducts(query, limit = 4) {
   }
 }
 
-export async function searchProducts(query, limit = 8) {
+export async function searchProductsDetailed(query, limit = 8) {
   const normalizedQuery = normalize(query);
-  if (normalizedQuery.length < 1) return [];
+  if (normalizedQuery.length < 1) {
+    return { products: [], lookupStatus: "not_found", sourceStatuses: [], cache: { hit: false } };
+  }
 
   const local = searchLocalProducts(query, limit);
-  if (normalizedQuery.length < 3) return local.slice(0, limit);
+  if (normalizedQuery.length < 3) {
+    const products = local.slice(0, limit);
+    return {
+      products,
+      lookupStatus: products.some((product) => product.composition) ? "found" : products.length ? "no_inci" : "not_found",
+      sourceStatuses: [],
+      cache: { hit: false }
+    };
+  }
 
-  const external = await searchExternalProducts(query, { limit });
+  const externalResult = await searchExternalProductsDetailed(query, { limit });
+  const external = externalResult.products;
   const seen = new Set();
   const freshExternal = external.filter((product) => {
     const identity = normalize(`${product.brand} ${product.name}`);
@@ -563,7 +605,7 @@ export async function searchProducts(query, limit = 8) {
     return true;
   }).map(toSummary);
 
-  const cacheable = external.filter((product) => product.composition || product.imageUrl);
+  const cacheable = external;
   if (cacheable.length) {
     const cache = loadDetailsCache();
     const cacheKeys = new Set(cacheable.map((product) => product.id || product.code));
@@ -574,7 +616,15 @@ export async function searchProducts(query, limit = 8) {
     const identity = normalize(`${product.brand} ${product.name}`);
     return list.findIndex((candidate) => normalize(`${candidate.brand} ${candidate.name}`) === identity) === index;
   });
-  if (merged.length >= limit) return merged.slice(0, limit);
+  if (merged.length >= limit || /^\d{6,14}$/.test(String(query).trim())) {
+    const products = merged.slice(0, limit);
+    return {
+      products,
+      lookupStatus: products.some((product) => product.composition) ? "found" : products.length ? "no_inci" : externalResult.status,
+      sourceStatuses: externalResult.sourceStatuses,
+      cache: externalResult.cache
+    };
+  }
 
   const webExternal = await fetchWebSearchProducts(query, Math.max(0, limit - merged.length));
   const freshWebExternal = webExternal.filter((product) => {
@@ -584,7 +634,17 @@ export async function searchProducts(query, limit = 8) {
     return true;
   });
 
-  return [...merged, ...freshWebExternal].slice(0, limit);
+  const products = [...merged, ...freshWebExternal].slice(0, limit);
+  return {
+    products,
+    lookupStatus: products.some((product) => product.composition) ? "found" : products.length ? "no_inci" : externalResult.status,
+    sourceStatuses: externalResult.sourceStatuses,
+    cache: externalResult.cache
+  };
+}
+
+export async function searchProducts(query, limit = 8) {
+  return (await searchProductsDetailed(query, limit)).products;
 }
 
 export function listCatalogProducts() {
@@ -627,7 +687,7 @@ export async function getProductDetails(id) {
 
 export async function identifyProductFromText(text) {
   const local = identifyLocalProductFromText(text);
-  if (local) return local;
+  if (local && hasProductIdentityEvidence(text, local)) return local;
 
   const normalizedText = normalize(text);
   const lines = String(text || "")
@@ -643,7 +703,7 @@ export async function identifyProductFromText(text) {
       const name = normalize(product.name);
       const brandAndName = normalize(`${product.brand} ${product.name}`);
       const normalizedLine = normalize(line);
-      return (
+      return hasProductIdentityEvidence(text, product) && (
         normalizedText.includes(name) ||
         normalizedText.includes(brandAndName) ||
         name.includes(normalizedLine) ||

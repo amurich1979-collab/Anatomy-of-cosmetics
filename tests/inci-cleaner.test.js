@@ -59,24 +59,24 @@ test("cleanInciText handles noisy multilingual OCR and stops before address bloc
 
   assert.equal(/CeraVe LLC|New York|Ho Chi Minh|Viet Nam|The Nexus/i.test(cleaned.extractedBlock), false);
   assert.equal(cleaned.ingredients.some((item) => /CeraVe|New York|Nexus|Code|Canh|Tang/i.test(item)), false);
-  assert.ok(cleaned.ingredients.includes("Aqua"));
+  assert.ok(cleaned.entries.some(item => item.canonicalName === "Aqua"));
   assert.ok(cleaned.ingredients.includes("Glycerin"));
   assert.ok(cleaned.ingredients.includes("Cetyl Alcohol"));
-  assert.ok(cleaned.ingredients.includes("Ceramide NP"));
-  assert.ok(cleaned.ingredients.includes("Petrolatum"));
+  assert.equal(cleaned.ingredients.includes("Ceramide NP"), false);
+  assert.equal(cleaned.ingredients.includes("Petrolatum"), false);
   assert.ok(cleaned.ingredients.includes("Potassium Phosphate"));
-  assert.ok(cleaned.ingredients.includes("Ceramide EOP"));
+  assert.equal(cleaned.ingredients.includes("Ceramide EOP"), false);
   assert.ok(cleaned.ingredients.includes("Carbomer"));
   assert.ok(cleaned.ingredients.includes("Dimethicone"));
   assert.ok(cleaned.ingredients.includes("Sodium Lauroyl Lactylate"));
   assert.ok(cleaned.ingredients.includes("Cholesterol"));
   assert.ok(cleaned.ingredients.includes("Phenoxyethanol"));
-  assert.ok(cleaned.ingredients.includes("Disodium Phosphate"));
-  assert.ok(cleaned.ingredients.includes("Xanthan Gum"));
+  assert.equal(cleaned.ingredients.includes("Disodium Phosphate"), false);
+  assert.equal(cleaned.ingredients.includes("Xanthan Gum"), false);
   assert.ok(cleaned.ingredients.includes("Tocopherol"));
   assert.ok(cleaned.ingredients.includes("Phytosphingosine"));
   assert.ok(cleaned.ingredients.includes("Ethylhexylglycerin"));
-  assert.ok(cleaned.confidence > 0.7);
+  assert.ok(cleaned.entries.some(item => item.status === "unknown"));
 });
 
 test("fuzzy matches between 80 and 95 percent are suggestions, not silent corrections", () => {

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "1.1",
+  "version": "2026-09-29.2",
+  "sources": [
+    {
+      "id": "pmid-31532576",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31532576/",
+      "title": "Combined effects of glycerol and petrolatum in an emollient cream",
+      "type": "primary_study_abstract",
+      "checkedAt": "2026-09-29",
+      "checkedScope": "abstract_only",
+      "context": "Рандомизированное перекрестное исследование: 51 здоровый доброволец с сухой кожей, крем V0034CR и варианты основы, предплечья, наблюдение 12 часов. Лечебный эффект не изучался."
+    },
+    {
+      "id": "pmid-16029679",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16029679/",
+      "title": "Niacinamide: A B vitamin that improves aging facial skin appearance",
+      "type": "primary_study_abstract",
+      "checkedAt": "2026-09-29",
+      "checkedScope": "abstract_only",
+      "context": "Рандомизированное исследование половин лица: 50 белых женщин с признаками фотостарения, 5% ниацинамид против основы, 12 недель. Авторы связаны с Procter & Gamble."
+    },
+    {
+      "id": "pmid-27425824",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27425824/",
+      "title": "A new topical panthenol-containing emollient: results from two randomized controlled studies",
+      "type": "primary_study_abstract",
+      "checkedAt": "2026-09-29",
+      "checkedScope": "abstract_only",
+      "context": "Два исследования конкретной многокомпонентной эмолентной формулы с пантенолом. В исследовании барьера участвовали 23 здоровых добровольца; сравнивались обработанные и контрольные участки после воздействия SDS. Вклад одного пантенола отдельно не изучался; часть авторов связана с производителем формулы."
+    }
+  ],
+  "claims": [
+    {
+      "ruleId": "literature.glycerin.hydration",
+      "version": "1.0.0",
+      "ingredient": "Glycerin",
+      "role": "увлажняющий компонент",
+      "possibleContribution": "В исследованном креме вклад глицерина связывали с повышением увлажненности кожи по корнеометрии.",
+      "conditions": { "applicationSite": "skin", "usage": "leave_on", "productForm": "emollient cream" },
+      "riskAssessment": { "status": "insufficient_data", "statements": [], "limitations": ["Аннотация не позволяет установить профиль риска глицерина для произвольной формулы или конкретного пользователя."] },
+      "limitations": ["Исследована конкретная основа крема; результат не доказывает эффект анализируемого продукта.", "Краткосрочные инструментальные измерения не подтверждают лечебные свойства."],
+      "basis": [{ "sourceId": "pmid-31532576", "locator": "Abstract: Methods, Results, Conclusions" }],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "review_required",
+      "review": { "status": "pending", "reviewer": null, "reviewedAt": null }
+    },
+    {
+      "ruleId": "literature.petrolatum.water-loss",
+      "version": "1.0.0",
+      "ingredient": "Petrolatum",
+      "role": "компонент, ограничивающий потерю воды",
+      "possibleContribution": "В исследованном креме вклад петролатума связывали со снижением трансэпидермальной потери воды.",
+      "conditions": { "applicationSite": "skin", "usage": "leave_on", "productForm": "emollient cream" },
+      "riskAssessment": { "status": "insufficient_data", "statements": [], "limitations": ["Аннотация не позволяет установить профиль риска петролатума для произвольной формулы или конкретного пользователя."] },
+      "limitations": ["Вывод относится к исследованному крему и условиям, а не ко всем средствам с Petrolatum.", "Это не оценка чистоты сырья или безопасности готового средства."],
+      "basis": [{ "sourceId": "pmid-31532576", "locator": "Abstract: Methods, Results, Conclusions" }],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "review_required",
+      "review": { "status": "pending", "reviewer": null, "reviewedAt": null }
+    },
+    {
+      "ruleId": "literature.niacinamide.appearance",
+      "version": "1.0.0",
+      "ingredient": "Niacinamide",
+      "role": "компонент, изучавшийся для внешнего вида кожи",
+      "possibleContribution": "В исследовании формулы с 5% ниацинамида отмечены улучшения ряда показателей внешнего вида кожи лица по сравнению с основой.",
+      "conditions": { "applicationSite": "face", "usage": "leave_on", "concentrationPercent": 5, "productForm": "facial leave-on formulation" },
+      "riskAssessment": { "status": "insufficient_data", "statements": [], "limitations": ["Аннотация не устанавливает профиль риска ниацинамида для иных концентраций, формул, популяций или режимов применения."] },
+      "limitations": ["5% относится только к исследованию, концентрация в анализируемом составе неизвестна.", "Ограниченная группа участников и конкретная формула; результат нельзя переносить на другие продукты или режимы применения."],
+      "basis": [{ "sourceId": "pmid-16029679", "locator": "Abstract: Methods, Results" }],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "review_required",
+      "review": { "status": "pending", "reviewer": null, "reviewedAt": null }
+    },
+    {
+      "ruleId": "literature.panthenol.formula-barrier",
+      "version": "1.0.0",
+      "ingredient": "Panthenol",
+      "role": "компонент исследованной эмолентной формулы",
+      "possibleContribution": "В исследовании конкретная многокомпонентная эмолентная формула с пантенолом была связана с улучшением инструментальных показателей увлажненности и барьерной функции по сравнению с контролем.",
+      "conditions": { "applicationSite": "skin", "usage": "leave_on", "productForm": "panthenol-containing emollient" },
+      "riskAssessment": { "status": "insufficient_data", "statements": [], "limitations": ["Исследование не выделяло риск или переносимость одного пантенола отдельно от готовой формулы."] },
+      "limitations": ["Исследована готовая многокомпонентная формула, поэтому эффект нельзя приписать одному пантенолу.", "Концентрация пантенола в аннотации не указана; результат нельзя переносить на иной продукт или лекарственную форму."],
+      "basis": [{ "sourceId": "pmid-27425824", "locator": "Abstract: Purpose, Methods, Results, Conclusions" }],
+      "checkedAt": "2026-09-29",
+      "evidenceStatus": "review_required",
+      "review": { "status": "pending", "reviewer": null, "reviewedAt": null }
+    }
+  ]
+}

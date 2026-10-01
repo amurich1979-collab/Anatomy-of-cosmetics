@@ -1,0 +1,1164 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-10-01T00:49:32.381Z",
+  "corpus": {
+    "entries": 120,
+    "setup": 80,
+    "final": 40,
+    "humanReviewed": 0
+  },
+  "benchmarkStatus": "candidate_only_no_human_reviewed_gold",
+  "humanReviewedGold": {
+    "records": 0,
+    "metrics": null,
+    "target": {
+      "precision": 0.99,
+      "recall": 0.95
+    },
+    "targetStatus": "not_evaluated"
+  },
+  "provisionalSourceTranscriptionDiagnostic": {
+    "warning": "Uses external Open Beauty Facts ingredients_text, not project-owned human-verified gold. It measures text cleaning, not OCR accuracy and must not be reported as market accuracy.",
+    "byPartition": {
+      "setup": {
+        "records": 80,
+        "expectedIngredients": 1964,
+        "extractedIngredients": 1872,
+        "truePositive": 1678,
+        "falsePositive": 194,
+        "falseNegative": 286,
+        "precision": 0.8964,
+        "precisionWilson95": [
+          0.8817,
+          0.9094
+        ],
+        "recall": 0.8544,
+        "recallWilson95": [
+          0.8381,
+          0.8693
+        ],
+        "target": {
+          "precision": 0.99,
+          "recall": 0.95
+        },
+        "targetStatus": "not_met_on_this_sample"
+      },
+      "final": {
+        "records": 40,
+        "expectedIngredients": 835,
+        "extractedIngredients": 780,
+        "truePositive": 708,
+        "falsePositive": 72,
+        "falseNegative": 127,
+        "precision": 0.9077,
+        "precisionWilson95": [
+          0.8853,
+          0.9261
+        ],
+        "recall": 0.8479,
+        "recallWilson95": [
+          0.822,
+          0.8707
+        ],
+        "target": {
+          "precision": 0.99,
+          "recall": 0.95
+        },
+        "targetStatus": "not_met_on_this_sample"
+      }
+    },
+    "worstCases": [
+      {
+        "id": "obf-7319860679329",
+        "partition": "setup",
+        "brand": "ACO",
+        "language": "en",
+        "expectedCount": 16,
+        "extractedCount": 0,
+        "truePositive": 0,
+        "falsePositive": 0,
+        "falseNegative": 16,
+        "precision": null,
+        "recall": 0,
+        "analysis": {
+          "total": 0,
+          "confirmed": 0,
+          "suggested": 0,
+          "unknown": 0,
+          "recognitionCoverage": null,
+          "expertExplained": 0,
+          "expertReviewed": 0,
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "insufficient_formula_completeness",
+          "productType": "unknown_cosmetic"
+        },
+        "f1": 0
+      },
+      {
+        "id": "obf-8901207027253",
+        "partition": "setup",
+        "brand": "Dabur",
+        "language": "en",
+        "expectedCount": 23,
+        "extractedCount": 0,
+        "truePositive": 0,
+        "falsePositive": 0,
+        "falseNegative": 23,
+        "precision": null,
+        "recall": 0,
+        "analysis": {
+          "total": 0,
+          "confirmed": 0,
+          "suggested": 0,
+          "unknown": 0,
+          "recognitionCoverage": null,
+          "expertExplained": 0,
+          "expertReviewed": 0,
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "insufficient_formula_completeness",
+          "productType": "unknown_cosmetic"
+        },
+        "f1": 0
+      },
+      {
+        "id": "obf-8909106045002",
+        "partition": "setup",
+        "brand": "Indulekha",
+        "language": "en",
+        "expectedCount": 8,
+        "extractedCount": 0,
+        "truePositive": 0,
+        "falsePositive": 0,
+        "falseNegative": 8,
+        "precision": null,
+        "recall": 0,
+        "analysis": {
+          "total": 0,
+          "confirmed": 0,
+          "suggested": 0,
+          "unknown": 0,
+          "recognitionCoverage": null,
+          "expertExplained": 0,
+          "expertReviewed": 0,
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "insufficient_formula_completeness",
+          "productType": "hair_scalp"
+        },
+        "f1": 0
+      },
+      {
+        "id": "obf-3612624053767",
+        "partition": "setup",
+        "brand": "Roche-posay",
+        "language": "fr",
+        "expectedCount": 11,
+        "extractedCount": 0,
+        "truePositive": 0,
+        "falsePositive": 0,
+        "falseNegative": 11,
+        "precision": null,
+        "recall": 0,
+        "analysis": {
+          "total": 0,
+          "confirmed": 0,
+          "suggested": 0,
+          "unknown": 0,
+          "recognitionCoverage": null,
+          "expertExplained": 0,
+          "expertReviewed": 0,
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "insufficient_formula_completeness",
+          "productType": "unknown_cosmetic"
+        },
+        "f1": 0
+      },
+      {
+        "id": "obf-4987176265395",
+        "partition": "setup",
+        "brand": "Vicks",
+        "language": "en",
+        "expectedCount": 9,
+        "extractedCount": 0,
+        "truePositive": 0,
+        "falsePositive": 0,
+        "falseNegative": 9,
+        "precision": null,
+        "recall": 0,
+        "analysis": {
+          "total": 0,
+          "confirmed": 0,
+          "suggested": 0,
+          "unknown": 0,
+          "recognitionCoverage": null,
+          "expertExplained": 0,
+          "expertReviewed": 0,
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "insufficient_formula_completeness",
+          "productType": "unknown_cosmetic"
+        },
+        "f1": 0
+      },
+      {
+        "id": "obf-03275528",
+        "partition": "final",
+        "brand": "Nestlé",
+        "language": "en",
+        "expectedCount": 11,
+        "extractedCount": 0,
+        "truePositive": 0,
+        "falsePositive": 0,
+        "falseNegative": 11,
+        "precision": null,
+        "recall": 0,
+        "analysis": {
+          "total": 0,
+          "confirmed": 0,
+          "suggested": 0,
+          "unknown": 0,
+          "recognitionCoverage": null,
+          "expertExplained": 0,
+          "expertReviewed": 0,
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "insufficient_formula_completeness",
+          "productType": "unknown_cosmetic"
+        },
+        "f1": 0
+      },
+      {
+        "id": "obf-8809504741653",
+        "partition": "final",
+        "brand": "torriden",
+        "language": "en",
+        "expectedCount": 33,
+        "extractedCount": 0,
+        "truePositive": 0,
+        "falsePositive": 0,
+        "falseNegative": 33,
+        "precision": null,
+        "recall": 0,
+        "analysis": {
+          "total": 0,
+          "confirmed": 0,
+          "suggested": 0,
+          "unknown": 0,
+          "recognitionCoverage": null,
+          "expertExplained": 0,
+          "expertReviewed": 0,
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "insufficient_formula_completeness",
+          "productType": "active_serum"
+        },
+        "f1": 0
+      },
+      {
+        "id": "obf-8901138509231",
+        "partition": "final",
+        "brand": "Himalaya",
+        "language": "en",
+        "expectedCount": 5,
+        "extractedCount": 0,
+        "truePositive": 0,
+        "falsePositive": 0,
+        "falseNegative": 5,
+        "precision": null,
+        "recall": 0,
+        "analysis": {
+          "total": 0,
+          "confirmed": 0,
+          "suggested": 0,
+          "unknown": 0,
+          "recognitionCoverage": null,
+          "expertExplained": 0,
+          "expertReviewed": 0,
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "insufficient_formula_completeness",
+          "productType": "unknown_cosmetic"
+        },
+        "f1": 0
+      },
+      {
+        "id": "obf-9348918008598",
+        "partition": "setup",
+        "brand": "freshwater",
+        "language": "en",
+        "expectedCount": 17,
+        "extractedCount": 17,
+        "truePositive": 1,
+        "falsePositive": 16,
+        "falseNegative": 16,
+        "precision": 0.0588,
+        "recall": 0.0588,
+        "analysis": {
+          "total": 17,
+          "confirmed": 15,
+          "suggested": 0,
+          "unknown": 2,
+          "recognitionCoverage": 0.8824,
+          "expertExplained": 1,
+          "expertReviewed": 0,
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "unresolved_ingredients",
+          "productType": "cleanser"
+        },
+        "f1": 0.0588
+      },
+      {
+        "id": "obf-9310692468479",
+        "partition": "final",
+        "brand": "OC Naturals",
+        "language": "en",
+        "expectedCount": 15,
+        "extractedCount": 15,
+        "truePositive": 4,
+        "falsePositive": 11,
+        "falseNegative": 11,
+        "precision": 0.2667,
+        "recall": 0.2667,
+        "analysis": {
+          "total": 15,
+          "confirmed": 12,
+          "suggested": 0,
+          "unknown": 3,
+          "recognitionCoverage": 0.8,
+          "expertExplained": 1,
+          "expertReviewed": 0,
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "unresolved_ingredients",
+          "productType": "cleanser"
+        },
+        "f1": 0.2667
+      },
+      {
+        "id": "obf-8859214800287",
+        "partition": "setup",
+        "brand": "MizuMi",
+        "language": "en",
+        "expectedCount": 22,
+        "extractedCount": 34,
+        "truePositive": 13,
+        "falsePositive": 21,
+        "falseNegative": 9,
+        "precision": 0.3824,
+        "recall": 0.5909,
+        "analysis": {
+          "total": 34,
+          "confirmed": 33,
+          "suggested": 0,
+          "unknown": 1,
+          "recognitionCoverage": 0.9706,
+          "expertExplained": 1,
+          "expertReviewed": 0,
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "unresolved_ingredients",
+          "productType": "unknown_cosmetic"
+        },
+        "f1": 0.4643
+      },
+      {
+        "id": "obf-0840435401726",
+        "partition": "setup",
+        "brand": "SAND + FOG",
+        "language": "en",
+        "expectedCount": 4,
+        "extractedCount": 4,
+        "truePositive": 2,
+        "falsePositive": 2,
+        "falseNegative": 2,
+        "precision": 0.5,
+        "recall": 0.5,
+        "analysis": {
+          "total": 4,
+          "confirmed": 4,
+          "suggested": 0,
+          "unknown": 0,
+          "recognitionCoverage": 1,
+          "expertExplained": 0,
+          "expertReviewed": 0,
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "unvalidated_scoring_method",
+          "productType": "unknown_cosmetic"
+        },
+        "f1": 0.5
+      }
+    ]
+  },
+  "expertCoverage": {
+    "records": 120,
+    "ingredients": 2652,
+    "confirmed": 2296,
+    "suggested": 0,
+    "unknown": 356,
+    "expertExplained": 100,
+    "expertReviewed": 0,
+    "confirmedCoverage": 0.8658,
+    "expertExplainedCoverage": 0.0377,
+    "expertReviewedCoverage": 0
+  },
+  "safety": {
+    "records": 3,
+    "passed": 3,
+    "failed": 0,
+    "cases": [
+      {
+        "id": "user-anesthetic-label",
+        "sourceType": "user_provided_label_transcription",
+        "corpusId": null,
+        "actual": {
+          "productType": "local_anesthetic",
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "non_cosmetic_formula",
+          "score": null,
+          "routineAdviceCount": 0,
+          "positiveRecommendationCount": 0,
+          "acceptedIngredientCount": 10,
+          "hiddenAdditions": []
+        },
+        "passed": true,
+        "mismatches": []
+      },
+      {
+        "id": "gigi-active-only-peeling",
+        "sourceType": "official_brand_active_ingredients",
+        "corpusId": null,
+        "actual": {
+          "productType": "acid_peel",
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "active_only_formula",
+          "score": null,
+          "routineAdviceCount": 0,
+          "positiveRecommendationCount": 0,
+          "acceptedIngredientCount": 3,
+          "hiddenAdditions": []
+        },
+        "passed": true,
+        "mismatches": []
+      },
+      {
+        "id": "real-front-label-text",
+        "sourceType": "open_beauty_facts_product_identity",
+        "corpusId": "obf-8809670683313",
+        "actual": {
+          "productType": "unknown_cosmetic",
+          "assessmentStatus": "not_assessed",
+          "assessmentReason": "insufficient_formula_completeness",
+          "score": null,
+          "routineAdviceCount": 0,
+          "positiveRecommendationCount": 0,
+          "acceptedIngredientCount": 0,
+          "hiddenAdditions": []
+        },
+        "passed": true,
+        "mismatches": []
+      }
+    ]
+  },
+  "barcodeLive": {
+    "records": 8,
+    "exactMatches": 8,
+    "compositions": 8,
+    "errors": 0,
+    "cases": [
+      {
+        "id": "obf-9310692468479",
+        "barcode": "9310692468479",
+        "elapsedMs": 6006,
+        "lookupStatus": "found",
+        "exactMatch": true,
+        "compositionAvailable": true,
+        "source": "Open Beauty Facts",
+        "formulaScope": null,
+        "analysisStatus": "not_assessed",
+        "sourceStatuses": [
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByBarcode",
+            "status": "found",
+            "products": 1,
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByName",
+            "status": "found",
+            "products": 1,
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "rate_limited",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "inci_decoder",
+            "source": "INCI Decoder",
+            "method": "searchByName",
+            "status": "found",
+            "products": 2,
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "external_catalog_discovery",
+            "source": "Поиск внешних карточек товаров",
+            "method": "searchByName",
+            "status": "no_inci",
+            "products": 2,
+            "phase": "inci_enrichment"
+          }
+        ]
+      },
+      {
+        "id": "obf-4067796217735",
+        "barcode": "4067796217735",
+        "elapsedMs": 1683,
+        "lookupStatus": "found",
+        "exactMatch": true,
+        "compositionAvailable": true,
+        "source": "Open Beauty Facts",
+        "formulaScope": null,
+        "analysisStatus": "not_assessed",
+        "sourceStatuses": [
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByBarcode",
+            "status": "found",
+            "products": 1,
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByName",
+            "status": "found",
+            "products": 1,
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "rate_limited",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "inci_decoder",
+            "source": "INCI Decoder",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "external_catalog_discovery",
+            "source": "Поиск внешних карточек товаров",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "http_error",
+            "phase": "inci_enrichment"
+          }
+        ]
+      },
+      {
+        "id": "obf-0957380000000",
+        "barcode": "0957380000000",
+        "elapsedMs": 3363,
+        "lookupStatus": "found",
+        "exactMatch": true,
+        "compositionAvailable": true,
+        "source": "Open Beauty Facts",
+        "formulaScope": null,
+        "analysisStatus": "not_assessed",
+        "sourceStatuses": [
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByBarcode",
+            "status": "found",
+            "products": 1,
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByName",
+            "status": "found",
+            "products": 1,
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "rate_limited",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "inci_decoder",
+            "source": "INCI Decoder",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "external_catalog_discovery",
+            "source": "Поиск внешних карточек товаров",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment",
+            "reason": "identity_mismatch"
+          }
+        ]
+      },
+      {
+        "id": "obf-03275528",
+        "barcode": "03275528",
+        "elapsedMs": 1552,
+        "lookupStatus": "found",
+        "exactMatch": true,
+        "compositionAvailable": true,
+        "source": "Open Beauty Facts",
+        "formulaScope": null,
+        "analysisStatus": "not_assessed",
+        "sourceStatuses": [
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByBarcode",
+            "status": "found",
+            "products": 1,
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByName",
+            "status": "found",
+            "products": 1,
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "rate_limited",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "inci_decoder",
+            "source": "INCI Decoder",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "external_catalog_discovery",
+            "source": "Поиск внешних карточек товаров",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "rate_limited",
+            "phase": "inci_enrichment"
+          }
+        ]
+      },
+      {
+        "id": "obf-0035000002228",
+        "barcode": "0035000002228",
+        "elapsedMs": 2828,
+        "lookupStatus": "found",
+        "exactMatch": true,
+        "compositionAvailable": true,
+        "source": "Open Beauty Facts",
+        "formulaScope": null,
+        "analysisStatus": "not_assessed",
+        "sourceStatuses": [
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByBarcode",
+            "status": "found",
+            "products": 1,
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByBarcode",
+            "status": "no_inci",
+            "products": 1,
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByName",
+            "status": "found",
+            "products": 1,
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "rate_limited",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "inci_decoder",
+            "source": "INCI Decoder",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment",
+            "reason": "identity_mismatch"
+          },
+          {
+            "sourceId": "external_catalog_discovery",
+            "source": "Поиск внешних карточек товаров",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "http_error",
+            "phase": "inci_enrichment"
+          }
+        ]
+      },
+      {
+        "id": "obf-8850006936498",
+        "barcode": "8850006936498",
+        "elapsedMs": 2006,
+        "lookupStatus": "found",
+        "exactMatch": true,
+        "compositionAvailable": true,
+        "source": "Open Beauty Facts",
+        "formulaScope": null,
+        "analysisStatus": "not_assessed",
+        "sourceStatuses": [
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByBarcode",
+            "status": "found",
+            "products": 1,
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByName",
+            "status": "found",
+            "products": 1,
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "rate_limited",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "inci_decoder",
+            "source": "INCI Decoder",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "external_catalog_discovery",
+            "source": "Поиск внешних карточек товаров",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "http_error",
+            "phase": "inci_enrichment"
+          }
+        ]
+      },
+      {
+        "id": "obf-0075609219184",
+        "barcode": "0075609219184",
+        "elapsedMs": 1257,
+        "lookupStatus": "found",
+        "exactMatch": true,
+        "compositionAvailable": true,
+        "source": "Open Beauty Facts",
+        "formulaScope": null,
+        "analysisStatus": "not_assessed",
+        "sourceStatuses": [
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByBarcode",
+            "status": "found",
+            "products": 1,
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByBarcode",
+            "status": "unavailable",
+            "reason": "rate_limited",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByName",
+            "status": "found",
+            "products": 1,
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "rate_limited",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "inci_decoder",
+            "source": "INCI Decoder",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "external_catalog_discovery",
+            "source": "Поиск внешних карточек товаров",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "http_error",
+            "phase": "inci_enrichment"
+          }
+        ]
+      },
+      {
+        "id": "obf-4061464947825",
+        "barcode": "4061464947825",
+        "elapsedMs": 1976,
+        "lookupStatus": "found",
+        "exactMatch": true,
+        "compositionAvailable": true,
+        "source": "Open Beauty Facts",
+        "formulaScope": null,
+        "analysisStatus": "not_assessed",
+        "sourceStatuses": [
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByBarcode",
+            "status": "found",
+            "products": 1,
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByBarcode",
+            "status": "unavailable",
+            "reason": "rate_limited",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByBarcode",
+            "status": "not_found",
+            "phase": "barcode_identity"
+          },
+          {
+            "sourceId": "gigi_official",
+            "source": "Официальный каталог GIGI",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_beauty_facts",
+            "source": "Open Beauty Facts",
+            "method": "searchByName",
+            "status": "found",
+            "products": 1,
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "upcitemdb",
+            "source": "UPCitemdb",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "rate_limited",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "open_products_facts",
+            "source": "Open Products Facts",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "inci_decoder",
+            "source": "INCI Decoder",
+            "method": "searchByName",
+            "status": "not_found",
+            "phase": "inci_enrichment"
+          },
+          {
+            "sourceId": "external_catalog_discovery",
+            "source": "Поиск внешних карточек товаров",
+            "method": "searchByName",
+            "status": "unavailable",
+            "reason": "http_error",
+            "phase": "inci_enrichment"
+          }
+        ]
+      }
+    ]
+  }
+}
