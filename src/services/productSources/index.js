@@ -32,6 +32,76 @@ const GENERIC_IDENTITY_TOKENS = new Set([
 ]);
 const UNKNOWN_BRANDS = new Set(["", "не указан", "бренд не указан", "unknown", "not specified"]);
 
+function relevanceTokens(value) {
+  return normalizeProductText(value)
+    .split(" ")
+    .filter((token) => (token.length > 1 || /^\d$/u.test(token)) && !GENERIC_IDENTITY_TOKENS.has(token));
+}
+
+function tokenMatches(queryToken, productToken) {
+  if (/^\d+(?:\.\d+)?$/u.test(queryToken)) return queryToken === productToken;
+  return queryToken === productToken || (queryToken.length >= 3 && productToken.startsWith(queryToken));
+}
+
+export function scoreProductRelevance(product, query) {
+  const cleanQuery = String(query || "").trim();
+  const normalizedQuery = normalizeProductText(cleanQuery);
+  if (!normalizedQuery) return 0;
+  if (isBarcode(cleanQuery)) return barcodesEquivalent(product.code, cleanQuery) ? 10_000 : 0;
+
+  const brand = normalizedBrand(product.brand);
+  const name = normalizeProductText(product.name);
+  const full = normalizeProductText(`${product.brand || ""} ${product.name || ""}`);
+  const category = normalizeProductText(product.category);
+  const queryTokens = relevanceTokens(cleanQuery);
+  const identityTokens = relevanceTokens(`${product.brand || ""} ${product.name || ""}`);
+  if (!queryTokens.length) return 0;
+
+  const matched = queryTokens.filter((queryToken) => identityTokens.some((productToken) => tokenMatches(queryToken, productToken)));
+  const brandTokens = new Set(relevanceTokens(product.brand));
+  const productSpecificQueryTokens = queryTokens.filter((token) => !brandTokens.has(token));
+  const matchedSpecificWords = productSpecificQueryTokens.filter((queryToken) => (
+    !/^\d+(?:\.\d+)?$/u.test(queryToken)
+    && identityTokens.some((productToken) => tokenMatches(queryToken, productToken))
+  ));
+  const coverage = matched.length / queryTokens.length;
+  const exactFull = full === normalizedQuery;
+  const exactName = name === normalizedQuery;
+  const fullPhrase = full.includes(normalizedQuery) || normalizedQuery.includes(full);
+  const namePhrase = name.includes(normalizedQuery) || normalizedQuery.includes(name);
+  const brandPhrase = Boolean(brand) && (
+    normalizedQuery === brand || normalizedQuery.startsWith(`${brand} `) || normalizedQuery.endsWith(` ${brand}`)
+  );
+
+  if (!matched.length && !exactFull && !exactName && !fullPhrase && !namePhrase && !brandPhrase) return 0;
+  if (productSpecificQueryTokens.length && !matchedSpecificWords.length && !exactFull && !exactName && !fullPhrase && !namePhrase) return 0;
+  if (coverage < 0.5 && !exactFull && !exactName && !fullPhrase && !namePhrase && !brandPhrase) return 0;
+
+  const queryNumbers = queryTokens.filter((token) => /^\d+(?:\.\d+)?$/u.test(token));
+  const productNumbers = new Set(identityTokens.filter((token) => /^\d+(?:\.\d+)?$/u.test(token)));
+  const missingNumbers = queryNumbers.filter((token) => !productNumbers.has(token)).length;
+  let score = Math.round(coverage * 400) + matched.length * 30 - (queryTokens.length - matched.length) * 35;
+  if (exactFull) score += 1_200;
+  else if (exactName) score += 1_000;
+  if (fullPhrase) score += 500;
+  else if (namePhrase) score += 380;
+  if (brandPhrase) score += 420;
+  if (matched.length === queryTokens.length) score += 240;
+  if (category && normalizedQuery === category) score += 50;
+  score -= missingNumbers * 120;
+
+  const scope = String(product.compositionScope || "").toLowerCase();
+  const hasUsableFormula = Boolean(product.composition)
+    && !["active_only", "active_ingredients_only"].includes(scope);
+  // A near-complete identity match with a usable INCI is more actionable than a
+  // metadata-only card. The threshold and numeric guard stop formula presence
+  // from rescuing a different product, concentration, or unrelated brand.
+  if (hasUsableFormula && coverage >= 0.8 && missingNumbers === 0) score += 800;
+  else if (hasUsableFormula) score += 6;
+  if (["gigi_official", "official_brand_page"].includes(product.sourceType)) score += 3;
+  return Math.max(0, score);
+}
+
 function normalizeFormula(value) {
   return String(value || "")
     .toLowerCase()
@@ -102,30 +172,12 @@ export function rankSourceProducts(products, query) {
   if (isBarcode(cleanQuery)) {
     return products.filter((product) => barcodesEquivalent(product.code, cleanQuery));
   }
-
-  const ignoredTokens = new Set(["and", "the", "for", "with", "и", "для", "с", "по"]);
-  const queryTokens = normalizeProductText(cleanQuery)
-    .split(" ")
-    .filter((token) => token.length > 1 && !ignoredTokens.has(token));
-  if (!queryTokens.length) return products;
-
   return products
-    .map((product) => {
-      const searchable = normalizeProductText(`${product.brand} ${product.name} ${product.category}`);
-      const matchedTokens = queryTokens.filter((token) => searchable.includes(token));
-      if (!matchedTokens.length) return null;
-
-      const tokenScore = matchedTokens.reduce((score, token) => {
-        return score + (/^\d+(?:\.\d+)?$/.test(token) ? 10 : 5);
-      }, 0);
-      const exactName = searchable.includes(queryTokens.join(" ")) ? 4 : 0;
-      const completeMatch = matchedTokens.length === queryTokens.length ? 3 : 0;
-      const officialBoost = product.sourceType === "gigi_official" ? 1 : 0;
-      const compositionBoost = product.composition ? 10 : 0;
-      return { product, score: tokenScore + exactName + completeMatch + officialBoost + compositionBoost };
-    })
-    .filter(Boolean)
-    .sort((left, right) => right.score - left.score)
+    .map((product) => ({ product, score: scoreProductRelevance(product, cleanQuery) }))
+    .filter((item) => item.score > 0)
+    .sort((left, right) => right.score - left.score
+      || normalizeProductText(`${left.product.brand} ${left.product.name}`).localeCompare(normalizeProductText(`${right.product.brand} ${right.product.name}`), "en")
+      || String(left.product.id || "").localeCompare(String(right.product.id || ""), "en"))
     .map(({ product }) => product);
 }
 
@@ -142,9 +194,27 @@ function formulaVariant(product) {
     market: product.market,
     variant: product.variant,
     formulaVersion: product.formulaVersion,
+    compositionScope: product.compositionScope || "unknown",
+    confirmation: product.formulaConfirmation || product.confirmation || "source_declared",
     productName: product.name,
     brand: product.brand
   };
+}
+
+function formulaVariants(product) {
+  const variants = [];
+  const add = (variant) => {
+    const normalized = normalizeFormula(variant?.composition);
+    if (!normalized || variants.some((item) => normalizeFormula(item.composition) === normalized)) return;
+    variants.push({
+      ...variant,
+      compositionScope: variant.compositionScope || product.compositionScope || "unknown",
+      confirmation: variant.confirmation || product.formulaConfirmation || "source_declared"
+    });
+  };
+  add(formulaVariant(product));
+  (product.formulaVariants || []).forEach(add);
+  return variants;
 }
 
 export function mergeSourceProducts(products) {
@@ -154,21 +224,20 @@ export function mergeSourceProducts(products) {
     const key = identity(product);
     const existing = byIdentity.get(key);
     if (!existing) {
-      const firstVariant = formulaVariant(product);
+      const initialVariants = formulaVariants(product);
       byIdentity.set(key, {
         ...product,
         hasComposition: Boolean(product.composition),
         sourceResults: [product],
-        formulaVariants: firstVariant ? [firstVariant] : [],
-        hasFormulaConflict: false
+        formulaVariants: initialVariants,
+        hasFormulaConflict: initialVariants.length > 1
       });
       return;
     }
 
     const nextSources = [...(existing.sourceResults || []), product];
     const nextVariants = [...(existing.formulaVariants || [])];
-    const nextVariant = formulaVariant(product);
-    if (nextVariant) {
+    for (const nextVariant of formulaVariants(product)) {
       const normalizedComposition = normalizeFormula(nextVariant.composition);
       const duplicateFormula = nextVariants.some((variant) => normalizeFormula(variant.composition) === normalizedComposition);
       if (!duplicateFormula) nextVariants.push(nextVariant);

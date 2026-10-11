@@ -5,7 +5,10 @@ import { cleanInciText } from "./services/inciCleaner.js";
 import { findCosIngIngredient } from "./services/ingredientSources/cosing.js";
 import { classifyFormulaProduct } from "./services/productClassifier.js";
 import { evaluateExpertRules } from "./services/expertRules.js";
+import { buildFormulaAssessment, FORMULA_SYSTEMS_ENGINE_VERSION, getFormulaSystemRuleSetInfo, validateFormulaAssessment } from "./services/formulaSystems.js";
+import { applyQuantitativeEvidence, QUANTITATIVE_EVIDENCE_VERSION } from "./services/quantitativeEvidence.js";
 import { buildPersonalContext, evaluatePersonalization } from "./services/personalization.js";
+import { applyPersonalFitEvidence, PERSONAL_FIT_EVIDENCE_VERSION } from "./services/personalFitEvidence.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const INGREDIENTS_PATH = path.join(__dirname, "..", "data", "ingredients-expert.json");
@@ -230,7 +233,10 @@ function buildProprietaryComplexes(found) {
     }));
 }
 
-export function analyzeComposition({ text, profile = {}, productName = "", formulaScope = "unknown", productEvidence = {} }) {
+export function analyzeComposition({
+  text, profile = {}, productName = "", formulaScope = "unknown", productEvidence = {}, formulaEvidence = {},
+  quantitativeEvidenceTrust = "client"
+}) {
   const inciCleaning = cleanInciText(text || "");
   const ingredients = inciCleaning.ingredients;
   const found = [];
@@ -307,6 +313,26 @@ export function analyzeComposition({ text, profile = {}, productName = "", formu
   const context = buildPersonalContext(profile, productSafety);
   const evidence = evaluateExpertRules({ found, unknown, assessment, productSafety, context });
   const personalization = evaluatePersonalization({ profile, found, unknown, formulaScope, productSafety, evidence });
+  const systemAssessment = buildFormulaAssessment({
+    found: evidence.ingredients,
+    unknown,
+    productSafety,
+    formulaScope,
+    formulaEvidence,
+    productEvidence,
+    personalization,
+    evidenceVersions: evidence.versions
+  });
+  const quantitativeAssessment = applyQuantitativeEvidence({
+    assessment: systemAssessment,
+    measurements: productEvidence?.measurements,
+    evidenceTrust: quantitativeEvidenceTrust === "server_verified" ? "server_verified" : "client"
+  });
+  const formulaAssessment = applyPersonalFitEvidence({ assessment: quantitativeAssessment, personalization });
+  const formulaAssessmentValidation = validateFormulaAssessment(formulaAssessment);
+  if (!formulaAssessmentValidation.valid) {
+    throw new TypeError(`Invalid formula assessment after quantitative evidence: ${formulaAssessmentValidation.errors.join("; ")}`);
+  }
   const warnings = [...new Set([
     ...personalization.restrictions.map((x) => x.text),
     ...personalization.precautions.map((x) => x.text),
@@ -382,7 +408,15 @@ export function analyzeComposition({ text, profile = {}, productName = "", formu
     routineAdvice: [],
     questions: [productSafety.requiredVerification || "Какие назначение, полный состав и данные испытаний готового продукта предоставлены производителем?"],
     findings: evidence.findings,
-    evidenceVersions: evidence.versions,
+    evidenceVersions: {
+      ...evidence.versions,
+      systems: FORMULA_SYSTEMS_ENGINE_VERSION,
+      systemRuleSet: getFormulaSystemRuleSetInfo().version,
+      systemRuleSetSha256: getFormulaSystemRuleSetInfo().sha256,
+      quantitativeEvidence: QUANTITATIVE_EVIDENCE_VERSION,
+      personalFitEvidence: PERSONAL_FIT_EVIDENCE_VERSION
+    },
+    formulaAssessment,
     evidenceCoverage: evidence.coverage,
     finishedProductAssessment: evidence.finishedProduct,
     confidence,

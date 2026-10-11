@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import crypto from "node:crypto";
-import { getExternalProduct, searchExternalProductsDetailed } from "./services/productSources/index.js";
+import { getExternalProduct, mergeSourceProducts, rankSourceProducts, scoreProductRelevance, searchExternalProductsDetailed } from "./services/productSources/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
@@ -110,11 +110,18 @@ function withTrust(product) {
   };
 }
 
+function productCode(product) {
+  const explicit = String(product?.code || product?.barcode || "").trim();
+  if (/^\d{8,14}$/u.test(explicit)) return explicit;
+  const cachedSourceId = String(product?.id || "").match(/^(?:obf|opf)-(\d{8,14})$/u);
+  return cachedSourceId?.[1] || undefined;
+}
+
 function toSummary(product) {
   const trusted = withTrust(product);
   return {
     id: trusted.id,
-    code: trusted.code,
+    code: productCode(trusted),
     name: trusted.name || "Без названия",
     brand: trusted.brand || "Бренд не указан",
     category: trusted.category || "Категория не указана",
@@ -216,43 +223,11 @@ export function buildProductIndex(products = loadProducts(), { persist = true, i
 }
 
 function localScore(product, query) {
+  const score = scoreProductRelevance(product, query);
+  if (score > 0) return score + (product.verified ? 2 : 0);
+  const aliasText = normalize((product.searchAliases || []).join(" "));
   const normalizedQuery = normalize(query);
-  if (!normalizedQuery) return 0;
-
-  const brand = normalize(product.brand);
-  const name = normalize(product.name);
-  const category = normalize(product.category);
-  const full = normalize(`${product.brand} ${product.name}`);
-  const haystack = product.searchText || normalize(`${product.brand} ${product.name} ${product.category} ${(product.searchAliases || []).join(" ")}`);
-  const queryTokens = tokens(normalizedQuery);
-  const productTokens = tokens(`${product.brand} ${product.name}`);
-
-  let score = 0;
-
-  if (String(product.code || "").trim() === String(query || "").trim()) score += 1000;
-
-  if (full === normalizedQuery || name === normalizedQuery) score += 500;
-  if (name.startsWith(normalizedQuery)) score += 220;
-  if (full.startsWith(normalizedQuery)) score += 200;
-  if (brand.startsWith(normalizedQuery)) score += 160;
-  if (haystack.includes(normalizedQuery)) score += 80;
-  if (category.includes(normalizedQuery)) score += 20;
-
-  queryTokens.forEach((queryToken) => {
-    const tokenHit = productTokens.some((productToken) => productToken.startsWith(queryToken));
-    const tokenInside = productTokens.some((productToken) => productToken.includes(queryToken));
-    if (tokenHit) score += 70;
-    else if (tokenInside && queryToken.length > 1) score += 25;
-  });
-
-  if (score <= 0) return 0;
-
-  if (product.verified) score += 12;
-  if (product.hasComposition) score += 8;
-  if (product.sourceType === "official_brand_page") score += 260;
-  if (product.sourceType === "open_beauty_facts") score -= 30;
-
-  return score;
+  return aliasText && normalizedQuery.length >= 3 && aliasText.includes(normalizedQuery) ? 120 : 0;
 }
 
 export function searchLocalProducts(query, limit = 8) {
@@ -260,7 +235,8 @@ export function searchLocalProducts(query, limit = 8) {
   if (!normalizedQuery) return [];
 
   return loadProductIndex()
-    .map((product) => ({ product: toSummary(product), score: localScore(product, normalizedQuery) }))
+    .map((product) => toSummary(product))
+    .map((product) => ({ product, score: localScore(product, normalizedQuery) }))
     .filter((item) => item.score > 0)
     .sort((a, b) => {
       return (
@@ -612,11 +588,27 @@ export async function searchProductsDetailed(query, limit = 8) {
     saveDetailsCache([...cacheable, ...cache.filter((product) => !cacheKeys.has(product.id || product.code))]);
   }
 
-  const merged = [...local, ...freshExternal].filter((product, index, list) => {
+  const combined = [...local, ...freshExternal];
+  if (/^\d{6,14}$/u.test(String(query).trim())) {
+    const code = String(query).trim();
+    const exact = combined.filter((product) => {
+      const candidate = String(product.code || "").trim();
+      return candidate === code || (candidate.length === 13 && candidate.startsWith("0") && candidate.slice(1) === code) || (code.length === 13 && code.startsWith("0") && code.slice(1) === candidate);
+    });
+    const products = mergeSourceProducts(exact).map(toSummary).slice(0, 1);
+    return {
+      products,
+      lookupStatus: products.some((product) => product.composition) ? "found" : products.length ? "no_inci" : externalResult.status,
+      sourceStatuses: externalResult.sourceStatuses,
+      cache: externalResult.cache
+    };
+  }
+
+  const merged = rankSourceProducts(combined, query).filter((product, index, list) => {
     const identity = normalize(`${product.brand} ${product.name}`);
     return list.findIndex((candidate) => normalize(`${candidate.brand} ${candidate.name}`) === identity) === index;
   });
-  if (merged.length >= limit || /^\d{6,14}$/.test(String(query).trim())) {
+  if (merged.length >= limit) {
     const products = merged.slice(0, limit);
     return {
       products,
@@ -634,7 +626,7 @@ export async function searchProductsDetailed(query, limit = 8) {
     return true;
   });
 
-  const products = [...merged, ...freshWebExternal].slice(0, limit);
+  const products = rankSourceProducts([...merged, ...freshWebExternal], query).slice(0, limit);
   return {
     products,
     lookupStatus: products.some((product) => product.composition) ? "found" : products.length ? "no_inci" : externalResult.status,

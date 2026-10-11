@@ -1,6 +1,14 @@
 export const HISTORY_SNAPSHOT_VERSION = "1.0";
 
-const MEDIA_KEY = /(photo|image|thumbnail|dataurl|blob)|^(file|files)$/i;
+const MEDIA_KEYS = new Set([
+  "photo", "photos", "photodata", "photourl",
+  "image", "images", "imagedata", "imageurl", "image_url", "imagesource", "imagesourceurl",
+  "thumbnail", "thumbnails", "thumbnailurl", "dataurl", "blob", "file", "files"
+]);
+
+function isMediaKey(key) {
+  return MEDIA_KEYS.has(String(key || "").toLowerCase());
+}
 
 function cloneJson(value, fallback = null) {
   try {
@@ -19,7 +27,7 @@ function withoutMedia(value) {
   if (!value || typeof value !== "object") return value;
 
   return Object.fromEntries(Object.entries(value)
-    .filter(([key]) => !MEDIA_KEY.test(key))
+    .filter(([key]) => !isMediaKey(key))
     .map(([key, item]) => [key, withoutMedia(item)]));
 }
 
@@ -64,9 +72,12 @@ function productFromContract(contract, fallbackName = "") {
 
 function formulaFromContract(contract, composition, fallbackSource = "") {
   return {
+    productId: text(contract?.formula?.productId) || null,
     composition,
     normalizedText: text(contract?.formula?.normalizedText) || null,
     scope: text(contract?.formula?.scope) || "unknown",
+    confirmation: text(contract?.formula?.confirmation) || "unverified",
+    associationStatus: text(contract?.formula?.associationStatus) || "unknown",
     version: text(contract?.formula?.version) || null,
     market: text(contract?.formula?.market) || null,
     source: normalizeSource(contract?.formula?.source, fallbackSource)
@@ -226,7 +237,10 @@ export function buildReanalysisRequest(entry) {
         source: cloneJson(product?.source, {})
       },
       formula: {
+        productId: formula?.productId || null,
         scope: formula?.scope || "unknown",
+        confirmation: formula?.confirmation || "unverified",
+        associationStatus: formula?.associationStatus || "unknown",
         version: formula?.version || null,
         market: formula?.market || null,
         source: cloneJson(formula?.source, {})

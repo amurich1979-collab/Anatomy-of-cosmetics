@@ -1,0 +1,3199 @@
+{
+  "schemaVersion": "1.0",
+  "batchId": "c06-first-50",
+  "version": "1.0.0",
+  "checkedAt": "2026-10-03",
+  "publicationStatus": "staged_not_runtime",
+  "domainReviewStatus": "pending_external_expert",
+  "selectionPolicy": {
+    "sourceCorpus": "c02-formula-evaluation-corpus",
+    "selectionPartition": "setup",
+    "heldOutPartition": "final",
+    "method": "critical priorities and required functional classes first, then setup formula frequency; exact or alias registry matches only",
+    "finalPartitionUsedForSelection": false,
+    "candidateMaterialLimitation": "Open Beauty Facts catalog transcriptions are candidate material, not independent manual gold.",
+    "fuzzyMatchesAcceptedForSelection": false
+  },
+  "sources": [
+    {
+      "id": "c06-local-inci-registry-snapshot",
+      "title": "Local INCI registry legacy snapshot",
+      "type": "third_party_legacy_snapshot",
+      "url": "https://raw.githubusercontent.com/openfoodfacts/openbeautyfacts/develop/cosing/COSING_Ingredients-Fragrance.Inventory_v2.csv",
+      "artifactRef": "data/inci-registry.json",
+      "checkedAt": "2026-10-03",
+      "scope": "Exact local record and function fields only. The snapshot is a third-party legacy mirror and is not treated as current EU regulatory evidence.",
+      "version": "legacy-snapshot:dc355ad34419fa4d",
+      "contentHash": "ff87e06549ca6f19feba6f0a5e7264032787c9786cae60ad53e337bac8e5eae1"
+    },
+    {
+      "id": "ec-cosing-overview-2026-10-03",
+      "title": "Cosmetic ingredient database (CosIng)",
+      "type": "official_context",
+      "url": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-ingredient-database_en",
+      "artifactRef": null,
+      "checkedAt": "2026-10-03",
+      "scope": "Database purpose and content only; not an exact basis for any local ingredient row.",
+      "version": null,
+      "contentHash": null
+    },
+    {
+      "id": "ec-cosing-guide",
+      "title": "Guide to Consulting CosIng",
+      "type": "official_context",
+      "url": "https://ec.europa.eu/growth/tools-databases/cosing/assets/images/CosIng_FO.pdf",
+      "artifactRef": null,
+      "checkedAt": "2026-10-03",
+      "scope": "CosIng interpretation and legal-value limitations; not an ingredient-level claim source.",
+      "version": null,
+      "contentHash": null
+    },
+    {
+      "id": "sccs-opinions-index-2026-10-03",
+      "title": "SCCS opinions",
+      "type": "official_discovery_index",
+      "url": "https://health.ec.europa.eu/scientific-committees/scientific-committee-consumer-safety-sccs/sccs-opinions_en",
+      "artifactRef": null,
+      "checkedAt": "2026-10-03",
+      "scope": "Discovery index only; no conclusion is transcribed from the index.",
+      "version": null,
+      "contentHash": null
+    },
+    {
+      "id": "sccs-salicylic-acid-1646-22",
+      "title": "SCCS Opinion on salicylic acid, SCCS/1646/22",
+      "type": "official_opinion_candidate",
+      "url": "https://health.ec.europa.eu/publications/salicylic-acid-cas-no-69-72-7-ec-no-200-712-3_en",
+      "artifactRef": null,
+      "checkedAt": "2026-10-03",
+      "scope": "Research candidate only. Conclusions and conditions are not transcribed into a runtime claim in C06.",
+      "version": "SCCS/1646/22",
+      "contentHash": null
+    },
+    {
+      "id": "sccs-vitamin-a-1639-21",
+      "title": "SCCS Opinion on Vitamin A, SCCS/1639/21",
+      "type": "official_opinion_candidate",
+      "url": "https://health.ec.europa.eu/publications/revision-scientific-opinion-sccs157616-vitamin-retinol-retinyl-acetate-retinyl-palmitate_en",
+      "artifactRef": null,
+      "checkedAt": "2026-10-03",
+      "scope": "Research candidate only. Product type, retinol-equivalent basis and exposure context require expert transcription.",
+      "version": "SCCS/1639/21",
+      "contentHash": null
+    },
+    {
+      "id": "sccs-titanium-dioxide-1661-23",
+      "title": "SCCS Scientific Advice on Titanium dioxide, SCCS/1661/23",
+      "type": "official_opinion_candidate",
+      "url": "https://health.ec.europa.eu/publications/scientific-advice-titanium-dioxide-tio2-casec-numbers-13463-67-7236-675-5-1317-70-0215-280-1-1317-80_en",
+      "artifactRef": null,
+      "checkedAt": "2026-10-03",
+      "scope": "Research candidate only. Material grade, particle form, route and product category must not be collapsed.",
+      "version": "SCCS/1661/23",
+      "contentHash": null
+    },
+    {
+      "id": "sccs-ehmc-1671-24",
+      "title": "SCCS Opinion on Ethylhexyl Methoxycinnamate, SCCS/1671/24",
+      "type": "official_opinion_candidate",
+      "url": "https://health.ec.europa.eu/publications/sccs-opinion-ethylhexyl-methoxycinnamate-ehmc-cas-no-5466-77-383834-59-7-ec-no-226-775-7629-661-9_en",
+      "artifactRef": null,
+      "checkedAt": "2026-10-03",
+      "scope": "Research candidate only. The 2026 corrigendum and use conditions require expert transcription.",
+      "version": "SCCS/1671/24, corrigendum 2026",
+      "contentHash": null
+    }
+  ],
+  "cards": [
+    {
+      "id": "c06-aqua",
+      "batchRank": 1,
+      "ingredient": {
+        "canonicalName": "Aqua",
+        "aliases": [
+          "water"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "SOLVENT"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 1,
+        "formulaCount": 90,
+        "occurrenceCount": 90,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Aqua перечислены справочные функции: SOLVENT.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Aqua\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-glycerin",
+      "batchRank": 2,
+      "ingredient": {
+        "canonicalName": "Glycerin",
+        "aliases": [
+          "glycerol",
+          "glycerolum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "DENATURANT",
+          "HAIR CONDITIONING",
+          "HUMECTANT",
+          "MASKING",
+          "ORAL CARE",
+          "PERFUMING",
+          "SKIN PROTECTING",
+          "VISCOSITY CONTROLLING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 2,
+        "formulaCount": 79,
+        "occurrenceCount": 79,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "fragrance",
+        "humectants",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "required_functional_class:fragrance",
+        "required_functional_class:humectants",
+        "required_functional_class:rheology",
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Glycerin перечислены справочные функции: DENATURANT, HAIR CONDITIONING, HUMECTANT, MASKING, ORAL CARE, PERFUMING, SKIN PROTECTING, VISCOSITY CONTROLLING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Glycerin\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-citric-acid",
+      "batchRank": 3,
+      "ingredient": {
+        "canonicalName": "Citric Acid",
+        "aliases": [
+          "acidum citricum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "BUFFERING",
+          "CHELATING",
+          "MASKING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 3,
+        "formulaCount": 62,
+        "occurrenceCount": 62,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Citric Acid перечислены справочные функции: BUFFERING, CHELATING, MASKING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Citric Acid\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-parfum",
+      "batchRank": 4,
+      "ingredient": {
+        "canonicalName": "Parfum",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "DEODORANT",
+          "MASKING",
+          "PERFUMING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 4,
+        "formulaCount": 54,
+        "occurrenceCount": 54,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Parfum перечислены справочные функции: DEODORANT, MASKING, PERFUMING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Parfum\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-sodium-benzoate",
+      "batchRank": 5,
+      "ingredient": {
+        "canonicalName": "Sodium Benzoate",
+        "aliases": [
+          "natrii benzoas"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "ANTICORROSIVE",
+          "MASKING",
+          "PRESERVATIVE"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 5,
+        "formulaCount": 48,
+        "occurrenceCount": 48,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "preservatives"
+      ],
+      "selectionReasons": [
+        "required_functional_class:preservatives",
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Sodium Benzoate перечислены справочные функции: ANTICORROSIVE, MASKING, PRESERVATIVE.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Sodium Benzoate\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-sodium-chloride",
+      "batchRank": 6,
+      "ingredient": {
+        "canonicalName": "Sodium Chloride",
+        "aliases": [
+          "natrii chloridum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "BULKING",
+          "MASKING",
+          "ORAL CARE",
+          "VISCOSITY CONTROLLING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 6,
+        "formulaCount": 45,
+        "occurrenceCount": 45,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Sodium Chloride перечислены справочные функции: BULKING, MASKING, ORAL CARE, VISCOSITY CONTROLLING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Sodium Chloride\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-phenoxyethanol",
+      "batchRank": 7,
+      "ingredient": {
+        "canonicalName": "Phenoxyethanol",
+        "aliases": [
+          "phenoxyethanolum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "PRESERVATIVE"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 7,
+        "formulaCount": 44,
+        "occurrenceCount": 44,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "preservatives"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Phenoxyethanol перечислены справочные функции: PRESERVATIVE.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Phenoxyethanol\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-cocamidopropyl-betaine",
+      "batchRank": 8,
+      "ingredient": {
+        "canonicalName": "Cocamidopropyl Betaine",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "ANTISTATIC",
+          "CLEANSING",
+          "FOAM BOOSTING",
+          "HAIR CONDITIONING",
+          "SURFACTANT",
+          "VISCOSITY CONTROLLING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 8,
+        "formulaCount": 37,
+        "occurrenceCount": 37,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "surfactants",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "required_functional_class:surfactants",
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Cocamidopropyl Betaine перечислены справочные функции: ANTISTATIC, CLEANSING, FOAM BOOSTING, HAIR CONDITIONING, SURFACTANT, VISCOSITY CONTROLLING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Cocamidopropyl Betaine\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-limonene",
+      "batchRank": 9,
+      "ingredient": {
+        "canonicalName": "Limonene",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "DEODORANT",
+          "PERFUMING",
+          "SOLVENT"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 9,
+        "formulaCount": 33,
+        "occurrenceCount": 33,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Limonene перечислены справочные функции: DEODORANT, PERFUMING, SOLVENT.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Limonene\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-linalool",
+      "batchRank": 10,
+      "ingredient": {
+        "canonicalName": "Linalool",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "DEODORANT",
+          "PERFUMING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 10,
+        "formulaCount": 33,
+        "occurrenceCount": 33,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Linalool перечислены справочные функции: DEODORANT, PERFUMING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Linalool\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-sodium-hydroxide",
+      "batchRank": 11,
+      "ingredient": {
+        "canonicalName": "Sodium Hydroxide",
+        "aliases": [
+          "natrii hydroxidum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "BUFFERING",
+          "DENATURANT"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 11,
+        "formulaCount": 29,
+        "occurrenceCount": 29,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Sodium Hydroxide перечислены справочные функции: BUFFERING, DENATURANT.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Sodium Hydroxide\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-disodium-edta",
+      "batchRank": 12,
+      "ingredient": {
+        "canonicalName": "Disodium Edta",
+        "aliases": [
+          "edetate disodium",
+          "natrii edetas"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "CHELATING",
+          "VISCOSITY CONTROLLING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 12,
+        "formulaCount": 28,
+        "occurrenceCount": 28,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Disodium Edta перечислены справочные функции: CHELATING, VISCOSITY CONTROLLING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Disodium Edta\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-ethylhexylglycerin",
+      "batchRank": 13,
+      "ingredient": {
+        "canonicalName": "Ethylhexylglycerin",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "SKIN CONDITIONING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 13,
+        "formulaCount": 27,
+        "occurrenceCount": 27,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Ethylhexylglycerin перечислены справочные функции: SKIN CONDITIONING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Ethylhexylglycerin\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-benzyl-alcohol",
+      "batchRank": 14,
+      "ingredient": {
+        "canonicalName": "Benzyl Alcohol",
+        "aliases": [
+          "alcohol benzylicus"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "PERFUMING",
+          "PRESERVATIVE",
+          "SOLVENT",
+          "VISCOSITY CONTROLLING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 14,
+        "formulaCount": 22,
+        "occurrenceCount": 22,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "preservatives",
+        "fragrance",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Benzyl Alcohol перечислены справочные функции: PERFUMING, PRESERVATIVE, SOLVENT, VISCOSITY CONTROLLING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Benzyl Alcohol\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-potassium-sorbate",
+      "batchRank": 15,
+      "ingredient": {
+        "canonicalName": "Potassium Sorbate",
+        "aliases": [
+          "kalii sorbas"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "PRESERVATIVE"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 15,
+        "formulaCount": 22,
+        "occurrenceCount": 22,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "preservatives"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Potassium Sorbate перечислены справочные функции: PRESERVATIVE.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Potassium Sorbate\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-panthenol",
+      "batchRank": 16,
+      "ingredient": {
+        "canonicalName": "Panthenol",
+        "aliases": [
+          "dexpanthenol",
+          "dexpanthenolum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "ANTISTATIC",
+          "HAIR CONDITIONING",
+          "SKIN CONDITIONING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 16,
+        "formulaCount": 21,
+        "occurrenceCount": 21,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "required_functional_class:actives_additives",
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Panthenol перечислены справочные функции: ANTISTATIC, HAIR CONDITIONING, SKIN CONDITIONING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Panthenol\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-propylene-glycol",
+      "batchRank": 17,
+      "ingredient": {
+        "canonicalName": "Propylene Glycol",
+        "aliases": [
+          "propylenglycolum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "HUMECTANT",
+          "SKIN CONDITIONING",
+          "SOLVENT",
+          "VISCOSITY CONTROLLING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 17,
+        "formulaCount": 21,
+        "occurrenceCount": 21,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "humectants",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Propylene Glycol перечислены справочные функции: HUMECTANT, SKIN CONDITIONING, SOLVENT, VISCOSITY CONTROLLING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Propylene Glycol\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-sodium-laureth-sulfate",
+      "batchRank": 18,
+      "ingredient": {
+        "canonicalName": "Sodium Laureth Sulfate",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "CLEANSING",
+          "EMULSIFYING",
+          "FOAMING",
+          "SURFACTANT"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 18,
+        "formulaCount": 18,
+        "occurrenceCount": 18,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "emulsifiers",
+        "surfactants"
+      ],
+      "selectionReasons": [
+        "required_functional_class:emulsifiers",
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Sodium Laureth Sulfate перечислены справочные функции: CLEANSING, EMULSIFYING, FOAMING, SURFACTANT.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Sodium Laureth Sulfate\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-coumarin",
+      "batchRank": 19,
+      "ingredient": {
+        "canonicalName": "Coumarin",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "PERFUMING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 19,
+        "formulaCount": 17,
+        "occurrenceCount": 17,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Coumarin перечислены справочные функции: PERFUMING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Coumarin\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-dimethicone",
+      "batchRank": 20,
+      "ingredient": {
+        "canonicalName": "Dimethicone",
+        "aliases": [
+          "dimeticone",
+          "dimeticonum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "ANTIFOAMING",
+          "EMOLLIENT",
+          "SKIN CONDITIONING",
+          "SKIN PROTECTING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 20,
+        "formulaCount": 17,
+        "occurrenceCount": 17,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "emollients"
+      ],
+      "selectionReasons": [
+        "required_functional_class:emollients",
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Dimethicone перечислены справочные функции: ANTIFOAMING, EMOLLIENT, SKIN CONDITIONING, SKIN PROTECTING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Dimethicone\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-hexyl-cinnamal",
+      "batchRank": 21,
+      "ingredient": {
+        "canonicalName": "Hexyl Cinnamal",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "PERFUMING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 21,
+        "formulaCount": 17,
+        "occurrenceCount": 17,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Hexyl Cinnamal перечислены справочные функции: PERFUMING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Hexyl Cinnamal\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-tocopherol",
+      "batchRank": 22,
+      "ingredient": {
+        "canonicalName": "Tocopherol",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "ANTIOXIDANT",
+          "MASKING",
+          "SKIN CONDITIONING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 22,
+        "formulaCount": 17,
+        "occurrenceCount": 17,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Tocopherol перечислены справочные функции: ANTIOXIDANT, MASKING, SKIN CONDITIONING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Tocopherol\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-xanthan-gum",
+      "batchRank": 23,
+      "ingredient": {
+        "canonicalName": "Xanthan Gum",
+        "aliases": [
+          "gummi xanthanum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "BINDING",
+          "EMULSIFYING",
+          "EMULSION STABILISING",
+          "GEL FORMING",
+          "SKIN CONDITIONING",
+          "SURFACTANT",
+          "VISCOSITY CONTROLLING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 23,
+        "formulaCount": 17,
+        "occurrenceCount": 17,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "emulsifiers",
+        "surfactants",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Xanthan Gum перечислены справочные функции: BINDING, EMULSIFYING, EMULSION STABILISING, GEL FORMING, SKIN CONDITIONING, SURFACTANT, VISCOSITY CONTROLLING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Xanthan Gum\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-butylene-glycol",
+      "batchRank": 24,
+      "ingredient": {
+        "canonicalName": "Butylene Glycol",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "HUMECTANT",
+          "MASKING",
+          "SKIN CONDITIONING",
+          "SOLVENT",
+          "VISCOSITY CONTROLLING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 24,
+        "formulaCount": 16,
+        "occurrenceCount": 16,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "humectants",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Butylene Glycol перечислены справочные функции: HUMECTANT, MASKING, SKIN CONDITIONING, SOLVENT, VISCOSITY CONTROLLING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Butylene Glycol\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-citronellol",
+      "batchRank": 25,
+      "ingredient": {
+        "canonicalName": "Citronellol",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "PERFUMING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 25,
+        "formulaCount": 16,
+        "occurrenceCount": 16,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Citronellol перечислены справочные функции: PERFUMING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Citronellol\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-niacinamide",
+      "batchRank": 26,
+      "ingredient": {
+        "canonicalName": "Niacinamide",
+        "aliases": [
+          "nicotinamide",
+          "nicotinamidum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "SMOOTHING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 26,
+        "formulaCount": 16,
+        "occurrenceCount": 16,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Niacinamide перечислены справочные функции: SMOOTHING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Niacinamide\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-butyrospermum-parkii-butter",
+      "batchRank": 27,
+      "ingredient": {
+        "canonicalName": "Butyrospermum Parkii Butter",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "SKIN CONDITIONING",
+          "VISCOSITY CONTROLLING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 27,
+        "formulaCount": 15,
+        "occurrenceCount": 15,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Butyrospermum Parkii Butter перечислены справочные функции: SKIN CONDITIONING, VISCOSITY CONTROLLING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Butyrospermum Parkii Butter\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-sodium-hyaluronate",
+      "batchRank": 28,
+      "ingredient": {
+        "canonicalName": "Sodium Hyaluronate",
+        "aliases": [
+          "Hyaluronate Sodium [USAN:JAN]"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "HUMECTANT",
+          "SKIN CONDITIONING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 28,
+        "formulaCount": 15,
+        "occurrenceCount": 15,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "actives_additives",
+        "humectants"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Sodium Hyaluronate перечислены справочные функции: HUMECTANT, SKIN CONDITIONING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Sodium Hyaluronate\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-benzyl-salicylate",
+      "batchRank": 29,
+      "ingredient": {
+        "canonicalName": "Benzyl Salicylate",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "PERFUMING",
+          "UV ABSORBER"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 29,
+        "formulaCount": 14,
+        "occurrenceCount": 14,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Benzyl Salicylate перечислены справочные функции: PERFUMING, UV ABSORBER.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Benzyl Salicylate\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-caprylyl-glycol",
+      "batchRank": 30,
+      "ingredient": {
+        "canonicalName": "Caprylyl Glycol",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "EMOLLIENT",
+          "HAIR CONDITIONING",
+          "HUMECTANT",
+          "SKIN CONDITIONING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 30,
+        "formulaCount": 14,
+        "occurrenceCount": 14,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "emollients",
+        "humectants"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Caprylyl Glycol перечислены справочные функции: EMOLLIENT, HAIR CONDITIONING, HUMECTANT, SKIN CONDITIONING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Caprylyl Glycol\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-cetearyl-alcohol",
+      "batchRank": 31,
+      "ingredient": {
+        "canonicalName": "Cetearyl Alcohol",
+        "aliases": [
+          "alcohol cetylicus et stearylicus"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "EMOLLIENT",
+          "EMULSIFYING",
+          "EMULSION STABILISING",
+          "FOAM BOOSTING",
+          "OPACIFYING",
+          "SURFACTANT",
+          "VISCOSITY CONTROLLING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 31,
+        "formulaCount": 14,
+        "occurrenceCount": 14,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "emulsifiers",
+        "emollients",
+        "surfactants",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Cetearyl Alcohol перечислены справочные функции: EMOLLIENT, EMULSIFYING, EMULSION STABILISING, FOAM BOOSTING, OPACIFYING, SURFACTANT, VISCOSITY CONTROLLING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Cetearyl Alcohol\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-glycol-distearate",
+      "batchRank": 32,
+      "ingredient": {
+        "canonicalName": "Glycol Distearate",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "EMOLLIENT",
+          "EMULSIFYING",
+          "OPACIFYING",
+          "SKIN CONDITIONING",
+          "VISCOSITY CONTROLLING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 32,
+        "formulaCount": 14,
+        "occurrenceCount": 14,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "emulsifiers",
+        "emollients",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Glycol Distearate перечислены справочные функции: EMOLLIENT, EMULSIFYING, OPACIFYING, SKIN CONDITIONING, VISCOSITY CONTROLLING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Glycol Distearate\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-sodium-lauryl-sulfate",
+      "batchRank": 33,
+      "ingredient": {
+        "canonicalName": "Sodium Lauryl Sulfate",
+        "aliases": [
+          "natrii laurilsulfas"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "CLEANSING",
+          "DENATURANT",
+          "EMULSIFYING",
+          "FOAMING",
+          "SURFACTANT"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 33,
+        "formulaCount": 14,
+        "occurrenceCount": 14,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "emulsifiers",
+        "surfactants"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Sodium Lauryl Sulfate перечислены справочные функции: CLEANSING, DENATURANT, EMULSIFYING, FOAMING, SURFACTANT.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Sodium Lauryl Sulfate\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-tetrasodium-edta",
+      "batchRank": 34,
+      "ingredient": {
+        "canonicalName": "Tetrasodium Edta",
+        "aliases": [
+          "edetate sodium"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "CHELATING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 34,
+        "formulaCount": 14,
+        "occurrenceCount": 14,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Tetrasodium Edta перечислены справочные функции: CHELATING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Tetrasodium Edta\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-cocos-nucifera-oil",
+      "batchRank": 35,
+      "ingredient": {
+        "canonicalName": "Cocos Nucifera Oil",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "HAIR CONDITIONING",
+          "MASKING",
+          "PERFUMING",
+          "SKIN CONDITIONING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 35,
+        "formulaCount": 13,
+        "occurrenceCount": 13,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Cocos Nucifera Oil перечислены справочные функции: HAIR CONDITIONING, MASKING, PERFUMING, SKIN CONDITIONING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Cocos Nucifera Oil\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-menthol",
+      "batchRank": 36,
+      "ingredient": {
+        "canonicalName": "Menthol",
+        "aliases": [
+          "mentholum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "DENATURANT",
+          "MASKING",
+          "REFRESHING",
+          "SOOTHING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 36,
+        "formulaCount": 13,
+        "occurrenceCount": 13,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Menthol перечислены справочные функции: DENATURANT, MASKING, REFRESHING, SOOTHING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Menthol\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-guar-hydroxypropyltrimonium-chloride",
+      "batchRank": 37,
+      "ingredient": {
+        "canonicalName": "Guar Hydroxypropyltrimonium Chloride",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "ANTISTATIC",
+          "FILM FORMING",
+          "SKIN CONDITIONING",
+          "VISCOSITY CONTROLLING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 37,
+        "formulaCount": 12,
+        "occurrenceCount": 12,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Guar Hydroxypropyltrimonium Chloride перечислены справочные функции: ANTISTATIC, FILM FORMING, SKIN CONDITIONING, VISCOSITY CONTROLLING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Guar Hydroxypropyltrimonium Chloride\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-hydroxycitronellal",
+      "batchRank": 38,
+      "ingredient": {
+        "canonicalName": "Hydroxycitronellal",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "PERFUMING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 38,
+        "formulaCount": 12,
+        "occurrenceCount": 12,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Hydroxycitronellal перечислены справочные функции: PERFUMING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Hydroxycitronellal\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-polyquaternium-10",
+      "batchRank": 39,
+      "ingredient": {
+        "canonicalName": "Polyquaternium-10",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "ANTISTATIC",
+          "FILM FORMING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 39,
+        "formulaCount": 12,
+        "occurrenceCount": 12,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Polyquaternium-10 перечислены справочные функции: ANTISTATIC, FILM FORMING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Polyquaternium-10\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-citral",
+      "batchRank": 40,
+      "ingredient": {
+        "canonicalName": "Citral",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "FLAVOURING",
+          "PERFUMING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 69,
+        "formulaCount": 7,
+        "occurrenceCount": 7,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Citral перечислены справочные функции: FLAVOURING, PERFUMING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Citral\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-lactic-acid",
+      "batchRank": 41,
+      "ingredient": {
+        "canonicalName": "Lactic Acid",
+        "aliases": [
+          "acidum lacticum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "BUFFERING",
+          "HUMECTANT",
+          "SKIN CONDITIONING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 72,
+        "formulaCount": 7,
+        "occurrenceCount": 7,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "actives_additives",
+        "humectants"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Lactic Acid перечислены справочные функции: BUFFERING, HUMECTANT, SKIN CONDITIONING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Lactic Acid\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-simmondsia-chinensis-seed-oil",
+      "batchRank": 42,
+      "ingredient": {
+        "canonicalName": "Simmondsia Chinensis Seed Oil",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "EMOLLIENT",
+          "HAIR CONDITIONING",
+          "SKIN CONDITIONING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 76,
+        "formulaCount": 7,
+        "occurrenceCount": 7,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "emollients",
+        "fatty_phase_oils"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency",
+        "required_functional_class:fatty_phase_oils"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Simmondsia Chinensis Seed Oil перечислены справочные функции: EMOLLIENT, HAIR CONDITIONING, SKIN CONDITIONING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Simmondsia Chinensis Seed Oil\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-allantoin",
+      "batchRank": 43,
+      "ingredient": {
+        "canonicalName": "Allantoin",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "SKIN CONDITIONING",
+          "SKIN PROTECTING",
+          "SOOTHING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 82,
+        "formulaCount": 6,
+        "occurrenceCount": 6,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Allantoin перечислены справочные функции: SKIN CONDITIONING, SKIN PROTECTING, SOOTHING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Allantoin\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-ceramide-np",
+      "batchRank": 44,
+      "ingredient": {
+        "canonicalName": "Ceramide Np",
+        "aliases": [],
+        "cas": null,
+        "referenceFunctions": [
+          "HAIR CONDITIONING",
+          "SKIN CONDITIONING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 101,
+        "formulaCount": 5,
+        "occurrenceCount": 5,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Ceramide Np перечислены справочные функции: HAIR CONDITIONING, SKIN CONDITIONING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Ceramide Np\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-salicylic-acid",
+      "batchRank": 45,
+      "ingredient": {
+        "canonicalName": "Salicylic Acid",
+        "aliases": [
+          "acidum salicylicum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "ANTIDANDRUFF",
+          "HAIR CONDITIONING",
+          "KERATOLYTIC",
+          "MASKING",
+          "PRESERVATIVE",
+          "SKIN CONDITIONING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 111,
+        "formulaCount": 5,
+        "occurrenceCount": 5,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "preservatives",
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Salicylic Acid перечислены справочные функции: ANTIDANDRUFF, HAIR CONDITIONING, KERATOLYTIC, MASKING, PRESERVATIVE, SKIN CONDITIONING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Salicylic Acid\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": [
+        {
+          "sourceId": "sccs-salicylic-acid-1646-22",
+          "status": "candidate_not_transcribed",
+          "note": "Источник найден, но его условия и выводы не перенесены в правило без предметной проверки."
+        }
+      ]
+    },
+    {
+      "id": "c06-titanium-dioxide",
+      "batchRank": 46,
+      "ingredient": {
+        "canonicalName": "Titanium Dioxide",
+        "aliases": [
+          "titanii dioxidum"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "OPACIFYING",
+          "UV ABSORBER",
+          "UV FILTER"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 114,
+        "formulaCount": 5,
+        "occurrenceCount": 5,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "uv_filters"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency",
+        "required_functional_class:uv_filters"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Titanium Dioxide перечислены справочные функции: OPACIFYING, UV ABSORBER, UV FILTER.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Titanium Dioxide\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": [
+        {
+          "sourceId": "sccs-titanium-dioxide-1661-23",
+          "status": "candidate_not_transcribed",
+          "note": "Источник найден, но его условия и выводы не перенесены в правило без предметной проверки."
+        }
+      ]
+    },
+    {
+      "id": "c06-butyl-methoxydibenzoylmethane",
+      "batchRank": 47,
+      "ingredient": {
+        "canonicalName": "Butyl Methoxydibenzoylmethane",
+        "aliases": [
+          "avobenzone"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "UV ABSORBER",
+          "UV FILTER"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 116,
+        "formulaCount": 4,
+        "occurrenceCount": 4,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "uv_filters"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Butyl Methoxydibenzoylmethane перечислены справочные функции: UV ABSORBER, UV FILTER.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Butyl Methoxydibenzoylmethane\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-ethylhexyl-methoxycinnamate",
+      "batchRank": 48,
+      "ingredient": {
+        "canonicalName": "Ethylhexyl Methoxycinnamate",
+        "aliases": [
+          "octinoxate"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "UV ABSORBER",
+          "UV FILTER"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 123,
+        "formulaCount": 4,
+        "occurrenceCount": 4,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "uv_filters"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Ethylhexyl Methoxycinnamate перечислены справочные функции: UV ABSORBER, UV FILTER.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Ethylhexyl Methoxycinnamate\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": [
+        {
+          "sourceId": "sccs-ehmc-1671-24",
+          "status": "candidate_not_transcribed",
+          "note": "Источник найден, но его условия и выводы не перенесены в правило без предметной проверки."
+        }
+      ]
+    },
+    {
+      "id": "c06-octocrylene",
+      "batchRank": 49,
+      "ingredient": {
+        "canonicalName": "Octocrylene",
+        "aliases": [
+          "octocrilene"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "UV ABSORBER",
+          "UV FILTER"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 542,
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "uv_filters"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Octocrylene перечислены справочные функции: UV ABSORBER, UV FILTER.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Octocrylene\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": []
+    },
+    {
+      "id": "c06-retinol",
+      "batchRank": 50,
+      "ingredient": {
+        "canonicalName": "Retinol",
+        "aliases": [
+          "retinol [INN:BAN]",
+          "vitaminum a"
+        ],
+        "cas": null,
+        "referenceFunctions": [
+          "SKIN CONDITIONING"
+        ]
+      },
+      "corpusPriority": {
+        "partition": "setup",
+        "candidateMaterialKind": "external_catalog_transcription_not_gold",
+        "rank": 628,
+        "formulaCount": 1,
+        "occurrenceCount": 1,
+        "setupFormulaCount": 150,
+        "note": "Частота рассчитана по каталожным транскрипциям setup-части C02 и используется только для очередности исследования."
+      },
+      "functionalClasses": [
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ],
+      "draftReference": {
+        "claimType": "reference_function_candidate",
+        "textRu": "В локальном legacy-снимке INCI-реестра для Retinol перечислены справочные функции: SKIN CONDITIONING.",
+        "basis": {
+          "sourceId": "c06-local-inci-registry-snapshot",
+          "locator": "records[name=\"Retinol\"].functions"
+        },
+        "evidenceStatus": "review_required",
+        "publicationStatus": "staged_not_runtime",
+        "runtimeEligible": false,
+        "limitations": [
+          "Запись происходит из локального legacy-зеркала и требует сверки с актуальным официальным источником.",
+          "Перечень справочных функций не доказывает роль ингредиента в конкретной формуле, эффект, безопасность, качество сырья или концентрацию.",
+          "Технологические и значимые для здоровья выводы не подготовлены и не прошли предметное ревью."
+        ],
+        "review": {
+          "status": "pending",
+          "reviewerId": null,
+          "reviewedAt": null,
+          "artifactRef": null
+        }
+      },
+      "assessmentGaps": {
+        "technicalProperties": "not_assessed",
+        "formulaRole": "not_assessed",
+        "tolerability": "not_assessed",
+        "regulatoryRestrictions": "not_assessed",
+        "qualityAssessment": "not_assessed"
+      },
+      "researchCandidates": [
+        {
+          "sourceId": "sccs-vitamin-a-1639-21",
+          "status": "candidate_not_transcribed",
+          "note": "Источник найден, но его условия и выводы не перенесены в правило без предметной проверки."
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "setup": {
+      "selectedRecognizedOccurrences": 1074,
+      "allRecognizedOccurrences": 2476,
+      "recognizedOccurrenceCoverage": 0.4338,
+      "allRawOccurrences": 3063,
+      "selectedToAllRawOccurrenceCoverage": 0.3506
+    },
+    "finalHoldoutReadOnly": {
+      "selectedRecognizedOccurrences": 314,
+      "allRecognizedOccurrences": 728,
+      "recognizedOccurrenceCoverage": 0.4313,
+      "allRawOccurrences": 866,
+      "selectedToAllRawOccurrenceCoverage": 0.3626
+    },
+    "setupIngredientsNeededFor90PercentRecognizedOccurrences": {
+      "target": 0.9,
+      "ingredientCount": 482,
+      "coveredOccurrences": 2229,
+      "totalOccurrences": 2476,
+      "rate": 0.9002
+    },
+    "selectedCardCount": 50,
+    "requiredFunctionalClassCounts": {
+      "emulsifiers": 5,
+      "emollients": 5,
+      "surfactants": 5,
+      "preservatives": 5,
+      "fragrance": 12,
+      "fatty_phase_oils": 1,
+      "uv_filters": 4,
+      "actives_additives": 9,
+      "humectants": 6,
+      "rheology": 12
+    },
+    "publishedExpertClaimCount": 0,
+    "approvedExpertClaimCount": 0,
+    "limitation": "Покрытие измеряет только присутствие карточки для точно распознанного имени. Оно не означает экспертную полноту карточки или корректность каталожной транскрипции."
+  }
+}

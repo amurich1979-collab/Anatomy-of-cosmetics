@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "1.0",
+  "corpusId": "c02-formula-evaluation-corpus",
+  "pipelineVersion": null,
+  "predictions": [],
+  "note": "Populate only with OCR outputs keyed by corpus id. This file is never a source of gold labels."
+}

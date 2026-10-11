@@ -1,7 +1,9 @@
 export const ANALYSIS_CONTRACT_VERSION = "1.0";
-export const ANALYSIS_ALGORITHM_VERSION = "analyzer-v5-personal-context";
+export const ANALYSIS_ALGORITHM_VERSION = "analyzer-v8-personal-fit";
 
 const FORMULA_SCOPES = new Set(["full", "active_only", "partial", "unknown"]);
+const FORMULA_CONFIRMATIONS = new Set(["source_declared", "user_confirmed", "unverified", "conflicting"]);
+const FORMULA_ASSOCIATION_STATUSES = new Set(["confirmed", "unconfirmed", "unknown"]);
 const MATCH_STATUSES = new Set(["confirmed", "suggested", "unknown"]);
 const IDENTIFICATION_STATUSES = new Set(["confirmed", "suggested", "unknown"]);
 const METRIC_STATUSES = new Set(["measured", "not_measured"]);
@@ -41,7 +43,18 @@ function normalizeProfile(value) {
 export function normalizeFormulaScope(value) {
   const scope = String(value || "").trim().toLowerCase();
   if (scope === "active_ingredients_only") return "active_only";
+  if (["full_label_inci", "full_ingredients", "full_label_inci_from_photo"].includes(scope)) return "full";
   return FORMULA_SCOPES.has(scope) ? scope : "unknown";
+}
+
+function normalizeFormulaConfirmation(value) {
+  const confirmation = String(value || "").trim().toLowerCase();
+  return FORMULA_CONFIRMATIONS.has(confirmation) ? confirmation : "unverified";
+}
+
+function normalizeFormulaAssociation(value) {
+  const status = String(value || "").trim().toLowerCase();
+  return FORMULA_ASSOCIATION_STATUSES.has(status) ? status : "unknown";
 }
 
 function normalizeIdentificationStatus(value) {
@@ -220,7 +233,10 @@ export function createAnalysisContract({ analysis, request = {}, generatedAt = n
       purpose: normalizePurpose(analysis?.productSafety || analysis?.productClassification)
     },
     formula: {
+      productId: textOrNull(formulaEvidence?.productId),
       scope: normalizeFormulaScope(formulaEvidence?.scope),
+      confirmation: normalizeFormulaConfirmation(formulaEvidence?.confirmation),
+      associationStatus: normalizeFormulaAssociation(formulaEvidence?.associationStatus),
       version: textOrNull(formulaEvidence?.version),
       market: textOrNull(formulaEvidence?.market),
       rawText: String(request?.text ?? ""),
@@ -259,9 +275,14 @@ export function validateAnalysisContract(contract) {
     if (contract.evidenceVersions.localAdditionsSha256 != null && !/^[a-f0-9]{64}$/.test(contract.evidenceVersions.localAdditionsSha256)) {
       errors.push("evidenceVersions.localAdditionsSha256 is invalid");
     }
+    if (contract.evidenceVersions.systemRuleSetSha256 != null && !/^[a-f0-9]{64}$/.test(contract.evidenceVersions.systemRuleSetSha256)) {
+      errors.push("evidenceVersions.systemRuleSetSha256 is invalid");
+    }
   }
   if (!dateOrNull(contract.generatedAt)) errors.push("generatedAt must be a date");
   if (!FORMULA_SCOPES.has(contract.formula?.scope)) errors.push("formula.scope is invalid");
+  if (contract.formula?.confirmation != null && !FORMULA_CONFIRMATIONS.has(contract.formula.confirmation)) errors.push("formula.confirmation is invalid");
+  if (contract.formula?.associationStatus != null && !FORMULA_ASSOCIATION_STATUSES.has(contract.formula.associationStatus)) errors.push("formula.associationStatus is invalid");
   if (!IDENTIFICATION_STATUSES.has(contract.product?.identificationStatus)) errors.push("product.identificationStatus is invalid");
   if (contract.product?.purpose != null) {
     if (!PURPOSE_STATUSES.has(contract.product.purpose.status)) errors.push("product.purpose.status is invalid");

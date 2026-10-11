@@ -8,7 +8,7 @@
     <script>
       try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "fresh"; } catch { document.documentElement.dataset.theme = "fresh"; }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260717-reference-v1" />
+    <link rel="stylesheet" href="styles.css?v=20261010-c13-1" />
   </head>
   <body>
     <div class="ambient-layer" aria-hidden="true">
@@ -109,11 +109,21 @@
               Очищенный текст с фото
               <textarea id="photoText" spellcheck="false" placeholder="После фото здесь появится очищенный состав или найденное название средства."></textarea>
             </label>
+            <div class="photo-suggestions" id="photoSuggestions" role="status" hidden></div>
             <div class="photo-actions">
+              <button class="secondary-action" type="button" id="photoRetry">Переснять</button>
               <button class="secondary-action" type="button" id="photoUseComposition" disabled>Подтвердить состав</button>
               <button class="primary-action" type="button" id="photoAnalyze" disabled>Подтвердить и разобрать</button>
             </div>
           </div>
+
+          <label class="formula-confirmation" id="formulaConfirmationRow" hidden>
+            <input id="formulaLabelConfirmation" type="checkbox" />
+            <span>
+              <strong>Это полный состав с этикетки</strong>
+              <small>Подтверждение пользователя. Оно не означает, что состав проверен производителем.</small>
+            </span>
+          </label>
 
           <button class="primary-action" type="submit">Разобрать состав</button>
 
@@ -249,12 +259,13 @@
     </main>
     <button class="mobile-sticky-analyze" type="button" id="mobileAnalyze">Разобрать состав</button>
 
-    <div class="camera-capture" id="cameraCapture" hidden>
+    <div class="camera-capture" id="cameraCapture" role="dialog" aria-modal="true" aria-labelledby="cameraCaptureTitle" aria-describedby="cameraCaptureHelp" hidden>
       <div class="camera-panel">
         <div class="form-head">
           <div>
             <p class="eyebrow">Камера</p>
-            <h2>Сфотографируйте этикетку</h2>
+            <h2 id="cameraCaptureTitle">Сфотографируйте этикетку</h2>
+            <p class="field-note" id="cameraCaptureHelp">Снимите этикетку целиком, без бликов и в фокусе.</p>
           </div>
           <button class="icon-action" type="button" id="cameraClose" aria-label="Закрыть камеру">×</button>
         </div>
@@ -267,13 +278,13 @@
       </div>
     </div>
 
-    <div class="barcode-capture" id="barcodeCapture" hidden>
+    <div class="barcode-capture" id="barcodeCapture" role="dialog" aria-modal="true" aria-labelledby="barcodeCaptureTitle" aria-describedby="barcodeScanStatus" hidden>
       <div class="camera-panel">
         <div class="form-head">
           <div>
             <p class="eyebrow">Сканер</p>
-            <h2>Наведите камеру на штрихкод или QR</h2>
-            <p class="field-note" id="barcodeScanStatus">Ищу код в кадре...</p>
+            <h2 id="barcodeCaptureTitle">Наведите камеру на штрихкод или QR</h2>
+            <p class="field-note" id="barcodeScanStatus" role="status" aria-live="polite">Ищу код в кадре...</p>
           </div>
           <button class="icon-action" type="button" id="barcodeScanClose" aria-label="Закрыть сканер">×</button>
         </div>
@@ -285,6 +296,6 @@
     <script src="vendor/zxing/zxing-browser-0.2.1.min.js"></script>
     <script src="theme.js?v=20260717-day-night-1"></script>
     <script src="auth-nav.js?v=20260713-profile-1"></script>
-    <script src="app.js?v=20260717-search-action-1" type="module"></script>
+    <script src="app.js?v=20261010-c13-1" type="module"></script>
   </body>
 </html>

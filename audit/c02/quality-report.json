@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1.0",
+  "corpusId": "c02-formula-evaluation-corpus",
+  "evaluatedInputHash": "7912c4c0071206c9f636e725ae8b902ffeb3382ec6a0c280fe21fe73f43b53c3",
+  "measuredAt": "2026-10-02T23:23:06.988Z",
+  "status": "instrument_ready_external_review_blocked",
+  "reproducibility": {
+    "sourceSnapshotHash": "331ab0859dd819f4d8ad7962f9207b31027338c580a5fbdb7a90e32dd72b2c51",
+    "manifestHash": "82b7669eb2fe0a2f772e589f6571301e407f6811dcef57c505dd965017a7b28b",
+    "annotationHash": "ff148984db0f36c451c7aba68764f86488abbabc2bc8ee5204baeb88ad64c80d",
+    "deterministicOfflineBuild": true,
+    "splitLeakageGroups": []
+  },
+  "corpusQuality": {
+    "products": 200,
+    "uniqueIds": 200,
+    "uniqueBarcodes": 200,
+    "duplicateIds": [],
+    "duplicateBarcodes": [],
+    "setup": 150,
+    "final": 50,
+    "remoteIngredientPhotos": 200,
+    "localIngredientPhotos": 0,
+    "knownDataRights": 200,
+    "knownImageRights": 200,
+    "sourceNamePresent": 189,
+    "sourceBrandPresent": 189,
+    "sourceMarketPresent": 199,
+    "sourceModifiedDatePresent": 200,
+    "reviewedPurposePresent": 0,
+    "reviewedCategoryPresent": 0,
+    "reviewedMarketPresent": 0,
+    "categoryCandidateDistribution": {
+      "cream_or_lotion": 30,
+      "hair_care": 38,
+      "rinse_off_cleanser": 29,
+      "serum_or_oil": 8,
+      "sunscreen": 2,
+      "unknown": 93
+    },
+    "invalidApprovedAnnotations": []
+  },
+  "identification": {
+    "sourceCandidateCoverage": {
+      "barcode": {
+        "numerator": 200,
+        "denominator": 200,
+        "rate": 1
+      },
+      "name": {
+        "numerator": 189,
+        "denominator": 200,
+        "rate": 0.945
+      },
+      "brand": {
+        "numerator": 189,
+        "denominator": 200,
+        "rate": 0.945
+      }
+    },
+    "humanReviewedAccuracy": {
+      "numerator": 0,
+      "denominator": 0,
+      "rate": null,
+      "status": "not_evaluated"
+    },
+    "warning": "Source field presence is coverage, not identification accuracy. Accuracy uses approved independent review only."
+  },
+  "formulaCompleteness": {
+    "reviewedRecords": 0,
+    "distribution": {
+      "full": 0,
+      "partial": 0,
+      "active_only": 0,
+      "unknown": 0
+    },
+    "status": "not_evaluated",
+    "warning": "Catalog text is not assumed to be a full formula. Scope remains unknown until photo review."
+  },
+  "ocr": {
+    "goldRecords": 0,
+    "predictedGoldRecords": 0,
+    "truePositive": 0,
+    "falsePositive": 0,
+    "falseNegative": 0,
+    "precision": null,
+    "recall": null,
+    "status": "not_evaluated",
+    "warning": "External catalog transcription and cleaner output are excluded from OCR gold."
+  },
+  "referenceCoverageDiagnostic": {
+    "status": "diagnostic_external_catalog_text_not_gold",
+    "records": 200,
+    "ingredients": 3804,
+    "confirmed": 3253,
+    "suggested": 0,
+    "unknown": 551,
+    "confirmedRate": 0.8552,
+    "warning": "Measures name recognition on source-reported catalog text; it is not OCR accuracy or formula correctness."
+  },
+  "expertCoverageDiagnostic": {
+    "status": "diagnostic_external_catalog_text_not_gold",
+    "denominator": 3804,
+    "explained": 171,
+    "domainReviewed": 0,
+    "explainedRate": 0.045,
+    "domainReviewedRate": 0,
+    "warning": "Name recognition, expert explanation and domain-reviewed explanation are separate measurements."
+  },
+  "challengeCoverage": {
+    "records": 3,
+    "byType": {
+      "conflicting_sources": 1,
+      "medical_misclassification": 1,
+      "partial_formula": 1
+    },
+    "note": "These are fixed acceptance fixtures. Current application outputs are not copied into expected values."
+  },
+  "externalBlockers": [
+    {
+      "code": "independent_manual_gold_shortfall",
+      "severity": "external_blocker",
+      "current": 0,
+      "required": 100,
+      "action": "An independent reviewer must transcribe ingredient photos using docs/C02_ANNOTATION_GUIDE.md."
+    },
+    {
+      "code": "local_photo_archive_shortfall",
+      "severity": "external_blocker",
+      "current": 0,
+      "remoteCandidates": 200,
+      "required": 100,
+      "action": "Archive licensed source images with attribution or retain verifiable source URLs during manual review."
+    }
+  ]
+}

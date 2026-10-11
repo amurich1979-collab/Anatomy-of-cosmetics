@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-10-03T00:56:07Z",
+  "status": "provisional_external_transcription_not_human_gold",
+  "partition": "final",
+  "warning": "Real files and the production browser pipeline were used without mocks. Reference text is an external source transcription, not independently approved project gold.",
+  "pipeline": "licensed image file -> Tesseract.js eng+rus -> /api/photo/resolve -> cleaner -> /api/analyze",
+  "initialFullResolutionAttempt": {
+    "records": 1,
+    "timeoutMs": 180000,
+    "completed": 0,
+    "action": "Stopped the batch and applied a documented max-edge 1800px preprocessing step."
+  },
+  "ingredientImages": {
+    "records": 3,
+    "truePositive": 53,
+    "falsePositive": 80,
+    "falseNegative": 55,
+    "precision": 0.3985,
+    "recall": 0.4907,
+    "analysisCompleted": 0
+  },
+  "frontImages": {
+    "records": 1,
+    "identifiedCandidates": 0,
+    "analysisCompleted": 0
+  },
+  "browserPageErrors": [],
+  "cases": [
+    {
+      "id": "obf-0816459025880",
+      "kind": "ingredients",
+      "language": "en",
+      "elapsedMs": 59504,
+      "state": "clarification",
+      "statusText": "В распознанном составе слишком много сомнительных позиций. Исправьте текст вручную или переснимите этикетку ближе, ровнее и без бликов.",
+      "productName": "",
+      "expectedIngredientCount": 82,
+      "extractedIngredientCount": 89,
+      "comparison": {
+        "truePositive": 48,
+        "falsePositive": 41,
+        "falseNegative": 34,
+        "precision": 0.5393,
+        "recall": 0.5854
+      },
+      "analysisCompleted": false,
+      "reportLength": 0,
+      "reportExcerpt": "",
+      "downloadBytes": 797169,
+      "dimensions": {
+        "original": {
+          "width": 1600,
+          "height": 2845
+        },
+        "processed": {
+          "width": 1012,
+          "height": 1800
+        },
+        "resized": true
+      }
+    },
+    {
+      "id": "obf-9310692468479",
+      "kind": "ingredients",
+      "language": "en",
+      "elapsedMs": 61906,
+      "state": "clarification",
+      "statusText": "В распознанном составе слишком много сомнительных позиций. Исправьте текст вручную или переснимите этикетку ближе, ровнее и без бликов.",
+      "productName": "",
+      "expectedIngredientCount": 15,
+      "extractedIngredientCount": 22,
+      "comparison": {
+        "truePositive": 3,
+        "falsePositive": 19,
+        "falseNegative": 12,
+        "precision": 0.1364,
+        "recall": 0.2
+      },
+      "analysisCompleted": false,
+      "reportLength": 0,
+      "reportExcerpt": "",
+      "downloadBytes": 516378,
+      "dimensions": {
+        "original": {
+          "width": 1600,
+          "height": 2845
+        },
+        "processed": {
+          "width": 1012,
+          "height": 1800
+        },
+        "resized": true
+      }
+    },
+    {
+      "id": "obf-3700601100860",
+      "kind": "ingredients",
+      "language": "fr",
+      "elapsedMs": 50700,
+      "state": "clarification",
+      "statusText": "Не удалось уверенно понять: это лицевая этикетка или состав. Попробуйте фото ближе или добавьте бренд в поиск. Снимите отдельно название или состав, ближе и без бликов.",
+      "productName": "",
+      "expectedIngredientCount": 11,
+      "extractedIngredientCount": 22,
+      "comparison": {
+        "truePositive": 2,
+        "falsePositive": 20,
+        "falseNegative": 9,
+        "precision": 0.0909,
+        "recall": 0.1818
+      },
+      "analysisCompleted": false,
+      "reportLength": 0,
+      "reportExcerpt": "",
+      "downloadBytes": 715757,
+      "dimensions": {
+        "original": {
+          "width": 2250,
+          "height": 3000
+        },
+        "processed": {
+          "width": 1350,
+          "height": 1800
+        },
+        "resized": true
+      }
+    },
+    {
+      "id": "obf-4067796217735",
+      "kind": "front",
+      "language": "de",
+      "elapsedMs": 35592,
+      "state": "clarification",
+      "statusText": "Средство похоже найдено, но состав для него пока не доступен. Снимите отдельно название или состав, ближе и без бликов.",
+      "productName": "",
+      "expectedIngredientCount": 0,
+      "extractedIngredientCount": 0,
+      "comparison": null,
+      "analysisCompleted": false,
+      "reportLength": 0,
+      "reportExcerpt": "",
+      "downloadBytes": 241918,
+      "dimensions": {
+        "original": {
+          "width": 908,
+          "height": 2053
+        },
+        "processed": {
+          "width": 796,
+          "height": 1800
+        },
+        "resized": true
+      }
+    }
+  ]
+}

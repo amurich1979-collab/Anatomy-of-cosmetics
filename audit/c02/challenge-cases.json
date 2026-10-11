@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "cases": [
+    {
+      "id": "c02-medical-local-anesthetic",
+      "type": "medical_misclassification",
+      "provenance": "User-provided project label transcription retained in audit/t18/safety-cases.json.",
+      "input": {
+        "name": "User photographed anesthetic",
+        "formula": "Aqua, Frostoin, Prilocaine Hydrochloride, Propylene Glycol, Sodium Hydroxide, Cetyl Palmitate, C10-16 Alkyl Glucoside, C14-22 Alcohols, Hydroxyethylcellulose, Phenoxyethanol"
+      },
+      "expected": {
+        "productClass": "medical_or_procedural",
+        "cosmeticQualityAssessmentAllowed": false,
+        "personalRoutineAdviceAllowed": false
+      }
+    },
+    {
+      "id": "c02-gigi-active-only",
+      "type": "partial_formula",
+      "provenance": "Official GIGI card represented by local product gigi-27116-acnon-multi-peeling; the source publishes active ingredients only.",
+      "input": {
+        "localProductId": "gigi-27116-acnon-multi-peeling",
+        "declaredScope": "active_only"
+      },
+      "expected": {
+        "formulaScope": "active_only",
+        "wholeFormulaAssessmentAllowed": false,
+        "missingIngredientsMayBeInvented": false
+      }
+    },
+    {
+      "id": "c02-conflicting-market-formulas",
+      "type": "conflicting_sources",
+      "provenance": "Synthetic structure fixture based on the documented multi-source conflict requirement; formulas are intentionally minimal and are not a real product claim.",
+      "input": {
+        "identity": { "brand": "Fixture Brand", "name": "Fixture Cream" },
+        "formulaVariants": [
+          { "source": "source-a", "market": "EU", "formula": "Aqua, Glycerin, Cetearyl Alcohol, Phenoxyethanol" },
+          { "source": "source-b", "market": "RU", "formula": "Aqua, Glycerin, Niacinamide, Cetearyl Alcohol, Sodium Benzoate" }
+        ]
+      },
+      "expected": {
+        "variantCount": 2,
+        "automaticMergeAllowed": false,
+        "sourceAttributionRequired": true,
+        "marketOrDateDisambiguationRequired": true
+      }
+    }
+  ]
+}
