@@ -1,0 +1,6227 @@
+{
+  "schemaVersion": "1.0",
+  "corpusId": "c02-formula-evaluation-corpus",
+  "manifestHash": "82b7669eb2fe0a2f772e589f6571301e407f6811dcef57c505dd965017a7b28b",
+  "annotationPolicy": {
+    "blindTo": [
+      "OCR output",
+      "external catalog transcription",
+      "current analyzer output"
+    ],
+    "approvalRequires": [
+      "ingredient photo viewed",
+      "exact transcription or explicit unreadable fragments",
+      "formula scope reviewed",
+      "reviewer id",
+      "review date"
+    ],
+    "allowedFormulaScopes": [
+      "full",
+      "partial",
+      "active_only",
+      "unknown"
+    ]
+  },
+  "annotations": [
+    {
+      "id": "c02-obf-0011111049833",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0079400521170",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0810023841111",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0835240004323",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0840044715337",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0840435401726",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0840514817899",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0850056095846",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0857329008015",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3286011092310",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3337872418570",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4051424570064",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4061461257200",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447215458",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447377989",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447383690",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447492521",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447492804",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447870213",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447880472",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447888423",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447944167",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447967678",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447970555",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447974522",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447982596",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447985474",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447988956",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4067796173673",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4070765030884",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4103040427014",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4250338494415",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-5060571721778",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-5060571721907",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-5060896578835",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-5900002080619",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-6429810527721",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-87034691",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8718537813148",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8718951672963",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8718989045975",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8809670683313",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8809925193406",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8850002027688",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8858696803618",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8858696814768",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8858696834315",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8858696834964",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8886467010415",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-96081754",
+      "partition": "final",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0009531139890",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0014926173021",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0014926282501",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0015594012124",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0018787780169",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0020714015459",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0028672210305",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0030772112632",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0030772220955",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0030772283202",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0030772283813",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0037000974741",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0044164344464",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0057800964940",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0062600296085",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0062600296092",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0074469484794",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0074469484800",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0075371250996",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0075609219184",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0080878195190",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0081738546015",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0138583000091",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0190679004826",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0192333268148",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0194346459025",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0197644374809",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0199874436944",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0303162004269",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0312547352772",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-03275528",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0383711004629",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0383711004933",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0383711005305",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0571915454191",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0603084457977",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0626232712230",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0636874121949",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0639844110332",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0667554738478",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0667555453400",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0667555840958",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0667556218527",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0681131110150",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0705320123346",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0711535510604",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0711535513322",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0735546119601",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0742699002209",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0761036893065",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0764302026051",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0764302290599",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0769915152272",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0802535885080",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0810046840054",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0810120260044",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0810147884179",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0810149500275",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0810195210692",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0811068019688",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0812326012281",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0816459025880",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0840315303546",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0850012468011",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0850018962810",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0850062421103",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0850079622074",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0854764005142",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0860007070068",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0860012804061",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0860012804092",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0860015676191",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0893268000604",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-0957380000000",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-1793999300860",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-2004537296019",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3282770037500",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3337875597357",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3574661811376",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3600524246853",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3600542509466",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3600542528160",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3606000532076",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3612624053767",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3700343900315",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3700601100860",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-3760061220461",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4005808846290",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4005900376978",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4005900948038",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4006000262314",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4009903011119",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4061464947825",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447591903",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447965421",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4066447979725",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4067796217735",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4070765001044",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4311596037445",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-4311596037476",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-5031413949063",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-5033102801522",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-5052449626445",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-5054563036377",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-5054563288325",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-5901761967678",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-5906641496217",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-6001067089827",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-6111250476676",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-6118000041566",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-6926378915323",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-6976218860948",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-7290011521035",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-7290119485819",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-7290119489107",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-7627536562890",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-7702031244509",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8001841054940",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8006540592939",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8011391705803",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8022297141428",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8029241105093",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8054042630161",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8056211082054",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8058253235429",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8058669198851",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8480000472915",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8606001252763",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8699469412908",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8700216357814",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8710447224366",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8714789101279",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8715342034201",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8718951167940",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8718951327214",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8719324740654",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8720674304861",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8801046437209",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8809382883735",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8809447257020",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8809500817970",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8809517467472",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8850006936498",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8850007817734",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8850784995670",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8850784995892",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8851932443197",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8852526895590",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8858229093493",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    },
+    {
+      "id": "c02-obf-8858229093523",
+      "partition": "setup",
+      "status": "pending",
+      "independentFromMachineOutputs": true,
+      "reviewer": {
+        "id": null,
+        "reviewedAt": null
+      },
+      "identity": {
+        "sourceIdentityAssessment": null,
+        "correctedName": null,
+        "correctedBrand": null
+      },
+      "purpose": null,
+      "category": null,
+      "market": null,
+      "packagingOrFormulaDate": null,
+      "formula": {
+        "scope": null,
+        "exactTranscription": null,
+        "ingredients": [],
+        "unreadableFragments": []
+      },
+      "photo": {
+        "readability": null,
+        "visualConditions": [],
+        "labelSide": null
+      },
+      "notes": null
+    }
+  ]
+}

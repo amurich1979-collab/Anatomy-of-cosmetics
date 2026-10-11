@@ -1,0 +1,859 @@
+{
+  "schemaVersion": "1.0",
+  "fixtureHash": "f2ffff0407a4329f84b122b09377ad45f2bc2f5308fb7c5bf05d20b16db7541f",
+  "catalogHash": "5d6096530ebb75a86c154a9c91490b5ea7699936e0206f6b7e19c8e040aa8298",
+  "population": {
+    "controlQueries": 40,
+    "nameQueries": 32,
+    "barcodeQueries": 8,
+    "availableCatalogProducts": 492
+  },
+  "searchAccuracy": {
+    "correctTop1": 40,
+    "total": 40,
+    "top1Accuracy": 1,
+    "threshold": 0.95,
+    "passed": true,
+    "exactBarcodeSingleResult": true
+  },
+  "sourceCoverage": {
+    "note": "Coverage is reported separately from ranking accuracy and is not an acceptance substitute.",
+    "resultSourceTypes": {
+      "open_beauty_facts": 36,
+      "official_brand_page": 1,
+      "label_photo": 1,
+      "local": 2
+    },
+    "formulaAvailability": {
+      "withComposition": 40,
+      "withoutComposition": 0
+    },
+    "formulaScopes": {
+      "unknown": 38,
+      "active_ingredients_only": 1,
+      "full_label_inci_from_photo": 1
+    }
+  },
+  "safety": {
+    "allPassed": true,
+    "cases": [
+      {
+        "id": "missing-exact-product",
+        "query": "The Ordinary Niacinamide 10 Zinc 1",
+        "expected": "no_local_substitute",
+        "passed": true,
+        "returnedIds": []
+      },
+      {
+        "id": "missing-unknown-brand",
+        "query": "Imaginary Never Exists Cream",
+        "expected": "no_local_substitute",
+        "passed": true,
+        "returnedIds": []
+      }
+    ]
+  },
+  "failures": [],
+  "cases": [
+    {
+      "id": "name-01",
+      "kind": "name",
+      "query": "The Ordinary 100% Organic Cold Pressed Rose Hip Seed Oil",
+      "expectedId": "obf-0769915190342",
+      "expectedBrand": "The Ordinary",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-0769915190342",
+        "brand": "The Ordinary",
+        "name": "100% Organic Cold Pressed Rose Hip Seed Oil",
+        "code": "0769915190342",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-02",
+      "kind": "name",
+      "query": "CeraVe Acne Foaming Cream Cleanser",
+      "expectedId": "obf-3606000512238",
+      "expectedBrand": "CeraVe",
+      "correct": true,
+      "resultCount": 8,
+      "top": {
+        "id": "obf-3606000512238",
+        "brand": "CeraVe",
+        "name": "Acne Foaming Cream Cleanser",
+        "code": "3606000512238",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-03",
+      "kind": "name",
+      "query": "Bioderma ABCDerm crème raffermissante",
+      "expectedId": "obf-3401347169653",
+      "expectedBrand": "Bioderma",
+      "correct": true,
+      "resultCount": 8,
+      "top": {
+        "id": "obf-3401347169653",
+        "brand": "Bioderma",
+        "name": "ABCDerm crème raffermissante",
+        "code": "3401347169653",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-04",
+      "kind": "name",
+      "query": "Vichy Anti-transpirant",
+      "expectedId": "obf-3337875804431",
+      "expectedBrand": "Vichy",
+      "correct": true,
+      "resultCount": 4,
+      "top": {
+        "id": "obf-3337875804431",
+        "brand": "Vichy",
+        "name": "Anti-transpirant",
+        "code": "3337875804431",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-05",
+      "kind": "name",
+      "query": "Avène Avène - Cicalfate crème réparatrice",
+      "expectedId": "obf-3282779069519",
+      "expectedBrand": "Avène",
+      "correct": true,
+      "resultCount": 8,
+      "top": {
+        "id": "obf-3282779069519",
+        "brand": "Avène",
+        "name": "Avène - Cicalfate crème réparatrice",
+        "code": "3282779069519",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-06",
+      "kind": "name",
+      "query": "Uriage 1er Lait de Toilette",
+      "expectedId": "obf-3661434000195",
+      "expectedBrand": "Uriage",
+      "correct": true,
+      "resultCount": 8,
+      "top": {
+        "id": "obf-3661434000195",
+        "brand": "Uriage",
+        "name": "1er Lait de Toilette",
+        "code": "3661434000195",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-07",
+      "kind": "name",
+      "query": "Klorane Antipelliculaire",
+      "expectedId": "obf-3282770106299",
+      "expectedBrand": "Klorane",
+      "correct": true,
+      "resultCount": 2,
+      "top": {
+        "id": "obf-3282770106299",
+        "brand": "Klorane",
+        "name": "Antipelliculaire",
+        "code": "3282770106299",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-08",
+      "kind": "name",
+      "query": "Eucerin Advanced Repair Hand Cream",
+      "expectedId": "obf-0072140633820",
+      "expectedBrand": "Eucerin",
+      "correct": true,
+      "resultCount": 4,
+      "top": {
+        "id": "obf-0072140633820",
+        "brand": "Eucerin",
+        "name": "Advanced Repair Hand Cream",
+        "code": "0072140633820",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-09",
+      "kind": "name",
+      "query": "Caudalie Baume liftant regard Resveratrol Lift",
+      "expectedId": "obf-3522930031871",
+      "expectedBrand": "Caudalie",
+      "correct": true,
+      "resultCount": 2,
+      "top": {
+        "id": "obf-3522930031871",
+        "brand": "Caudalie",
+        "name": "Baume liftant regard Resveratrol [Lift]",
+        "code": "3522930031871",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-10",
+      "kind": "name",
+      "query": "Ducray Aderma Derm'intim PH 8 Soothing Cleansing Gel 200ML",
+      "expectedId": "obf-3282779226424",
+      "expectedBrand": "Ducray",
+      "correct": true,
+      "resultCount": 5,
+      "top": {
+        "id": "obf-3282779226424",
+        "brand": "Ducray",
+        "name": "Aderma Derm'intim PH 8 Soothing Cleansing Gel 200ML (intimate Hygiene)",
+        "code": "3282779226424",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-11",
+      "kind": "name",
+      "query": "SVR Cicavit+ Crème",
+      "expectedId": "obf-3401344502200",
+      "expectedBrand": "SVR",
+      "correct": true,
+      "resultCount": 8,
+      "top": {
+        "id": "obf-3401344502200",
+        "brand": "SVR",
+        "name": "Cicavit+ Crème",
+        "code": "3401344502200",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-12",
+      "kind": "name",
+      "query": "Dermalogica Active Moist",
+      "expectedId": "obf-0666151030855",
+      "expectedBrand": "Dermalogica",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-0666151030855",
+        "brand": "Dermalogica",
+        "name": "Active Moist",
+        "code": "0666151030855",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-13",
+      "kind": "name",
+      "query": "A-Derma Exomega Control Baume émollient 200ML",
+      "expectedId": "obf-3282770074697",
+      "expectedBrand": "A-Derma",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-3282770074697",
+        "brand": "A-Derma",
+        "name": "A derma Exomega Control Baume émollient, 200ML",
+        "code": "3282770074697",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-14",
+      "kind": "name",
+      "query": "ELEMIS Dynamic Resurfacing Facial Wash",
+      "expectedId": "obf-0641628005208",
+      "expectedBrand": "ELEMIS",
+      "correct": true,
+      "resultCount": 2,
+      "top": {
+        "id": "obf-0641628005208",
+        "brand": "ELEMIS",
+        "name": "Dynamic Resurfacing Facial Wash",
+        "code": "0641628005208",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-15",
+      "kind": "name",
+      "query": "Janssen Cosmetics El Maskesi 75 ml",
+      "expectedId": "obf-4040943009131",
+      "expectedBrand": "Janssen Cosmetics",
+      "correct": true,
+      "resultCount": 2,
+      "top": {
+        "id": "obf-4040943009131",
+        "brand": "Janssen Cosmetics",
+        "name": "Janssen Cosmetics El Maskesi 75 ml",
+        "code": "4040943009131",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-16",
+      "kind": "name",
+      "query": "La Roche Posay Cicaplast Baume B5+",
+      "expectedId": "obf-3337875816847",
+      "expectedBrand": "La Roche Posay",
+      "correct": true,
+      "resultCount": 3,
+      "top": {
+        "id": "obf-3337875816847",
+        "brand": "La Roche Posay",
+        "name": "Cicaplast Baume B5+",
+        "code": "3337875816847",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-17",
+      "kind": "name",
+      "query": "Paula's Choice 2% BHA Body Smoothing Spot Exfoliant",
+      "expectedId": "obf-0655439007962",
+      "expectedBrand": "Paula's Choice",
+      "correct": true,
+      "resultCount": 3,
+      "top": {
+        "id": "obf-0655439007962",
+        "brand": "Paula's Choice",
+        "name": "2% BHA Body Smoothing Spot Exfoliant",
+        "code": "0655439007962",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-18",
+      "kind": "name",
+      "query": "Murad Acne Control Clarifying Cleanser",
+      "expectedId": "obf-0767332100531",
+      "expectedBrand": "Murad",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-0767332100531",
+        "brand": "Murad",
+        "name": "Acne Control Clarifying Cleanser",
+        "code": "0767332100531",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-19",
+      "kind": "name",
+      "query": "Topicrem Gel nettoyant surgras",
+      "expectedId": "obf-3700281702040",
+      "expectedBrand": "Topicrem",
+      "correct": true,
+      "resultCount": 4,
+      "top": {
+        "id": "obf-3700281702040",
+        "brand": "Topicrem",
+        "name": "Gel nettoyant surgras",
+        "code": "3700281702040",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-20",
+      "kind": "name",
+      "query": "Sesderma Hydraderm Hyal C-Vit",
+      "expectedId": "obf-8429979432278",
+      "expectedBrand": "Sesderma",
+      "correct": true,
+      "resultCount": 4,
+      "top": {
+        "id": "obf-8429979432278",
+        "brand": "Sesderma",
+        "name": "Hydraderm Hyal C-Vit Hidraderm Hyal  C-Vit",
+        "code": "8429979432278",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-21",
+      "kind": "name",
+      "query": "Lierac Homme gel hydratant énergisant anti-fatigue",
+      "expectedId": "obf-3508240014070",
+      "expectedBrand": "Lierac",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-3508240014070",
+        "brand": "Lierac",
+        "name": "Lierac Homme - gel hydratant énergisant anti-fatigue et revitalise",
+        "code": "3508240014070",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-22",
+      "kind": "name",
+      "query": "Filorga Hydra Filler 50ML",
+      "expectedId": "obf-3401351102882",
+      "expectedBrand": "Filorga",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-3401351102882",
+        "brand": "Filorga",
+        "name": "Filorga Hydra Filler 50ML",
+        "code": "3401351102882",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-23",
+      "kind": "name",
+      "query": "GIGI 27110 Acnon Day Control Moisturizer 50 ml",
+      "expectedId": "gigi-27110-acnon-day-control-moisturizer",
+      "expectedBrand": "GIGI",
+      "correct": true,
+      "resultCount": 2,
+      "top": {
+        "id": "gigi-27110-acnon-day-control-moisturizer",
+        "brand": "GIGI",
+        "name": "27110 Acnon Day Control Moisturizer / Krem dnevnoy acne control 50 ml",
+        "code": null,
+        "sourceType": "official_brand_page",
+        "hasComposition": true,
+        "compositionScope": "active_ingredients_only"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-24",
+      "kind": "name",
+      "query": "Trixosil 5% Professional Hair Growth Complex 50 ml",
+      "expectedId": "trixosil-5-hair-growth-complex-50ml",
+      "expectedBrand": "Trixosil",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "trixosil-5-hair-growth-complex-50ml",
+        "brand": "Trixosil",
+        "name": "5% Professional Hair Growth Complex / Professionalnyy kompleks dlya rosta volos 50 ml",
+        "code": null,
+        "sourceType": "label_photo",
+        "hasComposition": true,
+        "compositionScope": "full_label_inci_from_photo"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-25",
+      "kind": "name",
+      "query": "Demo Acne Care BHA Clarifying Gel",
+      "expectedId": "demo-salicylic-gel",
+      "expectedBrand": "Demo Acne Care",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "demo-salicylic-gel",
+        "brand": "Demo Acne Care",
+        "name": "BHA Clarifying Gel",
+        "code": null,
+        "sourceType": "local",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-26",
+      "kind": "name",
+      "query": "Demo Dermatology Mineral Recovery SPF 50",
+      "expectedId": "demo-mineral-spf",
+      "expectedBrand": "Demo Dermatology",
+      "correct": true,
+      "resultCount": 4,
+      "top": {
+        "id": "demo-mineral-spf",
+        "brand": "Demo Dermatology",
+        "name": "Mineral Recovery SPF 50",
+        "code": null,
+        "sourceType": "local",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-27",
+      "kind": "name",
+      "query": "The Ordinary Caffeine solution",
+      "expectedId": "obf-0769915195712",
+      "expectedBrand": "The Ordinary",
+      "correct": true,
+      "resultCount": 3,
+      "top": {
+        "id": "obf-0769915195712",
+        "brand": "The Ordinary",
+        "name": "Caffeine solution",
+        "code": "0769915195712",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-28",
+      "kind": "name",
+      "query": "CeraVe AM Facial Moisturizing Lotion SPF 30",
+      "expectedId": "obf-0793379245584",
+      "expectedBrand": "CeraVe",
+      "correct": true,
+      "resultCount": 8,
+      "top": {
+        "id": "obf-0793379245584",
+        "brand": "CeraVe",
+        "name": "AM Facial Moisturizing Lotion SPF 30",
+        "code": "0793379245584",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-29",
+      "kind": "name",
+      "query": "Bioderma Atoderm Crème de douche",
+      "expectedId": "obf-3401399371455",
+      "expectedBrand": "Bioderma",
+      "correct": true,
+      "resultCount": 8,
+      "top": {
+        "id": "obf-3401399371455",
+        "brand": "Bioderma",
+        "name": "Atoderm Crème de douche",
+        "code": "3401399371455",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-30",
+      "kind": "name",
+      "query": "Vichy Aqua Thermal Sérum Visage",
+      "expectedId": "obf-3337871328337",
+      "expectedBrand": "Vichy",
+      "correct": true,
+      "resultCount": 5,
+      "top": {
+        "id": "obf-3337871328337",
+        "brand": "Vichy",
+        "name": "Aqua Thermal - Sérum Visage",
+        "code": "3337871328337",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-31",
+      "kind": "name",
+      "query": "Avène Baume après-rasage",
+      "expectedId": "obf-3282779003889",
+      "expectedBrand": "Avène",
+      "correct": true,
+      "resultCount": 4,
+      "top": {
+        "id": "obf-3282779003889",
+        "brand": "Avène",
+        "name": "Baume après-rasage",
+        "code": "3282779003889",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "name-32",
+      "kind": "name",
+      "query": "Uriage 1er Sérum physiologique naturel",
+      "expectedId": "obf-3661434000546",
+      "expectedBrand": "Uriage",
+      "correct": true,
+      "resultCount": 8,
+      "top": {
+        "id": "obf-3661434000546",
+        "brand": "Uriage",
+        "name": "1er Sérum physiologique naturel",
+        "code": "3661434000546",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "barcode-01",
+      "kind": "barcode",
+      "query": "0769915190342",
+      "expectedId": "obf-0769915190342",
+      "expectedBrand": "The Ordinary",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-0769915190342",
+        "brand": "The Ordinary",
+        "name": "100% Organic Cold Pressed Rose Hip Seed Oil",
+        "code": "0769915190342",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "barcode-02",
+      "kind": "barcode",
+      "query": "3606000512238",
+      "expectedId": "obf-3606000512238",
+      "expectedBrand": "CeraVe",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-3606000512238",
+        "brand": "CeraVe",
+        "name": "Acne Foaming Cream Cleanser",
+        "code": "3606000512238",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "barcode-03",
+      "kind": "barcode",
+      "query": "3401347169653",
+      "expectedId": "obf-3401347169653",
+      "expectedBrand": "Bioderma",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-3401347169653",
+        "brand": "Bioderma",
+        "name": "ABCDerm crème raffermissante",
+        "code": "3401347169653",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "barcode-04",
+      "kind": "barcode",
+      "query": "3337875804431",
+      "expectedId": "obf-3337875804431",
+      "expectedBrand": "Vichy",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-3337875804431",
+        "brand": "Vichy",
+        "name": "Anti-transpirant",
+        "code": "3337875804431",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "barcode-05",
+      "kind": "barcode",
+      "query": "3282779069519",
+      "expectedId": "obf-3282779069519",
+      "expectedBrand": "Avène",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-3282779069519",
+        "brand": "Avène",
+        "name": "Avène - Cicalfate crème réparatrice",
+        "code": "3282779069519",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "barcode-06",
+      "kind": "barcode",
+      "query": "3661434000195",
+      "expectedId": "obf-3661434000195",
+      "expectedBrand": "Uriage",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-3661434000195",
+        "brand": "Uriage",
+        "name": "1er Lait de Toilette",
+        "code": "3661434000195",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "barcode-07",
+      "kind": "barcode",
+      "query": "3282770106299",
+      "expectedId": "obf-3282770106299",
+      "expectedBrand": "Klorane",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-3282770106299",
+        "brand": "Klorane",
+        "name": "Antipelliculaire",
+        "code": "3282770106299",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    },
+    {
+      "id": "barcode-08",
+      "kind": "barcode",
+      "query": "0072140633820",
+      "expectedId": "obf-0072140633820",
+      "expectedBrand": "Eucerin",
+      "correct": true,
+      "resultCount": 1,
+      "top": {
+        "id": "obf-0072140633820",
+        "brand": "Eucerin",
+        "name": "Advanced Repair Hand Cream",
+        "code": "0072140633820",
+        "sourceType": "open_beauty_facts",
+        "hasComposition": true,
+        "compositionScope": "unknown"
+      },
+      "expectedAvailable": true,
+      "barcodeCardinalityCorrect": true
+    }
+  ]
+}

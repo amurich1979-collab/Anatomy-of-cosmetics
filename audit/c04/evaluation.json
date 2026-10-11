@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "1.0",
+  "task": "C04",
+  "status": "partial",
+  "acceptance": {
+    "thresholds": {
+      "precision": 0.99,
+      "recall": 0.95,
+      "automaticallyAcceptedReadableShare": 0.8
+    },
+    "officialMetrics": {
+      "status": "not_evaluated",
+      "reason": "C02 contains no independently approved readable photo transcription.",
+      "readableGoldPhotos": 0,
+      "precision": null,
+      "recall": null,
+      "automaticallyAcceptedReadableShare": null,
+      "rejectedReadablePhotos": null,
+      "passed": false
+    },
+    "conclusion": "C04 acceptance is open. Engineering safeguards are implemented, but independent gold and physical mobile checks are missing; the complex diagnostic also remains below target."
+  },
+  "provisionalDiagnostic": {
+    "status": "external_catalog_transcription_not_gold",
+    "warning": "These values compare OCR with an external catalog transcription and must not be reported as accepted OCR accuracy.",
+    "corpusCaseIds": [
+      "obf-0816459025880",
+      "obf-9310692468479",
+      "obf-3700601100860",
+      "obf-4067796217735"
+    ],
+    "sameCasesAsBaseline": true,
+    "ingredientPhotos": {
+      "records": 3,
+      "baseline": {
+        "precision": 0.3759,
+        "recall": 0.463
+      },
+      "enhanced": {
+        "precision": 0.3985,
+        "recall": 0.4907
+      },
+      "delta": {
+        "precision": 0.0226,
+        "recall": 0.0277
+      },
+      "automaticallyAccepted": 0,
+      "rejectedForClarification": 3,
+      "automaticallyAcceptedShare": 0
+    },
+    "complexPhotos": [
+      {
+        "id": "obf-0816459025880",
+        "kind": "ingredients",
+        "baselineState": "clarification",
+        "enhancedState": "clarification",
+        "baselinePrecision": 0.4839,
+        "enhancedPrecision": 0.5393,
+        "baselineRecall": 0.5488,
+        "enhancedRecall": 0.5854
+      },
+      {
+        "id": "obf-9310692468479",
+        "kind": "ingredients",
+        "baselineState": "clarification",
+        "enhancedState": "clarification",
+        "baselinePrecision": 0.15,
+        "enhancedPrecision": 0.1364,
+        "baselineRecall": 0.2,
+        "enhancedRecall": 0.2
+      },
+      {
+        "id": "obf-3700601100860",
+        "kind": "ingredients",
+        "baselineState": "clarification",
+        "enhancedState": "clarification",
+        "baselinePrecision": 0.1,
+        "enhancedPrecision": 0.0909,
+        "baselineRecall": 0.1818,
+        "enhancedRecall": 0.1818
+      }
+    ],
+    "frontLabelPhotos": {
+      "records": 1,
+      "identifiedCandidates": 0,
+      "analysisCompleted": 0,
+      "cases": [
+        {
+          "id": "obf-4067796217735",
+          "kind": "front",
+          "baselineState": "clarification",
+          "enhancedState": "clarification",
+          "baselinePrecision": null,
+          "enhancedPrecision": null,
+          "baselineRecall": null,
+          "enhancedRecall": null
+        }
+      ]
+    },
+    "pageErrors": []
+  },
+  "engineComparison": {
+    "measuredOnSameDiagnosticCorpus": [
+      {
+        "engine": "Tesseract.js current full-frame pipeline",
+        "source": "audit/t18/ocr-live-final.json",
+        "precision": 0.3759,
+        "recall": 0.463
+      },
+      {
+        "engine": "Tesseract.js with C04 crop, contrast and rotation selection",
+        "source": "audit/c04/enhanced-ocr.json",
+        "precision": 0.3985,
+        "recall": 0.4907
+      }
+    ],
+    "notBenchmarked": [
+      {
+        "engine": "PaddleOCR PP-OCRv5",
+        "reason": "Runtime/models are not installed in this repository."
+      },
+      {
+        "engine": "EasyOCR",
+        "reason": "Runtime/models are not installed in this repository."
+      }
+    ],
+    "proposedNextEngine": "PaddleOCR PP-OCRv5 multilingual, run locally or in a separately consented service and measured on the identical human-gold corpus before selection."
+  },
+  "physicalDevices": {
+    "android": {
+      "status": "not_tested",
+      "required": true
+    },
+    "ios": {
+      "status": "not_tested",
+      "required": true
+    },
+    "note": "Playwright checks camera lifecycle and responsive layout but does not replace physical-device testing."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "description": "Same four records used by the pre-C04 final diagnostic, fixed before the enhanced run.",
+  "ingredientIds": [
+    "obf-0816459025880",
+    "obf-9310692468479",
+    "obf-3700601100860"
+  ],
+  "frontIds": [
+    "obf-4067796217735"
+  ]
+}

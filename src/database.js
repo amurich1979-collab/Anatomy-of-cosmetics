@@ -5,7 +5,9 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
-const fileDbPath = path.join(rootDir, "data", "app-db.json");
+const fileDbPath = process.env.NODE_ENV !== "production" && process.env.APP_DB_PATH
+  ? path.resolve(process.env.APP_DB_PATH)
+  : path.join(rootDir, "data", "app-db.json");
 
 const DEFAULT_SETTINGS = {
   theme: "fresh",
@@ -15,6 +17,7 @@ const DEFAULT_SETTINGS = {
 };
 
 let pgPool = null;
+let fileDbInitialized = false;
 
 function now() {
   return new Date().toISOString();
@@ -36,14 +39,21 @@ function ensureFileDbShape(db) {
 function readFileDb() {
   try {
     return ensureFileDbShape(JSON.parse(fs.readFileSync(fileDbPath, "utf8")));
-  } catch {
-    return ensureFileDbShape({});
+  } catch (error) {
+    if (error.code === "ENOENT" && !fileDbInitialized) return ensureFileDbShape({});
+    throw error;
   }
 }
 
 function writeFileDb(db) {
   fs.mkdirSync(path.dirname(fileDbPath), { recursive: true });
-  fs.writeFileSync(fileDbPath, `${JSON.stringify(db, null, 2)}\n`, "utf8");
+  const temporaryPath = `${fileDbPath}.${process.pid}.tmp`;
+  try {
+    fs.writeFileSync(temporaryPath, `${JSON.stringify(db, null, 2)}\n`, { encoding: "utf8", mode: 0o600 });
+    fs.renameSync(temporaryPath, fileDbPath);
+  } finally {
+    if (fs.existsSync(temporaryPath)) fs.unlinkSync(temporaryPath);
+  }
 }
 
 function normalizeEmail(email) {
@@ -67,14 +77,20 @@ async function query(sql, params = []) {
 
 export async function initDatabase() {
   if (!process.env.DATABASE_URL) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("Production requires DATABASE_URL for persistent storage");
+    }
     writeFileDb(readFileDb());
+    fileDbInitialized = true;
     return { provider: "file", path: fileDbPath };
   }
 
   const { Pool } = await import("pg");
   pgPool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_SSL === "false" ? false : { rejectUnauthorized: false }
+    ssl: process.env.DATABASE_SSL === "false" ? false : { rejectUnauthorized: false },
+    connectionTimeoutMillis: 5000,
+    query_timeout: 5000
   });
 
   await query(`
@@ -119,6 +135,14 @@ export async function initDatabase() {
   `);
 
   return { provider: "postgres" };
+}
+
+export async function pingDatabase() {
+  if (pgPool) {
+    await query("select 1");
+  } else {
+    readFileDb();
+  }
 }
 
 export async function createUser({ email, passwordHash, name = "" }) {

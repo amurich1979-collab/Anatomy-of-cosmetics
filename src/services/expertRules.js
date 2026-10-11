@@ -1,8 +1,9 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import { getInciRegistrySnapshot } from "./ingredientSources/inciRegistry.js";
+import { evaluateClaimContext, matchConditions, validateKnowledge } from "./expertKnowledge.js";
 
-export const EXPERT_RULES_VERSION = "1.1.0";
+export const EXPERT_RULES_VERSION = "2.0.0";
 const key = (value) => String(value || "").trim().toUpperCase();
 const hash = (value) => createHash("sha256").update(value).digest("hex");
 const registrySnapshot = getInciRegistrySnapshot();
@@ -33,68 +34,15 @@ const FUNCTION_GROUPS = Object.freeze({
   SMOOTHING: ["smoothing", "Сглаживающие компоненты (справочная функция)"]
 });
 
-const nonEmpty = (value) => typeof value === "string" && Boolean(value.trim());
-const date = (value) => nonEmpty(value) && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
 export function validateExpertKnowledge(data) {
-  const errors = [];
-  if (data?.schemaVersion !== "1.1" || !nonEmpty(data?.version)) errors.push("Invalid knowledge version");
-  if (!Array.isArray(data?.sources) || !Array.isArray(data?.claims)) return [...errors, "sources and claims must be arrays"];
-  const sources = new Set();
-  for (const source of data.sources) {
-    if (!source || typeof source !== "object") { errors.push("Invalid source record"); continue; }
-    if (!nonEmpty(source.id) || sources.has(source.id)) errors.push("Duplicate/missing source id");
-    sources.add(source.id);
-    if (!/^https:\/\//.test(source.url || "") || !nonEmpty(source.title) || !date(source.checkedAt)
-      || source.type !== "primary_study_abstract" || source.checkedScope !== "abstract_only" || !nonEmpty(source.context)) errors.push(`Invalid source ${source.id}`);
-  }
-  const ids = new Set();
-  for (const claim of data.claims) {
-    if (!claim || typeof claim !== "object") { errors.push("Invalid claim record"); continue; }
-    if (!nonEmpty(claim.ruleId) || ids.has(claim.ruleId)) errors.push("Duplicate/missing ruleId");
-    ids.add(claim.ruleId);
-    for (const field of ["version", "ingredient", "role", "possibleContribution"]) {
-      if (!nonEmpty(claim[field])) errors.push(`${claim.ruleId}: missing ${field}`);
-    }
-    if (!registry.has(key(claim.ingredient))) errors.push(`${claim.ruleId}: unknown canonical ingredient`);
-    if (!date(claim.checkedAt)) errors.push(`${claim.ruleId}: missing check date`);
-    if (!['verified', 'review_required', 'insufficient_data'].includes(claim.evidenceStatus)) errors.push(`${claim.ruleId}: invalid evidence status`);
-    if (!Array.isArray(claim.limitations) || !claim.limitations.length || !claim.limitations.every(nonEmpty)) errors.push(`${claim.ruleId}: limitations required`);
-    if (!Array.isArray(claim.basis) || !claim.basis.length || !claim.basis.every((ref) => sources.has(ref?.sourceId) && nonEmpty(ref?.locator))) errors.push(`${claim.ruleId}: unresolved basis`);
-    const review = claim.review;
-    if (!["pending", "approved", "rejected"].includes(review?.status)) errors.push(`${claim.ruleId}: invalid review`);
-    if (review?.status === "approved" && (!nonEmpty(review.reviewer) || !date(review.reviewedAt))) errors.push(`${claim.ruleId}: approval requires reviewer and date`);
-    if (review?.status === "approved" && claim.evidenceStatus !== "verified") errors.push(`${claim.ruleId}: approved claim must be verified`);
-    if (review?.status === "pending" && claim.evidenceStatus !== "review_required") errors.push(`${claim.ruleId}: pending claim must require review`);
-    const risk = claim.riskAssessment;
-    if (!risk || !['assessed', 'insufficient_data'].includes(risk.status)
-      || !Array.isArray(risk.statements) || !risk.statements.every(nonEmpty)
-      || !Array.isArray(risk.limitations) || !risk.limitations.length || !risk.limitations.every(nonEmpty)) {
-      errors.push(`${claim.ruleId}: risk assessment is incomplete`);
-    }
-    if (!claim.conditions || Array.isArray(claim.conditions) || typeof claim.conditions !== "object" || !Object.keys(claim.conditions).length) errors.push(`${claim.ruleId}: conditions required`);
-    for (const [field, value] of Object.entries(claim.conditions || {})) {
-      const valid = field === "applicationSite" ? ["skin", "face", "body", "hair"].includes(value)
-        : field === "usage" ? ["leave_on", "rinse_off"].includes(value)
-          : field === "concentrationPercent" ? typeof value === "number" && value > 0 && value <= 100
-            : field === "productForm" && nonEmpty(value);
-      if (!valid) errors.push(`${claim.ruleId}: unsupported condition ${field}`);
-    }
-  }
-  return errors;
+  return validateKnowledge(data, registry);
 }
 
 const validationErrors = validateExpertKnowledge(knowledge);
 if (validationErrors.length) throw new TypeError(`Invalid expert knowledge: ${validationErrors.join("; ")}`);
 
 export function claimApplicability(conditions, context = {}) {
-  const missing = [];
-  const conflicts = [];
-  for (const [field, expected] of Object.entries(conditions)) {
-    const actual = context[field];
-    if (actual == null || actual === "unknown") missing.push(field);
-    else if (!(field === "applicationSite" && expected === "skin" && ["face", "body"].includes(actual)) && actual !== expected) conflicts.push(field);
-  }
-  return { status: conflicts.length ? "not_applicable" : missing.length ? "conditional" : "context_matches", missing, conflicts };
+  return matchConditions(conditions, context);
 }
 
 function guard(ruleId, text, input = {}) {
@@ -173,14 +121,19 @@ export function evaluateExpertRules({ found = [], unknown = [], assessment, prod
       if (!groups.has(groupId)) groups.set(groupId, { role, items: [], ruleId, kind: "reference", limitations: [registryLimit] });
       groups.get(groupId).items.push(item.name);
     }
-    const candidates = excluded || nonCosmetic ? [] : (claimsByIngredient.get(key(item.name)) || []).filter((claim) => claim.review.status !== "rejected");
+    const candidates = excluded || nonCosmetic ? [] : (claimsByIngredient.get(key(item.name)) || []).filter((claim) => claim.review.status !== "rejected"
+      && (!claim.lifecycle || claim.lifecycle.status === "active"));
     for (const claim of candidates) {
-      const applicability = claimApplicability(claim.conditions, context);
-      const reviewLabel = claim.review.status === "approved" ? "Проверено предметным специалистом" : "Требует предметной проверки";
+      const applicability = evaluateClaimContext(claim, context, dataset);
+      const review = dataset.schemaVersion === "2.0" ? claim.review : { ...claim.review, status: "pending", legacyStatus: claim.review.status };
+      const evidenceStatus = dataset.schemaVersion === "2.0" ? claim.evidenceStatus : "review_required";
+      const reviewLabel = review.status === "approved" ? "Проверено предметным специалистом" : "Требует предметной проверки";
       const applicabilityLabel = applicability.status === "not_applicable" ? "Условия не соответствуют" : applicability.status === "conditional" ? "Применимость не установлена" : "Контекст соответствует; эффект продукта не подтвержден";
       itemFindings.push({
-        ...structuredClone(claim), kind: "expert", applicability, productEffectConfirmed: false,
-        statusLabel: claim.evidenceStatus === "verified" ? "Проверено" : claim.evidenceStatus === "review_required" ? "Требует предметной проверки" : "Недостаточно данных",
+        ...structuredClone(claim), kind: "expert", review: structuredClone(review), evidenceStatus,
+        applicability, conclusionSupported: applicability.conclusionSupported, productEffectConfirmed: false,
+        unknownReasons: applicability.unknownReasons,
+        statusLabel: evidenceStatus === "verified" ? "Проверено" : evidenceStatus === "review_required" ? "Требует предметной проверки" : "Недостаточно данных",
         text: `${item.name}: ${reviewLabel}. ${applicabilityLabel}. ${claim.possibleContribution} ${claim.limitations.join(" ")}`,
         basis: claim.basis.map((ref) => ({ ...structuredClone(dataset.sources.find((source) => source.id === ref.sourceId)), locator: ref.locator }))
       });

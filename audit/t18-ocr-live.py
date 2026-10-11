@@ -23,7 +23,10 @@ parser.add_argument(
     choices=("setup", "final"),
     default=os.environ.get("T18_PARTITION", "setup").strip().lower(),
 )
-PARTITION = parser.parse_args().partition
+parser.add_argument("--case-ids", help="Optional JSON file with ingredientIds/frontIds for a reproducible diagnostic subset.")
+parser.add_argument("--output", help="Optional output JSON path, relative to the repository root unless absolute.")
+ARGS = parser.parse_args()
+PARTITION = ARGS.partition
 if PARTITION not in {"setup", "final"}:
     raise ValueError("T18_PARTITION must be setup or final")
 
@@ -35,10 +38,11 @@ def free_port():
 
 
 def wait_for_server(url, timeout=30):
+    local_opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
     deadline = time.time() + timeout
     while time.time() < deadline:
         try:
-            with urllib.request.urlopen(url, timeout=2) as response:
+            with local_opener.open(url, timeout=2) as response:
                 if response.status == 200:
                     return
         except Exception:
@@ -102,6 +106,10 @@ def compare(expected, actual):
 
 
 def select_ingredient_cases():
+    if ARGS.case_ids:
+        selection = json.loads((ROOT / ARGS.case_ids).read_text(encoding="utf-8"))
+        by_id = {entry["id"]: entry for entry in MANIFEST["entries"]}
+        return [by_id[item] for item in selection.get("ingredientIds", []) if item in by_id]
     setup = [entry for entry in MANIFEST["entries"] if entry["partition"] == PARTITION]
     selected = []
     long_case = next((entry for entry in setup if entry["reference"]["ingredientCountApprox"] >= 40), None)
@@ -122,6 +130,10 @@ def select_ingredient_cases():
 
 
 def select_front_cases(excluded):
+    if ARGS.case_ids:
+        selection = json.loads((ROOT / ARGS.case_ids).read_text(encoding="utf-8"))
+        by_id = {entry["id"]: entry for entry in MANIFEST["entries"]}
+        return [by_id[item] for item in selection.get("frontIds", []) if item in by_id]
     setup = [entry for entry in MANIFEST["entries"] if entry["partition"] == PARTITION and entry["id"] not in excluded]
     return [entry for entry in setup if entry["inputs"]["frontImage"]["url"]][:1]
 
@@ -267,7 +279,11 @@ def main():
         "cases": results,
     }
     output_name = "ocr-live-final.json" if PARTITION == "final" else "ocr-live.json"
-    (T18 / output_name).write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    output_path = Path(ARGS.output) if ARGS.output else T18 / output_name
+    if not output_path.is_absolute():
+        output_path = ROOT / output_path
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"ingredientImages": output["ingredientImages"], "frontImages": output["frontImages"], "pageErrors": len(errors)}, ensure_ascii=False, indent=2))
 
 

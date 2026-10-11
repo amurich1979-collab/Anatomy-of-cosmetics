@@ -54,7 +54,8 @@ test("T14: pending literature and sensitive context do not turn into personal tr
 test("T14: a medical class and area mismatch override cosmetic goals", () => {
   const medical = analyze({ goals: ["hydration"] }, { text: "Aqua, Lidocaine, Glycerin" });
   assert.equal(medical.personalization.status, "blocked");
-  assert.deepEqual(medical.personalization.goalReferences, []);
+  assert.equal(medical.personalization.goalReferences.length, 1);
+  assert.equal(medical.personalization.goalReferences[0].applicationStatus, "restricted");
   const mismatch = analyze({ applicationArea: "face" }, {
     productName: "Shampoo", productEvidence: { identificationStatus: "confirmed", name: "Hair shampoo", category: "Shampoo", source: { name: "Brand", type: "official_brand_page", url: "https://example.test/shampoo" } }
   });
@@ -71,7 +72,7 @@ test("T14: every allergy warning survives a long formula without list truncation
 test("T14: reviewed findings require matching conditions and cannot outrank restrictions", () => {
   // Synthetic policy fixture, not an approval of a clinical claim in the dataset.
   const profile = { skinType: "сухая", context: "домашний уход", goals: ["hydration"], applicationArea: "face", allergyStatus: "none_reported", previousReaction: "none_reported" };
-  const claim = { ruleId: "literature.glycerin.hydration", text: "TEST ONLY", basis: [{ url: "https://example.test/evidence" }], evidenceStatus: "verified", review: { status: "approved" }, applicability: { status: "context_matches" }, riskAssessment: { status: "insufficient_data", statements: [] } };
+  const claim = { ruleId: "literature.glycerin.hydration", text: "TEST ONLY", basis: [{ url: "https://example.test/evidence" }], evidenceStatus: "verified", review: { status: "approved" }, applicability: { status: "context_matches", missing: [] }, conclusionSupported: true, riskAssessment: { status: "insufficient_data", statements: [] } };
   const input = { profile, found: [{ name: "Glycerin", status: "confirmed" }], unknown: [], formulaScope: "full", productSafety: { purposeStatus: "confirmed_manufacturer", applicationArea: { value: "face" } }, evidence: { groups: [], expertFindings: [claim] } };
   assert.equal(evaluatePersonalization(input).potentialBenefits.length, 1);
   assert.equal(evaluatePersonalization({ ...input, profile: { ...profile, allergens: ["Glycerin"] } }).potentialBenefits.length, 0);
@@ -83,7 +84,8 @@ test("T14: reviewed findings require matching conditions and cannot outrank rest
   claim.review.status = "approved";
   claim.riskAssessment = { status: "assessed", statements: ["TEST PRECAUTION"] };
   const guarded = evaluatePersonalization(input);
-  assert.equal(guarded.potentialBenefits.length, 0);
+  assert.equal(guarded.potentialBenefits.length, 1);
+  assert.equal(guarded.potentialBenefits[0].applicationAdviceAllowed, false);
   assert.equal(guarded.precautions[0].sources[0].url, "https://example.test/evidence");
 });
 

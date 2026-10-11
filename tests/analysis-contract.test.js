@@ -9,6 +9,7 @@ import {
   normalizeFormulaScope,
   validateAnalysisContract
 } from "../src/analysisContract.js";
+import { createFormulaOrigin, formulaAssociationStatus } from "../public/formula-provenance.js";
 import { app } from "../src/server.js";
 
 function request(overrides = {}) {
@@ -57,14 +58,17 @@ test("T04: invalid metric types remain unmeasured and invalid saved metrics are 
 
 test("T04: photo formula does not inherit source metadata from a suggested product", () => {
   const source = fs.readFileSync(new URL("../public/app.js", import.meta.url), "utf8");
-  const start = source.indexOf("function setCompositionValue(");
+  const start = source.indexOf("function syncFormulaConfirmationControl(");
   const end = source.indexOf("function cancelPendingProductWork(", start);
   assert.ok(start > 0 && end > start);
-  const context = vm.createContext({});
+  const context = vm.createContext({ createFormulaOrigin, formulaAssociationStatus });
   vm.runInContext(`
     let compositionOrigin;
+    let analysisInputRevision = 0;
     const photoJob = null;
     const composition = {};
+    const formulaConfirmationRow = null;
+    const formulaLabelConfirmation = null;
     const productName = { value: '' };
     const selectedProductCard = { id: 'candidate', sourceUrl: 'https://example.test/product', importedAt: '2026-09-27' };
     ${source.slice(start, end)}
@@ -135,8 +139,8 @@ test("T04: full and active-only formula scopes survive the complete HTTP server 
   assert.equal(full.analysisContract.formula.rawText, "Aqua, Glycerin, Niacinamide");
   assert.equal(full.analysisContract.product.identity.barcode, "4600000000001");
   assert.equal(full.analysisContract.product.identificationStatus, "confirmed");
-  assert.equal(full.analysisContract.algorithmVersion, "analyzer-v5-personal-context");
-  assert.equal(full.analysisContract.evidenceVersions.rules, "1.1.0");
+  assert.equal(full.analysisContract.algorithmVersion, "analyzer-v8-personal-fit");
+  assert.equal(full.analysisContract.evidenceVersions.rules, "2.0.0");
   assert.deepEqual(full.analysisContract.evidenceVersions, full.evidenceVersions);
   assert.equal(activeOnly.analysisContract.formula.scope, "active_only");
   assert.notEqual(full.analysisContract.formula.scope, activeOnly.analysisContract.formula.scope);

@@ -2,6 +2,21 @@
 import { normalizeProductIdentifier } from "./barcode-utils.js";
 import { normalizeAnalysisProfile, hasPersonalProfile, isSessionOnlyHistory } from "./analysis-profile.js";
 import { buildAnalysisHistoryEntry } from "./history-snapshot.js";
+import { runPhotoOcr } from "./photo-ocr.js";
+import {
+  buildAnalysisReportModel,
+  FORMULA_ASSOCIATION_LABELS,
+  FORMULA_CONFIRMATION_LABELS,
+  FORMULA_SCOPE_LABELS
+} from "./analysis-report.js";
+import {
+  confirmFullLabelFormula,
+  createFormulaOrigin,
+  detachFormulaFromProduct,
+  formulaAssociationStatus,
+  isAsyncRevisionCurrent,
+  unconfirmFullLabelFormula
+} from "./formula-provenance.js";
 const result = document.querySelector("#result");
 const productName = document.querySelector("#productName");
 const productSuggestions = document.querySelector("#productSuggestions");
@@ -9,6 +24,8 @@ const productStatus = document.querySelector("#productStatus");
 const productClear = document.querySelector("#productClear");
 const productSearchAction = document.querySelector("#productSearchAction");
 const formulaVariantChoices = document.querySelector("#formulaVariantChoices");
+const formulaConfirmationRow = document.querySelector("#formulaConfirmationRow");
+const formulaLabelConfirmation = document.querySelector("#formulaLabelConfirmation");
 const composition = document.querySelector("#composition");
 const sampleChips = document.querySelectorAll(".sample-chip");
 const concernChips = document.querySelectorAll(".concern-chip");
@@ -27,8 +44,10 @@ const photoReview = document.querySelector("#photoReview");
 const photoPreview = document.querySelector("#photoPreview");
 const photoClear = document.querySelector("#photoClear");
 const photoText = document.querySelector("#photoText");
+const photoSuggestions = document.querySelector("#photoSuggestions");
 const photoUseComposition = document.querySelector("#photoUseComposition");
 const photoAnalyze = document.querySelector("#photoAnalyze");
+const photoRetry = document.querySelector("#photoRetry");
 const cameraCapture = document.querySelector("#cameraCapture");
 const cameraVideo = document.querySelector("#cameraVideo");
 const cameraCanvas = document.querySelector("#cameraCanvas");
@@ -48,19 +67,10 @@ const mobileAnalyze = document.querySelector("#mobileAnalyze");
 const tg = window.Telegram?.WebApp;
 
 let selectedProductCard = null;
-let compositionOrigin = {
-  mode: "empty",
-  productId: "",
-  source: "",
-  sourceType: "",
-  sourceUrl: "",
-  sourceDate: null,
-  formulaScope: "unknown",
-  formulaVersion: null,
-  market: null
-};
+let compositionOrigin = createFormulaOrigin("");
 let productSelectionRevision = 0;
 let productSearchRevision = 0;
+let analysisInputRevision = 0;
 let activeProductSearchController = null;
 let lastProductSearchText = productName?.value.trim() || "";
 let personalProfileRevision = 0;
@@ -193,15 +203,6 @@ function list(items, emptyText) {
   return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
 }
 
-function cards(items, emptyText) {
-  if (!items?.length) return `<p class="muted">${emptyText}</p>`;
-  return `
-    <div class="insight-list">
-      ${items.map((item) => `<article class="insight-card">${escapeHtml(item)}</article>`).join("")}
-    </div>
-  `;
-}
-
 function debounce(fn, delay = 160) {
   let timer;
   return (...args) => {
@@ -239,7 +240,10 @@ function productDisplayName(product) {
 }
 
 function clearAnalysisResult() {
-  if (result) result.innerHTML = "";
+  if (result) {
+    result.innerHTML = "";
+    result.removeAttribute("aria-busy");
+  }
 }
 
 function syncSelectedProductDataset() {
@@ -255,7 +259,18 @@ function syncSelectedProductDataset() {
 
 function setSelectedProduct(product) {
   selectedProductCard = product || null;
+  analysisInputRevision += 1;
   syncSelectedProductDataset();
+  syncFormulaConfirmationControl();
+}
+
+function syncFormulaConfirmationControl() {
+  if (!formulaConfirmationRow || !formulaLabelConfirmation) return;
+  const independent = (compositionOrigin.mode === "manual" || (compositionOrigin.mode === "photo" && compositionOrigin.sourceType === "photo_ocr"))
+    && Boolean(composition?.value.trim());
+  formulaConfirmationRow.hidden = !independent;
+  formulaLabelConfirmation.disabled = !independent;
+  formulaLabelConfirmation.checked = independent && compositionOrigin.formulaConfirmation === "user_confirmed";
 }
 
 function setCompositionValue(value, {
@@ -266,33 +281,17 @@ function setCompositionValue(value, {
   sourceUrl = "",
   sourceDate = null,
   formulaScope = "unknown",
+  formulaConfirmation = null,
   formulaVersion = null,
   market = null
 } = {}) {
   if (composition) composition.value = value || "";
-  compositionOrigin = value
-    ? {
-        mode,
-        productId: product?.id || "",
-        source: source || product?.source || "",
-        sourceType: sourceType || product?.sourceType || mode,
-        sourceUrl,
-        sourceDate,
-        formulaScope: formulaScope || "unknown",
-        formulaVersion,
-        market
-      }
-    : {
-        mode: "empty",
-        productId: "",
-        source: "",
-        sourceType: "",
-        sourceUrl: "",
-        sourceDate: null,
-        formulaScope: "unknown",
-        formulaVersion: null,
-        market: null
-      };
+  compositionOrigin = createFormulaOrigin(value, {
+    mode, product, source, sourceType, sourceUrl, sourceDate, formulaScope,
+    formulaConfirmation, formulaVersion, market
+  });
+  analysisInputRevision += 1;
+  syncFormulaConfirmationControl();
 }
 
 function normalizeFormulaText(value) {
@@ -313,7 +312,8 @@ function productFormulaVariants(product) {
       market: variant.market || product?.market || null,
       variant: variant.variant || product?.variant || null,
       formulaVersion: variant.formulaVersion || product?.formulaVersion || null,
-      compositionScope: variant.compositionScope || product?.compositionScope || "unknown"
+      compositionScope: variant.compositionScope || product?.compositionScope || "unknown",
+      confirmation: variant.confirmation || product?.formulaConfirmation || "source_declared"
     });
   };
 
@@ -362,6 +362,7 @@ function applyFormulaVariant(product, variant) {
     sourceUrl: variant.sourceUrl,
     sourceDate: variant.updatedAt || variant.fetchedAt || null,
     formulaScope: variant.compositionScope,
+    formulaConfirmation: variant.confirmation || "source_declared",
     formulaVersion: variant.formulaVersion || variant.variant || null,
     market: variant.market || null
   });
@@ -424,7 +425,10 @@ function buildAnalysisEvidence() {
       }
     },
     formula: {
+      productId: compositionOrigin.productId || null,
       scope: compositionOrigin.formulaScope || "unknown",
+      confirmation: compositionOrigin.formulaConfirmation || "unverified",
+      associationStatus: formulaAssociationStatus(compositionOrigin, product),
       version: compositionOrigin.formulaVersion || null,
       market: compositionOrigin.market || null,
       source: {
@@ -455,6 +459,11 @@ function invalidateSelectedProduct({ preserveIndependentComposition = true } = {
     || (!preserveIndependentComposition && Boolean(composition?.value.trim()));
   setSelectedProduct(null);
   if (shouldClearComposition) setCompositionValue("");
+  else if (preserveIndependentComposition && ["manual", "photo"].includes(compositionOrigin.mode)) {
+    compositionOrigin = detachFormulaFromProduct(compositionOrigin);
+    analysisInputRevision += 1;
+    syncFormulaConfirmationControl();
+  }
   clearAnalysisResult();
 }
 
@@ -468,6 +477,10 @@ function clearPhotoState() {
     photoPreview.removeAttribute("src");
   }
   if (photoText) photoText.value = "";
+  if (photoSuggestions) {
+    photoSuggestions.hidden = true;
+    photoSuggestions.innerHTML = "";
+  }
   if (photoStatus) {
     photoStatus.textContent = "";
     photoStatus.hidden = true;
@@ -731,7 +744,10 @@ async function runServerAnalysis(payload, sourceLabel = "", isCurrent = null) {
   const photoAtStart = compositionOrigin.mode === "photo" ? photoJob : null;
   const priorIsCurrent = isCurrent || (photoAtStart ? () => currentPhoto(photoAtStart) : () => true);
   const profileRevision = personalProfileRevision;
-  isCurrent = () => priorIsCurrent() && profileRevision === personalProfileRevision;
+  const inputRevision = analysisInputRevision;
+  isCurrent = () => priorIsCurrent()
+    && profileRevision === personalProfileRevision
+    && isAsyncRevisionCurrent(inputRevision, analysisInputRevision);
   result.setAttribute("aria-busy", "true");
   result.innerHTML = `<div class="loading">Разбираю состав...</div>`;
   scrollToResult();
@@ -788,6 +804,14 @@ async function applyProduct(product) {
   setSelectedProduct(detailedProduct);
   const hasIndependentComposition = Boolean(composition.value.trim())
     && (compositionOrigin.mode === "manual" || compositionOrigin.mode === "photo");
+  const belongsToAnotherProduct = hasIndependentComposition
+    && compositionOrigin.productId
+    && compositionOrigin.productId !== detailedProduct.id;
+  if (belongsToAnotherProduct) {
+    compositionOrigin = detachFormulaFromProduct(compositionOrigin);
+    analysisInputRevision += 1;
+    syncFormulaConfirmationControl();
+  }
 
   if (productFormulaVariants(detailedProduct).length > 1) {
     if (!hasIndependentComposition) setCompositionValue("");
@@ -818,7 +842,7 @@ async function applyProduct(product) {
     }
     if (!replaceExisting) {
       hideSuggestions();
-      setProductStatus("Карточка выбрана. Сохранён независимый ручной состав; состав из карточки не подставлен.", "warn");
+      setProductStatus("Карточка выбрана, но независимый состав не привязан к ней. Подтвердите полный состав с этикетки, только если он относится к этой карточке.", "warn");
       return { ...detailedProduct, compositionPreserved: true };
     }
   }
@@ -831,6 +855,7 @@ async function applyProduct(product) {
     sourceUrl: detailedProduct.sourceUrl,
     sourceDate: detailedProduct.importedAt || detailedProduct.verifiedAt || null,
     formulaScope: detailedProduct.compositionScope || "unknown",
+    formulaConfirmation: "source_declared",
     formulaVersion: detailedProduct.formulaVersion || null,
     market: detailedProduct.market || null
   });
@@ -1085,12 +1110,35 @@ document.querySelector("#concernsCustom")?.addEventListener("input", syncConcern
 composition?.addEventListener("input", () => {
   setCompositionValue(composition.value, {
     mode: composition.value.trim() ? "manual" : "empty",
-    source: composition.value.trim() ? "manual" : ""
+    product: selectedProductCard,
+    source: composition.value.trim() ? "manual" : "",
+    sourceType: composition.value.trim() ? "manual" : "",
+    formulaScope: "unknown",
+    formulaConfirmation: "unverified"
   });
   clearAnalysisResult();
   if (composition.value.trim()) {
     setProductStatus("Используется состав, введённый вручную. Он не будет заменён карточкой без подтверждения.", "ok");
   }
+});
+
+formulaLabelConfirmation?.addEventListener("change", () => {
+  if (!composition?.value.trim() || !["manual", "photo"].includes(compositionOrigin.mode)) {
+    formulaLabelConfirmation.checked = false;
+    return;
+  }
+  compositionOrigin = formulaLabelConfirmation.checked
+    ? confirmFullLabelFormula(compositionOrigin, selectedProductCard?.id || compositionOrigin.productId)
+    : unconfirmFullLabelFormula(compositionOrigin);
+  analysisInputRevision += 1;
+  clearAnalysisResult();
+  syncFormulaConfirmationControl();
+  setProductStatus(
+    formulaLabelConfirmation.checked
+      ? "Полный состав подтверждён пользователем по этикетке. Это не проверка производителя."
+      : "Полнота состава больше не подтверждена пользователем.",
+    formulaLabelConfirmation.checked ? "ok" : "warn"
+  );
 });
 
 sampleChips.forEach((chip) => {
@@ -1414,34 +1462,77 @@ function photoStage(job, state, message) {
 }
 
 async function recognizePhotoText(file, job) {
-  if (!window.Tesseract?.recognize) {
+  if (!window.Tesseract?.recognize && !window.Tesseract?.createWorker) {
     throw new Error("OCR-модуль не загрузился. Проверьте интернет-соединение и попробуйте еще раз.");
   }
 
+  let pass = 0;
   const options = {
     logger: (event) => {
       if (!currentPhoto(job) || event.status !== "recognizing text") return;
       const progress = Math.round((event.progress || 0) * 100);
-      photoStage(job, "reading", `Распознаю текст с фото: ${progress}%`);
+      photoStage(job, "reading", `Распознаю текст с фото, проход ${Math.max(1, pass)}: ${progress}%`);
     }
   };
-  let result;
+  let worker = null;
+  let recognize;
   if (window.Tesseract.createWorker) {
-    const worker = await window.Tesseract.createWorker("eng+rus", 1, options);
+    worker = await window.Tesseract.createWorker("eng+rus", 1, options);
     if (!currentPhoto(job)) { await worker.terminate(); return ""; }
     job.worker = worker;
-    try { result = await worker.recognize(file); }
-    finally { await worker.terminate(); job.worker = null; }
+    recognize = async (input) => (await worker.recognize(input))?.data || {};
   } else {
-    result = await window.Tesseract.recognize(file, "eng+rus", options);
+    recognize = async (input) => (await window.Tesseract.recognize(input, "eng+rus", options))?.data || {};
   }
-  if (!currentPhoto(job)) return "";
-  job.ocr = {
-    confidence: Number.isFinite(result?.data?.confidence) ? result.data.confidence : null,
-    words: (result?.data?.words || []).map(({ text, confidence, bbox }) => ({ text, confidence, bbox })),
-    lines: (result?.data?.lines || []).map(({ text, confidence, bbox }) => ({ text, confidence, bbox }))
-  };
-  return cleanOcrText(result?.data?.text || "");
+  try {
+    const result = await runPhotoOcr({
+      file,
+      recognize,
+      isCurrent: () => currentPhoto(job),
+      onPass: (metadata) => {
+        pass += 1;
+        const detail = metadata.mode === "text_crop" ? "область текста" : metadata.angle ? `поворот ${metadata.angle}°` : "контраст";
+        photoStage(job, "reading", `Подготавливаю OCR: ${detail}.`);
+      }
+    });
+    if (!currentPhoto(job) || !result) return "";
+    job.ocr = {
+      confidence: Number.isFinite(result.confidence) ? result.confidence : null,
+      words: (result.words || []).map(({ text, confidence, bbox }) => ({ text, confidence, bbox })),
+      lines: (result.lines || []).map(({ text, confidence, bbox }) => ({ text, confidence, bbox })),
+      preprocessing: result.preprocessing,
+      candidates: result.candidates || []
+    };
+    return cleanOcrText(result.text || "");
+  } finally {
+    if (worker) {
+      await worker.terminate().catch(() => {});
+      if (job.worker === worker) job.worker = null;
+    }
+  }
+}
+
+function renderPhotoSuggestions(resolution) {
+  if (!photoSuggestions) return;
+  const suggestions = resolution?.suggestions || [];
+  const unresolved = (resolution?.entries || []).filter((entry) => entry.status !== "confirmed");
+  if (!suggestions.length && !unresolved.length) {
+    photoSuggestions.hidden = true;
+    photoSuggestions.innerHTML = "";
+    return;
+  }
+  const suggestionByOriginal = new Map(suggestions.map((item) => [item.original, item]));
+  photoSuggestions.innerHTML = `
+    <strong>Проверьте распознавание</strong>
+    <ul>${unresolved.map((entry) => {
+      const original = entry.raw || entry.ingredient || "Неизвестная позиция";
+      const suggestion = suggestionByOriginal.get(original) || suggestions.find((item) => item.suggested_match === entry.suggested_match);
+      const confidence = Number.isFinite(suggestion?.confidence) ? ` (${Math.round(suggestion.confidence * 100)}%)` : "";
+      return `<li><span>${escapeHtml(original)}</span>${suggestion?.suggested_match ? `<span>Возможно: ${escapeHtml(suggestion.suggested_match)}${confidence}</span>` : `<span>Совпадение не найдено, позиция сохранена.</span>`}</li>`;
+    }).join("")}</ul>
+    <small>Предложения не применяются автоматически. Сверьте каждую позицию с этикеткой.</small>
+  `;
+  photoSuggestions.hidden = false;
 }
 
 async function applyPhotoText({ analyze = false } = {}) {
@@ -1501,6 +1592,7 @@ async function applyPhotoResolution(resolution, { analyze = false, fallbackText 
     formulaScope: resolution.mode === "product"
       ? (product?.compositionScope || "unknown")
       : (resolution.compositionScope || "unknown"),
+    formulaConfirmation: resolution.mode === "product" ? "source_declared" : "unverified",
     formulaVersion: resolution.mode === "product" ? (product?.formulaVersion || null) : null,
     market: resolution.mode === "product" ? (product?.market || null) : null
   });
@@ -1537,6 +1629,15 @@ async function applyPhotoResolution(resolution, { analyze = false, fallbackText 
 function stagePhotoResolution(job, resolution) {
   if (!currentPhoto(job)) return;
   job.resolution = null;
+  renderPhotoSuggestions(resolution);
+  if (resolution.mode === "barcode") {
+    photoText.value = resolution.barcode || "";
+    const accepted = applyScannedCode(resolution.barcode || "", "", "photo");
+    photoStage(job, accepted ? "barcode" : "clarification", accepted
+      ? `Штрихкод ${resolution.barcode} распознан. Ищу точную карточку товара.`
+      : "Цифры похожи на штрихкод, но контрольная сумма не прошла проверку. Переснимите код крупнее.");
+    return;
+  }
   const entries = resolution.entries || [];
   const confirmed = entries.filter((entry) => entry.status === "confirmed");
   const uncertain = entries.length - confirmed.length;
@@ -1606,11 +1707,6 @@ async function handlePhotoFile(file) {
   }
 
   try {
-    const decoded = await createImageBitmap(file);
-    const pixels = decoded.width * decoded.height;
-    decoded.close();
-    if (!currentPhoto(job)) return;
-    if (pixels > 40000000) throw new Error("Фото слишком большое: уменьшите его до 40 мегапикселей.");
     photoStage(job, "reading", "Читаю текст с фото...");
     const text = await recognizePhotoText(file, job);
     if (!currentPhoto(job)) return;
@@ -1639,6 +1735,7 @@ let barcodeScanRevision = 0;
 let barcodeLookupRevision = 0;
 let barcodeLookupController = null;
 let lastAcceptedBarcode = { code: "", at: 0 };
+let captureReturnTarget = null;
 
 const NATIVE_BARCODE_FORMATS = ["ean_13", "ean_8", "upc_a", "upc_e", "qr_code"];
 
@@ -1647,6 +1744,49 @@ function stopCameraStream() {
   cameraStream?.getTracks?.().forEach((track) => track.stop());
   cameraStream = null;
   if (cameraVideo) cameraVideo.srcObject = null;
+}
+
+function openCaptureDialog(capture, initialFocus) {
+  if (!capture) return;
+  captureReturnTarget = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  capture.hidden = false;
+  window.requestAnimationFrame(() => initialFocus?.focus({ preventScroll: true }));
+}
+
+function closeCaptureDialog(capture, { restoreFocus = true } = {}) {
+  if (!capture) return;
+  const returnTarget = captureReturnTarget;
+  capture.hidden = true;
+  captureReturnTarget = null;
+  if (restoreFocus && returnTarget?.isConnected) {
+    window.requestAnimationFrame(() => returnTarget.focus({ preventScroll: true }));
+  }
+}
+
+function trapCaptureFocus(event) {
+  const capture = event.currentTarget;
+  if (event.key === "Escape") {
+    event.preventDefault();
+    if (capture === cameraCapture) stopCameraStream();
+    if (capture === barcodeCapture) stopBarcodeScanner();
+    closeCaptureDialog(capture);
+    return;
+  }
+  if (event.key !== "Tab") return;
+
+  const focusable = Array.from(capture.querySelectorAll(
+    'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  )).filter((element) => !element.hidden && element.getClientRects().length);
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
 }
 
 function stopBarcodeScanner() {
@@ -1752,7 +1892,7 @@ async function openBarcodeScanner() {
   stopBarcodeScanner();
   const revision = barcodeScanRevision;
   try {
-    barcodeCapture.hidden = false;
+    openCaptureDialog(barcodeCapture, barcodeScanClose);
     barcodeScanStatus.textContent = "Разрешите доступ к камере и наведите ее на код.";
     const stream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: { ideal: "environment" } },
@@ -1802,6 +1942,7 @@ async function openBarcodeScanner() {
   } catch {
     if (revision !== barcodeScanRevision) return;
     stopBarcodeScanner();
+    closeCaptureDialog(barcodeCapture, { restoreFocus: false });
     setProductStatus("Не удалось открыть камеру. Загрузите фото кода или введите EAN/UPC вручную.", "warn");
     barcodeInput?.focus();
   }
@@ -1857,7 +1998,7 @@ async function openCameraCapture() {
   stopCameraStream();
   const revision = cameraRevision;
   try {
-    cameraCapture.hidden = false;
+    openCaptureDialog(cameraCapture, cameraClose);
     const stream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: { ideal: "environment" } },
       audio: false
@@ -1872,9 +2013,10 @@ async function openCameraCapture() {
   } catch {
     if (revision !== cameraRevision) return;
     stopCameraStream();
-    cameraCapture.hidden = true;
+    closeCaptureDialog(cameraCapture, { restoreFocus: false });
     photoStatus.hidden = false;
     photoStatus.textContent = "Камера недоступна или доступ запрещён. Выберите «Загрузить фото».";
+    photoCameraOpen?.focus({ preventScroll: true });
   }
 }
 
@@ -1892,7 +2034,7 @@ async function captureCameraFrame() {
     if (!blob || revision !== cameraRevision) return;
     const file = new File([blob], `label-${Date.now()}.jpg`, { type: "image/jpeg" });
     stopCameraStream();
-    cameraCapture.hidden = true;
+    closeCaptureDialog(cameraCapture, { restoreFocus: false });
     await handlePhotoFile(file);
   }, "image/jpeg", 0.92);
 }
@@ -1901,13 +2043,17 @@ if (photoCameraOpen?.tagName === "BUTTON") {
   photoCameraOpen.addEventListener("click", openCameraCapture);
 }
 photoClear?.addEventListener("click", clearPhotoState);
+photoRetry?.addEventListener("click", () => {
+  clearPhotoState();
+  void openCameraCapture();
+});
 cameraClose?.addEventListener("click", () => {
   stopCameraStream();
-  cameraCapture.hidden = true;
+  closeCaptureDialog(cameraCapture);
 });
 cameraFallback?.addEventListener("click", () => {
   stopCameraStream();
-  cameraCapture.hidden = true;
+  closeCaptureDialog(cameraCapture, { restoreFocus: false });
   document.querySelector("#photoInput")?.click();
 });
 cameraShot?.addEventListener("click", captureCameraFrame);
@@ -1920,8 +2066,9 @@ window.addEventListener("pagehide", () => {
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     stopCameraStream();
-    if (cameraCapture) cameraCapture.hidden = true;
+    closeCaptureDialog(cameraCapture, { restoreFocus: false });
     stopBarcodeScanner();
+    closeCaptureDialog(barcodeCapture, { restoreFocus: false });
   }
 });
 
@@ -1945,7 +2092,10 @@ barcodeApply?.addEventListener("click", () => {
 });
 
 barcodeScan?.addEventListener("click", openBarcodeScanner);
-barcodeScanClose?.addEventListener("click", stopBarcodeScanner);
+barcodeScanClose?.addEventListener("click", () => {
+  stopBarcodeScanner();
+  closeCaptureDialog(barcodeCapture);
+});
 barcodeImageUpload?.addEventListener("click", () => barcodeImageInput?.click());
 barcodeImageInput?.addEventListener("change", async () => {
   await decodeBarcodeImage(barcodeImageInput.files?.[0]);
@@ -1963,6 +2113,8 @@ if (["localhost", "127.0.0.1"].includes(window.location.hostname)) {
 }
 
 mobileAnalyze?.addEventListener("click", submitAnalysisFromSticky);
+cameraCapture?.addEventListener("keydown", trapCaptureFocus);
+barcodeCapture?.addEventListener("keydown", trapCaptureFocus);
 
 // Keep the fixed mobile action above an on-screen keyboard without changing the form flow.
 function syncMobileKeyboardInset() {
@@ -2002,13 +2154,6 @@ const FUNCTION_LABELS = {
   SURFACTANT: "поверхностно-активное вещество",
   VISCOSITY_CONTROLLING: "регулятор вязкости",
   HAIR_CONDITIONING: "кондиционирование волос"
-};
-
-const FORMULA_SCOPE_LABELS = {
-  full: "Источник сообщил полный INCI.",
-  active_only: "Источник указал только активные компоненты, а не полный INCI.",
-  partial: "Доступен неполный фрагмент формулы.",
-  unknown: "Полнота состава не подтверждена источником."
 };
 
 const MATCH_STATUS_LABELS = {
@@ -2104,14 +2249,53 @@ function reportIngredientCard(item) {
   `;
 }
 
+function reportClaimItems(items, emptyText = "Подтверждённых сведений нет.") {
+  if (!items?.length) return `<p class="muted">${escapeHtml(emptyText)}</p>`;
+  return `<ul>${items.map((item) => `<li>${escapeHtml(item.text || item)}</li>`).join("")}</ul>`;
+}
+
+function reportSystemCard(system) {
+  const ingredientNames = system.ingredients.map((item) => item.canonicalName || item.input).filter(Boolean);
+  const supportedClaims = [...system.assessmentClaims, ...system.roleClaims];
+  const sourceItems = system.sources.map((source) => reportSourceLink({ name: source.title || source.name, url: source.url }, source.title || "Источник"));
+  const statusClass = ["described", "reference_only"].includes(system.status) ? "found" : system.status === "not_identified" ? "absent" : "unknown";
+  return `
+    <article class="report-system report-system-${statusClass}" data-system-id="${escapeHtml(system.id)}">
+      <div class="report-system-head">
+        <h3>${escapeHtml(system.label)}</h3>
+        <span class="report-system-status">${escapeHtml(system.statusLabel)}</span>
+      </div>
+      <p>${escapeHtml(system.explanation)}</p>
+      ${ingredientNames.length ? `<p><strong>Найденные компоненты:</strong> ${escapeHtml(ingredientNames.join(", "))}</p>` : ""}
+      <details>
+        <summary>Основания и недостающие данные</summary>
+        ${reportClaimItems(supportedClaims, "Положительное основание для этой системы не сформировано.")}
+        ${reportClaimItems([...system.cautionClaims, ...system.unknownClaims], "Дополнительных ограничений правила не вернули.")}
+        ${system.requiredInputs.length ? `<p class="field-note"><strong>Для более точного вывода нужны:</strong> ${escapeHtml(system.requiredInputs.join(", "))}.</p>` : ""}
+        <p class="ingredient-source"><strong>Источники:</strong> ${sourceItems.length ? sourceItems.join(", ") : "в ответе не указаны"}</p>
+      </details>
+    </article>
+  `;
+}
+
+function reportMetricRows(rows, emptyText) {
+  if (!rows.length) return `<p class="report-data-missing">${escapeHtml(emptyText)}</p>`;
+  return `<dl class="report-metric-list">${rows.map((row) => `<dt>${escapeHtml(row.label)}</dt><dd>${escapeHtml(row.value)} <small>${escapeHtml(row.status)}</small></dd>`).join("")}</dl>`;
+}
+
+function reportSources(sources) {
+  if (!sources.length) return '<p class="muted">Основания источников в текущем ответе не сохранены.</p>';
+  return `<ul class="report-source-list">${sources.map((source) => `<li>${reportSourceLink({ name: source.title || source.name || source.id, url: source.url }, source.title || source.id)}${source.checkedScope ? ` <small>${escapeHtml(source.checkedScope)}</small>` : ""}</li>`).join("")}</ul>`;
+}
+
 function render(data) {
   const contract = data.analysisContract || {};
+  const reportModel = buildAnalysisReportModel(data, productName?.value.trim());
   const personal = data.personalization;
   const profileLabels = { skinType: "Тип кожи", context: "Контекст", concerns: "Состояние кожи", goals: "Цели", applicationArea: "Зона нанесения", allergyStatus: "Аллергии", allergens: "Аллергены", previousReaction: "Прошлая реакция", invalidFields: "Некорректные поля" };
   const valueLabels = { hydration: "увлажнение", barrier: "поддержка барьера", appearance: "внешний вид кожи", cleansing: "очищение", face: "лицо", body: "тело", hair_or_scalp: "волосы и кожа головы", eye_area: "область глаз", lips: "губы", none_reported: "не известны / не замечены", reported: "есть подтверждённые", this_product: "на этот продукт", other_product: "на другое средство" };
   const identity = contract.product?.identity || {};
   const productTitle = [identity.brand, identity.name].filter(Boolean).join(" ") || productName?.value.trim() || "Средство не идентифицировано";
-  const productStatus = contract.product?.identificationStatus || "unknown";
   const formula = contract.formula || {};
   const formulaScope = formula.scope || "unknown";
   const purpose = data.productSafety || data.productClassification || {};
@@ -2133,8 +2317,21 @@ function render(data) {
       <p>${escapeHtml((group.items || []).join(", "))}</p>
     </article>
   `).join("");
+  const systemCards = reportModel.systems.length
+    ? reportModel.systems.map(reportSystemCard).join("")
+    : groups;
   const ingredientCards = (data.found || []).map(reportIngredientCard).join("");
-  const expertSummary = cards(data.expertSummary, "Проверяемых экспертных утверждений для этой формулы нет.");
+  const reportRestrictions = reportModel.personal.restrictions;
+  const reportPrecautions = reportModel.personal.precautions;
+  const filterNames = reportModel.photoprotection.filters
+    .map((item) => item.ingredient?.canonicalName || item.ingredient?.input)
+    .filter(Boolean);
+  const durationItems = reportModel.duration.map((item) => item.text || item.displayValue || item.value || "Показатель длительности без описания");
+  const toleranceItems = [
+    ...reportModel.tolerability.irritation,
+    ...reportModel.tolerability.sensitization,
+    ...reportModel.tolerability.hypoallergenic
+  ];
   const availableVariants = productFormulaVariants(selectedProductCard);
   const formulaVersions = availableVariants.length > 1 ? `
     <section class="section formula-versions" aria-labelledby="reportFormulaVersionsTitle">
@@ -2200,67 +2397,126 @@ function render(data) {
     </section>` : "";
 
   result.innerHTML = `
-    <section class="section report-product">
-      <p class="eyebrow">Товар и назначение</p>
-      <h2>${escapeHtml(productTitle)}</h2>
-      <p class="report-status">Идентификация товара: ${escapeHtml(MATCH_STATUS_LABELS[productStatus] || "не подтверждена")}</p>
-      <h3>${escapeHtml(purpose.label || data.formulaType || "Тип средства требует уточнения")}</h3>
-      <p>${escapeHtml(purpose.intendedUse || "Назначение нельзя надёжно определить только по составу.")}</p>
-      <p><strong>Основание:</strong> ${purposeBasis}</p>
-      ${purpose.application ? `<p><strong>Способ применения:</strong> ${escapeHtml(purpose.application)}</p>` : ""}
-    </section>
-
-    <section class="section report-formula">
-      <p class="eyebrow">Состав и происхождение</p>
-      <h2>Что именно разобрано</h2>
-      <dl class="report-meta">
-        <dt>Полнота</dt><dd>${escapeHtml(FORMULA_SCOPE_LABELS[formulaScope] || FORMULA_SCOPE_LABELS.unknown)}</dd>
-        <dt>Источник</dt><dd>${reportSourceLink(formula.source)}</dd>
-        <dt>Версия</dt><dd>${escapeHtml(formula.version || "не указана")}</dd>
-        <dt>Рынок</dt><dd>${escapeHtml(formula.market || "не указан")}</dd>
-        <dt>Распознано</dt><dd>${escapeHtml(contract.metrics?.knowledgeCoverage?.confirmed ?? data.found?.length ?? 0)} из ${escapeHtml(contract.metrics?.knowledgeCoverage?.total ?? data.totalIngredients ?? 0)} ингредиентов с подтверждённым совпадением</dd>
-      </dl>
-      ${assessment.status === "not_assessed" ? `<p class="report-caution">Итоговая оценка не выполнена: ${escapeHtml(data.qualitySummary?.methodology || "недостаточно подтверждённых данных о готовом продукте")}</p>` : ""}
-    </section>
-
-    ${formulaVersions}
-
-    ${uncertain.length ? `
-      <section class="section report-uncertain">
-        <h2>Позиции, которые нужно проверить до выводов</h2>
-        <p>Они не считаются подтверждёнными ингредиентами и не используются как установленный факт в разборе.</p>
-        <ul>${uncertain.map((item) => `<li><strong>${escapeHtml(item.input)}</strong>: ${escapeHtml(item.status === "suggested" ? `возможное совпадение${item.suggestedName ? ` с ${item.suggestedName}` : ""}; проверьте этикетку.` : "не найдено в текущем справочнике.")}</li>`).join("")}</ul>
-      </section>` : ""}
-
-    ${personalSection}
-    ${safetyNotice}
-
-    <section class="section">
-      <h2>Главное по имеющимся данным</h2>
-      <p class="report-summary">${escapeHtml(data.summary || "Сводка пока недоступна.")}</p>
-      ${expertSummary}
-    </section>
-
-    <section class="section">
-      <h2>Функциональные блоки формулы</h2>
-      <p class="muted">Это справочные функции компонентов, а не доказательство эффекта или назначения готового продукта.</p>
-      <div class="tiles">${groups || '<p class="muted">Функциональные блоки пока не выделены.</p>'}</div>
-    </section>
-
-    <section class="section ingredient-section">
-      <div class="ingredient-section-head">
-        <div><h2>Ингредиенты</h2><p class="muted">Откройте компонент, чтобы увидеть исходное имя, совпадение, роль, ограничения и источник.</p></div>
-        <label class="ingredient-filter-label">Поиск по составу<input id="ingredientFilter" type="search" autocomplete="off" placeholder="Название ингредиента" /></label>
+    <section class="section report-overview" aria-labelledby="reportTitle">
+      <p class="eyebrow">Результат разбора</p>
+      <h2 id="reportTitle">${escapeHtml(reportModel.title)}</h2>
+      <div class="report-overview-statuses">
+        <span>${escapeHtml(reportModel.productStatusLabel)}</span>
+        <span>${escapeHtml(reportModel.formulaScopeLabel)}</span>
       </div>
-      <p id="ingredientFilterStatus" class="field-note" aria-live="polite"></p>
-      <div class="ingredient-reports">${ingredientCards || '<p class="muted">Нет подтверждённых совпадений в текущем справочнике.</p>'}</div>
+      <h3>${escapeHtml(reportModel.concise.headline)}</h3>
+      <p class="report-summary">${escapeHtml(reportModel.concise.primaryNotice)}</p>
+      ${reportRestrictions.length ? `<div class="report-priority report-priority-restriction"><strong>Ограничение</strong>${reportClaimItems(reportRestrictions)}</div>` : ""}
+      ${!reportRestrictions.length && reportPrecautions.length ? `<div class="report-priority"><strong>Предосторожность</strong>${reportClaimItems(reportPrecautions)}</div>` : ""}
+      <ul class="report-facts">${reportModel.concise.facts.map((fact) => `<li>${escapeHtml(fact)}</li>`).join("")}</ul>
+      <div class="report-toolbar" aria-label="Режим просмотра результата">
+        <div class="report-view-switch" role="tablist" aria-label="Краткий или подробный результат">
+          <button type="button" role="tab" aria-selected="true" data-report-view="summary">Кратко</button>
+          <button type="button" role="tab" aria-selected="false" data-report-view="details">Подробно</button>
+        </div>
+        <button class="secondary-action compact-action" type="button" id="editAnalyzedComposition">Исправить состав</button>
+      </div>
     </section>
 
-    ${proprietaryComplexes}
-    ${alternativesSection}
-    ${additionalGuidance}
-    <section class="section report-limitations"><h2>Ограничения анализа</h2><p class="disclaimer">${escapeHtml(data.disclaimer || "Данные о готовом продукте ограничены.")}</p></section>
+    <div class="report-details" id="reportDetails" role="tabpanel" hidden>
+      <section class="section report-product">
+        <p class="eyebrow">Товар и назначение</p>
+        <h2>${escapeHtml(productTitle)}</h2>
+        <p class="report-status">Идентификация товара: ${escapeHtml(reportModel.productStatusLabel)}</p>
+        <h3>${escapeHtml(purpose.label || data.formulaType || "Тип средства требует уточнения")}</h3>
+        <p>${escapeHtml(purpose.intendedUse || "Назначение нельзя надёжно определить только по составу.")}</p>
+        <p><strong>Основание:</strong> ${purposeBasis}</p>
+        ${purpose.application ? `<p><strong>Способ применения:</strong> ${escapeHtml(purpose.application)}</p>` : ""}
+      </section>
+
+      <section class="section report-formula">
+        <p class="eyebrow">Состав и происхождение</p>
+        <h2>Что именно разобрано</h2>
+        <dl class="report-meta">
+          <dt>Полнота</dt><dd>${escapeHtml(FORMULA_SCOPE_LABELS[formulaScope] || FORMULA_SCOPE_LABELS.unknown)}</dd>
+          <dt>Подтверждение</dt><dd>${escapeHtml(FORMULA_CONFIRMATION_LABELS[formula.confirmation] || FORMULA_CONFIRMATION_LABELS.unverified)}</dd>
+          <dt>Принадлежность</dt><dd>${escapeHtml(FORMULA_ASSOCIATION_LABELS[formula.associationStatus] || FORMULA_ASSOCIATION_LABELS.unknown)}</dd>
+          <dt>Источник</dt><dd>${reportSourceLink(formula.source)}</dd>
+          <dt>Версия</dt><dd>${escapeHtml(formula.version || "не указана")}</dd>
+          <dt>Рынок</dt><dd>${escapeHtml(formula.market || "не указан")}</dd>
+          <dt>Распознано</dt><dd>${escapeHtml(reportModel.coverage.confirmed)} из ${escapeHtml(reportModel.coverage.total)} ингредиентов с подтверждённым совпадением</dd>
+        </dl>
+        ${assessment.status === "not_assessed" ? `<p class="report-caution">Итоговая оценка не выполнена: ${escapeHtml(data.qualitySummary?.methodology || "недостаточно подтверждённых данных о готовом продукте")}</p>` : ""}
+      </section>
+
+      ${formulaVersions}
+
+      ${uncertain.length ? `
+        <section class="section report-uncertain">
+          <h2>Не удалось однозначно определить</h2>
+          <p>Эти позиции не считаются подтверждёнными ингредиентами и не используются как установленный факт.</p>
+          <ul>${uncertain.map((item) => `<li><strong>${escapeHtml(item.input)}</strong>: ${escapeHtml(item.status === "suggested" ? `возможное совпадение${item.suggestedName ? ` с ${item.suggestedName}` : ""}; проверьте этикетку.` : "не найдено в текущем справочнике — это не означает отсутствия компонента в средстве.")}</li>`).join("")}</ul>
+        </section>` : ""}
+
+      ${personalSection}
+      ${safetyNotice}
+
+      <section class="section report-systems" aria-labelledby="formulaSystemsTitle">
+        <h2 id="formulaSystemsTitle">Системы формулы</h2>
+        <p class="muted">Показаны все системы из исходного задания. Справочная функция ингредиента не доказывает назначение или эффект готового продукта.</p>
+        <div class="report-system-list">${systemCards || '<p class="muted">Системы формулы не сформированы текущей версией анализатора.</p>'}</div>
+      </section>
+
+      <section class="section report-parameters" aria-labelledby="reportParametersTitle">
+        <h2 id="reportParametersTitle">Проценты, SPF и переносимость</h2>
+        <div class="report-parameter-grid">
+          <article><h3>Процентное соотношение и pH</h3>${reportMetricRows(reportModel.quantitative, "Точные проценты компонентов и pH не определены: порядок INCI не заменяет количественную рецептуру или измерение готового продукта.")}</article>
+          <article><h3>SPF и спектр защиты</h3>
+            ${filterNames.length ? `<p><strong>Идентифицированные фильтры:</strong> ${escapeHtml(filterNames.join(", "))}. Их наличие не определяет SPF продукта.</p>` : '<p class="report-data-missing">УФ-фильтры не идентифицированы либо состав недостаточен для такого вывода.</p>'}
+            ${reportMetricRows(reportModel.photoprotection.productMetrics, "SPF, UVA-PF, спектр готового продукта и водостойкость не подтверждены испытаниями в доступных данных.")}
+          </article>
+          <article><h3>Продолжительность действия</h3>${durationItems.length ? list(durationItems, "") : '<p class="report-data-missing">Продолжительность действия не установлена. Она не рассчитывается по позиции ингредиентов.</p>'}</article>
+          <article><h3>Раздражение и аллергия</h3>
+            ${reportClaimItems(toleranceItems, "Нет проверенного основания оценить вероятность раздражения или назвать продукт гипоаллергенным.")}
+            ${reportClaimItems(reportModel.tolerability.unknown, "Дополнительные неизвестные по переносимости не указаны.")}
+          </article>
+        </div>
+      </section>
+
+      <section class="section ingredient-section">
+        <div class="ingredient-section-head">
+          <div><h2>Ингредиенты</h2><p class="muted">Откройте компонент, чтобы увидеть исходное имя, совпадение, справочную роль, ограничения и источник.</p></div>
+          <label class="ingredient-filter-label">Поиск по составу<input id="ingredientFilter" type="search" autocomplete="off" placeholder="Название ингредиента" /></label>
+        </div>
+        <p id="ingredientFilterStatus" class="field-note" aria-live="polite"></p>
+        <div class="ingredient-reports">${ingredientCards || '<p class="muted">Подтверждённых совпадений в текущем справочнике нет. Это не означает, что ингредиентов нет в продукте.</p>'}</div>
+      </section>
+
+      ${proprietaryComplexes}
+      ${alternativesSection}
+      ${additionalGuidance}
+
+      <section class="section report-evidence">
+        <h2>Основания отчёта</h2>
+        <details><summary>Ключевые claims</summary>${reportClaimItems(reportModel.summaryClaims, "Ключевые claims не сформированы.")}</details>
+        <details><summary>Источники и область проверки</summary>${reportSources(reportModel.sources)}</details>
+      </section>
+      <section class="section report-limitations"><h2>Ограничения анализа</h2>${reportClaimItems(reportModel.limitationClaims, data.disclaimer || "Данные о готовом продукте ограничены.")}<p class="disclaimer">${escapeHtml(data.disclaimer || "Данные о готовом продукте ограничены.")}</p></section>
+    </div>
   `;
+
+  const detailPanel = result.querySelector("#reportDetails");
+  result.querySelectorAll("[data-report-view]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const detailsSelected = button.dataset.reportView === "details";
+      if (detailPanel) detailPanel.hidden = !detailsSelected;
+      result.querySelectorAll("[data-report-view]").forEach((option) => option.setAttribute("aria-selected", String(option === button)));
+      if (detailsSelected) detailPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  result.querySelector("#editAnalyzedComposition")?.addEventListener("click", () => {
+    const manualEntry = composition?.closest("details");
+    if (manualEntry) manualEntry.open = true;
+    setProductStatus("Исправьте распознанный состав и снова нажмите «Разобрать состав».", "warn");
+    composition?.focus({ preventScroll: true });
+    composition?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
 
   result.querySelector("#ingredientFilter")?.addEventListener("input", (event) => {
     const query = String(event.target.value || "").trim().toLocaleLowerCase();

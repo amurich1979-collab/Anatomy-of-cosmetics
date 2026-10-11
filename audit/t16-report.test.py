@@ -139,6 +139,8 @@ class T16ReportTests(unittest.TestCase):
         page.wait_for_selector(".suggestion")
         page.locator(".suggestion").click()
         page.locator("#analysisForm").evaluate("element => element.requestSubmit()")
+        page.wait_for_selector(".report-overview")
+        page.locator('[data-report-view="details"]').click()
         page.wait_for_selector(".report-product")
 
     def test_report_puts_provenance_and_uncertainty_before_interpretation(self):
@@ -148,8 +150,8 @@ class T16ReportTests(unittest.TestCase):
         self.assertTrue(page.locator(".report-product").is_visible())
         self.assertTrue(page.locator(".report-formula").is_visible())
         self.assertIn("Источник", text)
-        self.assertIn("Источник сообщил полный INCI.", text)
-        self.assertLess(text.index("Позиции, которые нужно проверить"), text.index("Главное по имеющимся данным"))
+        self.assertIn("Список отмечен как полный INCI.", text)
+        self.assertIn("Не удалось однозначно определить", text)
         self.assertNotIn("Оценка компонентной базы", text)
         self.assertNotIn("/100", text)
         self.assertEqual(len(requests), 1)
@@ -173,7 +175,7 @@ class T16ReportTests(unittest.TestCase):
 
     def test_full_partial_and_unknown_formula_states_are_distinct(self):
         expectations = [
-            ("Full Formula", "Источник сообщил полный INCI."),
+            ("Full Formula", "Список отмечен как полный INCI."),
             ("Partial Formula", "Доступен неполный фрагмент формулы."),
         ]
         for query, expected in expectations:
@@ -187,6 +189,8 @@ class T16ReportTests(unittest.TestCase):
         page.locator(".manual-entry > summary").click()
         page.locator("#composition").fill("Aqua, Nacinamide, Phenoxyethanol")
         page.locator("#analysisForm").evaluate("element => element.requestSubmit()")
+        page.wait_for_selector(".report-overview")
+        page.locator('[data-report-view="details"]').click()
         page.wait_for_selector(".report-formula")
         self.assertIn("Полнота состава не подтверждена источником.", page.locator(".report-formula").inner_text())
         self.assertEqual(errors, [])
@@ -224,6 +228,8 @@ class T16ReportTests(unittest.TestCase):
         self.assertEqual(page.locator("#composition").input_value(), "Aqua, Glycerin, Phenoxyethanol")
         self.assertTrue(page.locator("#formulaVariantChoices").is_hidden())
         page.locator("#analysisForm").evaluate("element => element.requestSubmit()")
+        page.wait_for_selector(".report-overview")
+        page.locator('[data-report-view="details"]').click()
         page.wait_for_selector(".formula-versions")
         self.assertEqual(page.locator(".formula-versions [data-report-formula-index]").count(), 2)
         self.assertEqual(len(requests), 1)

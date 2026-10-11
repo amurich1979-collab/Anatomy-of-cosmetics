@@ -4,6 +4,7 @@ import {
   inspectAnalysisHistoryEntry,
   sanitizeHistoryEntryForPrivacy
 } from "./history-snapshot.js";
+import { buildAnalysisReportModel } from "./analysis-report.js";
 
 const historySummary = document.querySelector("#historySummary");
 const historyList = document.querySelector("#historyList");
@@ -90,10 +91,6 @@ function sourceNotice(item) {
   return `Источник состава: ${sourceName}; полнота: ${scope}${version ? `; версия: ${version}` : ""}${market ? `; рынок: ${market}` : ""}.`;
 }
 
-function metricValue(value) {
-  return typeof value === "number" && Number.isFinite(value) ? String(value) : "—";
-}
-
 function assessmentNotice(analysis) {
   if (analysis?.assessment?.status !== "not_assessed") return "";
   return "Итоговая оценка, риск и рекомендации не рассчитывались: данных о полной формуле недостаточно.";
@@ -108,7 +105,11 @@ function renderSavedAnalysis(item) {
   const found = analysis.found || [];
   const groups = analysis.groups || [];
   const composition = inspected.composition || "";
-  const storedScore = analysis.score?.score ?? payload.score;
+  const report = buildAnalysisReportModel(analysis, item.title || payload.productName);
+  const systems = report.systems.length
+    ? report.systems.map((system) => `${system.label}: ${system.statusLabel}`)
+    : groups.map((group) => `${group.role}: ${(group.items || []).join(", ")}`);
+  const coverage = report.coverage.total ? `${report.coverage.confirmed}/${report.coverage.total}` : "—";
 
   return `
     <div class="history-detail">
@@ -118,22 +119,23 @@ function renderSavedAnalysis(item) {
       ${assessmentNotice(analysis) ? `<p class="field-note">${escapeHtml(assessmentNotice(analysis))}</p>` : ""}
       <div class="history-metrics">
         <article>
-          <strong>${escapeHtml(metricValue(storedScore))}</strong>
-          <span>оценка</span>
+          <strong>${escapeHtml(coverage)}</strong>
+          <span>совпадения INCI</span>
         </article>
         <article>
-          <strong>${escapeHtml(metricValue(analysis.hydration_score))}</strong>
-          <span>увлажнение</span>
+          <strong>${escapeHtml(report.formulaScope)}</strong>
+          <span>полнота состава</span>
         </article>
         <article>
-          <strong>${escapeHtml(metricValue(analysis.irritation_risk))}</strong>
-          <span>риск</span>
+          <strong>${escapeHtml(report.assessmentStatus)}</strong>
+          <span>статус разбора</span>
         </article>
       </div>
 
       <div class="history-block">
-        <h3>${escapeHtml(analysis.formulaType || payload.formulaType || "Разбор состава")}</h3>
-        <p>${escapeHtml(analysis.summary || "Сохранен старый краткий разбор без полного текста результата.")}</p>
+        <h3>${escapeHtml(report.title || analysis.formulaType || payload.formulaType || "Разбор состава")}</h3>
+        <p>${escapeHtml(report.concise.primaryNotice || analysis.summary || "Сохранен старый краткий разбор без полного текста результата.")}</p>
+        <p class="field-note">${escapeHtml(report.concise.facts.join(" · "))}</p>
       </div>
 
       <details>
@@ -159,8 +161,8 @@ function renderSavedAnalysis(item) {
         <summary>Компоненты и группы</summary>
         <div class="history-columns">
           <div>
-            <h3>Группы</h3>
-            ${compactList(groups.map((group) => `${group.role}: ${(group.items || []).join(", ")}`), "Группы не сохранены.")}
+            <h3>Системы формулы</h3>
+            ${compactList(systems, "Системы не сохранены в этой версии результата.")}
           </div>
           <div>
             <h3>Ингредиенты</h3>

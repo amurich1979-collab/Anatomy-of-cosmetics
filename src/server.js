@@ -1,16 +1,18 @@
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
+import { rateLimit } from "express-rate-limit";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createAnalysisContract } from "./analysisContract.js";
 import { findFormulaAlternativesDetailed } from "./analogs.js";
 import { analyzeComposition } from "./analyzer.js";
-import { attachCurrentUser, registerAuthRoutes, requireUser } from "./auth.js";
-import { addUserHistory, clearUserHistory, getUserSettings, initDatabase, listUserHistory, updateUserSettings } from "./database.js";
+import { assertAuthConfiguration, attachCurrentUser, registerAuthRoutes, requireUser } from "./auth.js";
+import { addUserHistory, clearUserHistory, getUserSettings, initDatabase, listUserHistory, pingDatabase, updateUserSettings } from "./database.js";
 import { createReviewRequest, getProductDetails, identifyProductFromText, listCatalogProducts, listReviewRequests, searchProductsDetailed } from "./products.js";
 import { cleanInciText } from "./services/inciCleaner.js";
 import { classifyFormulaProduct } from "./services/productClassifier.js";
+import { classifyPhotoText } from "./services/photoTextClassifier.js";
 import { isSessionOnlyHistory } from "../public/analysis-profile.js";
 import { buildAnalysisHistoryEntry, inspectAnalysisHistoryEntry, sanitizeHistoryEntryForPrivacy } from "../public/history-snapshot.js";
 
@@ -21,16 +23,23 @@ const publicDir = path.join(rootDir, "public");
 const app = express();
 const port = Number(process.env.PORT || 3000);
 const host = process.env.HOST || "0.0.0.0";
+const rateLimitMessage = { error: "Слишком много запросов. Повторите позже." };
+const lookupLimiter = rateLimit({ windowMs: 60 * 1000, limit: 60, standardHeaders: "draft-7", legacyHeaders: false, message: rateLimitMessage });
+const analysisLimiter = rateLimit({ windowMs: 60 * 1000, limit: 30, standardHeaders: "draft-7", legacyHeaders: false, message: rateLimitMessage });
+const reviewLimiter = rateLimit({ windowMs: 60 * 60 * 1000, limit: 10, standardHeaders: "draft-7", legacyHeaders: false, message: rateLimitMessage });
+
+app.set("trust proxy", process.env.NODE_ENV === "production" ? 1 : false);
 
 app.use(cors());
 app.use(express.json({ limit: "1mb" }));
 app.use(attachCurrentUser);
 app.use(express.static(publicDir));
 
+assertAuthConfiguration();
 const databaseInfo = await initDatabase();
 registerAuthRoutes(app);
 
-app.get("/api/products/search", async (req, res) => {
+app.get("/api/products/search", lookupLimiter, async (req, res) => {
   const query = String(req.query.q || "").trim();
 
   if (query.length < 1) {
@@ -51,7 +60,17 @@ app.get("/api/products/catalog", (_req, res) => {
   res.json({ products: listCatalogProducts() });
 });
 
-app.get("/api/products/:id", async (req, res) => {
+app.get("/api/products/review-queue", requireUser, (req, res) => {
+  const admins = String(process.env.REVIEW_ADMIN_EMAILS || "")
+    .split(",").map((email) => email.trim().toLowerCase()).filter(Boolean);
+  if (!admins.includes(String(req.user.email || "").toLowerCase())) {
+    res.status(403).json({ error: "Нет доступа к очереди проверки." });
+    return;
+  }
+  res.json({ requests: listReviewRequests() });
+});
+
+app.get("/api/products/:id", lookupLimiter, async (req, res) => {
   const product = await getProductDetails(req.params.id);
 
   if (!product) {
@@ -62,7 +81,7 @@ app.get("/api/products/:id", async (req, res) => {
   res.json({ product });
 });
 
-app.post("/api/products/identify", async (req, res) => {
+app.post("/api/products/identify", lookupLimiter, async (req, res) => {
   const text = String(req.body?.text || "").trim();
 
   if (text.length < 8) {
@@ -73,7 +92,7 @@ app.post("/api/products/identify", async (req, res) => {
   res.json({ product: await identifyProductFromText(text) });
 });
 
-app.post("/api/photo/resolve", async (req, res) => {
+app.post("/api/photo/resolve", lookupLimiter, async (req, res) => {
   const text = String(req.body?.text || "").trim();
 
   if (text.length < 8) {
@@ -88,9 +107,15 @@ app.post("/api/photo/resolve", async (req, res) => {
   }
 
   const cleaned = cleanInciText(text);
-  const hasComposition = cleaned.ingredients.length >= 3 && cleaned.confidence >= 0.45;
-  const product = await identifyProductFromText(text);
+  const preliminaryLabel = classifyPhotoText({ text, cleaned, product: null });
+  const product = ["inci", "barcode"].includes(preliminaryLabel.kind)
+    ? null
+    : await identifyProductFromText(text);
   const productWithDetails = product?.composition ? product : product?.id ? await getProductDetails(product.id) : null;
+  const label = product
+    ? classifyPhotoText({ text, cleaned, product: productWithDetails || product })
+    : preliminaryLabel;
+  const hasComposition = label.kind === "inci" && cleaned.ingredients.length >= 3 && cleaned.confidence >= 0.45;
   const purpose = classifyFormulaProduct({
     ingredients: hasComposition ? cleaned.ingredients : cleanInciText(productWithDetails?.composition || "").ingredients,
     productName: productWithDetails?.name || product?.name || "",
@@ -121,6 +146,8 @@ app.post("/api/photo/resolve", async (req, res) => {
   if (hasComposition) {
     res.json({
       mode: "composition",
+      labelType: label.kind,
+      labelSignals: label.signals,
       cleanedText: cleaned.cleanedText,
       extractedBlock: cleaned.extractedBlock,
       entries: cleaned.entries,
@@ -136,9 +163,25 @@ app.post("/api/photo/resolve", async (req, res) => {
     return;
   }
 
-  if (productWithDetails?.composition) {
+  if (label.kind === "barcode") {
+    res.json({
+      mode: "barcode",
+      labelType: label.kind,
+      labelSignals: label.signals,
+      barcode: label.barcode,
+      cleanedText: label.barcode || "",
+      ingredients: [],
+      confidence: cleaned.confidence,
+      message: "На фото обнаружен штрихкод. Проверяю контрольную сумму перед поиском карточки."
+    });
+    return;
+  }
+
+  if (label.kind === "front" && productWithDetails?.composition) {
     res.json({
       mode: "product",
+      labelType: label.kind,
+      labelSignals: label.signals,
       cleanedText: productWithDetails.composition,
       ingredients: [],
       confidence: productWithDetails.confidence || product?.confidence || 0.62,
@@ -151,7 +194,9 @@ app.post("/api/photo/resolve", async (req, res) => {
   }
 
   res.json({
-    mode: "unknown",
+    mode: label.kind === "mixed" ? "mixed" : "unknown",
+    labelType: label.kind,
+    labelSignals: label.signals,
     cleanedText: cleaned.cleanedText,
     extractedBlock: cleaned.extractedBlock,
     ingredients: cleaned.ingredients,
@@ -159,13 +204,15 @@ app.post("/api/photo/resolve", async (req, res) => {
     product: product || null,
     purpose,
     composition: "",
-    message: product
+    message: label.kind === "mixed"
+      ? "На фото одновременно видны фрагменты названия и состава, но данных недостаточно. Снимите стороны упаковки отдельно."
+      : product
       ? "Средство похоже найдено, но состав для него пока не доступен."
       : "Не удалось уверенно понять: это лицевая этикетка или состав. Попробуйте фото ближе или добавьте бренд в поиск."
   });
 });
 
-app.post("/api/products/review-request", (req, res) => {
+app.post("/api/products/review-request", reviewLimiter, (req, res) => {
   const request = createReviewRequest({
     query: req.body?.query,
     source: req.body?.source || "web",
@@ -178,10 +225,6 @@ app.post("/api/products/review-request", (req, res) => {
   }
 
   res.json({ request });
-});
-
-app.get("/api/products/review-queue", (_req, res) => {
-  res.json({ requests: listReviewRequests() });
 });
 
 app.get("/api/user/settings", async (req, res) => {
@@ -234,7 +277,7 @@ app.delete("/api/user/history", requireUser, async (req, res) => {
   res.json(await clearUserHistory(req.user.id));
 });
 
-app.post("/api/analyze", async (req, res) => {
+app.post("/api/analyze", analysisLimiter, async (req, res) => {
   res.set("Cache-Control", "no-store");
   const { text, profile } = req.body || {};
 
@@ -248,7 +291,8 @@ app.post("/api/analyze", async (req, res) => {
     profile: profile || {},
     productName: req.body?.productName || "",
     formulaScope: req.body?.evidence?.formula?.scope || "unknown",
-    productEvidence: req.body?.evidence?.product || {}
+    productEvidence: req.body?.evidence?.product || {},
+    formulaEvidence: req.body?.evidence?.formula || {}
   });
   const alternativeSearch = findFormulaAlternativesDetailed({
     text: String(text),
@@ -310,8 +354,13 @@ app.get("/profile", (_req, res) => {
   res.sendFile(path.join(publicDir, "profile.html"));
 });
 
-app.get("/health", (_req, res) => {
-  res.json({ ok: true });
+app.get("/health", async (_req, res) => {
+  try {
+    await pingDatabase();
+    res.json({ ok: true });
+  } catch {
+    res.status(503).json({ ok: false });
+  }
 });
 
 const isMainModule = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
@@ -321,7 +370,7 @@ if (isMainModule) {
     console.log(`Anatomy Cosmetology web app: http://localhost:${port}`);
     console.log(`Network access: http://${host}:${port}`);
     console.log(`Telegram Mini App preview: http://localhost:${port}/miniapp`);
-    console.log(`Database: ${databaseInfo.provider}${databaseInfo.path ? ` (${databaseInfo.path})` : ""}`);
+    console.log(`Database: ${databaseInfo.provider}`);
   });
 }
 

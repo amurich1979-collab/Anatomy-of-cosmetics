@@ -4,6 +4,7 @@ import test from "node:test";
 import { analyzeComposition } from "../src/analyzer.js";
 import { createAnalysisContract, validateAnalysisContract } from "../src/analysisContract.js";
 import { claimApplicability, evaluateExpertRules, validateExpertKnowledge } from "../src/services/expertRules.js";
+import { approveFixtureClaim } from "./helpers/expert-knowledge.js";
 
 const seed = JSON.parse(fs.readFileSync(new URL("../data/expert-claims.json", import.meta.url), "utf8"));
 const formula = { formulaScope: "full", text: "Aqua, Glycerin, Petrolatum, Niacinamide, Phenoxyethanol" };
@@ -125,11 +126,11 @@ test("T10: applicability is conditional with missing data and blocked on conflic
 
 test("T10: even a reviewed claim with matching study context cannot prove product efficacy", () => {
   const dataset = structuredClone(seed);
-  dataset.claims[0].review = { status: "approved", reviewer: "TEST FIXTURE ONLY", reviewedAt: "2026-09-29" };
-  dataset.claims[0].evidenceStatus = "verified";
+  approveFixtureClaim(dataset, dataset.claims[0]);
   const result = evaluateExpertRules({ ...input(), context: { applicationSite: "skin", usage: "leave_on", productForm: "emollient cream" } }, dataset);
   assert.equal(result.expertFindings[0].review.status, "approved");
-  assert.equal(result.expertFindings[0].applicability.status, "context_matches");
+  assert.equal(result.expertFindings[0].applicability.status, "conditional");
+  assert.ok(result.expertFindings[0].unknownReasons.includes("missing:formulaId"));
   assert.equal(result.expertFindings[0].productEffectConfirmed, false);
   assert.equal(result.finishedProduct.efficacy.value, null);
 });

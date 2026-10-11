@@ -114,6 +114,21 @@ test("T17: privacy migration removes media and stored profile from old local ent
   assert.doesNotMatch(JSON.stringify(safe), /Private context|Private allergen|data:image/);
 });
 
+test("T17: privacy filtering keeps photoprotection assessment while removing media", () => {
+  const safe = sanitizeHistoryEntryForPrivacy({
+    payload: {
+      imageUrl: "data:image/jpeg;base64,PRIVATE",
+      analysis: {
+        photoprotection: { productMetrics: [], unknownClaimIds: ["claim:uv"] },
+        photo: "data:image/jpeg;base64,PRIVATE"
+      }
+    }
+  });
+  assert.equal("imageUrl" in safe.payload, false);
+  assert.equal("photo" in safe.payload.analysis, false);
+  assert.deepEqual(safe.payload.analysis.photoprotection, { productMetrics: [], unknownClaimIds: ["claim:uv"] });
+});
+
 test("T17: history read, write and deletion still require authentication", async (t) => {
   const server = app.listen(0, "127.0.0.1");
   await new Promise((resolve) => server.once("listening", resolve));

@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "1.1",
-  "version": "2026-09-29.2",
+  "schemaVersion": "2.0",
+  "version": "2026-10-03.c05",
   "sources": [
     {
       "id": "pmid-31532576",
@@ -9,7 +9,21 @@
       "type": "primary_study_abstract",
       "checkedAt": "2026-09-29",
       "checkedScope": "abstract_only",
-      "context": "Рандомизированное перекрестное исследование: 51 здоровый доброволец с сухой кожей, крем V0034CR и варианты основы, предплечья, наблюдение 12 часов. Лечебный эффект не изучался."
+      "context": "Рандомизированное перекрестное исследование: 51 здоровый доброволец с сухой кожей, крем V0034CR и варианты основы, предплечья, наблюдение 12 часов. Лечебный эффект не изучался.",
+      "version": null,
+      "retrievedAt": null,
+      "publishedAt": null,
+      "contentHash": null,
+      "subject": {
+        "kind": "studied_formula",
+        "id": "study:pmid-31532576",
+        "formulaVersion": null
+      },
+      "conditions": {
+        "applicationSite": "skin",
+        "usage": "leave_on",
+        "productForm": "emollient cream"
+      }
     },
     {
       "id": "pmid-16029679",
@@ -18,7 +32,22 @@
       "type": "primary_study_abstract",
       "checkedAt": "2026-09-29",
       "checkedScope": "abstract_only",
-      "context": "Рандомизированное исследование половин лица: 50 белых женщин с признаками фотостарения, 5% ниацинамид против основы, 12 недель. Авторы связаны с Procter & Gamble."
+      "context": "Рандомизированное исследование половин лица: 50 белых женщин с признаками фотостарения, 5% ниацинамид против основы, 12 недель. Авторы связаны с Procter & Gamble.",
+      "version": null,
+      "retrievedAt": null,
+      "publishedAt": null,
+      "contentHash": null,
+      "subject": {
+        "kind": "studied_formula",
+        "id": "study:pmid-16029679",
+        "formulaVersion": null
+      },
+      "conditions": {
+        "applicationSite": "face",
+        "usage": "leave_on",
+        "concentrationPercent": 5,
+        "productForm": "facial leave-on formulation"
+      }
     },
     {
       "id": "pmid-27425824",
@@ -27,65 +56,611 @@
       "type": "primary_study_abstract",
       "checkedAt": "2026-09-29",
       "checkedScope": "abstract_only",
-      "context": "Два исследования конкретной многокомпонентной эмолентной формулы с пантенолом. В исследовании барьера участвовали 23 здоровых добровольца; сравнивались обработанные и контрольные участки после воздействия SDS. Вклад одного пантенола отдельно не изучался; часть авторов связана с производителем формулы."
+      "context": "Два исследования конкретной многокомпонентной эмолентной формулы с пантенолом. В исследовании барьера участвовали 23 здоровых добровольца; сравнивались обработанные и контрольные участки после воздействия SDS. Вклад одного пантенола отдельно не изучался; часть авторов связана с производителем формулы.",
+      "version": null,
+      "retrievedAt": null,
+      "publishedAt": null,
+      "contentHash": null,
+      "subject": {
+        "kind": "studied_formula",
+        "id": "study:pmid-27425824",
+        "formulaVersion": null
+      },
+      "conditions": {
+        "applicationSite": "skin",
+        "usage": "leave_on",
+        "productForm": "panthenol-containing emollient"
+      }
     }
   ],
   "claims": [
     {
       "ruleId": "literature.glycerin.hydration",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "ingredient": "Glycerin",
       "role": "увлажняющий компонент",
       "possibleContribution": "В исследованном креме вклад глицерина связывали с повышением увлажненности кожи по корнеометрии.",
-      "conditions": { "applicationSite": "skin", "usage": "leave_on", "productForm": "emollient cream" },
-      "riskAssessment": { "status": "insufficient_data", "statements": [], "limitations": ["Аннотация не позволяет установить профиль риска глицерина для произвольной формулы или конкретного пользователя."] },
-      "limitations": ["Исследована конкретная основа крема; результат не доказывает эффект анализируемого продукта.", "Краткосрочные инструментальные измерения не подтверждают лечебные свойства."],
-      "basis": [{ "sourceId": "pmid-31532576", "locator": "Abstract: Methods, Results, Conclusions" }],
+      "conditions": {
+        "applicationSite": "skin",
+        "usage": "leave_on",
+        "productForm": "emollient cream"
+      },
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Аннотация не позволяет установить профиль риска глицерина для произвольной формулы или конкретного пользователя."
+        ]
+      },
+      "limitations": [
+        "Исследована конкретная основа крема; результат не доказывает эффект анализируемого продукта.",
+        "Краткосрочные инструментальные измерения не подтверждают лечебные свойства."
+      ],
+      "basis": [
+        {
+          "sourceId": "pmid-31532576",
+          "locator": "Abstract: Methods, Results, Conclusions"
+        }
+      ],
       "checkedAt": "2026-09-29",
       "evidenceStatus": "review_required",
-      "review": { "status": "pending", "reviewer": null, "reviewedAt": null }
+      "review": {
+        "status": "pending",
+        "reviewer": null,
+        "reviewedAt": null
+      },
+      "conclusionType": "literature_observation",
+      "subject": {
+        "kind": "studied_formula",
+        "id": "study:pmid-31532576",
+        "formulaVersion": null
+      },
+      "unknownReasons": [
+        "exact_studied_formula_version_unavailable",
+        "source_full_text_not_checked"
+      ],
+      "lifecycle": {
+        "status": "active",
+        "changedAt": "2026-10-03",
+        "reason": "Schema migration; pending evidence unchanged.",
+        "replacedBy": null
+      },
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "changedAt": "2026-09-29",
+          "change": "Imported existing pending rule; no new evidence review.",
+          "snapshot": {
+            "ruleId": "literature.glycerin.hydration",
+            "version": "1.0.0",
+            "ingredient": "Glycerin",
+            "role": "увлажняющий компонент",
+            "possibleContribution": "В исследованном креме вклад глицерина связывали с повышением увлажненности кожи по корнеометрии.",
+            "conditions": {
+              "applicationSite": "skin",
+              "usage": "leave_on",
+              "productForm": "emollient cream"
+            },
+            "riskAssessment": {
+              "status": "insufficient_data",
+              "statements": [],
+              "limitations": [
+                "Аннотация не позволяет установить профиль риска глицерина для произвольной формулы или конкретного пользователя."
+              ]
+            },
+            "limitations": [
+              "Исследована конкретная основа крема; результат не доказывает эффект анализируемого продукта.",
+              "Краткосрочные инструментальные измерения не подтверждают лечебные свойства."
+            ],
+            "basis": [
+              {
+                "sourceId": "pmid-31532576",
+                "locator": "Abstract: Methods, Results, Conclusions"
+              }
+            ],
+            "checkedAt": "2026-09-29",
+            "evidenceStatus": "review_required"
+          },
+          "contentHash": "5c332ef5daf07e87fc11f6f90ca4296cd72a8f7a316e0d544fa4ecf9d0e1a8b3",
+          "previousHash": null
+        },
+        {
+          "version": "2.0.0",
+          "changedAt": "2026-10-03",
+          "change": "C05: explicit study subject, provenance and applicability limits.",
+          "snapshot": {
+            "ruleId": "literature.glycerin.hydration",
+            "version": "2.0.0",
+            "ingredient": "Glycerin",
+            "role": "увлажняющий компонент",
+            "possibleContribution": "В исследованном креме вклад глицерина связывали с повышением увлажненности кожи по корнеометрии.",
+            "conditions": {
+              "applicationSite": "skin",
+              "usage": "leave_on",
+              "productForm": "emollient cream"
+            },
+            "riskAssessment": {
+              "status": "insufficient_data",
+              "statements": [],
+              "limitations": [
+                "Аннотация не позволяет установить профиль риска глицерина для произвольной формулы или конкретного пользователя."
+              ]
+            },
+            "limitations": [
+              "Исследована конкретная основа крема; результат не доказывает эффект анализируемого продукта.",
+              "Краткосрочные инструментальные измерения не подтверждают лечебные свойства."
+            ],
+            "basis": [
+              {
+                "sourceId": "pmid-31532576",
+                "locator": "Abstract: Methods, Results, Conclusions"
+              }
+            ],
+            "checkedAt": "2026-09-29",
+            "evidenceStatus": "review_required",
+            "conclusionType": "literature_observation",
+            "subject": {
+              "kind": "studied_formula",
+              "id": "study:pmid-31532576",
+              "formulaVersion": null
+            },
+            "unknownReasons": [
+              "exact_studied_formula_version_unavailable",
+              "source_full_text_not_checked"
+            ],
+            "lifecycle": {
+              "status": "active",
+              "changedAt": "2026-10-03",
+              "reason": "Schema migration; pending evidence unchanged.",
+              "replacedBy": null
+            }
+          },
+          "contentHash": "64de3d2d1a784f30283cc7b489090629050598b882840502912169bbf356bff2",
+          "previousHash": "5c332ef5daf07e87fc11f6f90ca4296cd72a8f7a316e0d544fa4ecf9d0e1a8b3"
+        }
+      ]
     },
     {
       "ruleId": "literature.petrolatum.water-loss",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "ingredient": "Petrolatum",
       "role": "компонент, ограничивающий потерю воды",
       "possibleContribution": "В исследованном креме вклад петролатума связывали со снижением трансэпидермальной потери воды.",
-      "conditions": { "applicationSite": "skin", "usage": "leave_on", "productForm": "emollient cream" },
-      "riskAssessment": { "status": "insufficient_data", "statements": [], "limitations": ["Аннотация не позволяет установить профиль риска петролатума для произвольной формулы или конкретного пользователя."] },
-      "limitations": ["Вывод относится к исследованному крему и условиям, а не ко всем средствам с Petrolatum.", "Это не оценка чистоты сырья или безопасности готового средства."],
-      "basis": [{ "sourceId": "pmid-31532576", "locator": "Abstract: Methods, Results, Conclusions" }],
+      "conditions": {
+        "applicationSite": "skin",
+        "usage": "leave_on",
+        "productForm": "emollient cream"
+      },
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Аннотация не позволяет установить профиль риска петролатума для произвольной формулы или конкретного пользователя."
+        ]
+      },
+      "limitations": [
+        "Вывод относится к исследованному крему и условиям, а не ко всем средствам с Petrolatum.",
+        "Это не оценка чистоты сырья или безопасности готового средства."
+      ],
+      "basis": [
+        {
+          "sourceId": "pmid-31532576",
+          "locator": "Abstract: Methods, Results, Conclusions"
+        }
+      ],
       "checkedAt": "2026-09-29",
       "evidenceStatus": "review_required",
-      "review": { "status": "pending", "reviewer": null, "reviewedAt": null }
+      "review": {
+        "status": "pending",
+        "reviewer": null,
+        "reviewedAt": null
+      },
+      "conclusionType": "literature_observation",
+      "subject": {
+        "kind": "studied_formula",
+        "id": "study:pmid-31532576",
+        "formulaVersion": null
+      },
+      "unknownReasons": [
+        "exact_studied_formula_version_unavailable",
+        "source_full_text_not_checked"
+      ],
+      "lifecycle": {
+        "status": "active",
+        "changedAt": "2026-10-03",
+        "reason": "Schema migration; pending evidence unchanged.",
+        "replacedBy": null
+      },
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "changedAt": "2026-09-29",
+          "change": "Imported existing pending rule; no new evidence review.",
+          "snapshot": {
+            "ruleId": "literature.petrolatum.water-loss",
+            "version": "1.0.0",
+            "ingredient": "Petrolatum",
+            "role": "компонент, ограничивающий потерю воды",
+            "possibleContribution": "В исследованном креме вклад петролатума связывали со снижением трансэпидермальной потери воды.",
+            "conditions": {
+              "applicationSite": "skin",
+              "usage": "leave_on",
+              "productForm": "emollient cream"
+            },
+            "riskAssessment": {
+              "status": "insufficient_data",
+              "statements": [],
+              "limitations": [
+                "Аннотация не позволяет установить профиль риска петролатума для произвольной формулы или конкретного пользователя."
+              ]
+            },
+            "limitations": [
+              "Вывод относится к исследованному крему и условиям, а не ко всем средствам с Petrolatum.",
+              "Это не оценка чистоты сырья или безопасности готового средства."
+            ],
+            "basis": [
+              {
+                "sourceId": "pmid-31532576",
+                "locator": "Abstract: Methods, Results, Conclusions"
+              }
+            ],
+            "checkedAt": "2026-09-29",
+            "evidenceStatus": "review_required"
+          },
+          "contentHash": "a89dfb89794591db2334e42531f06a8a90f5f7b19accc108a5dfd34df5348f92",
+          "previousHash": null
+        },
+        {
+          "version": "2.0.0",
+          "changedAt": "2026-10-03",
+          "change": "C05: explicit study subject, provenance and applicability limits.",
+          "snapshot": {
+            "ruleId": "literature.petrolatum.water-loss",
+            "version": "2.0.0",
+            "ingredient": "Petrolatum",
+            "role": "компонент, ограничивающий потерю воды",
+            "possibleContribution": "В исследованном креме вклад петролатума связывали со снижением трансэпидермальной потери воды.",
+            "conditions": {
+              "applicationSite": "skin",
+              "usage": "leave_on",
+              "productForm": "emollient cream"
+            },
+            "riskAssessment": {
+              "status": "insufficient_data",
+              "statements": [],
+              "limitations": [
+                "Аннотация не позволяет установить профиль риска петролатума для произвольной формулы или конкретного пользователя."
+              ]
+            },
+            "limitations": [
+              "Вывод относится к исследованному крему и условиям, а не ко всем средствам с Petrolatum.",
+              "Это не оценка чистоты сырья или безопасности готового средства."
+            ],
+            "basis": [
+              {
+                "sourceId": "pmid-31532576",
+                "locator": "Abstract: Methods, Results, Conclusions"
+              }
+            ],
+            "checkedAt": "2026-09-29",
+            "evidenceStatus": "review_required",
+            "conclusionType": "literature_observation",
+            "subject": {
+              "kind": "studied_formula",
+              "id": "study:pmid-31532576",
+              "formulaVersion": null
+            },
+            "unknownReasons": [
+              "exact_studied_formula_version_unavailable",
+              "source_full_text_not_checked"
+            ],
+            "lifecycle": {
+              "status": "active",
+              "changedAt": "2026-10-03",
+              "reason": "Schema migration; pending evidence unchanged.",
+              "replacedBy": null
+            }
+          },
+          "contentHash": "ea36b494ea3ba74a54306992f907587d78c1399367a9d15c87199f67cc996a88",
+          "previousHash": "a89dfb89794591db2334e42531f06a8a90f5f7b19accc108a5dfd34df5348f92"
+        }
+      ]
     },
     {
       "ruleId": "literature.niacinamide.appearance",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "ingredient": "Niacinamide",
       "role": "компонент, изучавшийся для внешнего вида кожи",
       "possibleContribution": "В исследовании формулы с 5% ниацинамида отмечены улучшения ряда показателей внешнего вида кожи лица по сравнению с основой.",
-      "conditions": { "applicationSite": "face", "usage": "leave_on", "concentrationPercent": 5, "productForm": "facial leave-on formulation" },
-      "riskAssessment": { "status": "insufficient_data", "statements": [], "limitations": ["Аннотация не устанавливает профиль риска ниацинамида для иных концентраций, формул, популяций или режимов применения."] },
-      "limitations": ["5% относится только к исследованию, концентрация в анализируемом составе неизвестна.", "Ограниченная группа участников и конкретная формула; результат нельзя переносить на другие продукты или режимы применения."],
-      "basis": [{ "sourceId": "pmid-16029679", "locator": "Abstract: Methods, Results" }],
+      "conditions": {
+        "applicationSite": "face",
+        "usage": "leave_on",
+        "concentrationPercent": 5,
+        "productForm": "facial leave-on formulation"
+      },
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Аннотация не устанавливает профиль риска ниацинамида для иных концентраций, формул, популяций или режимов применения."
+        ]
+      },
+      "limitations": [
+        "5% относится только к исследованию, концентрация в анализируемом составе неизвестна.",
+        "Ограниченная группа участников и конкретная формула; результат нельзя переносить на другие продукты или режимы применения."
+      ],
+      "basis": [
+        {
+          "sourceId": "pmid-16029679",
+          "locator": "Abstract: Methods, Results"
+        }
+      ],
       "checkedAt": "2026-09-29",
       "evidenceStatus": "review_required",
-      "review": { "status": "pending", "reviewer": null, "reviewedAt": null }
+      "review": {
+        "status": "pending",
+        "reviewer": null,
+        "reviewedAt": null
+      },
+      "conclusionType": "literature_observation",
+      "subject": {
+        "kind": "studied_formula",
+        "id": "study:pmid-16029679",
+        "formulaVersion": null
+      },
+      "unknownReasons": [
+        "exact_studied_formula_version_unavailable",
+        "source_full_text_not_checked"
+      ],
+      "lifecycle": {
+        "status": "active",
+        "changedAt": "2026-10-03",
+        "reason": "Schema migration; pending evidence unchanged.",
+        "replacedBy": null
+      },
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "changedAt": "2026-09-29",
+          "change": "Imported existing pending rule; no new evidence review.",
+          "snapshot": {
+            "ruleId": "literature.niacinamide.appearance",
+            "version": "1.0.0",
+            "ingredient": "Niacinamide",
+            "role": "компонент, изучавшийся для внешнего вида кожи",
+            "possibleContribution": "В исследовании формулы с 5% ниацинамида отмечены улучшения ряда показателей внешнего вида кожи лица по сравнению с основой.",
+            "conditions": {
+              "applicationSite": "face",
+              "usage": "leave_on",
+              "concentrationPercent": 5,
+              "productForm": "facial leave-on formulation"
+            },
+            "riskAssessment": {
+              "status": "insufficient_data",
+              "statements": [],
+              "limitations": [
+                "Аннотация не устанавливает профиль риска ниацинамида для иных концентраций, формул, популяций или режимов применения."
+              ]
+            },
+            "limitations": [
+              "5% относится только к исследованию, концентрация в анализируемом составе неизвестна.",
+              "Ограниченная группа участников и конкретная формула; результат нельзя переносить на другие продукты или режимы применения."
+            ],
+            "basis": [
+              {
+                "sourceId": "pmid-16029679",
+                "locator": "Abstract: Methods, Results"
+              }
+            ],
+            "checkedAt": "2026-09-29",
+            "evidenceStatus": "review_required"
+          },
+          "contentHash": "9a478e96e1ee680e867eb33f998b74ff5e49e6a0882efe4a18aba63b9ac0a2eb",
+          "previousHash": null
+        },
+        {
+          "version": "2.0.0",
+          "changedAt": "2026-10-03",
+          "change": "C05: explicit study subject, provenance and applicability limits.",
+          "snapshot": {
+            "ruleId": "literature.niacinamide.appearance",
+            "version": "2.0.0",
+            "ingredient": "Niacinamide",
+            "role": "компонент, изучавшийся для внешнего вида кожи",
+            "possibleContribution": "В исследовании формулы с 5% ниацинамида отмечены улучшения ряда показателей внешнего вида кожи лица по сравнению с основой.",
+            "conditions": {
+              "applicationSite": "face",
+              "usage": "leave_on",
+              "concentrationPercent": 5,
+              "productForm": "facial leave-on formulation"
+            },
+            "riskAssessment": {
+              "status": "insufficient_data",
+              "statements": [],
+              "limitations": [
+                "Аннотация не устанавливает профиль риска ниацинамида для иных концентраций, формул, популяций или режимов применения."
+              ]
+            },
+            "limitations": [
+              "5% относится только к исследованию, концентрация в анализируемом составе неизвестна.",
+              "Ограниченная группа участников и конкретная формула; результат нельзя переносить на другие продукты или режимы применения."
+            ],
+            "basis": [
+              {
+                "sourceId": "pmid-16029679",
+                "locator": "Abstract: Methods, Results"
+              }
+            ],
+            "checkedAt": "2026-09-29",
+            "evidenceStatus": "review_required",
+            "conclusionType": "literature_observation",
+            "subject": {
+              "kind": "studied_formula",
+              "id": "study:pmid-16029679",
+              "formulaVersion": null
+            },
+            "unknownReasons": [
+              "exact_studied_formula_version_unavailable",
+              "source_full_text_not_checked"
+            ],
+            "lifecycle": {
+              "status": "active",
+              "changedAt": "2026-10-03",
+              "reason": "Schema migration; pending evidence unchanged.",
+              "replacedBy": null
+            }
+          },
+          "contentHash": "b678274ddaa235547f999f4a091f4a77ebc6dfe9326d10303022d02ab860aa0a",
+          "previousHash": "9a478e96e1ee680e867eb33f998b74ff5e49e6a0882efe4a18aba63b9ac0a2eb"
+        }
+      ]
     },
     {
       "ruleId": "literature.panthenol.formula-barrier",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "ingredient": "Panthenol",
       "role": "компонент исследованной эмолентной формулы",
       "possibleContribution": "В исследовании конкретная многокомпонентная эмолентная формула с пантенолом была связана с улучшением инструментальных показателей увлажненности и барьерной функции по сравнению с контролем.",
-      "conditions": { "applicationSite": "skin", "usage": "leave_on", "productForm": "panthenol-containing emollient" },
-      "riskAssessment": { "status": "insufficient_data", "statements": [], "limitations": ["Исследование не выделяло риск или переносимость одного пантенола отдельно от готовой формулы."] },
-      "limitations": ["Исследована готовая многокомпонентная формула, поэтому эффект нельзя приписать одному пантенолу.", "Концентрация пантенола в аннотации не указана; результат нельзя переносить на иной продукт или лекарственную форму."],
-      "basis": [{ "sourceId": "pmid-27425824", "locator": "Abstract: Purpose, Methods, Results, Conclusions" }],
+      "conditions": {
+        "applicationSite": "skin",
+        "usage": "leave_on",
+        "productForm": "panthenol-containing emollient"
+      },
+      "riskAssessment": {
+        "status": "insufficient_data",
+        "statements": [],
+        "limitations": [
+          "Исследование не выделяло риск или переносимость одного пантенола отдельно от готовой формулы."
+        ]
+      },
+      "limitations": [
+        "Исследована готовая многокомпонентная формула, поэтому эффект нельзя приписать одному пантенолу.",
+        "Концентрация пантенола в аннотации не указана; результат нельзя переносить на иной продукт или лекарственную форму."
+      ],
+      "basis": [
+        {
+          "sourceId": "pmid-27425824",
+          "locator": "Abstract: Purpose, Methods, Results, Conclusions"
+        }
+      ],
       "checkedAt": "2026-09-29",
       "evidenceStatus": "review_required",
-      "review": { "status": "pending", "reviewer": null, "reviewedAt": null }
+      "review": {
+        "status": "pending",
+        "reviewer": null,
+        "reviewedAt": null
+      },
+      "conclusionType": "literature_observation",
+      "subject": {
+        "kind": "studied_formula",
+        "id": "study:pmid-27425824",
+        "formulaVersion": null
+      },
+      "unknownReasons": [
+        "exact_studied_formula_version_unavailable",
+        "source_full_text_not_checked"
+      ],
+      "lifecycle": {
+        "status": "active",
+        "changedAt": "2026-10-03",
+        "reason": "Schema migration; pending evidence unchanged.",
+        "replacedBy": null
+      },
+      "versionHistory": [
+        {
+          "version": "1.0.0",
+          "changedAt": "2026-09-29",
+          "change": "Imported existing pending rule; no new evidence review.",
+          "snapshot": {
+            "ruleId": "literature.panthenol.formula-barrier",
+            "version": "1.0.0",
+            "ingredient": "Panthenol",
+            "role": "компонент исследованной эмолентной формулы",
+            "possibleContribution": "В исследовании конкретная многокомпонентная эмолентная формула с пантенолом была связана с улучшением инструментальных показателей увлажненности и барьерной функции по сравнению с контролем.",
+            "conditions": {
+              "applicationSite": "skin",
+              "usage": "leave_on",
+              "productForm": "panthenol-containing emollient"
+            },
+            "riskAssessment": {
+              "status": "insufficient_data",
+              "statements": [],
+              "limitations": [
+                "Исследование не выделяло риск или переносимость одного пантенола отдельно от готовой формулы."
+              ]
+            },
+            "limitations": [
+              "Исследована готовая многокомпонентная формула, поэтому эффект нельзя приписать одному пантенолу.",
+              "Концентрация пантенола в аннотации не указана; результат нельзя переносить на иной продукт или лекарственную форму."
+            ],
+            "basis": [
+              {
+                "sourceId": "pmid-27425824",
+                "locator": "Abstract: Purpose, Methods, Results, Conclusions"
+              }
+            ],
+            "checkedAt": "2026-09-29",
+            "evidenceStatus": "review_required"
+          },
+          "contentHash": "37febec2c26d95366b44a9fe5e0929c18d33b78fd25df7f9e279aead87ed6b92",
+          "previousHash": null
+        },
+        {
+          "version": "2.0.0",
+          "changedAt": "2026-10-03",
+          "change": "C05: explicit study subject, provenance and applicability limits.",
+          "snapshot": {
+            "ruleId": "literature.panthenol.formula-barrier",
+            "version": "2.0.0",
+            "ingredient": "Panthenol",
+            "role": "компонент исследованной эмолентной формулы",
+            "possibleContribution": "В исследовании конкретная многокомпонентная эмолентная формула с пантенолом была связана с улучшением инструментальных показателей увлажненности и барьерной функции по сравнению с контролем.",
+            "conditions": {
+              "applicationSite": "skin",
+              "usage": "leave_on",
+              "productForm": "panthenol-containing emollient"
+            },
+            "riskAssessment": {
+              "status": "insufficient_data",
+              "statements": [],
+              "limitations": [
+                "Исследование не выделяло риск или переносимость одного пантенола отдельно от готовой формулы."
+              ]
+            },
+            "limitations": [
+              "Исследована готовая многокомпонентная формула, поэтому эффект нельзя приписать одному пантенолу.",
+              "Концентрация пантенола в аннотации не указана; результат нельзя переносить на иной продукт или лекарственную форму."
+            ],
+            "basis": [
+              {
+                "sourceId": "pmid-27425824",
+                "locator": "Abstract: Purpose, Methods, Results, Conclusions"
+              }
+            ],
+            "checkedAt": "2026-09-29",
+            "evidenceStatus": "review_required",
+            "conclusionType": "literature_observation",
+            "subject": {
+              "kind": "studied_formula",
+              "id": "study:pmid-27425824",
+              "formulaVersion": null
+            },
+            "unknownReasons": [
+              "exact_studied_formula_version_unavailable",
+              "source_full_text_not_checked"
+            ],
+            "lifecycle": {
+              "status": "active",
+              "changedAt": "2026-10-03",
+              "reason": "Schema migration; pending evidence unchanged.",
+              "replacedBy": null
+            }
+          },
+          "contentHash": "485b0b4a607149781a82d7b30559596c3c208025102b0bfa6523046cfa78b2c7",
+          "previousHash": "37febec2c26d95366b44a9fe5e0929c18d33b78fd25df7f9e279aead87ed6b92"
+        }
+      ]
     }
-  ]
+  ],
+  "reviewers": []
 }

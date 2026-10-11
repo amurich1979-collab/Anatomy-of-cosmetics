@@ -1,4 +1,6 @@
 import crypto from "node:crypto";
+import nodemailer from "nodemailer";
+import { rateLimit } from "express-rate-limit";
 import {
   createPasswordResetToken,
   createUser,
@@ -15,6 +17,19 @@ const COOKIE_NAME = "anatomy_session";
 const OAUTH_STATE_COOKIE = "anatomy_oauth_state";
 const SESSION_DAYS = 30;
 const fallbackSessionSecret = crypto.randomBytes(32).toString("hex");
+const rateLimitMessage = { error: "Слишком много запросов. Повторите позже." };
+const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, standardHeaders: "draft-7", legacyHeaders: false, message: rateLimitMessage });
+const resetLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 5, standardHeaders: "draft-7", legacyHeaders: false, message: rateLimitMessage });
+
+export function assertAuthConfiguration() {
+  if (process.env.NODE_ENV !== "production") return;
+  if (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32) {
+    throw new Error("Production requires a stable SESSION_SECRET of at least 32 characters");
+  }
+  if (!/^https:\/\/[^/]+/i.test(process.env.APP_URL || "")) {
+    throw new Error("Production requires an HTTPS APP_URL");
+  }
+}
 
 function secret() {
   return process.env.SESSION_SECRET || fallbackSessionSecret;
@@ -172,12 +187,35 @@ async function fetchGoogleProfile(accessToken) {
 }
 
 async function sendPasswordResetEmail({ email, resetLink }) {
-  if (process.env.SMTP_HOST) {
-    console.log(`[mail pending] Password reset email for ${email}: ${resetLink}`);
-    return;
+  const host = process.env.SMTP_HOST;
+  const from = process.env.SMTP_FROM;
+  if (!host || !from) throw new Error("MAIL_NOT_CONFIGURED");
+  const port = Number(process.env.SMTP_PORT || 465);
+  if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error("MAIL_NOT_CONFIGURED");
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  if (Boolean(user) !== Boolean(pass)) throw new Error("MAIL_NOT_CONFIGURED");
+  const secure = port === 465;
+  const transport = nodemailer.createTransport({
+    host,
+    port,
+    secure,
+    requireTLS: !secure && process.env.NODE_ENV === "production",
+    auth: user ? { user, pass } : undefined,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000
+  });
+  try {
+    await transport.sendMail({
+      from,
+      to: email,
+      subject: "Восстановление доступа — Анатомия косметики",
+      text: `Для смены пароля откройте ссылку (действует 30 минут): ${resetLink}\nЕсли вы не запрашивали восстановление, проигнорируйте письмо.`
+    });
+  } finally {
+    transport.close();
   }
-
-  console.log(`[dev password reset] ${email}: ${resetLink}`);
 }
 
 export function hashPassword(password) {
@@ -219,7 +257,7 @@ export function registerAuthRoutes(app) {
     res.json(getGoogleOAuthStatusForRequest(req));
   });
 
-  app.post("/api/auth/register", async (req, res) => {
+  app.post("/api/auth/register", loginLimiter, async (req, res) => {
     const email = String(req.body?.email || "").trim().toLowerCase();
     const password = String(req.body?.password || "");
     const name = String(req.body?.name || "").trim();
@@ -247,7 +285,7 @@ export function registerAuthRoutes(app) {
     }
   });
 
-  app.post("/api/auth/login", async (req, res) => {
+  app.post("/api/auth/login", loginLimiter, async (req, res) => {
     const email = String(req.body?.email || "").trim().toLowerCase();
     const password = String(req.body?.password || "");
     const user = await getUserByEmail(email);
@@ -329,17 +367,22 @@ export function registerAuthRoutes(app) {
       setSessionCookie(res, user.id);
       res.redirect("/?auth=google_ok");
     } catch (error) {
-      console.error("[google oauth]", error.message);
+      console.error("[google oauth] request_failed");
       res.redirect(authRedirect("google_failed"));
     }
   });
 
-  app.post("/api/auth/password-reset/request", async (req, res) => {
+  app.post("/api/auth/password-reset/request", resetLimiter, async (req, res) => {
     const email = String(req.body?.email || "").trim().toLowerCase();
     const neutral = {
       ok: true,
-      message: "Если такой email зарегистрирован, мы отправим ссылку для восстановления пароля."
+      message: "Если адрес зарегистрирован и отправка доступна, письмо со ссылкой придёт на почту."
     };
+
+    if (process.env.NODE_ENV === "production" && (!process.env.SMTP_HOST || !process.env.SMTP_FROM)) {
+      res.status(503).json({ error: "Отправка писем временно недоступна." });
+      return;
+    }
 
     if (!validateEmail(email)) {
       res.json(neutral);
@@ -361,7 +404,13 @@ export function registerAuthRoutes(app) {
     });
 
     const resetLink = `${appBaseUrl(req)}/reset-password?token=${encodeURIComponent(rawToken)}`;
-    await sendPasswordResetEmail({ email, resetLink });
+    if (process.env.SMTP_HOST) {
+      try {
+        await sendPasswordResetEmail({ email, resetLink });
+      } catch {
+        console.error("[password reset] delivery_failed");
+      }
+    }
 
     res.json({
       ...neutral,
@@ -369,7 +418,7 @@ export function registerAuthRoutes(app) {
     });
   });
 
-  app.post("/api/auth/password-reset/confirm", async (req, res) => {
+  app.post("/api/auth/password-reset/confirm", resetLimiter, async (req, res) => {
     const token = String(req.body?.token || "");
     const password = String(req.body?.password || "");
 

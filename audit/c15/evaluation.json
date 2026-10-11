@@ -1,0 +1,2018 @@
+{
+  "schemaVersion": "1.0",
+  "status": "partial",
+  "accepted": false,
+  "measuredAt": "2026-10-10T03:35:24.735Z",
+  "runtime": {
+    "node": "v24.18.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "hashes": {
+    "audit/c02/corpus-manifest.json": "948c8338a1d3f4a2b93e3add416eb11d8a467557d6adc63e751f76e5c94c6660",
+    "audit/c02/annotations.json": "a8c07c5660dc15907b1a5a2d4f874f2f53b13cc666a502df6e49094c56cc6742",
+    "audit/c03/control-queries.json": "f2ffff0407a4329f84b122b09377ad45f2bc2f5308fb7c5bf05d20b16db7541f",
+    "src/analyzer.js": "74205faae7991b17154de48e9077431b73afc955f6bcffde844d47ca45568c1b",
+    "src/services/formulaSystems.js": "c4b18663c87b59896a382aa0d75f1e10e838c665aeabd6b554bb4e66ff2b0963",
+    "src/services/expertRules.js": "ed172072f156fce41fb954e6b82dda3056f9c066cd623136edcbbbeb373cbdd7",
+    "src/services/personalization.js": "db5e47a23bd579a9a0aa802fead6a85f2ec5a9608689a328d352ba34544137a3",
+    "src/services/inciCleaner.js": "4d912b2e2d51ef035993ac7e55064a1829f860aaa0496880e7ab540a363697b1",
+    "public/analysis-report.js": "47479eac382753cfab41b12627748834126848f9f53e2f51b6d2129758118493",
+    "data/expert-claims.json": "23fd3012dc345823a81a22982ad5f190f7aef49f249e3e68997908dca3472e7f",
+    "data/expert-card-batch-c06.json": "c891d6cee18c1234d19babf78294ffc7ad7d7b86a8993e1a6c8dff30ecf3a049",
+    "data/product-index.json": "5d6096530ebb75a86c154a9c91490b5ea7699936e0206f6b7e19c8e040aa8298",
+    "scripts/run-c15-acceptance.mjs": "fac4ad02b226d54525672debedf5a6830cc0e297659b53e06a7a5cf57035d013"
+  },
+  "method": "Offline acceptance: final catalog texts are not photo gold; no production API calls, no injected approved claims, no algorithm changes.",
+  "corpus": {
+    "products": 200,
+    "setup": 150,
+    "final": 50,
+    "remoteIngredientPhotos": 200,
+    "locallyArchivedIngredientPhotos": 0,
+    "independentManualPhotoTranscriptions": 0,
+    "approvedGold": 0,
+    "finalCategoryCandidates": {
+      "unknown": 21,
+      "hair_care": 7,
+      "rinse_off_cleanser": 6,
+      "cream_or_lotion": 13,
+      "serum_or_oil": 3
+    },
+    "finalBrands": {
+      "Dove": 4,
+      "PURA D OR": 1,
+      "Inesscents": 1,
+      "eos": 1,
+      "SAND + FOG": 1,
+      "Monica + Andy": 1,
+      "Jergens": 1,
+      "Sebamed": 1,
+      "Biolane, Biopha, Laboratoires Biopha": 1,
+      "La Roche-Posay": 1,
+      "Dr.Scheller": 1,
+      "Lacura Spa": 1,
+      "Balea": 16,
+      "Balea, dm": 1,
+      "sebamed": 1,
+      "Essence": 1,
+      "UpCircle": 2,
+      "BULL DOG": 1,
+      "eva": 1,
+      "Kotitila": 1,
+      "Forever": 1,
+      "HEMA": 1,
+      "null": 1,
+      "Melkan": 1,
+      "Mary&May, MΛ́RY & MΛY": 1,
+      "Illiyoon": 1,
+      "Shokubutsu": 1,
+      "Srichand": 4
+    }
+  },
+  "finalDiagnostics": {
+    "records": 50,
+    "ingredients": 829,
+    "confirmed": 746,
+    "suggested": 0,
+    "unknown": 83,
+    "confirmedRate": 0.8998793727382388,
+    "explained": 46,
+    "reviewed": 0,
+    "reviewedRate": 0,
+    "formulaStatuses": {
+      "partial": 43,
+      "needs_input": 7
+    },
+    "purposeStatuses": {
+      "uncertain": 27,
+      "hypothesis": 23
+    },
+    "validContracts": 50,
+    "personalStatuses": {
+      "review_required": 50
+    },
+    "potentialBenefitReports": 0,
+    "adviceAllowed": 0,
+    "localBarcodeCoverage": {
+      "found": 0,
+      "total": 50
+    },
+    "rows": [
+      {
+        "id": "c02-obf-0011111049833",
+        "brand": "Dove",
+        "candidateCategory": "unknown",
+        "ingredients": 36,
+        "confirmed": 32,
+        "suggested": 0,
+        "unknown": 4,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 10,
+          "insufficient_data": 3
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-0079400521170",
+        "brand": "Dove",
+        "candidateCategory": "hair_care",
+        "ingredients": 20,
+        "confirmed": 20,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 10,
+          "insufficient_data": 3
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-0810023841111",
+        "brand": "PURA D OR",
+        "candidateCategory": "unknown",
+        "ingredients": 9,
+        "confirmed": 7,
+        "suggested": 0,
+        "unknown": 2,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 8,
+          "reference_only": 5
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-0835240004323",
+        "brand": "Inesscents",
+        "candidateCategory": "unknown",
+        "ingredients": 5,
+        "confirmed": 1,
+        "suggested": 0,
+        "unknown": 4,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 11,
+          "reference_only": 2
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-0840044715337",
+        "brand": "eos",
+        "candidateCategory": "unknown",
+        "ingredients": 26,
+        "confirmed": 26,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 10,
+          "insufficient_data": 3
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-0840435401726",
+        "brand": "SAND + FOG",
+        "candidateCategory": "unknown",
+        "ingredients": 4,
+        "confirmed": 4,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 5,
+          "insufficient_data": 8
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-0840514817899",
+        "brand": "Monica + Andy",
+        "candidateCategory": "hair_care",
+        "ingredients": 19,
+        "confirmed": 19,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 10,
+          "insufficient_data": 3
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-0850056095846",
+        "brand": "Jergens",
+        "candidateCategory": "rinse_off_cleanser",
+        "ingredients": 16,
+        "confirmed": 16,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 9,
+          "insufficient_data": 4
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-0857329008015",
+        "brand": "Sebamed",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 20,
+        "confirmed": 20,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 10,
+          "insufficient_data": 3
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-3286011092310",
+        "brand": "Biolane, Biopha, Laboratoires Biopha",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 12,
+        "confirmed": 11,
+        "suggested": 0,
+        "unknown": 1,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 9,
+          "insufficient_data": 4
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-3337872418570",
+        "brand": "La Roche-Posay",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 23,
+        "confirmed": 20,
+        "suggested": 0,
+        "unknown": 3,
+        "explained": 2,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 9,
+          "insufficient_data": 4
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4051424570064",
+        "brand": "Dr.Scheller",
+        "candidateCategory": "unknown",
+        "ingredients": 17,
+        "confirmed": 8,
+        "suggested": 0,
+        "unknown": 9,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 5,
+          "insufficient_data": 8
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4061461257200",
+        "brand": "Lacura Spa",
+        "candidateCategory": "rinse_off_cleanser",
+        "ingredients": 19,
+        "confirmed": 17,
+        "suggested": 0,
+        "unknown": 2,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 11,
+          "insufficient_data": 2
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447215458",
+        "brand": "Balea",
+        "candidateCategory": "serum_or_oil",
+        "ingredients": 16,
+        "confirmed": 16,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 3,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 7,
+          "insufficient_data": 6
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447377989",
+        "brand": "Balea",
+        "candidateCategory": "unknown",
+        "ingredients": 1,
+        "confirmed": 1,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 13
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447383690",
+        "brand": "Balea",
+        "candidateCategory": "unknown",
+        "ingredients": 0,
+        "confirmed": 0,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "needs_input",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 13
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447492521",
+        "brand": "Balea",
+        "candidateCategory": "unknown",
+        "ingredients": 0,
+        "confirmed": 0,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "needs_input",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 13
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447492804",
+        "brand": "Balea",
+        "candidateCategory": "rinse_off_cleanser",
+        "ingredients": 0,
+        "confirmed": 0,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "needs_input",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 13
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447870213",
+        "brand": "Balea",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 15,
+        "confirmed": 13,
+        "suggested": 0,
+        "unknown": 2,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 11,
+          "insufficient_data": 2
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447880472",
+        "brand": "Balea",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 20,
+        "confirmed": 18,
+        "suggested": 0,
+        "unknown": 2,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 10,
+          "insufficient_data": 3
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447888423",
+        "brand": "Balea",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 19,
+        "confirmed": 18,
+        "suggested": 0,
+        "unknown": 1,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 10,
+          "insufficient_data": 3
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447944167",
+        "brand": "Balea",
+        "candidateCategory": "unknown",
+        "ingredients": 26,
+        "confirmed": 23,
+        "suggested": 0,
+        "unknown": 3,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 7,
+          "insufficient_data": 6
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447967678",
+        "brand": "Balea",
+        "candidateCategory": "unknown",
+        "ingredients": 18,
+        "confirmed": 17,
+        "suggested": 0,
+        "unknown": 1,
+        "explained": 2,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 9,
+          "insufficient_data": 4
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447970555",
+        "brand": "Balea",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 0,
+        "confirmed": 0,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "needs_input",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 13
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447974522",
+        "brand": "Balea",
+        "candidateCategory": "hair_care",
+        "ingredients": 14,
+        "confirmed": 13,
+        "suggested": 0,
+        "unknown": 1,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 7,
+          "insufficient_data": 6
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447982596",
+        "brand": "Balea",
+        "candidateCategory": "hair_care",
+        "ingredients": 21,
+        "confirmed": 21,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 3,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 9,
+          "insufficient_data": 4
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447985474",
+        "brand": "Balea",
+        "candidateCategory": "unknown",
+        "ingredients": 15,
+        "confirmed": 15,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 9,
+          "insufficient_data": 4
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4066447988956",
+        "brand": "Balea, dm",
+        "candidateCategory": "rinse_off_cleanser",
+        "ingredients": 0,
+        "confirmed": 0,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "needs_input",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 13
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4067796173673",
+        "brand": "Balea",
+        "candidateCategory": "hair_care",
+        "ingredients": 13,
+        "confirmed": 12,
+        "suggested": 0,
+        "unknown": 1,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 7,
+          "insufficient_data": 6
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4070765030884",
+        "brand": "Balea",
+        "candidateCategory": "unknown",
+        "ingredients": 14,
+        "confirmed": 14,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 2,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 9,
+          "insufficient_data": 4
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4103040427014",
+        "brand": "sebamed",
+        "candidateCategory": "rinse_off_cleanser",
+        "ingredients": 26,
+        "confirmed": 24,
+        "suggested": 0,
+        "unknown": 2,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 10,
+          "insufficient_data": 3
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-4250338494415",
+        "brand": "Essence",
+        "candidateCategory": "serum_or_oil",
+        "ingredients": 20,
+        "confirmed": 17,
+        "suggested": 0,
+        "unknown": 3,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 9,
+          "insufficient_data": 4
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-5060571721778",
+        "brand": "UpCircle",
+        "candidateCategory": "hair_care",
+        "ingredients": 19,
+        "confirmed": 14,
+        "suggested": 0,
+        "unknown": 5,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 9,
+          "insufficient_data": 4
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-5060571721907",
+        "brand": "UpCircle",
+        "candidateCategory": "hair_care",
+        "ingredients": 36,
+        "confirmed": 34,
+        "suggested": 0,
+        "unknown": 2,
+        "explained": 2,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 11,
+          "insufficient_data": 2
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-5060896578835",
+        "brand": "BULL DOG",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 17,
+        "confirmed": 17,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 9,
+          "insufficient_data": 4
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-5900002080619",
+        "brand": "eva",
+        "candidateCategory": "rinse_off_cleanser",
+        "ingredients": 14,
+        "confirmed": 14,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 2,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 8,
+          "insufficient_data": 5
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-6429810527721",
+        "brand": "Kotitila",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 0,
+        "confirmed": 0,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "needs_input",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 13
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-87034691",
+        "brand": "Forever",
+        "candidateCategory": "unknown",
+        "ingredients": 17,
+        "confirmed": 17,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 7,
+          "insufficient_data": 6
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-8718537813148",
+        "brand": "HEMA",
+        "candidateCategory": "unknown",
+        "ingredients": 7,
+        "confirmed": 6,
+        "suggested": 0,
+        "unknown": 1,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 4,
+          "insufficient_data": 9
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-8718951672963",
+        "brand": null,
+        "candidateCategory": "unknown",
+        "ingredients": 8,
+        "confirmed": 7,
+        "suggested": 0,
+        "unknown": 1,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 7,
+          "insufficient_data": 6
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-8718989045975",
+        "brand": "Melkan",
+        "candidateCategory": "unknown",
+        "ingredients": 11,
+        "confirmed": 0,
+        "suggested": 0,
+        "unknown": 11,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 13
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-8809670683313",
+        "brand": "Mary&May, MΛ́RY & MΛY",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 52,
+        "confirmed": 51,
+        "suggested": 0,
+        "unknown": 1,
+        "explained": 3,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 11,
+          "insufficient_data": 2
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-8809925193406",
+        "brand": "Illiyoon",
+        "candidateCategory": "unknown",
+        "ingredients": 0,
+        "confirmed": 0,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "needs_input",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 13
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-8850002027688",
+        "brand": "Shokubutsu",
+        "candidateCategory": "unknown",
+        "ingredients": 20,
+        "confirmed": 19,
+        "suggested": 0,
+        "unknown": 1,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 10,
+          "insufficient_data": 3
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-8858696803618",
+        "brand": "Srichand",
+        "candidateCategory": "unknown",
+        "ingredients": 21,
+        "confirmed": 21,
+        "suggested": 0,
+        "unknown": 0,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 8,
+          "reference_only": 5
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-8858696814768",
+        "brand": "Srichand",
+        "candidateCategory": "serum_or_oil",
+        "ingredients": 24,
+        "confirmed": 23,
+        "suggested": 0,
+        "unknown": 1,
+        "explained": 3,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 7,
+          "insufficient_data": 6
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-8858696834315",
+        "brand": "Srichand",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 27,
+        "confirmed": 22,
+        "suggested": 0,
+        "unknown": 5,
+        "explained": 2,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 9,
+          "insufficient_data": 4
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-8858696834964",
+        "brand": "Srichand",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 47,
+        "confirmed": 36,
+        "suggested": 0,
+        "unknown": 11,
+        "explained": 2,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 10,
+          "insufficient_data": 3
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-8886467010415",
+        "brand": "Dove",
+        "candidateCategory": "cream_or_lotion",
+        "ingredients": 19,
+        "confirmed": 18,
+        "suggested": 0,
+        "unknown": 1,
+        "explained": 1,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "reference_only": 8,
+          "insufficient_data": 5
+        },
+        "purposeStatus": "hypothesis",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      },
+      {
+        "id": "c02-obf-96081754",
+        "brand": "Dove",
+        "candidateCategory": "unknown",
+        "ingredients": 26,
+        "confirmed": 24,
+        "suggested": 0,
+        "unknown": 2,
+        "explained": 0,
+        "reviewed": 0,
+        "formulaStatus": "partial",
+        "contractValidation": {
+          "valid": true,
+          "errors": []
+        },
+        "systemStatuses": {
+          "insufficient_data": 5,
+          "reference_only": 8
+        },
+        "purposeStatus": "uncertain",
+        "personalStatus": "review_required",
+        "personalPotential": 0,
+        "applicationAdviceAllowed": false,
+        "localBarcodeFound": false,
+        "localBarcodeResultCount": 0
+      }
+    ]
+  },
+  "developmentSearch": {
+    "passed": 40,
+    "total": 40,
+    "noResults": 0,
+    "cases": [
+      {
+        "query": "The Ordinary 100% Organic Cold Pressed Rose Hip Seed Oil",
+        "kind": "name",
+        "expectedId": "obf-0769915190342",
+        "actualId": "obf-0769915190342",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "CeraVe Acne Foaming Cream Cleanser",
+        "kind": "name",
+        "expectedId": "obf-3606000512238",
+        "actualId": "obf-3606000512238",
+        "resultCount": 8,
+        "passed": true
+      },
+      {
+        "query": "Bioderma ABCDerm crème raffermissante",
+        "kind": "name",
+        "expectedId": "obf-3401347169653",
+        "actualId": "obf-3401347169653",
+        "resultCount": 8,
+        "passed": true
+      },
+      {
+        "query": "Vichy Anti-transpirant",
+        "kind": "name",
+        "expectedId": "obf-3337875804431",
+        "actualId": "obf-3337875804431",
+        "resultCount": 4,
+        "passed": true
+      },
+      {
+        "query": "Avène Avène - Cicalfate crème réparatrice",
+        "kind": "name",
+        "expectedId": "obf-3282779069519",
+        "actualId": "obf-3282779069519",
+        "resultCount": 8,
+        "passed": true
+      },
+      {
+        "query": "Uriage 1er Lait de Toilette",
+        "kind": "name",
+        "expectedId": "obf-3661434000195",
+        "actualId": "obf-3661434000195",
+        "resultCount": 8,
+        "passed": true
+      },
+      {
+        "query": "Klorane Antipelliculaire",
+        "kind": "name",
+        "expectedId": "obf-3282770106299",
+        "actualId": "obf-3282770106299",
+        "resultCount": 2,
+        "passed": true
+      },
+      {
+        "query": "Eucerin Advanced Repair Hand Cream",
+        "kind": "name",
+        "expectedId": "obf-0072140633820",
+        "actualId": "obf-0072140633820",
+        "resultCount": 4,
+        "passed": true
+      },
+      {
+        "query": "Caudalie Baume liftant regard Resveratrol Lift",
+        "kind": "name",
+        "expectedId": "obf-3522930031871",
+        "actualId": "obf-3522930031871",
+        "resultCount": 2,
+        "passed": true
+      },
+      {
+        "query": "Ducray Aderma Derm'intim PH 8 Soothing Cleansing Gel 200ML",
+        "kind": "name",
+        "expectedId": "obf-3282779226424",
+        "actualId": "obf-3282779226424",
+        "resultCount": 5,
+        "passed": true
+      },
+      {
+        "query": "SVR Cicavit+ Crème",
+        "kind": "name",
+        "expectedId": "obf-3401344502200",
+        "actualId": "obf-3401344502200",
+        "resultCount": 8,
+        "passed": true
+      },
+      {
+        "query": "Dermalogica Active Moist",
+        "kind": "name",
+        "expectedId": "obf-0666151030855",
+        "actualId": "obf-0666151030855",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "A-Derma Exomega Control Baume émollient 200ML",
+        "kind": "name",
+        "expectedId": "obf-3282770074697",
+        "actualId": "obf-3282770074697",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "ELEMIS Dynamic Resurfacing Facial Wash",
+        "kind": "name",
+        "expectedId": "obf-0641628005208",
+        "actualId": "obf-0641628005208",
+        "resultCount": 2,
+        "passed": true
+      },
+      {
+        "query": "Janssen Cosmetics El Maskesi 75 ml",
+        "kind": "name",
+        "expectedId": "obf-4040943009131",
+        "actualId": "obf-4040943009131",
+        "resultCount": 2,
+        "passed": true
+      },
+      {
+        "query": "La Roche Posay Cicaplast Baume B5+",
+        "kind": "name",
+        "expectedId": "obf-3337875816847",
+        "actualId": "obf-3337875816847",
+        "resultCount": 3,
+        "passed": true
+      },
+      {
+        "query": "Paula's Choice 2% BHA Body Smoothing Spot Exfoliant",
+        "kind": "name",
+        "expectedId": "obf-0655439007962",
+        "actualId": "obf-0655439007962",
+        "resultCount": 3,
+        "passed": true
+      },
+      {
+        "query": "Murad Acne Control Clarifying Cleanser",
+        "kind": "name",
+        "expectedId": "obf-0767332100531",
+        "actualId": "obf-0767332100531",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "Topicrem Gel nettoyant surgras",
+        "kind": "name",
+        "expectedId": "obf-3700281702040",
+        "actualId": "obf-3700281702040",
+        "resultCount": 4,
+        "passed": true
+      },
+      {
+        "query": "Sesderma Hydraderm Hyal C-Vit",
+        "kind": "name",
+        "expectedId": "obf-8429979432278",
+        "actualId": "obf-8429979432278",
+        "resultCount": 4,
+        "passed": true
+      },
+      {
+        "query": "Lierac Homme gel hydratant énergisant anti-fatigue",
+        "kind": "name",
+        "expectedId": "obf-3508240014070",
+        "actualId": "obf-3508240014070",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "Filorga Hydra Filler 50ML",
+        "kind": "name",
+        "expectedId": "obf-3401351102882",
+        "actualId": "obf-3401351102882",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "GIGI 27110 Acnon Day Control Moisturizer 50 ml",
+        "kind": "name",
+        "expectedId": "gigi-27110-acnon-day-control-moisturizer",
+        "actualId": "gigi-27110-acnon-day-control-moisturizer",
+        "resultCount": 2,
+        "passed": true
+      },
+      {
+        "query": "Trixosil 5% Professional Hair Growth Complex 50 ml",
+        "kind": "name",
+        "expectedId": "trixosil-5-hair-growth-complex-50ml",
+        "actualId": "trixosil-5-hair-growth-complex-50ml",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "Demo Acne Care BHA Clarifying Gel",
+        "kind": "name",
+        "expectedId": "demo-salicylic-gel",
+        "actualId": "demo-salicylic-gel",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "Demo Dermatology Mineral Recovery SPF 50",
+        "kind": "name",
+        "expectedId": "demo-mineral-spf",
+        "actualId": "demo-mineral-spf",
+        "resultCount": 4,
+        "passed": true
+      },
+      {
+        "query": "The Ordinary Caffeine solution",
+        "kind": "name",
+        "expectedId": "obf-0769915195712",
+        "actualId": "obf-0769915195712",
+        "resultCount": 3,
+        "passed": true
+      },
+      {
+        "query": "CeraVe AM Facial Moisturizing Lotion SPF 30",
+        "kind": "name",
+        "expectedId": "obf-0793379245584",
+        "actualId": "obf-0793379245584",
+        "resultCount": 8,
+        "passed": true
+      },
+      {
+        "query": "Bioderma Atoderm Crème de douche",
+        "kind": "name",
+        "expectedId": "obf-3401399371455",
+        "actualId": "obf-3401399371455",
+        "resultCount": 8,
+        "passed": true
+      },
+      {
+        "query": "Vichy Aqua Thermal Sérum Visage",
+        "kind": "name",
+        "expectedId": "obf-3337871328337",
+        "actualId": "obf-3337871328337",
+        "resultCount": 5,
+        "passed": true
+      },
+      {
+        "query": "Avène Baume après-rasage",
+        "kind": "name",
+        "expectedId": "obf-3282779003889",
+        "actualId": "obf-3282779003889",
+        "resultCount": 4,
+        "passed": true
+      },
+      {
+        "query": "Uriage 1er Sérum physiologique naturel",
+        "kind": "name",
+        "expectedId": "obf-3661434000546",
+        "actualId": "obf-3661434000546",
+        "resultCount": 8,
+        "passed": true
+      },
+      {
+        "query": "0769915190342",
+        "kind": "barcode",
+        "expectedId": "obf-0769915190342",
+        "actualId": "obf-0769915190342",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "3606000512238",
+        "kind": "barcode",
+        "expectedId": "obf-3606000512238",
+        "actualId": "obf-3606000512238",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "3401347169653",
+        "kind": "barcode",
+        "expectedId": "obf-3401347169653",
+        "actualId": "obf-3401347169653",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "3337875804431",
+        "kind": "barcode",
+        "expectedId": "obf-3337875804431",
+        "actualId": "obf-3337875804431",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "3282779069519",
+        "kind": "barcode",
+        "expectedId": "obf-3282779069519",
+        "actualId": "obf-3282779069519",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "3661434000195",
+        "kind": "barcode",
+        "expectedId": "obf-3661434000195",
+        "actualId": "obf-3661434000195",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "3282770106299",
+        "kind": "barcode",
+        "expectedId": "obf-3282770106299",
+        "actualId": "obf-3282770106299",
+        "resultCount": 1,
+        "passed": true
+      },
+      {
+        "query": "0072140633820",
+        "kind": "barcode",
+        "expectedId": "obf-0072140633820",
+        "actualId": "obf-0072140633820",
+        "resultCount": 1,
+        "passed": true
+      }
+    ],
+    "safety": [
+      {
+        "query": "The Ordinary Niacinamide 10 Zinc 1",
+        "passed": true
+      },
+      {
+        "query": "Imaginary Never Exists Cream",
+        "passed": true
+      }
+    ]
+  },
+  "semanticProbes": {
+    "passed": 11,
+    "total": 11,
+    "cases": [
+      {
+        "id": "lipid-hydrocarbon-silicone",
+        "owner": "C09",
+        "expected": {
+          "minimumMembers": 2,
+          "noFalseAbsence": true
+        },
+        "actual": {
+          "confirmed": [
+            {
+              "name": "Aqua",
+              "status": "confirmed"
+            },
+            {
+              "name": "Petrolatum",
+              "status": "confirmed"
+            },
+            {
+              "name": "Dimethicone",
+              "status": "confirmed"
+            }
+          ],
+          "members": 2,
+          "status": "reference_only",
+          "label": "Найдена справочная функция"
+        },
+        "passed": true,
+        "input": {
+          "text": "Aqua, Petrolatum, Dimethicone",
+          "formulaScope": "full",
+          "synthetic": true
+        }
+      },
+      {
+        "id": "retinol-active",
+        "owner": "C09",
+        "expected": {
+          "minimumMembers": 1,
+          "noFalseAbsence": true
+        },
+        "actual": {
+          "confirmed": [
+            {
+              "name": "Aqua",
+              "status": "confirmed"
+            },
+            {
+              "name": "Retinol",
+              "status": "confirmed"
+            }
+          ],
+          "members": 1,
+          "status": "reference_only",
+          "label": "Найдена справочная функция"
+        },
+        "passed": true,
+        "input": {
+          "text": "Aqua, Retinol",
+          "formulaScope": "full",
+          "synthetic": true
+        }
+      },
+      {
+        "id": "salicylic-active",
+        "owner": "C09",
+        "expected": {
+          "minimumMembers": 1,
+          "noFalseAbsence": true
+        },
+        "actual": {
+          "confirmed": [
+            {
+              "name": "Aqua",
+              "status": "confirmed"
+            },
+            {
+              "name": "Salicylic Acid",
+              "status": "confirmed"
+            }
+          ],
+          "members": 1,
+          "status": "reference_only",
+          "label": "Найдена справочная функция"
+        },
+        "passed": true,
+        "input": {
+          "text": "Aqua, Salicylic Acid",
+          "formulaScope": "full",
+          "synthetic": true
+        }
+      },
+      {
+        "id": "mixed-active",
+        "owner": "C09",
+        "expected": {
+          "minimumMembers": 2,
+          "noFalseAbsence": true
+        },
+        "actual": {
+          "confirmed": [
+            {
+              "name": "Aqua",
+              "status": "confirmed"
+            },
+            {
+              "name": "Niacinamide",
+              "status": "confirmed"
+            },
+            {
+              "name": "Retinol",
+              "status": "confirmed"
+            }
+          ],
+          "members": 2,
+          "status": "reference_only",
+          "label": "Найдена справочная функция"
+        },
+        "passed": true,
+        "input": {
+          "text": "Aqua, Niacinamide, Retinol",
+          "formulaScope": "full",
+          "synthetic": true
+        }
+      },
+      {
+        "id": "anesthetic-overrides-cosmetic-name",
+        "owner": "C07/C11",
+        "expected": "out_of_scope, no score or routine",
+        "actual": {
+          "status": "out_of_scope",
+          "score": {
+            "score": null,
+            "label": "не оценивать как уходовое средство",
+            "status": "not_assessed",
+            "reason": "non_cosmetic_formula",
+            "ruleId": "guard.product-evidence"
+          },
+          "routine": [],
+          "advice": false
+        },
+        "passed": true,
+        "input": {
+          "name": "User photographed anesthetic",
+          "formula": "Aqua, Frostoin, Prilocaine Hydrochloride, Propylene Glycol, Sodium Hydroxide, Cetyl Palmitate, C10-16 Alkyl Glucoside, C14-22 Alcohols, Hydroxyethylcellulose, Phenoxyethanol",
+          "productName": "Face cream"
+        }
+      },
+      {
+        "id": "active-only-not-full",
+        "owner": "C03/C09",
+        "expected": "scope retained, no numeric score",
+        "actual": {
+          "scope": "active_only",
+          "score": {
+            "score": null,
+            "label": "оценка не выполнена",
+            "status": "not_assessed",
+            "reason": "active_only_formula",
+            "ruleId": "guard.product-evidence"
+          },
+          "status": "partial"
+        },
+        "passed": true
+      },
+      {
+        "id": "conflicting-formulas-not-mixed",
+        "owner": "C03",
+        "expected": "two attributed variants, one unchanged composition",
+        "actual": {
+          "conflict": true,
+          "variants": [
+            {
+              "composition": "Aqua, Glycerin, Cetearyl Alcohol, Phenoxyethanol",
+              "source": "source-a",
+              "sourceType": "source-a",
+              "sourceUrl": "https://example.test/0",
+              "market": "EU",
+              "compositionScope": "unknown",
+              "confirmation": "source_declared",
+              "productName": "Fixture Cream",
+              "brand": "Fixture Brand"
+            },
+            {
+              "composition": "Aqua, Glycerin, Niacinamide, Cetearyl Alcohol, Sodium Benzoate",
+              "source": "source-b",
+              "sourceType": "source-b",
+              "sourceUrl": "https://example.test/1",
+              "market": "RU",
+              "compositionScope": "unknown",
+              "confirmation": "source_declared",
+              "productName": "Fixture Cream",
+              "brand": "Fixture Brand"
+            }
+          ],
+          "composition": "Aqua, Glycerin, Cetearyl Alcohol, Phenoxyethanol"
+        },
+        "passed": true
+      },
+      {
+        "id": "personal-allergen-priority",
+        "owner": "C11",
+        "expected": "blocked, no advice",
+        "actual": {
+          "withoutReportedAllergen": "review_required",
+          "status": "blocked",
+          "advice": false,
+          "restrictions": [
+            "personal.allergen-match"
+          ]
+        },
+        "passed": true
+      },
+      {
+        "id": "no-invented-quantities",
+        "owner": "C10",
+        "expected": "no numeric score, concentrations, SPF or duration",
+        "actual": {
+          "score": {
+            "score": null,
+            "label": "оценка не выполнена",
+            "status": "not_assessed",
+            "reason": "unvalidated_scoring_method",
+            "ruleId": "guard.product-evidence"
+          },
+          "quantitative": [],
+          "spf": [],
+          "duration": []
+        },
+        "passed": true
+      },
+      {
+        "id": "proprietary-complex-not-active",
+        "owner": "C05/C09",
+        "expected": "complex separate, no confirmed active membership",
+        "actual": {
+          "complexes": [
+            "RET Complex"
+          ],
+          "activeMembers": 0
+        },
+        "passed": true
+      },
+      {
+        "id": "ocr-text-boundaries-and-known-errors",
+        "owner": "C04",
+        "expected": [
+          "Aqua",
+          "Niacinamide",
+          "Phenoxyethanol"
+        ],
+        "actual": [
+          "Aqua",
+          "Niacinamide",
+          "Phenoxyethanol"
+        ],
+        "passed": true,
+        "input": {
+          "text": "INGREDIENTS: Aqua, Nacinamide, Phenoxyethanal. WARNING: avoid eyes. Manufacturer: ABC 123 Street",
+          "synthetic": true,
+          "imageTest": false
+        }
+      }
+    ]
+  },
+  "unmeasured": {
+    "liveSearchTop1": null,
+    "ocrPrecision": null,
+    "ocrRecall": null,
+    "photoAutoAcceptance": null,
+    "expertAgreement": null,
+    "purposeAccuracy": null,
+    "physicalMobileSuccess": null,
+    "noviceSuccess": null,
+    "endToEndP90": null
+  },
+  "blockers": [
+    "independent_photo_gold_missing",
+    "domain_review_missing",
+    "physical_devices_and_novice_users_unverified",
+    "production_postgres_restore_and_mail_unverified"
+  ],
+  "reusePolicy": "No held-out results were used to tune implementation. Newly exposed counterexamples must become regression cases; replace them for later independent acceptance."
+}

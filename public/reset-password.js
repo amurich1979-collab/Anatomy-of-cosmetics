@@ -63,7 +63,7 @@ resetForm?.addEventListener("submit", async (event) => {
 
     const email = resetEmail.value.trim();
     await postJson("/api/auth/password-reset/request", { email });
-    setResetStatus("Если такой email зарегистрирован, ссылка для восстановления будет отправлена. В тестовом режиме ссылка также выводится в консоль сервера.", "ok");
+    setResetStatus("Если адрес зарегистрирован и отправка доступна, письмо со ссылкой придёт на почту.", "ok");
   } catch (error) {
     setResetStatus(error.message, "warn");
   } finally {

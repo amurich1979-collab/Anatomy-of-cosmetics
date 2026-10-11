@@ -1,0 +1,672 @@
+{
+  "schemaVersion": "1.0",
+  "batchId": "c06-first-50",
+  "checkedAt": "2026-10-03",
+  "selectionPolicy": {
+    "sourceCorpus": "c02-formula-evaluation-corpus",
+    "selectionPartition": "setup",
+    "heldOutPartition": "final",
+    "method": "critical priorities and required functional classes first, then setup formula frequency; exact or alias registry matches only",
+    "finalPartitionUsedForSelection": false,
+    "candidateMaterialLimitation": "Open Beauty Facts catalog transcriptions are candidate material, not independent manual gold.",
+    "fuzzyMatchesAcceptedForSelection": false
+  },
+  "coverage": {
+    "setup": {
+      "selectedRecognizedOccurrences": 1074,
+      "allRecognizedOccurrences": 2476,
+      "recognizedOccurrenceCoverage": 0.4338,
+      "allRawOccurrences": 3063,
+      "selectedToAllRawOccurrenceCoverage": 0.3506
+    },
+    "finalHoldoutReadOnly": {
+      "selectedRecognizedOccurrences": 314,
+      "allRecognizedOccurrences": 728,
+      "recognizedOccurrenceCoverage": 0.4313,
+      "allRawOccurrences": 866,
+      "selectedToAllRawOccurrenceCoverage": 0.3626
+    },
+    "setupIngredientsNeededFor90PercentRecognizedOccurrences": {
+      "target": 0.9,
+      "ingredientCount": 482,
+      "coveredOccurrences": 2229,
+      "totalOccurrences": 2476,
+      "rate": 0.9002
+    },
+    "selectedCardCount": 50,
+    "requiredFunctionalClassCounts": {
+      "emulsifiers": 5,
+      "emollients": 5,
+      "surfactants": 5,
+      "preservatives": 5,
+      "fragrance": 12,
+      "fatty_phase_oils": 1,
+      "uv_filters": 4,
+      "actives_additives": 9,
+      "humectants": 6,
+      "rheology": 12
+    },
+    "publishedExpertClaimCount": 0,
+    "approvedExpertClaimCount": 0,
+    "limitation": "Покрытие измеряет только присутствие карточки для точно распознанного имени. Оно не означает экспертную полноту карточки или корректность каталожной транскрипции."
+  },
+  "selectedIngredients": [
+    {
+      "batchRank": 1,
+      "ingredient": "Aqua",
+      "corpusRank": 1,
+      "formulaCount": 90,
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 2,
+      "ingredient": "Glycerin",
+      "corpusRank": 2,
+      "formulaCount": 79,
+      "functionalClasses": [
+        "fragrance",
+        "humectants",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "required_functional_class:fragrance",
+        "required_functional_class:humectants",
+        "required_functional_class:rheology",
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 3,
+      "ingredient": "Citric Acid",
+      "corpusRank": 3,
+      "formulaCount": 62,
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 4,
+      "ingredient": "Parfum",
+      "corpusRank": 4,
+      "formulaCount": 54,
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 5,
+      "ingredient": "Sodium Benzoate",
+      "corpusRank": 5,
+      "formulaCount": 48,
+      "functionalClasses": [
+        "preservatives"
+      ],
+      "selectionReasons": [
+        "required_functional_class:preservatives",
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 6,
+      "ingredient": "Sodium Chloride",
+      "corpusRank": 6,
+      "formulaCount": 45,
+      "functionalClasses": [
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 7,
+      "ingredient": "Phenoxyethanol",
+      "corpusRank": 7,
+      "formulaCount": 44,
+      "functionalClasses": [
+        "preservatives"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 8,
+      "ingredient": "Cocamidopropyl Betaine",
+      "corpusRank": 8,
+      "formulaCount": 37,
+      "functionalClasses": [
+        "surfactants",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "required_functional_class:surfactants",
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 9,
+      "ingredient": "Limonene",
+      "corpusRank": 9,
+      "formulaCount": 33,
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 10,
+      "ingredient": "Linalool",
+      "corpusRank": 10,
+      "formulaCount": 33,
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 11,
+      "ingredient": "Sodium Hydroxide",
+      "corpusRank": 11,
+      "formulaCount": 29,
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 12,
+      "ingredient": "Disodium Edta",
+      "corpusRank": 12,
+      "formulaCount": 28,
+      "functionalClasses": [
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 13,
+      "ingredient": "Ethylhexylglycerin",
+      "corpusRank": 13,
+      "formulaCount": 27,
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 14,
+      "ingredient": "Benzyl Alcohol",
+      "corpusRank": 14,
+      "formulaCount": 22,
+      "functionalClasses": [
+        "preservatives",
+        "fragrance",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 15,
+      "ingredient": "Potassium Sorbate",
+      "corpusRank": 15,
+      "formulaCount": 22,
+      "functionalClasses": [
+        "preservatives"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 16,
+      "ingredient": "Panthenol",
+      "corpusRank": 16,
+      "formulaCount": 21,
+      "functionalClasses": [
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "required_functional_class:actives_additives",
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 17,
+      "ingredient": "Propylene Glycol",
+      "corpusRank": 17,
+      "formulaCount": 21,
+      "functionalClasses": [
+        "humectants",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 18,
+      "ingredient": "Sodium Laureth Sulfate",
+      "corpusRank": 18,
+      "formulaCount": 18,
+      "functionalClasses": [
+        "emulsifiers",
+        "surfactants"
+      ],
+      "selectionReasons": [
+        "required_functional_class:emulsifiers",
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 19,
+      "ingredient": "Coumarin",
+      "corpusRank": 19,
+      "formulaCount": 17,
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 20,
+      "ingredient": "Dimethicone",
+      "corpusRank": 20,
+      "formulaCount": 17,
+      "functionalClasses": [
+        "emollients"
+      ],
+      "selectionReasons": [
+        "required_functional_class:emollients",
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 21,
+      "ingredient": "Hexyl Cinnamal",
+      "corpusRank": 21,
+      "formulaCount": 17,
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 22,
+      "ingredient": "Tocopherol",
+      "corpusRank": 22,
+      "formulaCount": 17,
+      "functionalClasses": [
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 23,
+      "ingredient": "Xanthan Gum",
+      "corpusRank": 23,
+      "formulaCount": 17,
+      "functionalClasses": [
+        "emulsifiers",
+        "surfactants",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 24,
+      "ingredient": "Butylene Glycol",
+      "corpusRank": 24,
+      "formulaCount": 16,
+      "functionalClasses": [
+        "humectants",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 25,
+      "ingredient": "Citronellol",
+      "corpusRank": 25,
+      "formulaCount": 16,
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 26,
+      "ingredient": "Niacinamide",
+      "corpusRank": 26,
+      "formulaCount": 16,
+      "functionalClasses": [
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 27,
+      "ingredient": "Butyrospermum Parkii Butter",
+      "corpusRank": 27,
+      "formulaCount": 15,
+      "functionalClasses": [
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 28,
+      "ingredient": "Sodium Hyaluronate",
+      "corpusRank": 28,
+      "formulaCount": 15,
+      "functionalClasses": [
+        "actives_additives",
+        "humectants"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 29,
+      "ingredient": "Benzyl Salicylate",
+      "corpusRank": 29,
+      "formulaCount": 14,
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 30,
+      "ingredient": "Caprylyl Glycol",
+      "corpusRank": 30,
+      "formulaCount": 14,
+      "functionalClasses": [
+        "emollients",
+        "humectants"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 31,
+      "ingredient": "Cetearyl Alcohol",
+      "corpusRank": 31,
+      "formulaCount": 14,
+      "functionalClasses": [
+        "emulsifiers",
+        "emollients",
+        "surfactants",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 32,
+      "ingredient": "Glycol Distearate",
+      "corpusRank": 32,
+      "formulaCount": 14,
+      "functionalClasses": [
+        "emulsifiers",
+        "emollients",
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 33,
+      "ingredient": "Sodium Lauryl Sulfate",
+      "corpusRank": 33,
+      "formulaCount": 14,
+      "functionalClasses": [
+        "emulsifiers",
+        "surfactants"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 34,
+      "ingredient": "Tetrasodium Edta",
+      "corpusRank": 34,
+      "formulaCount": 14,
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 35,
+      "ingredient": "Cocos Nucifera Oil",
+      "corpusRank": 35,
+      "formulaCount": 13,
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 36,
+      "ingredient": "Menthol",
+      "corpusRank": 36,
+      "formulaCount": 13,
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 37,
+      "ingredient": "Guar Hydroxypropyltrimonium Chloride",
+      "corpusRank": 37,
+      "formulaCount": 12,
+      "functionalClasses": [
+        "rheology"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 38,
+      "ingredient": "Hydroxycitronellal",
+      "corpusRank": 38,
+      "formulaCount": 12,
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 39,
+      "ingredient": "Polyquaternium-10",
+      "corpusRank": 39,
+      "formulaCount": 12,
+      "functionalClasses": [],
+      "selectionReasons": [
+        "setup_corpus_frequency"
+      ]
+    },
+    {
+      "batchRank": 40,
+      "ingredient": "Citral",
+      "corpusRank": 69,
+      "formulaCount": 7,
+      "functionalClasses": [
+        "fragrance"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ]
+    },
+    {
+      "batchRank": 41,
+      "ingredient": "Lactic Acid",
+      "corpusRank": 72,
+      "formulaCount": 7,
+      "functionalClasses": [
+        "actives_additives",
+        "humectants"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ]
+    },
+    {
+      "batchRank": 42,
+      "ingredient": "Simmondsia Chinensis Seed Oil",
+      "corpusRank": 76,
+      "formulaCount": 7,
+      "functionalClasses": [
+        "emollients",
+        "fatty_phase_oils"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency",
+        "required_functional_class:fatty_phase_oils"
+      ]
+    },
+    {
+      "batchRank": 43,
+      "ingredient": "Allantoin",
+      "corpusRank": 82,
+      "formulaCount": 6,
+      "functionalClasses": [
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ]
+    },
+    {
+      "batchRank": 44,
+      "ingredient": "Ceramide Np",
+      "corpusRank": 101,
+      "formulaCount": 5,
+      "functionalClasses": [
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ]
+    },
+    {
+      "batchRank": 45,
+      "ingredient": "Salicylic Acid",
+      "corpusRank": 111,
+      "formulaCount": 5,
+      "functionalClasses": [
+        "preservatives",
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ]
+    },
+    {
+      "batchRank": 46,
+      "ingredient": "Titanium Dioxide",
+      "corpusRank": 114,
+      "formulaCount": 5,
+      "functionalClasses": [
+        "uv_filters"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency",
+        "required_functional_class:uv_filters"
+      ]
+    },
+    {
+      "batchRank": 47,
+      "ingredient": "Butyl Methoxydibenzoylmethane",
+      "corpusRank": 116,
+      "formulaCount": 4,
+      "functionalClasses": [
+        "uv_filters"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ]
+    },
+    {
+      "batchRank": 48,
+      "ingredient": "Ethylhexyl Methoxycinnamate",
+      "corpusRank": 123,
+      "formulaCount": 4,
+      "functionalClasses": [
+        "uv_filters"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ]
+    },
+    {
+      "batchRank": 49,
+      "ingredient": "Octocrylene",
+      "corpusRank": 542,
+      "formulaCount": 1,
+      "functionalClasses": [
+        "uv_filters"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ]
+    },
+    {
+      "batchRank": 50,
+      "ingredient": "Retinol",
+      "corpusRank": 628,
+      "formulaCount": 1,
+      "functionalClasses": [
+        "actives_additives"
+      ],
+      "selectionReasons": [
+        "critical_class_priority_independent_of_frequency"
+      ]
+    }
+  ]
+}

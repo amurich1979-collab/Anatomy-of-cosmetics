@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "status": "blocked_external",
+  "protocolVersion": "C16-1",
+  "launchGate": {
+    "c15Accepted": false,
+    "publicationApprovalPresent": false,
+    "allowed": false
+  },
+  "customerAcceptancePresent": false,
+  "sample": {
+    "participants": 0,
+    "targetMin": 30,
+    "targetMax": 50,
+    "targetReached": false
+  },
+  "outcomes": {
+    "counts": {
+      "report": 0,
+      "safe_refusal": 0,
+      "error": 0,
+      "abandoned": 0
+    },
+    "rates": {
+      "report": null,
+      "safe_refusal": null,
+      "error": null,
+      "abandoned": null
+    },
+    "refusalReasons": {},
+    "failureReasons": {}
+  },
+  "understanding": {
+    "succeeded": 0,
+    "denominator": 0,
+    "rate": null,
+    "target": 0.8
+  },
+  "timing": {
+    "observed": 0,
+    "missing": 0,
+    "total": 0,
+    "p90ResponseSeconds": null,
+    "reportsObserved": 0,
+    "p90ReportSeconds": null,
+    "targetReportSeconds": 30,
+    "byDevice": {},
+    "byNetwork": {}
+  },
+  "criticalIssuesConfirmed": 0,
+  "byInputMode": {},
+  "byCategory": {},
+  "errors": [],
+  "humanFinalReviewRequired": true
+}
